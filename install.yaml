@@ -1,0 +1,29 @@
+general:
+  name: Foreign Language Widget
+  group: Materia
+  height: 550
+  width: 850
+  in_catalog: Yes
+  is_editable: Yes
+  is_playable: Yes
+  is_qset_encrypted: Yes
+  is_answer_encrypted: Yes
+  is_storage_enabled: No
+  api_version: 2
+files:
+  player: player.html
+  creator: creator.html
+  flash_version: 0
+score:
+  is_scorable: Yes
+  score_module: LanguageWidget
+meta_data:
+  features:
+    - Customizable
+    - Scorable
+  supported_data:
+    - Question/Answer
+  about: >
+    Foreign Language Widget. Details TBD.
+  excerpt: >
+    Foreign Language Widget. Details TBD.
