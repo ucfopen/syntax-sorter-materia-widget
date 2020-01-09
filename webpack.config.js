@@ -7,14 +7,20 @@ const rules = widgetWebpack.getDefaultRules()
 const copy = widgetWebpack.getDefaultCopyList()
 
 const entries = {
-    'player.css': [
-        path.join(srcPath, 'player.html'),
-        path.join(srcPath, 'player.scss')
-    ],
-    'creator.css': [
-        path.join(srcPath, 'creator.html'),
-        path.join(srcPath, 'creator.scss')
-    ]
+	'player.css': [
+		path.join(srcPath, 'player.html'),
+		path.join(srcPath, 'player.scss')
+	],
+	'creator.css': [
+		path.join(srcPath, 'creator.html'),
+		path.join(srcPath, 'creator.scss')
+	],
+	'player.js': [
+		path.join(srcPath, 'player.js')
+	],
+	'creator.js': [
+		path.join(srcPath, 'creator.js')
+	]
 }
 
 const customReactLoader = {

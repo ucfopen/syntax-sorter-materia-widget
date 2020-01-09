@@ -1,4 +1,179 @@
 
+$colorBGPrimary: #e1e1e1;
+$colorBGSecondary: #ffffff;
+$colorInput: #5e5e5e;
+$colorAccent: #f1814b;
+$colorAccentHover: #f1bea5;
+$legendBG: #ffe7db;
+$darkBG: rgb(51,51,51);
+
+$questionSelectWidth: 60px;
+// $contentContainerPadding: 25px;
+$defaultPadding: 15px;
+
+html, body, #root {
+	height: 100%;
+}
+
 html {
-    background: #ffffff;
+	background: $darkBG;
+}
+
+body {
+	margin: 0;
+	padding: 0;
+
+	font-family: 'Open Sans', sans-serif;
+}
+
+.creator-container {
+	width: 100%;
+	height: 100%;
+}
+
+.creator-header {
+	width: 90%;
+	padding: 15px 5%;
+	background: $colorAccent;
+
+	color: #ffffff;
+}
+
+.question-select {
+	position: absolute;
+	left: 0px;
+	top: 52px;
+	display: inline-block;
+	width: $questionSelectWidth;
+
+	background: rgb(51,51,51);
+
+	button {
+		display: block;
+		height: 40px;
+		width: 40px;
+		margin: 5px 10px;
+
+		background: #ffffff;
+		border-radius: 50%;
+		font-size: 1.25em;
+
+		outline: none;
+
+		&:hover {
+			background: $colorAccentHover;
+		}
+	}
+}
+
+.content-container {
+	width: calc(100% - 60px - 50px); // 100% - question-select - padding
+	height: calc(100% - 52px - 50px); // 100% - header - padding
+	padding: 25px;
+	margin-left: $questionSelectWidth;
+	background: $colorBGPrimary;
+
+	section.question-container, section.phrase-builder {
+		padding: $defaultPadding;
+		background: $colorBGSecondary;
+		margin-bottom: 15px;
+
+		header {
+			font-weight: 700;
+			margin-bottom: 1.5em;
+		}
+	}
+
+	section.question-container input {
+		border-width: 0 0 2px 0;
+		border-color: $colorInput;
+		width: 90%;
+		font-size: 1.1em;
+
+		&:focus {
+			outline: none;
+			border-color: $colorAccent;
+		}
+	}
+}
+
+.legend {
+	position: absolute;
+	z-index: 100;
+
+	top: 0px;
+	right: 0px;
+
+	width: 300px;
+	height: calc(100% - 50px); // 100% - header - padding
+	padding: 25px;
+
+	background: $legendBG;
+
+	header {
+		font-weight: 700;
+		margin-bottom: 1.5em;
+	}
+
+	button.addNew {
+		width: 200px;
+		outline: none;
+		border: none;
+		background: none;
+		color: rgb(109, 109, 109);
+		border-bottom: solid 2px rgb(109, 109, 109);
+
+		margin-top: 15px;
+		margin-left: 35px;
+
+		font-size:1em;
+		text-align: left;
+
+		&:hover {
+			color: #000;
+			border-color: #000;
+		}
+	}
+
+	.legend-item {
+		// height: 25px;
+		margin-bottom: 15px;
+
+		.item-color {
+			display: inline-block;
+			width:25px;
+			height: 25px;
+			border-radius: 2px;
+
+			// margin-top: 15px;
+			margin-right: 10px;
+			
+			vertical-align: middle;
+		}
+
+		input {
+			display: inline-block;
+			background: none;
+			outline: none;
+			border: none;
+			border-bottom: solid 2px #000;
+
+			margin: 0;
+			padding: 0;
+			vertical-align: middle;
+
+			font-size: 1.1em;
+			
+		}
+
+		.remove-item {
+			display: inline-block;
+			outline: none;
+			border: none;
+			vertical-align: middle;
+
+			margin-left: 10px;
+			font-size: 1.1em;
+		}
+	}
 }
