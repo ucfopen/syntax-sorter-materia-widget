@@ -5,9 +5,11 @@ export default class LegendItem extends React.Component {
 		super(props)
 
 		this.remove = this.remove.bind(this, this.props.index)
+		this.onNameChange = this.onNameChange.bind(this)
 	}
 
 	onNameChange(event) {
+		this.props.handleEditLegendItem(this.props.index, event.target.value, this.props.color)
 		console.log(event.target.value)
 	}
 

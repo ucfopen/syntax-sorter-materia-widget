@@ -15,13 +15,19 @@ class CreatorApp extends React.Component {
 		this.selectQuestion = this.selectQuestion.bind(this)
 		this.handleChangeQuestion = this.handleChangeQuestion.bind(this)
 		this.handleAddLegendItem = this.handleAddLegendItem.bind(this)
+		this.handleEditLegendItem = this.handleEditLegendItem.bind(this)
 		this.handleRemoveLegendItem = this.handleRemoveLegendItem.bind(this)
+		this.handleToggleShowLegend = this.handleToggleShowLegend.bind(this)
 
 		this.state = {
 			qset: props.qset,
 			title: props.title,
-			currentQuestionIndex: 0
+			currentQuestionIndex: 0,
+			showLegend: false
 		}
+
+		this.legendColors = ['#00FF00', '#0000FF', '#ffd900', '#6200ff', '#00fff2', '#ff0080']
+		this.colorCount = 0
 	}
 
 	selectQuestion(index) {
@@ -36,10 +42,18 @@ class CreatorApp extends React.Component {
 		this.setState(Object.assign(this.state.qset.options, {legend:  [
 			...this.state.qset.options.legend,
 			{
-				color: '#FFFFFF',
+				color: this.legendColors[this.colorCount],
 				name: ''
 			}
 		]}))
+		this.colorCount++
+	}
+
+	handleEditLegendItem(index, text, color) {
+		this.setState(Object.assign(this.state.qset.options.legend[index], {
+			color: color,
+			name: text
+		}))
 	}
 
 	handleRemoveLegendItem(index) {
@@ -48,10 +62,18 @@ class CreatorApp extends React.Component {
 		this.setState(Object.assign(this.state.qset.options, {legend: copy}))
 	}
 
+	handleToggleShowLegend() {
+		this.setState({showLegend: !this.state.showLegend})
+	}
+
 	render() {
 		return(
 			<div className="creator-container">
-				<header className="creator-header">{this.state.title}</header>
+				<header className="creator-header">
+					{this.state.title}
+					<button className="toggleLegend" onClick={this.handleToggleShowLegend}>Legend</button>	
+					<button className="debug" onClick={() => console.log(this.state.qset)}>Dump QSet</button>
+				</header>
 				<QuestionSelect
 					currentIndex={this.state.currentQuestionIndex}
 					questions={this.state.qset.items}
@@ -70,7 +92,10 @@ class CreatorApp extends React.Component {
 				<Legend
 					items={this.state.qset.options.legend}
 					handleAddLegendItem={this.handleAddLegendItem}
-					handleRemoveLegendItem={this.handleRemoveLegendItem}></Legend>
+					handleEditLegendItem ={this.handleEditLegendItem}
+					handleRemoveLegendItem={this.handleRemoveLegendItem}
+					showLegend={this.state.showLegend}
+					toggleShowLegend={this.handleToggleShowLegend}></Legend>
 			</div>
 		)
 	}

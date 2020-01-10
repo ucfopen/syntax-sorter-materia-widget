@@ -12,12 +12,7 @@ export default class Question extends React.Component {
 
 	onQuestionUpdate(event) {
 		let text = event.target.value
-		// this.props.qset.items[this.props.currentIndex].questions[0].text = text
 		this.props.handleChangeQuestion(text)
-
-		// this.setState({
-		// 	value: text
-		// })
 	}
 	
 	render() {
