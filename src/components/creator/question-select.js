@@ -5,10 +5,15 @@ export default class QuestionSelect extends React.Component {
 	constructor(props) {
 		super(props);
 		this.renderList = this.renderList.bind(this)
+		this.addNewQuestion = this.addNewQuestion.bind(this)
 	}
 
 	handleSelectQuestion(index) {
 		this.props.selectQuestion(index)
+	}
+
+	addNewQuestion() {
+		this.props.handleAddNewQuestion()
 	}
 
 	renderList() {
@@ -32,6 +37,7 @@ export default class QuestionSelect extends React.Component {
 		return(
 			<div className="question-select">
 				{this.renderList()}
+				<button className="select-btn add-new" onClick={this.addNewQuestion}>+</button>
 			</div>
 		)
 	}

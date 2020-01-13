@@ -3,9 +3,6 @@ import React from 'react';
 export default class Question extends React.Component {
 	constructor(props) {
 		super(props);
-			// this.state = {
-			// 	value: this.props.qset.items[this.props.currentIndex].questions[0].text
-			// }
 
 		this.onQuestionUpdate = this.onQuestionUpdate.bind(this)
 	}
@@ -21,7 +18,8 @@ export default class Question extends React.Component {
 				<header>Question Text</header>
 				<input
 					value={this.props.value}
-					onChange={this.onQuestionUpdate}></input>
+					onChange={this.onQuestionUpdate}
+					placeholder="Add some text here describing the phrase below or providing instructions."></input>
 			</section>
 		)
 	}

@@ -14,6 +14,7 @@ class CreatorApp extends React.Component {
 
 		this.selectQuestion = this.selectQuestion.bind(this)
 		this.handleChangeQuestion = this.handleChangeQuestion.bind(this)
+		this.handleAddNewQuestion = this.handleAddNewQuestion.bind(this)
 		this.handleInputToToken = this.handleInputToToken.bind(this)
 		this.handleTokenToInput = this.handleTokenToInput.bind(this)
 		this.handleRequestTokenSelection = this.handleRequestTokenSelection.bind(this)
@@ -41,6 +42,25 @@ class CreatorApp extends React.Component {
 
 	handleChangeQuestion(value) {
 		this.setState(Object.assign(this.state.qset.items[this.state.currentQuestionIndex].questions[0], {text: value}))
+	}
+
+	handleAddNewQuestion() {
+		this.setState(Object.assign(this.state.qset.items, [
+			...this.state.qset.items,
+			{
+				questions: [{
+					text: ''
+				}],
+				answers: [{
+					text: '',
+					options: {
+						phrase: []
+					}
+				}]
+			}
+		]))
+
+		this.selectQuestion(this.state.qset.items.length-1)
 	}
 
 	handleInputToToken(input) {
@@ -114,7 +134,8 @@ class CreatorApp extends React.Component {
 				<QuestionSelect
 					currentIndex={this.state.currentQuestionIndex}
 					questions={this.state.qset.items}
-					selectQuestion={this.selectQuestion}></QuestionSelect>
+					selectQuestion={this.selectQuestion}
+					handleAddNewQuestion={this.handleAddNewQuestion}></QuestionSelect>
 				<section className="content-container">
 					<Question
 						currentIndex={this.state.currentQuestionIndex}

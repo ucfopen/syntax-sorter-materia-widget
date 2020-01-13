@@ -99,6 +99,17 @@ button {
 		&:hover {
 			background: $colorAccentHover;
 		}
+
+		&.add-new {
+			background: none;
+			color: #ffffff;
+			border: dashed 1px #ffffff;
+
+			&:hover {
+				background: #ffffff;
+				color: #000000;
+			}
+		}
 	}
 }
 
