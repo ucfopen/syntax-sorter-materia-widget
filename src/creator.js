@@ -14,6 +14,10 @@ class CreatorApp extends React.Component {
 
 		this.selectQuestion = this.selectQuestion.bind(this)
 		this.handleChangeQuestion = this.handleChangeQuestion.bind(this)
+		this.handleInputToToken = this.handleInputToToken.bind(this)
+		this.handleTokenToInput = this.handleTokenToInput.bind(this)
+		this.handleRequestTokenSelection = this.handleRequestTokenSelection.bind(this)
+		this.handleTokenSelection = this.handleTokenSelection.bind(this)
 		this.handleAddLegendItem = this.handleAddLegendItem.bind(this)
 		this.handleEditLegendItem = this.handleEditLegendItem.bind(this)
 		this.handleRemoveLegendItem = this.handleRemoveLegendItem.bind(this)
@@ -23,7 +27,8 @@ class CreatorApp extends React.Component {
 			qset: props.qset,
 			title: props.title,
 			currentQuestionIndex: 0,
-			showLegend: false
+			showLegend: false,
+			selectedTokenIndex: -1
 		}
 
 		this.legendColors = ['#00FF00', '#0000FF', '#ffd900', '#6200ff', '#00fff2', '#ff0080']
@@ -36,6 +41,38 @@ class CreatorApp extends React.Component {
 
 	handleChangeQuestion(value) {
 		this.setState(Object.assign(this.state.qset.items[this.state.currentQuestionIndex].questions[0], {text: value}))
+	}
+
+	handleInputToToken(input) {
+		this.setState(Object.assign(this.state.qset.items[this.state.currentQuestionIndex].answers[0].options.phrase, [
+			...this.state.qset.items[this.state.currentQuestionIndex].answers[0].options.phrase,
+			{
+				value: input,
+				legend: null
+			}]))
+	}
+
+	handleTokenToInput(index) {
+		let phraseCopy = this.state.qset.items[this.state.currentQuestionIndex].answers[0].options.phrase.slice()
+		let spliced = phraseCopy.splice(index, 1)[0]
+		this.setState(Object.assign(this.state.qset.items[this.state.currentQuestionIndex].answers[0].options, {phrase: phraseCopy}))
+		return spliced.value
+	}
+
+	handleRequestTokenSelection(index) {
+		if (this.state.selectedTokenIndex == index) this.setState({selectedTokenIndex: -1})
+		else this.setState({selectedTokenIndex: index})
+		
+	}
+
+	handleTokenSelection(selection) {
+		let token = this.state.qset.items[this.state.currentQuestionIndex].answers[0].options.phrase[this.state.selectedTokenIndex]
+		this.setState(Object.assign(this.state.qset.items[this.state.currentQuestionIndex].answers[0].options.phrase[this.state.selectedTokenIndex], {
+			value: token.value,
+			legend: selection
+		}))
+
+		this.setState({selectedTokenIndex: -1})
 	}
 
 	handleAddLegendItem() {
@@ -87,7 +124,13 @@ class CreatorApp extends React.Component {
 					<PhraseBuilder
 						currentIndex={this.state.currentQuestionIndex}
 						qset={this.state.qset}
-						phrase={this.state.qset.items[this.state.currentQuestionIndex].answers[0].text}></PhraseBuilder>
+						phrase={this.state.qset.items[this.state.currentQuestionIndex].answers[0].options.phrase}
+						selectedTokenIndex={this.state.selectedTokenIndex}
+						handleInputToToken={this.handleInputToToken}
+						handleTokenToInput={this.handleTokenToInput}
+						handleRequestTokenSelection={this.handleRequestTokenSelection}
+						handleTokenSelection={this.handleTokenSelection}
+						legend={this.state.qset.options.legend}></PhraseBuilder>
 				</section>
 				<Legend
 					items={this.state.qset.options.legend}
@@ -106,12 +149,54 @@ CreatorApp.defaultProps = {
 	qset: {
 		items: [{
 			questions: [{text:'Question 1'}],
-			answers: [{text:'This is some Answer Text One'}],
+			answers: [{text:'J\'aime les chats noirs', options: {
+				phrase: [
+					{
+						value: 'J\'',
+						legend: 'pronoun'
+					},
+					{
+						value: 'aime',
+						legend: 'verb'
+					},
+					{
+						value: 'les',
+						legend: 'article'
+					},
+					{
+						value: 'chats',
+						legend: 'noun'
+					},
+					{
+						value: 'noirs',
+						legend: 'adjective'
+					}
+				]
+			}}],
 			options: {}
 		},
 		{
 			questions: [{text:'Question 2'}],
-			answers: [{text:'Here is some Answer Text Test Two'}],
+			answers: [{text:'bibliothèque', options: {
+				phrase: [
+					{
+						value: 'où',
+						legend: 'adverb'
+					},
+					{
+						value: 'est',
+						legend: 'verb'
+					},
+					{
+						value: 'la',
+						legend: 'article'
+					},
+					{
+						value: 'bibliothèque',
+						legend: 'noun'
+					}
+				]
+			}}],
 			options: {}
 		}],
 		options: {
@@ -119,6 +204,26 @@ CreatorApp.defaultProps = {
 				{
 					color: '#FF0000',
 					name: 'Noun'
+				},
+				{
+					color: '#0000FF',
+					name: 'Adverb'
+				},
+				{
+					color: '#ffd900',
+					name: 'Verb'
+				},
+				{
+					color: '#6200ff',
+					name: 'Adjective'
+				},
+				{
+					color: '#00fff2',
+					name: 'Article'
+				},
+				{
+					color: '#ff0080',
+					name: 'Pronoun'
 				}
 			]
 		}
