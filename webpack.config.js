@@ -7,9 +7,12 @@ const rules = widgetWebpack.getDefaultRules()
 const copy = widgetWebpack.getDefaultCopyList()
 
 const entries = {
+	'common.css': [
+		path.join(srcPath, 'common.scss')
+	],
 	'player.css': [
 		path.join(srcPath, 'player.html'),
-		path.join(srcPath, 'player.scss')
+		path.join(srcPath, 'player.scss'),
 	],
 	'creator.css': [
 		path.join(srcPath, 'creator.html'),

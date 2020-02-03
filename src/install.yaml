@@ -1,7 +1,7 @@
 general:
   name: Foreign Language Widget
   group: Materia
-  height: 550
+  height: 640
   width: 850
   in_catalog: Yes
   is_editable: Yes

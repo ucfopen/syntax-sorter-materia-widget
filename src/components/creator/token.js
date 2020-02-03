@@ -6,10 +6,6 @@ export default class Token extends React.Component {
 
 		this.getLegendColor = this.getLegendColor.bind(this)
 		this.openTokenSelection = this.openTokenSelection.bind(this)
-
-		// this.state = {
-		// 	selected: false
-		// }
 	}
 
 	getLegendColor(name) {
@@ -18,12 +14,11 @@ export default class Token extends React.Component {
 		for (const term of this.props.legend) {
 			if (term.name.toLowerCase() == name.toLowerCase()) {
 				return term.color
-			}			
+			}
 		}
 	}
 
 	openTokenSelection() {
-		// this.setState({selected: true})
 		this.props.handleRequestTokenSelection(this.props.index)
 	}
 

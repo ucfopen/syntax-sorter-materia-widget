@@ -12,6 +12,7 @@ class CreatorApp extends React.Component {
 	constructor(props) {
 		super(props);
 
+		this.onSaveClicked = this.onSaveClicked.bind(this)
 		this.selectQuestion = this.selectQuestion.bind(this)
 		this.handleChangeQuestion = this.handleChangeQuestion.bind(this)
 		this.handleAddNewQuestion = this.handleAddNewQuestion.bind(this)
@@ -34,6 +35,10 @@ class CreatorApp extends React.Component {
 
 		this.legendColors = ['#00FF00', '#0000FF', '#ffd900', '#6200ff', '#00fff2', '#ff0080']
 		this.colorCount = 0
+	}
+
+	onSaveClicked() {
+		Materia.CreatorCore.save(this.state.title, this.state.qset, 1)
 	}
 
 	selectQuestion(index) {
@@ -263,5 +268,9 @@ materiaCallbacks.initExistingWidget = (title, instance, _qset, version, newWidge
 		document.getElementById(`root`)
 	)
 }
+
+materiaCallbacks.onSaveClicked = () => {
+	creatorInstance.onSaveClicked();
+};
 
 Materia.CreatorCore.start(materiaCallbacks);

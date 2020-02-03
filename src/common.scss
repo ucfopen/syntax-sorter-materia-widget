@@ -1,0 +1,128 @@
+// common styles
+
+$colorBGPrimary: #e1e1e1;
+$colorBGSecondary: #ffffff;
+$colorInput: #5e5e5e;
+$colorAccent: #f1814b;
+$colorAccentHover: #f1bea5;
+$legendBG: #ffe7db;
+$darkBG: rgb(51,51,51);
+
+$questionSelectWidth: 60px;
+$defaultPadding: 15px;
+
+html, body, #root {
+	height: 100%;
+}
+
+html {
+	background: $darkBG;
+}
+
+body {
+	margin: 0;
+	padding: 0;
+
+	font-family: 'Open Sans', sans-serif;
+}
+
+button {
+	cursor: pointer;
+}
+
+.creator-container, .player-container {
+	width: 100%;
+	height: 100%;
+}
+
+.creator-header, .player-header {
+	width: 90%;
+	padding: 15px 5%;
+	background: $colorAccent;
+
+	color: #ffffff;
+}
+
+.question-select {
+	position: absolute;
+	left: 0px;
+	top: 52px;
+	display: inline-block;
+	width: $questionSelectWidth;
+
+	background: rgb(51,51,51);
+
+	button {
+		display: block;
+		height: 40px;
+		width: 40px;
+		margin: 5px 10px;
+
+		background: #ffffff;
+		border-radius: 50%;
+		font-size: 1.25em;
+
+		outline: none;
+
+		&:hover {
+			background: $colorAccentHover;
+		}
+
+	}
+}
+
+.content-container {
+	width: calc(100% - 60px - 50px); // 100% - question-select - padding
+	height: calc(100% - 52px - 50px); // 100% - header - padding
+	padding: 25px;
+	margin-left: $questionSelectWidth;
+	background: $colorBGPrimary;
+
+	section.question-container, section.phrase-builder, section.phrase-player {
+		padding: $defaultPadding;
+		background: $colorBGSecondary;
+		margin-bottom: 15px;
+
+		header {
+			font-weight: 700;
+			margin-bottom: 1.5em;
+		}
+	}
+
+	section.phrase-builder, section.phrase-player {
+
+		padding: 15px 15px 0 15px;
+
+		.token-container {
+
+			width: 100%;
+			padding-bottom: 25px;
+			// margin-bottom: 25px;
+		}
+		
+		.token {
+			display: inline-block;
+			padding: 5px 8px;
+			
+	
+			margin-right: 10px;
+	
+			font-size: 1.5em;
+			color: #fff;
+			
+			border: solid 2px #fff;
+			border-radius: 3px;
+
+			cursor: pointer;
+
+			&.unassigned {
+				color: #000;
+				border: solid 1px #f1814b;
+			}
+
+			&.selected {
+				border: solid 2px #f1814b;
+			}
+		}
+	}
+}

@@ -1,4 +1,43 @@
+@import 'common';
 
-html {
-    background: #ffffff;
+section.phrase-player {
+
+	.token.dragging {
+		transform:translateX(-9999px);
+	}
+
+	.token.is-left {
+		border-right: solid 2px $colorAccent;
+	}
+
+	.token.is-right {
+		border-left: solid 2px $colorAccent;
+	}
+
+	.token-target {
+		width: calc(100% - 20px);
+		min-height: 20px;
+		margin: 10px;
+		padding: 40px 0;
+
+		color: #cacaca;
+		text-align: center;
+		vertical-align: middle;
+		border: dotted 1px #cacaca;
+	}
+
+	.token-drawer {
+		display: block;
+		position: relative;
+		left: -15px;
+		width: 100%;
+
+		padding: 15px;
+
+		background: #cacaca;
+
+		&.show {
+			display: block;
+		}
+	}
 }
