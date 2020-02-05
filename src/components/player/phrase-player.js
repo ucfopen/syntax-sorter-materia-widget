@@ -47,10 +47,12 @@ export default class PhrasePlayer extends React.Component {
 		let dropTokenName = event.dataTransfer.getData("tokenName")
 		let dropTokenType = event.dataTransfer.getData("tokenType")
 		let dropTokenPhraseIndex = event.dataTransfer.getData("tokenPhraseIndex")
+		let dropTokenStatus = event.dataTransfer.getData("tokenStatus")
 
-		let index = this.props.phraseList[this.props.currentIndex].sorted.length
+		let index = 0
 
 		for (let i = 0; i<this.props.phraseList[this.props.currentIndex].sorted.length; i++) {
+
 			if (this.props.phraseList[this.props.currentIndex].sorted[i].arrangement == "left") {
 				index = i + 1
 			}
@@ -59,11 +61,17 @@ export default class PhrasePlayer extends React.Component {
 			}
 		}
 
-		console.log("drop index is " + index)
-
 		let token = {legend: dropTokenType, value: dropTokenName, phraseIndex: dropTokenPhraseIndex}
 
-		this.props.manageTokenArrangement(this.props.currentIndex, index, "add", token)
+		switch (dropTokenStatus) {
+			case 'sorted':
+				this.props.manageTokenArrangement(this.props.currentIndex, index, "rearrange", token)
+				break
+			case 'unsorted':
+			default:
+				this.props.manageTokenArrangement(this.props.currentIndex, index, "add", token)
+				break
+		}
 
 		this.props.manageAdjacentTokenDisplay(null, null)
 	}
@@ -74,7 +82,6 @@ export default class PhrasePlayer extends React.Component {
 		if ( !this.props.phraseList[this.props.currentIndex]) return []
 
 		for (let i = 0; i < this.props.phraseList[this.props.currentIndex].sorted.length; i++) {
-			// console.log(this.props.phraseList[this.props.currentIndex].sorted)
 			tokens.push(<Token
 							key={i}
 							index={i}
@@ -88,8 +95,6 @@ export default class PhrasePlayer extends React.Component {
 						</Token>)
 		}
 
-		// return tokens
-		// this.setState({renderedTokens: tokens})
 		return tokens
 	}
 
@@ -105,7 +110,7 @@ export default class PhrasePlayer extends React.Component {
 				<TokenDrawer
 					phraseList={this.props.phraseList}
 					currentIndex={this.props.currentIndex}
-					manageTokenReport={this.manageTokenReport}
+					manageTokenReport={this.props.manageTokenReport}
 					legend={this.props.legend}></TokenDrawer>
 
 			</section>

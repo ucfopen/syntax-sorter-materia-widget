@@ -33,6 +33,13 @@ export default class Token extends React.Component {
 		event.dataTransfer.setData("tokenName",this.props.value)
 		event.dataTransfer.setData("tokenType",this.props.type)
 		event.dataTransfer.setData("tokenPhraseIndex",this.props.index)
+		event.dataTransfer.setData("tokenStatus",this.props.status)
+		
+		this.props.report({
+			type: 'token-dragging',
+			status: this.props.status,
+			index: this.props.index
+		})
 
 		setTimeout(() => {
 			this.setState({dragging: true})

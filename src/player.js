@@ -49,24 +49,52 @@ class PlayerApp extends React.Component {
 		let phraseIndex = token.phraseIndex
 		delete token.phraseIndex
 
-		this.setState((state,props) => {
-			const list = state.phraseList.slice()
-			list[state.currentIndex].sorted.splice(index, 0,
-				{
-					legend: token.legend,
-					value: token.value,
-					status: "sorted",
-					position: {},
-					arrangement: null
-				})
-			return {phraseList: list}
-		})
+		switch (action) {
+			case 'rearrange':
+				this.setState((state,props) => {
+					const list = state.phraseList.slice()
 
-		this.setState((state,props) => {
-			const list = state.phraseList.slice()
-			list[state.currentIndex].phrase[phraseIndex].status = "relocated"
-			return {phraseList: list}
-		})
+					if (phraseIndex < index) {
+						index--
+					}
+
+					list[state.currentIndex].sorted.splice(phraseIndex, 1)
+
+					list[state.currentIndex].sorted.splice(index, 0,
+						{
+							legend: token.legend,
+							value: token.value,
+							status: "sorted",
+							position: {},
+							arrangement: null
+						})
+					return {phraseList: list}
+				})
+				break
+
+			case 'add':
+			default:
+				this.setState((state,props) => {
+					const list = state.phraseList.slice()
+					list[state.currentIndex].sorted.splice(index, 0,
+						{
+							legend: token.legend,
+							value: token.value,
+							status: "sorted",
+							position: {},
+							arrangement: null
+						})
+					return {phraseList: list}
+				})
+		
+				this.setState((state,props) => {
+					const list = state.phraseList.slice()
+					list[state.currentIndex].phrase[phraseIndex].status = "relocated"
+					return {phraseList: list}
+				})
+				break
+		}
+		
 	}
 
 	manageAdjacentTokenDisplay(left, right) {
@@ -74,6 +102,9 @@ class PlayerApp extends React.Component {
 		this.setState((state, props) => {
 			let list = state.phraseList.slice()
 			for (let i=0; i < list[this.state.currentIndex].sorted.length; i++) {
+
+				if (list[this.state.currentIndex].sorted[i].status == 'dragging') continue
+
 				if (left && i == left.index) {
 					list[this.state.currentIndex].sorted[i].arrangement = "left"
 				}
@@ -87,16 +118,32 @@ class PlayerApp extends React.Component {
 	}
 
 	manageTokenReport(report) {
-		if (report.type == "token-sorted") {
-			this.setState((state, props) => {
-				let list = state.phraseList.slice()
-				// list[state.currentIndex].sorted[report.index].status = "done-sorted"
-				list[state.currentIndex].sorted[report.index].position = {
-					x: report.x,
-					width: report.width
-				}
-				return {phraseList: list}
-			})
+
+		switch (report.type) {
+			case 'token-sorted':
+				this.setState((state, props) => {
+					let list = state.phraseList.slice()
+					list[state.currentIndex].sorted[report.index].position = {
+						x: report.x,
+						width: report.width
+					}
+					return {phraseList: list}
+				})
+				break
+			case 'token-dragging':
+				this.setState((state, props) => {
+					let list = state.phraseList.slice()
+					if (report.status == 'unsorted') {
+						list[state.currentIndex].phrase[report.index].status = 'dragging'
+					}
+					else {
+						list[state.currentIndex].sorted[report.index].status = 'dragging'
+					}
+					return {phraseList: list}
+				})
+				break
+			default: 
+				return false
 		}
 	}
 
