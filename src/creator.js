@@ -12,10 +12,19 @@ class CreatorApp extends React.Component {
 	constructor(props) {
 		super(props);
 
+		this.state = {
+			qset: props.qset,
+			title: props.title,
+			currentQuestionIndex: 0,
+			showLegend: false,
+			selectedTokenIndex: -1
+		}
+
 		this.onSaveClicked = this.onSaveClicked.bind(this)
 		this.selectQuestion = this.selectQuestion.bind(this)
 		this.handleChangeQuestion = this.handleChangeQuestion.bind(this)
 		this.handleAddNewQuestion = this.handleAddNewQuestion.bind(this)
+		this.handleDeleteQuestion = this.handleDeleteQuestion.bind(this)
 		this.handleInputToToken = this.handleInputToToken.bind(this)
 		this.handleTokenToInput = this.handleTokenToInput.bind(this)
 		this.handleRequestTokenSelection = this.handleRequestTokenSelection.bind(this)
@@ -26,19 +35,14 @@ class CreatorApp extends React.Component {
 		this.handleToggleShowLegend = this.handleToggleShowLegend.bind(this)
 		this.handleTokenDisplayPref = this.handleTokenDisplayPref.bind(this)
 
-		this.state = {
-			qset: props.qset,
-			title: props.title,
-			currentQuestionIndex: 0,
-			showLegend: false,
-			selectedTokenIndex: -1
-		}
+		
 
 		this.legendColors = ['#00FF00', '#0000FF', '#ffd900', '#6200ff', '#00fff2', '#ff0080']
 		this.colorCount = 0
 	}
 
 	onSaveClicked() {
+		console.log(this.state.qset)
 		Materia.CreatorCore.save(this.state.title, this.state.qset, 1)
 	}
 
@@ -55,22 +59,44 @@ class CreatorApp extends React.Component {
 	}
 
 	handleAddNewQuestion() {
-		this.setState(Object.assign(this.state.qset.items, [
-			...this.state.qset.items,
-			{
-				questions: [{
-					text: ''
-				}],
-				answers: [{
-					text: '',
-					options: {
-						phrase: []
-					}
-				}]
-			}
-		]))
 
-		this.selectQuestion(this.state.qset.items.length-1)
+		this.setState((state, props) => {
+			let qset = state.qset
+			qset.items = [
+				...qset.items,
+				{
+					questions: [{
+						text: ''
+					}],
+					answers: [{
+						text: '',
+						options: {
+							phrase: []
+						}
+					}],
+					options: {
+						displayPref: 'word'
+					}
+				}
+			]
+			return {qset: qset}
+		})
+
+		this.selectQuestion(this.state.qset.items.length)
+	}
+
+	handleDeleteQuestion() {
+		// console.log(index)
+		const index = this.state.currentQuestionIndex
+
+		this.setState((state,props) => {
+			let qset = state.qset
+			qset.items.splice(index,1)
+			return {
+				qset: qset,
+				currentQuestionIndex: index > 0 ? index - 1 : 0
+			}
+		})
 	}
 
 	handleInputToToken(input) {
@@ -184,6 +210,7 @@ class CreatorApp extends React.Component {
 							Part of Speech
 						</span>
 					</div>
+					<button className="card delete-question" onClick={this.handleDeleteQuestion} disabled={this.state.qset.items.length < 2}>Delete Question</button>
 				</section>
 				<Legend
 					items={this.state.qset.options.legend}
@@ -295,7 +322,7 @@ materiaCallbacks.initNewWidget = (instance) => {
 
 materiaCallbacks.initExistingWidget = (title, instance, _qset, version, newWidget = false) => {
 	creatorInstance = ReactDOM.render(
-		<CreatorApp />,
+		<CreatorApp title={title} qset={_qset} />,
 		document.getElementById(`root`)
 	)
 }
@@ -303,5 +330,7 @@ materiaCallbacks.initExistingWidget = (title, instance, _qset, version, newWidge
 materiaCallbacks.onSaveClicked = () => {
 	creatorInstance.onSaveClicked();
 };
+
+materiaCallbacks.onSaveComplete = () => true
 
 Materia.CreatorCore.start(materiaCallbacks);

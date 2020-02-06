@@ -162,6 +162,22 @@
 			}
 		}
 	}
+
+	.delete-question {
+		width: 100%;
+		text-align: left;
+		color: #850000;
+		font-size: 1em;
+		font-weight: 700;
+		background: #cccccc;
+
+		cursor: pointer;
+
+		&:hover {
+			color: #fff;
+			background: #850000;
+		}
+	}
 }
 
 .legend {
@@ -268,4 +284,5 @@
 			font-size: 1.1em;
 		}
 	}
+
 }

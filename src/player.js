@@ -18,6 +18,7 @@ class PlayerApp extends React.Component {
 		this.manageTokenReport = this.manageTokenReport.bind(this)
 		this.manageAdjacentTokenDisplay = this.manageAdjacentTokenDisplay.bind(this)
 		this.handleSubmit = this.handleSubmit.bind(this)
+		this.convertSortedToString = this.convertSortedToString.bind(this)
 	}
 
 	componentDidMount() {
@@ -165,9 +166,17 @@ class PlayerApp extends React.Component {
 		}
 	}
 
+	convertSortedToString(sorted) {
+		let string = ''
+		for (let i=0;i<sorted.length;i++) {
+			string += sorted[i].value + ','
+		}
+		return string.substring(0,string.length-1)
+	}
+
 	handleSubmit() {
 		for (let i=0; i<this.state.phraseList.length; i++) {
-			Materia.Score.submitQuestionForScoring(this.state.phraseList[i].qsetId,this.state.phraseList[i].sorted.toString())
+			Materia.Score.submitQuestionForScoring(this.state.phraseList[i].qsetId,this.convertSortedToString(this.state.phraseList[i].sorted))
 		}
 		Materia.Engine.end(true)
 	}
@@ -297,7 +306,7 @@ export default PlayerApp;
 Materia.Engine.start({
 	start: (instance, qset) => {
 		ReactDOM.render(
-			<PlayerApp />,
+			<PlayerApp title={instance.name} qset={qset}/>,
 			document.getElementById(`root`)
 		)
 	}
