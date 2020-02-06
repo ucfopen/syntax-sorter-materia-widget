@@ -54,8 +54,6 @@ export default class Token extends React.Component {
 
 	handleDragEnd(event) {
 
-		// console.log(event.clientX)
-
 		this.props.report({
 			type: 'token-drag-complete',
 			origin: this.state.origin,

@@ -17,12 +17,14 @@ class PlayerApp extends React.Component {
 		this.manageTokenArrangement = this.manageTokenArrangement.bind(this)
 		this.manageTokenReport = this.manageTokenReport.bind(this)
 		this.manageAdjacentTokenDisplay = this.manageAdjacentTokenDisplay.bind(this)
+		this.handleSubmit = this.handleSubmit.bind(this)
 	}
 
 	componentDidMount() {
 		let list = []
 		for (let i = 0; i< this.state.qset.items.length; i++) {
 			list.push({
+				qsetId: this.state.qset.items[i].id,
 				index: i,
 				phrase: this.state.qset.items[i].answers[0].options.phrase.slice(),
 				sorted: [],
@@ -163,10 +165,20 @@ class PlayerApp extends React.Component {
 		}
 	}
 
+	handleSubmit() {
+		for (let i=0; i<this.state.phraseList.length; i++) {
+			Materia.Score.submitQuestionForScoring(this.state.phraseList[i].qsetId,this.state.phraseList[i].sorted.toString())
+		}
+		Materia.Engine.end(true)
+	}
+
 	render() {
 		return(
 			<div className="player-container">
-				<header className="player-header">{this.state.title}</header>
+				<header className="player-header">
+					{this.state.title}
+					<button className="submit" onClick={this.handleSubmit}>Submit</button>
+				</header>
 			
 				<QuestionSelect 
 					currentIndex={this.state.currentIndex}
