@@ -3,6 +3,104 @@
 	"qset": {
 		"version": 1,
 		"data": {
+			"items": [{
+				"materiaType": "question",
+				"id": null,
+				"type": "language-widget",
+				"questions": [{"text":"Question 1"}],
+				"answers": [{
+					"id": null,
+					"text":"J'aime les chats noirs",
+					"options": {
+						"phrase": [
+							{
+								"value": "J'",
+								"legend": "pronoun"
+							},
+							{
+								"value": "aime",
+								"legend": "verb"
+							},
+							{
+								"value": "les",
+								"legend": "article"
+							},
+							{
+								"value": "chats",
+								"legend": "noun"
+							},
+							{
+								"value": "noirs",
+								"legend": "adjective"
+							}
+						]
+					}
+				}],
+				"options": {
+					"displayPref": "word"
+				}
+			},
+			{
+				"materiaType": "question",
+				"id": null,
+				"type": "language-widget",
+				"questions": [{"text":"Question 2"}],
+				"answers": [{
+					"id": null,
+					"text":"bibliothèque",
+					"options": {
+						"phrase": [
+							{
+								"value": "où",
+								"legend": "adverb"
+							},
+							{
+								"value": "est",
+								"legend": "verb"
+							},
+							{
+								"value": "la",
+								"legend": "article"
+							},
+							{
+								"value": "bibliothèque",
+								"legend": "noun"
+							}
+						]
+					}
+				}],
+				"options": {
+					"displayPref": "part-of-speech"
+				}
+			}],
+			"options": {
+				"legend": [
+					{
+						"color": "#FF0000",
+						"name": "Noun"
+					},
+					{
+						"color": "#0000FF",
+						"name": "Adverb"
+					},
+					{
+						"color": "#ffd900",
+						"name": "Verb"
+					},
+					{
+						"color": "#6200ff",
+						"name": "Adjective"
+					},
+					{
+						"color": "#00fff2",
+						"name": "Article"
+					},
+					{
+						"color": "#ff0080",
+						"name": "Pronoun"
+					}
+				]
+			}
 		}
 	}
 }
