@@ -20,7 +20,8 @@ class Score_Modules_LanguageWidget extends Score_Module{
 		// 		// 	if ($log->text == $answer['id']) return $answer['value'];
 		// 		// }
 		// 	}
-		// }
+        // }
+        }
 
 		return 100;
 	}
