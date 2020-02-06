@@ -78,7 +78,7 @@ button {
 	margin-left: $questionSelectWidth;
 	background: $colorBGPrimary;
 
-	section.question-container, section.phrase-builder, section.phrase-player {
+	.card {
 		padding: $defaultPadding;
 		background: $colorBGSecondary;
 		margin-bottom: 15px;

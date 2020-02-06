@@ -73,7 +73,7 @@ export default class PhrasePlayer extends React.Component {
 				break
 		}
 
-		this.props.manageAdjacentTokenDisplay(null, null)
+		// this.props.manageAdjacentTokenDisplay(null, null)
 	}
 
 	renderOrderedTokens() {
@@ -88,6 +88,7 @@ export default class PhrasePlayer extends React.Component {
 							type={this.props.phraseList[this.props.currentIndex].sorted[i].legend}
 							value={this.props.phraseList[this.props.currentIndex].sorted[i].value}
 							status={this.props.phraseList[this.props.currentIndex].sorted[i].status}
+							pref={this.props.phraseList[this.props.currentIndex].displayPref}
 							arrangement={this.props.phraseList[this.props.currentIndex].sorted[i].arrangement}
 							legend={this.props.legend}
 							report={this.props.manageTokenReport}
@@ -100,7 +101,7 @@ export default class PhrasePlayer extends React.Component {
 
 	render() {
 		return(
-			<section className="phrase-player">
+			<section className="card phrase-player">
 				<div className="token-container">
 					<div className="token-target" onDragOver={this.handleTokenDragOver} onDrop={this.handleTokenDrop}>
 						{this.renderOrderedTokens()}

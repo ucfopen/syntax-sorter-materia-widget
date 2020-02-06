@@ -8,7 +8,8 @@ export default class Token extends React.Component {
 		this.tokenRef = React.createRef()
 
 		this.state = {
-			dragging: false
+			dragging: false,
+			origin: 'unsorted'
 		}
 
 		this.getLegendColor = this.getLegendColor.bind(this)
@@ -28,21 +29,23 @@ export default class Token extends React.Component {
 	}
 
 	handleDragStart(event) {
+
+		this.setState({origin: this.props.status})
 		
 		event.dataTransfer.dropEffect = "move"
 		event.dataTransfer.setData("tokenName",this.props.value)
 		event.dataTransfer.setData("tokenType",this.props.type)
 		event.dataTransfer.setData("tokenPhraseIndex",this.props.index)
 		event.dataTransfer.setData("tokenStatus",this.props.status)
+
+		setTimeout(() => {
+			this.setState({dragging: true})
+		})
 		
 		this.props.report({
 			type: 'token-dragging',
 			status: this.props.status,
 			index: this.props.index
-		})
-
-		setTimeout(() => {
-			this.setState({dragging: true})
 		})
 	}
 
@@ -51,7 +54,14 @@ export default class Token extends React.Component {
 
 	handleDragEnd(event) {
 
-		console.log(event.clientX)
+		// console.log(event.clientX)
+
+		this.props.report({
+			type: 'token-drag-complete',
+			origin: this.state.origin,
+			status: this.props.status,
+			index: this.props.index
+		})
 
 		setTimeout(() => {
 			this.setState({dragging: false})
@@ -105,7 +115,7 @@ export default class Token extends React.Component {
 				onDragStart={this.handleDragStart}
 				onDrag={this.handleDrag}
 				onDragEnd={this.handleDragEnd}>
-				{this.props.type}
+				{this.props.pref == 'word' ? this.props.value : this.props.type}
 			</div>
 		)
 	}

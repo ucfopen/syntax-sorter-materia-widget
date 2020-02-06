@@ -25,7 +25,8 @@ class PlayerApp extends React.Component {
 			list.push({
 				index: i,
 				phrase: this.state.qset.items[i].answers[0].options.phrase.slice(),
-				sorted: []
+				sorted: [],
+				displayPref: this.state.qset.items[i].options.displayPref
 			})
 
 			for (let j = 0; j< list[i].phrase.length; j++) {
@@ -130,6 +131,21 @@ class PlayerApp extends React.Component {
 					return {phraseList: list}
 				})
 				break
+			case 'token-drag-complete':
+				if (report.status == 'dragging') {
+					this.setState((state, props) => {
+						let list = state.phraseList.slice()
+						if (report.origin == 'unsorted' || report.origin == 'relocated') {
+							list[state.currentIndex].phrase[report.index].status = report.origin
+						}
+						else {
+							list[state.currentIndex].sorted[report.index].status = report.origin
+						}
+						return {phraseList: list}
+					})
+				}
+				this.manageAdjacentTokenDisplay(null, null)
+				break
 			case 'token-dragging':
 				this.setState((state, props) => {
 					let list = state.phraseList.slice()
@@ -157,7 +173,7 @@ class PlayerApp extends React.Component {
 					questions={this.state.qset.items}
 					selectQuestion={this.selectQuestion}></QuestionSelect>
 				<section className="content-container">
-					<section className="question-container">
+					<section className="card question-container">
 						<p>{this.state.qset.items[this.state.currentIndex].questions[0].text}</p>
 					</section>
 					<PhrasePlayer
@@ -203,7 +219,9 @@ PlayerApp.defaultProps = {
 					}
 				]
 			}}],
-			options: {}
+			options: {
+				displayPref: 'word'
+			}
 		},
 		{
 			questions: [{text:'Question 2'}],
@@ -227,7 +245,9 @@ PlayerApp.defaultProps = {
 					}
 				]
 			}}],
-			options: {}
+			options: {
+				displayPref: 'part-of-speech'
+			}
 		}],
 		options: {
 			legend: [

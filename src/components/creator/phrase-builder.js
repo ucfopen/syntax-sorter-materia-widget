@@ -89,7 +89,7 @@ export default class PhraseBuilder extends React.Component {
 
 	render() {
 		return(
-			<section className="phrase-builder">
+			<section className="card phrase-builder">
 				<header>Phrase to Complete</header>
 				<div className="token-container">
 					{this.renderTokens()}

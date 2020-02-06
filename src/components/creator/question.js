@@ -14,7 +14,7 @@ export default class Question extends React.Component {
 	
 	render() {
 		return(
-			<section className="question-container">
+			<section className="card question-container">
 				<header>Question Text</header>
 				<input
 					value={this.props.value}

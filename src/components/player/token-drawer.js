@@ -24,6 +24,7 @@ export default class TokenDrawer extends React.Component {
 					index={i}
 					type={phrase[i].legend}
 					value={phrase[i].value}
+					pref={this.props.phraseList[this.props.currentIndex].displayPref}
 					legend={this.props.legend}
 					status={phrase[i].status}
 					report={this.props.manageTokenReport}>

@@ -24,6 +24,7 @@ class CreatorApp extends React.Component {
 		this.handleEditLegendItem = this.handleEditLegendItem.bind(this)
 		this.handleRemoveLegendItem = this.handleRemoveLegendItem.bind(this)
 		this.handleToggleShowLegend = this.handleToggleShowLegend.bind(this)
+		this.handleTokenDisplayPref = this.handleTokenDisplayPref.bind(this)
 
 		this.state = {
 			qset: props.qset,
@@ -46,7 +47,11 @@ class CreatorApp extends React.Component {
 	}
 
 	handleChangeQuestion(value) {
-		this.setState(Object.assign(this.state.qset.items[this.state.currentQuestionIndex].questions[0], {text: value}))
+		this.setState((state, props) => {
+			let qset = state.qset
+			qset.items[this.state.currentQuestionIndex].questions[0].text = value
+			return {qset: qset}
+		})
 	}
 
 	handleAddNewQuestion() {
@@ -127,6 +132,15 @@ class CreatorApp extends React.Component {
 	handleToggleShowLegend() {
 		this.setState({showLegend: !this.state.showLegend})
 	}
+	
+	handleTokenDisplayPref(event) {
+		const pref = event.target.value
+		this.setState((state,props) => {
+			let qset = state.qset
+			qset.items[this.state.currentQuestionIndex].options.displayPref = pref
+			return  {qset: qset}
+		})
+	}
 
 	render() {
 		return(
@@ -157,6 +171,19 @@ class CreatorApp extends React.Component {
 						handleRequestTokenSelection={this.handleRequestTokenSelection}
 						handleTokenSelection={this.handleTokenSelection}
 						legend={this.state.qset.options.legend}></PhraseBuilder>
+					<div className="card additional-options">
+						<header>How should each token be displayed to students?</header>
+						<span className="pref-select">
+							<input type="radio" name="token-display-select" value={"word"} onChange={this.handleTokenDisplayPref} checked={this.state.qset.items[this.state.currentQuestionIndex].options.displayPref == 'word'}/>
+							<span className={`radio-overlay ${this.state.qset.items[this.state.currentQuestionIndex].options.displayPref == 'word' ? 'selected' : ''}`}></span>
+							Word
+						</span>
+						<span className="pref-select">
+							<input type="radio" name="token-display-select" value={"part-of-speech"} onChange={this.handleTokenDisplayPref} checked={this.state.qset.items[this.state.currentQuestionIndex].options.displayPref == 'part-of-speech'}/>
+							<span className={`radio-overlay ${this.state.qset.items[this.state.currentQuestionIndex].options.displayPref == 'part-of-speech' ? 'selected' : ''}`}></span>
+							Part of Speech
+						</span>
+					</div>
 				</section>
 				<Legend
 					items={this.state.qset.options.legend}
@@ -199,7 +226,9 @@ CreatorApp.defaultProps = {
 					}
 				]
 			}}],
-			options: {}
+			options: {
+				displayPref: 'word'
+			}
 		},
 		{
 			questions: [{text:'Question 2'}],
@@ -223,7 +252,9 @@ CreatorApp.defaultProps = {
 					}
 				]
 			}}],
-			options: {}
+			options: {
+				displayPref: 'word'
+			}
 		}],
 		options: {
 			legend: [
