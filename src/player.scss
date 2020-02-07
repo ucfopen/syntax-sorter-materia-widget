@@ -54,4 +54,25 @@
 			}
 		}
 	}
+
+	.legend {
+
+		background: $legendBG;
+
+		font-size: 0.8em;
+
+		.legend-item {
+			display: inline-block;
+			padding: 5px 10px;
+
+			.legend-color {
+				position: relative;
+				display: inline-block;
+				top: 4px;
+				width: 18px;
+				height: 18px;
+				margin-right: 6px;
+			}
+		}
+	}
 }

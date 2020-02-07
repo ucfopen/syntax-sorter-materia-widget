@@ -13,21 +13,24 @@ class PlayerApp extends React.Component {
 			phraseList: []
 		}
 
+		this.shuffle = this.shuffle.bind(this)
 		this.selectQuestion = this.selectQuestion.bind(this)
 		this.manageTokenArrangement = this.manageTokenArrangement.bind(this)
 		this.manageTokenReport = this.manageTokenReport.bind(this)
 		this.manageAdjacentTokenDisplay = this.manageAdjacentTokenDisplay.bind(this)
 		this.handleSubmit = this.handleSubmit.bind(this)
 		this.convertSortedToString = this.convertSortedToString.bind(this)
+		this.renderLegendItems = this.renderLegendItems.bind(this)
 	}
 
 	componentDidMount() {
 		let list = []
+
 		for (let i = 0; i< this.state.qset.items.length; i++) {
 			list.push({
 				qsetId: this.state.qset.items[i].id,
 				index: i,
-				phrase: this.state.qset.items[i].answers[0].options.phrase.slice(),
+				phrase: this.shuffle(this.state.qset.items[i].answers[0].options.phrase.slice()),
 				sorted: [],
 				displayPref: this.state.qset.items[i].options.displayPref
 			})
@@ -38,6 +41,14 @@ class PlayerApp extends React.Component {
 		}
 
 		this.setState({phraseList: list})
+	}
+
+	shuffle(array) {
+		for (let i = array.length - 1; i > 0; i--) {
+			const j = Math.floor(Math.random() * (i + 1));
+			[array[i], array[j]] = [array[j], array[i]];
+		}
+		return array
 	}
 
 	selectQuestion(index) {
@@ -181,6 +192,14 @@ class PlayerApp extends React.Component {
 		Materia.Engine.end(true)
 	}
 
+	renderLegendItems() {
+		let legend = []
+		for (let i=0; i<this.state.qset.options.legend.length; i++) {
+			legend.push(<span key={i} className="legend-item"><span className="legend-color" style={{background: this.state.qset.options.legend[i].color}}></span>{this.state.qset.options.legend[i].name}</span>)
+		}
+		return legend
+	}
+
 	render() {
 		return(
 			<div className="player-container">
@@ -204,6 +223,10 @@ class PlayerApp extends React.Component {
 					manageTokenArrangement={this.manageTokenArrangement}
 					manageAdjacentTokenDisplay={this.manageAdjacentTokenDisplay}
 					manageTokenReport={this.manageTokenReport}></PhrasePlayer>
+					<section className="card legend" style={{opacity: this.state.phraseList[this.state.currentIndex] && this.state.phraseList[this.state.currentIndex].displayPref == 'word' ? 1 : 0}}>
+						<header>Color Legend</header>
+						{this.renderLegendItems()}
+					</section>
 				</section>
 				
 			</div>

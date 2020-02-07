@@ -68,6 +68,11 @@ button {
 			background: $colorAccentHover;
 		}
 
+		&.selected {
+			color: #fff;
+			background: $colorAccent;
+		}
+
 	}
 }
 

@@ -3,6 +3,19 @@
 
 .creator-header {
 
+	input {
+		width: 400px;
+		background: none;
+		border: none;
+		border-bottom: solid 2px #fff;
+		color: #fff;
+
+		font-size: 1em;
+
+		outline: none;
+		
+	}
+
 	.debug {
 		position: absolute;
 		width: 120px;
@@ -164,18 +177,22 @@
 	}
 
 	.delete-question {
-		width: 100%;
+		width: 200px;
 		text-align: left;
-		color: #850000;
+		// color: #850000;
+		color: #fff;
 		font-size: 1em;
 		font-weight: 700;
-		background: #cccccc;
+		opacity: 0.5;
+		background: #850000;
+		// background: #cccccc;
 
 		cursor: pointer;
 
 		&:hover {
-			color: #fff;
-			background: #850000;
+			// color: #fff;
+			// background: #850000;
+			opacity: 1.0;
 		}
 	}
 }

@@ -21,6 +21,7 @@ class CreatorApp extends React.Component {
 		}
 
 		this.onSaveClicked = this.onSaveClicked.bind(this)
+		this.handleTitleUpdate = this.handleTitleUpdate.bind(this)
 		this.selectQuestion = this.selectQuestion.bind(this)
 		this.handleChangeQuestion = this.handleChangeQuestion.bind(this)
 		this.handleAddNewQuestion = this.handleAddNewQuestion.bind(this)
@@ -44,6 +45,10 @@ class CreatorApp extends React.Component {
 	onSaveClicked() {
 		console.log(this.state.qset)
 		Materia.CreatorCore.save(this.state.title, this.state.qset, 1)
+	}
+
+	handleTitleUpdate(event) {
+		this.setState({title: event.target.value})
 	}
 
 	selectQuestion(index) {
@@ -172,9 +177,8 @@ class CreatorApp extends React.Component {
 		return(
 			<div className="creator-container">
 				<header className="creator-header">
-					{this.state.title}
+					<input value={this.state.title} onChange={this.handleTitleUpdate} />
 					<button className="toggleLegend" onClick={this.handleToggleShowLegend}>Legend</button>	
-					<button className="debug" onClick={() => console.log(this.state.qset)}>Dump QSet</button>
 				</header>
 				<QuestionSelect
 					currentIndex={this.state.currentQuestionIndex}

@@ -27,7 +27,7 @@ export default class QuestionSelect extends React.Component {
 
 			let bindSelectQuestion = this.handleSelectQuestion.bind(this,i)
 
-			list.push(<button className="select-btn" key={i} onClick={bindSelectQuestion}>{question.index}</button>)
+			list.push(<button className={`select-btn ${this.props.currentIndex == i ? 'selected' : ''}`} key={i} onClick={bindSelectQuestion}>{question.index}</button>)
 
 		}
 		return list
