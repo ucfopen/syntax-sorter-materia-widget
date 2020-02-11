@@ -9,19 +9,17 @@ export default class PhraseBuilder extends React.Component {
 		this.convertInputToToken = this.convertInputToToken.bind(this)
 		this.convertTokenToInput = this.convertTokenToInput.bind(this)
 		this.tokenTypeSelection = this.tokenTypeSelection.bind(this)
-		// this.requestTokenSelectionVisible = this.requestTokenSelectionVisible.bind(this)
 		this.renderLegendForSelection = this.renderLegendForSelection.bind(this)
 	}
 
 	handleTokenInput(event) {
-		console.log(event.which)
 		switch (event.which) {
 			case 8: // backspace
 				// convert prior token back to input
 				if (event.target.value.length == 0) {
 					event.preventDefault()
 					let text = this.convertTokenToInput(this.props.phrase.length - 1)
-					event.target.value = text
+					event.target.value = decodeURIComponent(text)
 				}
 				break;
 			case 13: // enter
@@ -32,10 +30,6 @@ export default class PhraseBuilder extends React.Component {
 				return;
 		}
 	}
-
-	// requestTokenSelectionVisible(index) {
-	// 	this.props.handleRequestTokenSelection(index)
-	// }
 
 	convertPhraseToTokens(phrase) {
 		const tokens = []
@@ -83,7 +77,6 @@ export default class PhraseBuilder extends React.Component {
 	}
 	
 	tokenTypeSelection(event) {
-		console.log(event.target.value)
 		this.props.handleTokenSelection(event.target.value)
 	}
 

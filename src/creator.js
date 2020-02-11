@@ -12,14 +12,6 @@ class CreatorApp extends React.Component {
 	constructor(props) {
 		super(props);
 
-		this.state = {
-			qset: props.qset,
-			title: props.title,
-			currentQuestionIndex: 0,
-			showLegend: false,
-			selectedTokenIndex: -1
-		}
-
 		this.onSaveClicked = this.onSaveClicked.bind(this)
 		this.handleTitleUpdate = this.handleTitleUpdate.bind(this)
 		this.selectQuestion = this.selectQuestion.bind(this)
@@ -36,15 +28,47 @@ class CreatorApp extends React.Component {
 		this.handleToggleShowLegend = this.handleToggleShowLegend.bind(this)
 		this.handleTokenDisplayPref = this.handleTokenDisplayPref.bind(this)
 
-		
-
-		this.legendColors = ['#00FF00', '#0000FF', '#ffd900', '#6200ff', '#00fff2', '#ff0080']
+		this.legendColors = ['#00FF00', '#0000FF', '#ffd900', '#6200ff', '#00fff2', '#ff0080'] // TODO: color picker, not hard-coded values
 		this.colorCount = 0
+
+		let qset = props.qset
+
+		// if this is an existing qset - concat each question's phrase into the answer text string used for scoring
+		if (this.props.performSetup) {
+			for (let i = 0; i < qset.items.length; i++) {
+				qset.items[i].answers[0].text = this.concatPhrase(qset.items[i].answers[0].options.phrase)
+			}
+		}
+
+		this.state = {
+			qset: qset,
+			title: props.title,
+			currentQuestionIndex: 0,
+			showLegend: false,
+			selectedTokenIndex: -1
+		}
+	}
+
+	shipQset(rawQset) {
+
+		let qset = rawQset
+
+		for (let i = 0; i < this.state.qset.length; i++) {
+
+			qset.items[i].id = null
+			qset.items[i].materiaType = "question"
+			qset.items[i].type = "language-widget"
+
+			// concat each question's phrase into the answer text string used for scoring
+			qset.items[i].answers[0].text = this.concatPhrase(qset.items[i].answers[0].options.phrase)
+		}
+
+		return qset
 	}
 
 	onSaveClicked() {
 		console.log(this.state.qset)
-		Materia.CreatorCore.save(this.state.title, this.state.qset, 1)
+		Materia.CreatorCore.save(this.state.title, shipQset(this.state.qset), 1)
 	}
 
 	handleTitleUpdate(event) {
@@ -91,7 +115,6 @@ class CreatorApp extends React.Component {
 	}
 
 	handleDeleteQuestion() {
-		// console.log(index)
 		const index = this.state.currentQuestionIndex
 
 		this.setState((state,props) => {
@@ -104,19 +127,45 @@ class CreatorApp extends React.Component {
 		})
 	}
 
+	concatPhrase(phrase) {
+		let str = ''
+		for (let i=0; i<phrase.length; i++) {
+			str += phrase[i].value + ','
+		}
+		return str.substring(0,str.length-1)
+	}
+
 	handleInputToToken(input) {
-		this.setState(Object.assign(this.state.qset.items[this.state.currentQuestionIndex].answers[0].options.phrase, [
-			...this.state.qset.items[this.state.currentQuestionIndex].answers[0].options.phrase,
-			{
-				value: input,
-				legend: null
-			}]))
+
+		this.setState((state, props) => {
+			let qset = state.qset
+			qset.items[this.state.currentQuestionIndex].answers[0].options.phrase = [
+				...qset.items[this.state.currentQuestionIndex].answers[0].options.phrase,
+				{
+					value: encodeURIComponent(input),
+					legend: null
+				}
+			]
+			
+			for (let i=0;i<qset.items[this.state.currentQuestionIndex].answers[0].options.phrase.length;i++){
+				qset.items[this.state.currentQuestionIndex].answers[0].text = this.concatPhrase(qset.items[this.state.currentQuestionIndex].answers[0].options.phrase)
+			}
+
+			return {qset: qset, selectedTokenIndex: -1}
+		})
 	}
 
 	handleTokenToInput(index) {
+
 		let phraseCopy = this.state.qset.items[this.state.currentQuestionIndex].answers[0].options.phrase.slice()
 		let spliced = phraseCopy.splice(index, 1)[0]
-		this.setState(Object.assign(this.state.qset.items[this.state.currentQuestionIndex].answers[0].options, {phrase: phraseCopy}))
+
+		this.setState((state, props) => {
+			let qset = state.qset
+			qset.items[this.state.currentQuestionIndex].answers[0].options.phrase = phraseCopy
+
+			return {qset: qset, selectedTokenIndex: -1}
+		})
 		return spliced.value
 	}
 
@@ -128,12 +177,14 @@ class CreatorApp extends React.Component {
 
 	handleTokenSelection(selection) {
 		let token = this.state.qset.items[this.state.currentQuestionIndex].answers[0].options.phrase[this.state.selectedTokenIndex]
-		this.setState(Object.assign(this.state.qset.items[this.state.currentQuestionIndex].answers[0].options.phrase[this.state.selectedTokenIndex], {
-			value: token.value,
-			legend: selection
-		}))
-
-		this.setState({selectedTokenIndex: -1})
+		this.setState((state,props) => {
+			let qset = state.qset
+			qset.items[state.currentQuestionIndex].answers[0].options.phrase[state.selectedTokenIndex] = {
+				value: token.value,
+				legend: selection
+			}
+			return {qset: qset, selectedTokenIndex: -1}
+		})
 	}
 
 	handleAddLegendItem() {
@@ -178,7 +229,7 @@ class CreatorApp extends React.Component {
 			<div className="creator-container">
 				<header className="creator-header">
 					<input value={this.state.title} onChange={this.handleTitleUpdate} />
-					<button className="toggleLegend" onClick={this.handleToggleShowLegend}>Legend</button>	
+					<button className="toggleLegend" onClick={this.handleToggleShowLegend}>Legend</button>
 				</header>
 				<QuestionSelect
 					currentIndex={this.state.currentQuestionIndex}
@@ -232,56 +283,9 @@ CreatorApp.defaultProps = {
 	title: `New Foreign Language Widget`,
 	qset: {
 		items: [{
-			questions: [{text:'Question 1'}],
-			answers: [{text:'J\'aime les chats noirs', options: {
-				phrase: [
-					{
-						value: 'J\'',
-						legend: 'pronoun'
-					},
-					{
-						value: 'aime',
-						legend: 'verb'
-					},
-					{
-						value: 'les',
-						legend: 'article'
-					},
-					{
-						value: 'chats',
-						legend: 'noun'
-					},
-					{
-						value: 'noirs',
-						legend: 'adjective'
-					}
-				]
-			}}],
-			options: {
-				displayPref: 'word'
-			}
-		},
-		{
-			questions: [{text:'Question 2'}],
-			answers: [{text:'bibliothèque', options: {
-				phrase: [
-					{
-						value: 'où',
-						legend: 'adverb'
-					},
-					{
-						value: 'est',
-						legend: 'verb'
-					},
-					{
-						value: 'la',
-						legend: 'article'
-					},
-					{
-						value: 'bibliothèque',
-						legend: 'noun'
-					}
-				]
+			questions: [{text:''}],
+			answers: [{text:'', options: {
+				phrase: []
 			}}],
 			options: {
 				displayPref: 'word'
@@ -291,27 +295,7 @@ CreatorApp.defaultProps = {
 			legend: [
 				{
 					color: '#FF0000',
-					name: 'Noun'
-				},
-				{
-					color: '#0000FF',
-					name: 'Adverb'
-				},
-				{
-					color: '#ffd900',
-					name: 'Verb'
-				},
-				{
-					color: '#6200ff',
-					name: 'Adjective'
-				},
-				{
-					color: '#00fff2',
-					name: 'Article'
-				},
-				{
-					color: '#ff0080',
-					name: 'Pronoun'
+					name: 'Part of Speech'
 				}
 			]
 		}
@@ -326,7 +310,7 @@ materiaCallbacks.initNewWidget = (instance) => {
 
 materiaCallbacks.initExistingWidget = (title, instance, _qset, version, newWidget = false) => {
 	creatorInstance = ReactDOM.render(
-		<CreatorApp title={title} qset={_qset} />,
+		<CreatorApp title={title} qset={_qset} performSetup={ !newWidget } />,
 		document.getElementById(`root`)
 	)
 }

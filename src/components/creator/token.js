@@ -26,7 +26,7 @@ export default class Token extends React.Component {
 		return (
 			<span className={`token ${!this.props.type ? "unassigned" : ""} ${this.props.selected ? "selected" : ""}`}
 				style={{background: this.getLegendColor(this.props.type)}}
-				onClick={this.openTokenSelection}>{this.props.value}</span>
+				onClick={this.openTokenSelection}>{decodeURIComponent(this.props.value)}</span>
 		)
 	}
 }

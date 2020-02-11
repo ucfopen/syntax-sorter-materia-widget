@@ -7,7 +7,7 @@
 				"materiaType": "question",
 				"id": null,
 				"type": "language-widget",
-				"questions": [{"text":"Question 1"}],
+				"questions": [{"text":"Arrange the following items in the correct order."}],
 				"answers": [{
 					"id": null,
 					"text":"J'aime les chats noirs",
@@ -44,7 +44,7 @@
 				"materiaType": "question",
 				"id": null,
 				"type": "language-widget",
-				"questions": [{"text":"Question 2"}],
+				"questions": [{"text":"Instead of the spoken phrase, we've replaced each word with its part of speech. Arrange them in the proper order."}],
 				"answers": [{
 					"id": null,
 					"text":"bibliothèque",
