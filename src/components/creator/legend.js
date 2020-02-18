@@ -1,40 +1,31 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import LegendItem from './legend-item'
+import { store } from '../../creator-store'
 
-export default class Legend extends React.Component {
-	constructor(props) {
-		super(props)
+const Legend = (props) => {
 
-		this.addLegendItem = this.addLegendItem.bind(this)
-		this.toggle = this.toggle.bind(this)
+	const global = useContext(store)
+	const dispatch = global.dispatch
+
+	const colorSelectIndex = global.state.devColorSelectIndex
+	const colors = ['#00FF00', '#0000FF', '#ffd900', '#6200ff', '#00fff2', '#ff0080'] // TODO: color picker, not hard-coded values
+	
+	let legendItems = props.legend.map((item, index) => {
+		return <LegendItem key={index} color={item.color} name={item.name} index={index} handleRemoveLegendItem={{}} handleEditLegendItem={{}}></LegendItem>
+	})
+
+	const addLegendItem = () => {
+		dispatch({type: 'add_legend_item', payload: {text: '', color: colors[colorSelectIndex]}})
 	}
 
-	renderLegendItems() {
-		const items = []
-
-		for (let i = 0; i < this.props.items.length; i++) {
-			const item = this.props.items[i]
-			items.push(<LegendItem key={i} color={item.color} name={item.name} index={i} handleRemoveLegendItem={this.props.handleRemoveLegendItem} handleEditLegendItem={this.props.handleEditLegendItem}></LegendItem>)
-		}
-		return items
-	}
-
-	addLegendItem() {
-		this.props.handleAddLegendItem()
-	}
-
-	toggle() {
-		this.props.toggleShowLegend()
-	}
-
-	render() {
-		return (
-			<section className={`legend ${this.props.showLegend ? "show" : ""}`}>
-				<header>Legend</header>
-				{this.renderLegendItems()}
-				<button className="addNew" onClick={this.addLegendItem}>+ Add Another</button>
-				<button className="doneBtn" onClick={this.toggle}>Done</button>
-			</section>
-		)
-	}
+	return (
+		<section className={`legend ${props.show ? "show" : ""}`}>
+			<header>Legend</header>
+			{legendItems}
+			<button className="addNew" onClick={addLegendItem}>+ Add Another</button>
+			<button className="doneBtn" onClick={props.toggle}>Done</button>
+		</section>
+	)	
 }
+
+export default Legend

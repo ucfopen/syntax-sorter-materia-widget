@@ -1,100 +1,85 @@
-import React from 'react';
+import React, { useContext } from 'react'
 import Token from './token'
+import { store } from '../../creator-store'
 
-export default class PhraseBuilder extends React.Component {
-	constructor(props) {
-		super(props)
+const PhraseBuilder = (props) => {
+	
+	const global = useContext(store)
+	const dispatch = global.dispatch
 
-		this.handleTokenInput = this.handleTokenInput.bind(this)
-		this.convertInputToToken = this.convertInputToToken.bind(this)
-		this.convertTokenToInput = this.convertTokenToInput.bind(this)
-		this.tokenTypeSelection = this.tokenTypeSelection.bind(this)
-		this.renderLegendForSelection = this.renderLegendForSelection.bind(this)
-	}
-
-	handleTokenInput(event) {
+	const handleTokenInput = (event) => {
 		switch (event.which) {
 			case 8: // backspace
 				// convert prior token back to input
 				if (event.target.value.length == 0) {
 					event.preventDefault()
-					let text = this.convertTokenToInput(this.props.phrase.length - 1)
+					let text = convertTokenToInput(props.phrase.length - 1)
 					event.target.value = decodeURIComponent(text)
 				}
 				break;
 			case 13: // enter
 				// convert input to token
-				this.convertInputToToken(event.target.value)
+				convertInputToToken(event.target.value)
 				event.target.value = ""
 			default:
 				return;
 		}
 	}
 
-	convertPhraseToTokens(phrase) {
-		const tokens = []
-		
-		for (let i = 0; i < phrase.length; i++) {
-			tokens.push(
-				<Token
-					key={i}
-					index={i}
-					type={phrase[i].legend}
-					value={phrase[i].value}
-					legend={this.props.legend}
-					handleRequestTokenSelection={this.props.handleRequestTokenSelection}
-					handleTokenSelection={this.props.handleTokenSelection}
-					selected={this.props.selectedTokenIndex == i}>
-				</Token>)
-		}
-
-		return tokens
+	const convertTokenToInput = (index) => {
+		let text = global.state.items[global.state.currentIndex].phrase[index].value
+		dispatch({type: 'phrase_token_to_input', payload: {
+			questionIndex: global.state.currentIndex,
+			phraseIndex: index
+		}})
+		return text
 	}
 
-	convertInputToToken(input) {
-		this.props.handleInputToToken(input)
+	const convertInputToToken = (input) => {
+		dispatch({type: 'phrase_input_to_token', payload: {
+			questionIndex: global.state.currentIndex,
+			text: input
+		}})
 	}
 
-	convertTokenToInput(index) {
-		return this.props.handleTokenToInput(index)
+	const tokenTypeSelection = (event) => {
+		let selection = event.target.value
+		dispatch({type:'phrase_token_type_select', payload: {
+			questionIndex: global.state.currentIndex,
+			phraseIndex: global.state.selectedTokenIndex,
+			selection: selection
+		}})
 	}
 
-	renderTokens() {
-		return this.convertPhraseToTokens(this.props.phrase)
-	}
+	let tokenList = props.phrase.map((term, index) => {
+		return <Token key={index} index={index} type={term.legend} value={term.value}></Token>
+	})
 
-	renderLegendForSelection() {
-		const selection = []
+	let legendSelection = props.legend.map((term, index) => {
+		return(<label key={index}>
+			<input type="radio" name="token-type-selection" value={term.name} onChange={tokenTypeSelection}/>
+			<span className="color-radio" style={{background: term.color}}></span>{term.name}
+		</label>)
+	})
 
-		for (let j = 0; j < this.props.legend.length; j++) {
-			selection.push(
-				<label key={j}>
-					<input type="radio" name="token-type-selection" value={this.props.legend[j].name} onChange={this.tokenTypeSelection}/>
-					<span className="color-radio" style={{background: this.props.legend[j].color}}></span>{this.props.legend[j].name}
-				</label>)
-		}
-		return selection
-	}
-	
-	tokenTypeSelection(event) {
-		this.props.handleTokenSelection(event.target.value)
-	}
-
-	render() {
-		return(
-			<section className="card phrase-builder">
-				<header>Phrase to Complete</header>
-				<div className="token-container">
-					{this.renderTokens()}
-					<input className="token-input" onKeyDown={this.handleTokenInput} placeholder="..."></input>
-				</div>
-				<div className={`token-type-selector ${this.props.selectedTokenIndex != -1 ? "show" : ""}`}>
-					<header>What type of word is this?</header>
-					<form id="tokenTypeSelection">
-						{this.renderLegendForSelection()}
-					</form>
-				</div>
-			</section>
-		)
-	}	
+	return (
+		<section className="card phrase-builder">
+			<header>Phrase to Complete</header>
+			<div className="token-container">
+				{tokenList}
+				<input className="token-input" onKeyDown={handleTokenInput} placeholder="..."></input>
+			</div>
+			<div className={`token-type-selector ${global.state.selectedTokenIndex != -1 ? "show" : ""}`}>
+				<header>What type of word is this?</header>
+				<form id="tokenTypeSelection">
+					{legendSelection}
+					<label>
+						<input type="radio" name="token-type-selection" value={''} onChange={tokenTypeSelection} checked={global.state.selectedTokenIndex == -1}/>
+					</label>
+				</form>
+			</div>
+		</section>
+	)
 }
+
+export default PhraseBuilder

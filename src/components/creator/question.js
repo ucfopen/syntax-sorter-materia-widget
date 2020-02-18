@@ -1,26 +1,26 @@
-import React from 'react';
+import React, { useContext } from 'react'
+import { store } from '../../creator-store'
 
-export default class Question extends React.Component {
-	constructor(props) {
-		super(props);
+const Question = (props) => {
 
-		this.onQuestionUpdate = this.onQuestionUpdate.bind(this)
+	const global = useContext(store)
+	const dispatch = global.dispatch
+
+	const index = global.state.currentIndex ? global.state.currentIndex : 0
+
+	const onQuestionUpdate = (event) => {
+		dispatch({type: 'update_question_text', payload:{ text: event.target.value, index: index}})
 	}
 
-	onQuestionUpdate(event) {
-		let text = event.target.value
-		this.props.handleChangeQuestion(text)
-	}
-	
-	render() {
-		return(
-			<section className="card question-container">
-				<header>Question Text</header>
-				<input
-					value={this.props.value}
-					onChange={this.onQuestionUpdate}
-					placeholder="Add some text here describing the phrase below or providing instructions."></input>
-			</section>
-		)
-	}
+	return(
+		<section className="card question-container">
+			<header>Question Text</header>
+			<input
+				value={global.state.items[index].question}
+				onChange={onQuestionUpdate}
+				placeholder="Add some text here describing the phrase below or providing instructions."></input>
+		</section>
+	)
 }
+
+export default Question

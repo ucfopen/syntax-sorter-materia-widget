@@ -1,32 +1,28 @@
-import React from 'react'
+import React, { useContext } from 'react'
+import { store } from '../../creator-store'
 
-export default class Token extends React.Component {
-	constructor(props) {
-		super(props)
+const Token = (props) => {
 
-		this.getLegendColor = this.getLegendColor.bind(this)
-		this.openTokenSelection = this.openTokenSelection.bind(this)
-	}
+	const global = useContext(store)
+	const dispatch = global.dispatch
 
-	getLegendColor(name) {
+	const getLegendColor = (name) => {
 		if (!name) return '#ffffff'
 
-		for (const term of this.props.legend) {
-			if (term.name.toLowerCase() == name.toLowerCase()) {
-				return term.color
-			}
+		for (const term of global.state.legend) {
+			if (term.name.toLowerCase() == name.toLowerCase()) return term.color
 		}
 	}
 
-	openTokenSelection() {
-		this.props.handleRequestTokenSelection(this.props.index)
+	const toggleTokenSelection = () => {
+		dispatch({type: 'toggle_token_select', payload: props.index})
 	}
 
-	render() {
-		return (
-			<span className={`token ${!this.props.type ? "unassigned" : ""} ${this.props.selected ? "selected" : ""}`}
-				style={{background: this.getLegendColor(this.props.type)}}
-				onClick={this.openTokenSelection}>{decodeURIComponent(this.props.value)}</span>
-		)
-	}
+	return (
+		<span className={`token ${!props.type ? "unassigned" : ""} ${global.state.selectedTokenIndex == props.index ? "selected" : ""}`}
+			style={{background: getLegendColor(props.type)}}
+			onClick={toggleTokenSelection}>{decodeURIComponent(props.value)}</span>
+	)
 }
+
+export default Token

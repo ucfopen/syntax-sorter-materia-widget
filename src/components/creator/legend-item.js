@@ -1,29 +1,26 @@
-import React from 'react'
+import React, { useContext } from 'react'
+import { store } from '../../creator-store'
 
-export default class LegendItem extends React.Component {
-	constructor(props) {
-		super(props)
+const LegendItem = (props) => {
 
-		this.remove = this.remove.bind(this, this.props.index)
-		this.onNameChange = this.onNameChange.bind(this)
+	const global = useContext(store)
+	const dispatch = global.dispatch
+
+	const onNameChange = (event) => {
+		dispatch({type: 'update_legend_item', payload: {index: props.index, text: event.target.value}})
 	}
 
-	onNameChange(event) {
-		this.props.handleEditLegendItem(this.props.index, event.target.value, this.props.color)
-		console.log(event.target.value)
+	const remove = () => {
+		dispatch({type: 'remove_legend_item', payload: props.index})
 	}
 
-	remove(index) {
-		this.props.handleRemoveLegendItem(index)
-	}
-
-	render() {
-		return (
-			<div className="legend-item">
-				<div className="item-color" style={{backgroundColor: this.props.color }}></div>
-				<input value={this.props.name} onChange={this.onNameChange} placeholder='Legend Value'></input>
-				<button className="remove-item" onClick={this.remove}>X</button>
-			</div>
-		)
-	}
+	return (
+		<div className="legend-item">
+			<div className="item-color" style={{backgroundColor: props.color }}></div>
+			<input value={props.name} onChange={onNameChange} placeholder='Legend Value'></input>
+			<button className="remove-item" onClick={remove}>X</button>
+		</div>
+	)
 }
+
+export default LegendItem
