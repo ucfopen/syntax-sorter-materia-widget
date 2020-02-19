@@ -16,54 +16,69 @@ const CreatorApp = (props) => {
 	let items = []
 
 	const init = () => {
-		dispatch(
-		{
-			type: 'init',
-			payload: {
-				title: props.title,
-				qset: props.qset
-			}
-		})
+
+		if (props.newWidget) {
+			dispatch({type: 'init-new'})
+		}
+		else {
+			dispatch({
+				type: 'init-existing',
+				payload: {
+					title: props.title,
+					qset: props.qset
+				}
+			})
+		}		
 	}
 
 	useEffect(() => {
-		if (global.state.requireInit && props.performInit) {
+		if (global.state.requireInit) {
 			init()
 		}
 	})
 
-	// shipQset(rawQset) {
+	props.callbacks.onSaveClicked = () => {
 
-	// 	let qset = rawQset
+		let qset = {
+			items: global.state.items.map((item) => {
+				return {
+					id: null,
+					materiaType: 'question',
+					type: 'language-widget',
+					questions: [{
+						text: item.question
+					}],
+					answers: [{
+						id: null,
+						text: concatPhrase(item.phrase),
+						options: {
+							phrase: item.phrase
+						}
+					}],
+					options: {
+						displayPref: item.displayPref
+					}
+				}
+			}),
+			options: {
+				legend: global.state.legend
+			}
+		}
 
-	// 	for (let i = 0; i < this.state.qset.length; i++) {
+		Materia.CreatorCore.save(global.state.title, qset, 1)
 
-	// 		qset.items[i].id = null
-	// 		qset.items[i].materiaType = "question"
-	// 		qset.items[i].type = "language-widget"
+	}
 
-	// 		// concat each question's phrase into the answer text string used for scoring
-	// 		qset.items[i].answers[0].text = this.concatPhrase(qset.items[i].answers[0].options.phrase)
-	// 	}
-
-	// 	return qset
-	// }
-
-	// onSaveClicked() {
-	// 	console.log(this.state.qset)
-	// 	Materia.CreatorCore.save(this.state.title, shipQset(this.state.qset), 1)
-	// }
+	props.callbacks.onSaveComplete = () => {
+		console.log("OK!")
+	}
 
 	const handleTitleUpdate = (event) => {
 		dispatch({type:'update_title', payload: event.target.value})
 	}
 
 	const handleDeleteQuestion = () => {
-
-	}
-
-	const handleAddNewQuestion = () => {
-
+		dispatch({type:'remove_question', payload: global.state.currentIndex})
 	}
 
 	const toggleLegend = () => {

@@ -13,6 +13,7 @@ const PhraseBuilder = (props) => {
 				// convert prior token back to input
 				if (event.target.value.length == 0) {
 					event.preventDefault()
+					if (props.phrase.length < 1) return
 					let text = convertTokenToInput(props.phrase.length - 1)
 					event.target.value = decodeURIComponent(text)
 				}
@@ -56,8 +57,8 @@ const PhraseBuilder = (props) => {
 	})
 
 	let legendSelection = props.legend.map((term, index) => {
-		return(<label key={index}>
-			<input type="radio" name="token-type-selection" value={term.name} onChange={tokenTypeSelection}/>
+		return(<label key={index} className={`${global.state.selectedTokenIndex != -1 && global.state.items[global.state.currentIndex].phrase[global.state.selectedTokenIndex].legend.toLowerCase() == term.name.toLowerCase() ?  'selected' : ''}`}>
+			<input type="radio" name="token-type-selection" value={term.name} onChange={tokenTypeSelection} checked={global.state.selectedTokenIndex != -1 && global.state.items[global.state.currentIndex].phrase[global.state.selectedTokenIndex].legend.toLowerCase() == term.name.toLowerCase()}/>
 			<span className="color-radio" style={{background: term.color}}></span>{term.name}
 		</label>)
 	})
@@ -73,9 +74,6 @@ const PhraseBuilder = (props) => {
 				<header>What type of word is this?</header>
 				<form id="tokenTypeSelection">
 					{legendSelection}
-					<label>
-						<input type="radio" name="token-type-selection" value={''} onChange={tokenTypeSelection} checked={global.state.selectedTokenIndex == -1}/>
-					</label>
 				</form>
 			</div>
 		</section>

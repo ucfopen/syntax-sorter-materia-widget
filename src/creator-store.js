@@ -23,6 +23,21 @@ const init = {
 const store = React.createContext(init)
 const { Provider } = store
 
+const importFromQset = (qset) => {
+	let items = qset.items.map((item) => {
+		return {
+			question: item.questions[0].text,
+			phrase: item.answers[0].options.phrase,
+			displayPref: item.options.displayPref
+		}
+	})
+
+	return {
+		items: items,
+		legend: qset.options.legend,
+	}
+}
+
 const questionItemReducer = (items, action) => {
 	switch (action.type) {
 		case 'add_new_question':
@@ -41,6 +56,11 @@ const questionItemReducer = (items, action) => {
 				}
 				else return item
 			})
+		case 'remove_question':
+			return [
+				...items.slice(0, action.payload),
+				...items.slice(action.payload+1)
+			]
 		case 'phrase_token_to_input':
 		case 'phrase_input_to_token':
 		case 'phrase_token_type_select':
@@ -130,10 +150,16 @@ const StateProvider = ( { children } ) => {
 		// console.log(state)
 		console.log(action)
 		switch (action.type) {
-			case 'init':
-				return {title: action.payload.title, items: action.payload.qset.items, legend: action.payload.qset.options.legend, requireInit: false}
+			case 'init-new':
+				return {...state, requireInit: false}
+			case 'init-existing':
+				let imported = importFromQset(action.payload.qset)
+				return {...state, title: action.payload.title, items: imported.items, legend: imported.legend, requireInit: false}
 			case 'update_title':
 				return {...state, title: action.payload}
+			case 'remove_question':
+				if (state.items.length < 2) return state
+				else return {...state, items: questionItemReducer(state.items, action), currentIndex: state.currentIndex - 1}
 			case 'add_new_question':
 			case 'update_question_text':
 			case 'update_display_pref':
