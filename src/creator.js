@@ -4,14 +4,13 @@ import CreatorApp from './components/creator/creator-app'
 import {StateProvider} from './creator-store'
 
 const materiaCallbacks = {}
-let creatorInstance
 
 materiaCallbacks.initNewWidget = (instance) => {
 	materiaCallbacks.initExistingWidget(`New Foreign Language Widget`, instance, undefined, 1, true);
 }
 
 materiaCallbacks.initExistingWidget = (title, instance, _qset, version, newWidget = false) => {
-	creatorInstance = ReactDOM.render(
+	ReactDOM.render(
 		<StateProvider>
 			<CreatorApp title={title} qset={_qset} newWidget={newWidget} callbacks={materiaCallbacks} />
 		</StateProvider>,
@@ -19,10 +18,4 @@ materiaCallbacks.initExistingWidget = (title, instance, _qset, version, newWidge
 	)
 }
 
-// materiaCallbacks.onSaveClicked = () => {
-// 	console.log(creatorInstance)
-// };
-
-// materiaCallbacks.onSaveComplete = () => true
-
-Materia.CreatorCore.start(materiaCallbacks);
+Materia.CreatorCore.start(materiaCallbacks)

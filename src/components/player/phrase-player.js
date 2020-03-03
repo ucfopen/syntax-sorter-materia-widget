@@ -1,48 +1,45 @@
-import React from 'react'
+import React, {useContext} from 'react'
 import ReactDOM from 'react-dom'
 import TokenDrawer from './token-drawer'
 import Token from './token'
+import { store } from '../../player-store'
 
-export default class PhrasePlayer extends React.Component {
-	constructor(props) {
-		super(props)
+const PhrasePlayer = (props) => {
 
-		this.handleTokenDragOver = this.handleTokenDragOver.bind(this)
-		this.handleTokenDrop = this.handleTokenDrop.bind(this)
-		this.renderOrderedTokens = this.renderOrderedTokens.bind(this)
-	}
+	const global = useContext(store)
+	const dispatch = global.dispatch
 
-	handleTokenDragOver(event) {
+	const handleTokenDragOver = (event) => {
 		event.preventDefault()
-
+		
 		const cursor = event.clientX
 
 		let leftToken = null
 		let rightToken = null
 
-		for (let i=0; i<this.props.phraseList[this.props.currentIndex].sorted.length; i++) {
-			let pos = this.props.phraseList[this.props.currentIndex].sorted[i].position
+		for (let i=0; i<props.sorted.length; i++) {
+			let pos = props.sorted[i].position
 			let left = pos.x
 			let right = pos.x + pos.width
 
 			if (cursor > left) {
 				if (!leftToken || (leftToken && left > leftToken.position.x)) {
-					leftToken = this.props.phraseList[this.props.currentIndex].sorted[i]
+					leftToken = props.sorted[i]
 					leftToken.index = i
 				}
 			}
 			else if (cursor < right) {
 				if (!rightToken || (rightToken && right < rightToken.position.x + rightToken.position.width)) {
-					rightToken = this.props.phraseList[this.props.currentIndex].sorted[i]
+					rightToken = props.sorted[i]
 					rightToken.index = i
 				}
 			}
 		}
 
-		this.props.manageAdjacentTokenDisplay(leftToken, rightToken)
+		manageAdjacentTokenDisplay(leftToken, rightToken)
 	}
 
-	handleTokenDrop(event) {
+	const handleTokenDrop = (event) => {
 		event.preventDefault()
 		let dropTokenName = event.dataTransfer.getData("tokenName")
 		let dropTokenType = event.dataTransfer.getData("tokenType")
@@ -51,70 +48,79 @@ export default class PhrasePlayer extends React.Component {
 
 		let index = 0
 
-		for (let i = 0; i<this.props.phraseList[this.props.currentIndex].sorted.length; i++) {
+		for (let i = 0; i<props.sorted.length; i++) {
 
-			if (this.props.phraseList[this.props.currentIndex].sorted[i].arrangement == "left") {
+			if (props.sorted[i].arrangement == "left") {
 				index = i + 1
 			}
-			else if (this.props.phraseList[this.props.currentIndex].sorted[i].arrangement == "right") {
+			else if (props.sorted[i].arrangement == "right") {
 				index = i > 0 ? i : 0
 			}
 		}
 
-		let token = {legend: dropTokenType, value: dropTokenName, phraseIndex: dropTokenPhraseIndex}
-
 		switch (dropTokenStatus) {
 			case 'sorted':
-				this.props.manageTokenArrangement(this.props.currentIndex, index, "rearrange", token)
+				dispatch({
+					type: 'response_token_rearrange',
+					payload: {
+						questionIndex: global.state.currentIndex,
+						targetIndex: index,
+						legend: dropTokenType,
+						value: dropTokenName,
+						originIndex: parseInt(dropTokenPhraseIndex)
+					}
+				})
 				break
 			case 'unsorted':
 			default:
-				this.props.manageTokenArrangement(this.props.currentIndex, index, "add", token)
+				dispatch({
+					type: 'response_token_sort',
+					payload: {
+						questionIndex: global.state.currentIndex,
+						targetIndex: index,
+						legend: dropTokenType,
+						value: dropTokenName,
+						phraseIndex: parseInt(dropTokenPhraseIndex)
+					}
+				})
+
 				break
 		}
-
-		// this.props.manageAdjacentTokenDisplay(null, null)
+		manageAdjacentTokenDisplay(null, null)
 	}
 
-	renderOrderedTokens() {
-		let tokens = []
-
-		if ( !this.props.phraseList[this.props.currentIndex]) return []
-
-		for (let i = 0; i < this.props.phraseList[this.props.currentIndex].sorted.length; i++) {
-			tokens.push(<Token
-							key={i}
-							index={i}
-							type={this.props.phraseList[this.props.currentIndex].sorted[i].legend}
-							value={this.props.phraseList[this.props.currentIndex].sorted[i].value}
-							status={this.props.phraseList[this.props.currentIndex].sorted[i].status}
-							pref={this.props.phraseList[this.props.currentIndex].displayPref}
-							arrangement={this.props.phraseList[this.props.currentIndex].sorted[i].arrangement}
-							legend={this.props.legend}
-							report={this.props.manageTokenReport}
-							position={this.props.phraseList[this.props.currentIndex].sorted[i].position}>
-						</Token>)
-		}
-
-		return tokens
+	const manageAdjacentTokenDisplay = (left, right) => {
+		dispatch({type: 'adjacent_token_update', payload: {
+			questionIndex: global.state.currentIndex,
+			left: left?.index,
+			right: right?.index
+		}})
 	}
 
-	render() {
-		return(
-			<section className="card phrase-player">
-				<div className="token-container">
-					<div className="token-target" onDragOver={this.handleTokenDragOver} onDrop={this.handleTokenDrop}>
-						{this.renderOrderedTokens()}
-						{ this.props.phraseList[this.props.currentIndex] && !this.props.phraseList[this.props.currentIndex].sorted.length ? "Drag and drop the words below to arrange them." : ""}
-					</div>
+	let sortedTokens = props.sorted?.map((token, index) => {
+		return <Token
+			key={index}
+			index={index}
+			type={token.legend}
+			value={token.value}
+			pref={props.displayPref}
+			status={token.status}
+			arrangement={token.arrangement}
+			position={token.position}>
+		</Token>
+	})
+
+	return(
+		<section className="card phrase-player">
+			<div className="token-container">
+				<div className="token-target" onDragOver={handleTokenDragOver} onDrop={handleTokenDrop}>
+					{props.sorted?.length ? '' : 'Drag and drop the words below to arrange them.'}
+					{sortedTokens}
 				</div>
-				<TokenDrawer
-					phraseList={this.props.phraseList}
-					currentIndex={this.props.currentIndex}
-					manageTokenReport={this.props.manageTokenReport}
-					legend={this.props.legend}></TokenDrawer>
-
-			</section>
-		)
-	}
+			</div>
+			<TokenDrawer phrase={props.phrase} displayPref={props.displayPref}></TokenDrawer>
+		</section>
+	)
 }
+
+export default PhrasePlayer

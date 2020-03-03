@@ -1,44 +1,24 @@
 import React from 'react'
-import ReactDOM from 'react-dom'
 import Token from './token'
 
-export default class TokenDrawer extends React.Component {
-	constructor(props) {
-		super(props)
+const TokenDrawer = (props) => {
 
+	let tokenList = props.phrase?.map((token, index) => {
+		return <Token
+					key={index}
+					index={index}
+					type={token.legend}
+					value={token.value}
+					pref={props.displayPref}
+					status={token.status}>
+				</Token>
+	})
 
-		this.renderTokens = this.renderTokens.bind(this)
-	}
-
-	renderTokens() {
-
-		if (!this.props.phraseList.length) return
-
-		const phrase = this.props.phraseList[this.props.currentIndex].phrase
-		const tokens = []
-		
-		for (let i = 0; i < phrase.length; i++) {
-			tokens.push(
-				<Token
-					key={i}
-					index={i}
-					type={phrase[i].legend}
-					value={phrase[i].value}
-					pref={this.props.phraseList[this.props.currentIndex].displayPref}
-					legend={this.props.legend}
-					status={phrase[i].status}
-					report={this.props.manageTokenReport}>
-				</Token>)
-		}
-
-		return tokens
-	}
-
-	render() {
-		return(
-			<section className="token-drawer">
-				{this.renderTokens()}
-			</section>
-		)
-	}
+	return(
+		<section className="token-drawer">
+			{tokenList}
+		</section>
+	)
 }
+
+export default TokenDrawer

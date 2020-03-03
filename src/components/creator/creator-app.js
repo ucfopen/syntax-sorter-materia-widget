@@ -8,12 +8,8 @@ import { store } from '../../creator-store'
 
 const CreatorApp = (props) => {
 
-	console.log(props)
-
 	const global = useContext(store)
 	const dispatch = global.dispatch
-
-	let items = []
 
 	const init = () => {
 
@@ -31,14 +27,17 @@ const CreatorApp = (props) => {
 		}		
 	}
 
+	// using this as equivalent to componentDidMount
 	useEffect(() => {
 		if (global.state.requireInit) {
 			init()
 		}
 	})
 
+	// Materia callbacks
 	props.callbacks.onSaveClicked = () => {
 
+		// convert store to qset
 		let qset = {
 			items: global.state.items.map((item) => {
 				return {
@@ -64,9 +63,16 @@ const CreatorApp = (props) => {
 				legend: global.state.legend
 			}
 		}
-
 		Materia.CreatorCore.save(global.state.title, qset, 1)
+	}
 
+	// concats phrase into text string (for qset export)
+	const concatPhrase = (phrase) => {
+		let str = ''
+		for (let i=0; i<phrase.length; i++) {
+			str += phrase[i].value + ','
+		}
+		return str.substring(0,str.length-1)
 	}
 
 	props.callbacks.onSaveComplete = () => {
@@ -83,14 +89,6 @@ const CreatorApp = (props) => {
 
 	const toggleLegend = () => {
 		dispatch({type: 'toggle_legend', payload: {}})
-	}
-
-	const concatPhrase = (phrase) => {
-		let str = ''
-		for (let i=0; i<phrase.length; i++) {
-			str += phrase[i].value + ','
-		}
-		return str.substring(0,str.length-1)
 	}
 
 	return(

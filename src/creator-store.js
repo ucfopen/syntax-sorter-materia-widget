@@ -23,6 +23,7 @@ const init = {
 const store = React.createContext(init)
 const { Provider } = store
 
+// not a reducer, just takes qset data and transforms it into store format
 const importFromQset = (qset) => {
 	let items = qset.items.map((item) => {
 		return {

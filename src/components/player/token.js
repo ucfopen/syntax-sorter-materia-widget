@@ -1,120 +1,85 @@
-import React from 'react'
-import ReactDOM from 'react-dom'
+import React, { useState, useContext, useRef, useEffect } from 'react'
+import { store } from '../../player-store'
 
-export default class Token extends React.Component {
-	constructor(props) {
-		super(props)
+const Token = (props) => {
 
-		this.tokenRef = React.createRef()
+	const global = useContext(store)
+	const dispatch = global.dispatch
 
-		this.state = {
-			dragging: false,
-			origin: 'unsorted'
-		}
+	const tokenRef = useRef(null)
+	const coords = tokenRef.current?.getBoundingClientRect()
 
-		this.getLegendColor = this.getLegendColor.bind(this)
-		this.handleDragStart = this.handleDragStart.bind(this)
-		this.handleDrag = this.handleDrag.bind(this)
-		this.handleDragEnd = this.handleDragEnd.bind(this)
-	}
+	const [state, setState] = useState({dragging: false, origin: null})
 
-	getLegendColor(name) {
-		if (!name) return '#ffffff'
-
-		for (const term of this.props.legend) {
-			if (term.name.toLowerCase() == name.toLowerCase()) {
-				return term.color
-			}
-		}
-	}
-
-	handleDragStart(event) {
-
-		this.setState({origin: this.props.status})
-		
-		event.dataTransfer.dropEffect = "move"
-		event.dataTransfer.setData("tokenName",this.props.value)
-		event.dataTransfer.setData("tokenType",this.props.type)
-		event.dataTransfer.setData("tokenPhraseIndex",this.props.index)
-		event.dataTransfer.setData("tokenStatus",this.props.status)
-
-		setTimeout(() => {
-			this.setState({dragging: true})
-		})
-		
-		this.props.report({
-			type: 'token-dragging',
-			status: this.props.status,
-			index: this.props.index
-		})
-	}
-
-	handleDrag(event) {
-	}
-
-	handleDragEnd(event) {
-
-		this.props.report({
-			type: 'token-drag-complete',
-			origin: this.state.origin,
-			status: this.props.status,
-			index: this.props.index
-		})
-
-		setTimeout(() => {
-			this.setState({dragging: false})
-		})
-	}
-
-	componentDidMount() {
-		if (this.props.status == "sorted") {
-			const coords = this.tokenRef.current.getBoundingClientRect()
-			this.props.report({
-				type: "token-sorted",
-				index: this.props.index,
+	useEffect( () => {
+		if (props.status == 'sorted' && coords) {
+			dispatch({type:'token_update_position',payload: {
+				questionIndex: global.state.currentIndex,
+				tokenIndex: props.index,
 				x: coords.x,
 				width: coords.width
-			})
+			}})
+		}
+	},[coords?.x])
+
+	const getLegendColor = (type) => {
+		for (const term of global.state.legend) {
+			if (type.toLowerCase() == term.name.toLowerCase()) return term.color
 		}
 	}
 
-	componentDidUpdate() {
-		switch (this.props.status) {
-			case 'sorted':
-				const coords = this.tokenRef.current.getBoundingClientRect()
+	const handleDragStart = (event) => {
+		setState(state => ({...state,origin:props.status}))
 
-				// if current position is the same as the last recorded position - don't report
-				// prevents infinite state cycle error
-				if (this.props.position.x && this.props.position.x == coords.x) {
-					return false
-				}
+		event.dataTransfer.dropEffect = "move"
+		event.dataTransfer.setData("tokenName",props.value)
+		event.dataTransfer.setData("tokenType",props.type)
+		event.dataTransfer.setData("tokenPhraseIndex",props.index)
+		event.dataTransfer.setData("tokenStatus",props.status)
 
-				this.props.report({
-					type: "token-sorted",
-					index: this.props.index,
-					x: coords.x,
-					width: coords.width
-				})
-				break
-			default:
-				return false
-		}
+		setTimeout(() => {
+			setState(state => ({...state,dragging: true}))
+		})
+
+		dispatch({type: 'token_dragging', payload: {
+			questionIndex: global.state.currentIndex,
+			tokenIndex: props.index,
+			status: props.status
+		}})
 	}
 
-	render() {
-		return(
-			<div className={`token ${this.state.dragging ? 'dragging' : ''} ${this.props.arrangement == 'left' ? 'is-left' : ''} ${this.props.arrangement == 'right' ? 'is-right' : ''}`}
-				style={{
-					background: this.getLegendColor(this.props.type),
-					display: this.props.status == "relocated" ? "none" : "inline-block"
-				}}
-				ref={this.tokenRef}
-				draggable
-				onDragStart={this.handleDragStart}
-				onDrag={this.handleDrag}
-				onDragEnd={this.handleDragEnd}>
-				{this.props.pref == 'word' ? this.props.value : this.props.type}
-			</div>
-		)
+	// likely unneeded
+	const handleDrag = (event) => {
 	}
+
+	const handleDragEnd = (event) => {
+
+		dispatch({type: 'token_drag_complete', payload: {
+			origin: state.origin,
+			status: props.status,
+			tokenIndex: props.index,
+			questionIndex: global.state.currentIndex
+		}})
+
+		setTimeout(() => {
+			setState(state => ({...state,dragging: false}))
+		})
+	}
+
+	return (
+		<div className={`token ${state.dragging ? 'dragging' : ''} ${props.arrangement == 'left' ? 'is-left' : ''} ${props.arrangement == 'right' ? 'is-right' : ''}`}
+			style={{
+				background: getLegendColor(props.type),
+				display: props.status == "relocated" ? "none" : "inline-block"
+			}}
+			ref={tokenRef}
+			draggable
+			onDragStart={handleDragStart}
+			onDrag={handleDrag}
+			onDragEnd={handleDragEnd}>
+			{props.pref == 'word' ? props.value : props.type}
+		</div>
+	)
 }
+
+export default Token
