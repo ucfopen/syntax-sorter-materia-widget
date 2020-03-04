@@ -1,6 +1,8 @@
 
 import React, { useReducer } from 'react'
 
+let legendIdIncrement = 1
+
 const init = {
 	requireInit: true,
 	currentIndex: 0,
@@ -13,6 +15,7 @@ const init = {
 	}],
 	legend: [
 		{
+			id: legendIdIncrement,
 			color: '#FF0000',
 			name: 'Part of Speech'
 		}
@@ -35,7 +38,7 @@ const importFromQset = (qset) => {
 
 	return {
 		items: items,
-		legend: qset.options.legend,
+		legend: qset.options.legend
 	}
 }
 
@@ -84,6 +87,13 @@ const questionItemReducer = (items, action) => {
 				}
 				else return item
 			})
+		case 'remove_legend_item':
+			return items.map((item) => {
+				return {
+					...item,
+					phrase: phraseReducer(item.phrase, action)
+				}
+			})
 		default:
 			throw new Error('Question item reducer: this action type was not defined')
 	}
@@ -114,6 +124,16 @@ const phraseReducer = (phrase, action) => {
 				}
 				else return token
 			})
+		case 'remove_legend_item':
+			return phrase.map((token) => {
+				if (token.legend == action.payload.id) {
+					return {
+						...token,
+						legend: null
+					}
+				}
+				else return token
+			})
 		default:
 			throw new Error('Phrase item reducer: this action type was not defined')
 	}
@@ -123,6 +143,7 @@ const legendReducer = (legend, action) => {
 	switch (action.type) {
 		case 'add_legend_item':
 			return [...legend, {
+				id: ++legendIdIncrement,
 				color: action.payload.color,
 				name: action.payload.text
 			}]
@@ -138,8 +159,8 @@ const legendReducer = (legend, action) => {
 			})
 		case 'remove_legend_item':
 			return [
-				...legend.slice(0, action.payload),
-				...legend.slice(action.payload + 1)
+				...legend.slice(0, action.payload.index),
+				...legend.slice(action.payload.index + 1)
 			]
 		default:
 			throw new Error('Legend reducer: this action type was not defined')
@@ -148,8 +169,6 @@ const legendReducer = (legend, action) => {
 
 const StateProvider = ( { children } ) => {
 	const [state, dispatch] = useReducer((state, action) => {
-		// console.log(state)
-		console.log(action)
 		switch (action.type) {
 			case 'init-new':
 				return {...state, requireInit: false}
@@ -178,8 +197,9 @@ const StateProvider = ( { children } ) => {
 			case 'add_legend_item':
 				return {...state, legend: legendReducer(state.legend, action), devColorSelectIndex: state.devColorSelectIndex+1}
 			case 'update_legend_item':
-			case 'remove_legend_item':
 				return {...state, legend: legendReducer(state.legend, action)}
+			case 'remove_legend_item':
+				return {...state, items: questionItemReducer(state.items, action), legend: legendReducer(state.legend, action)}
 			default:
 			  throw new Error('Base reducer: this action type was not defined')
 		  }

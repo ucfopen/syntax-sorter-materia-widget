@@ -29,19 +29,12 @@ const importFromQset = (qset) => {
 					return {...token, status: 'unsorted'}
 				})),
 				sorted: [],
-				displayPref: item.options.displayPref
+				displayPref: item.options.displayPref,
+				qsetId: item.id
 			}
 		}),
 		legend: qset.options.legend
 	}
-}
-
-const convertSortedToString = (sorted) => {
-	let string = ''
-	for (let i=0;i<sorted.length;i++) {
-		string += sorted[i].value + ','
-	}
-	return string.substring(0,string.length-1)
 }
 
 const tokenSortedPhraseReducer = (list, action) => {
@@ -209,7 +202,6 @@ const questionItemReducer = (items, action) => {
 
 const StateProvider = ( { children } ) => {
 	const [state, dispatch] = useReducer((state, action) => {
-		console.log(action)
 		switch (action.type) {
 			case 'init':
 				let imported = importFromQset(action.payload.qset)

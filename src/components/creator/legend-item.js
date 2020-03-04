@@ -11,7 +11,7 @@ const LegendItem = (props) => {
 	}
 
 	const remove = () => {
-		dispatch({type: 'remove_legend_item', payload: props.index})
+		dispatch({type: 'remove_legend_item', payload: {index: props.index, id: props.id}})
 	}
 
 	return (

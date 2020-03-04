@@ -6,11 +6,11 @@ const Token = (props) => {
 	const global = useContext(store)
 	const dispatch = global.dispatch
 
-	const getLegendColor = (name) => {
-		if (!name) return '#ffffff'
+	const getLegendColor = (id) => {
+		if (!id) return '#ffffff'
 
 		for (const term of global.state.legend) {
-			if (term.name.toLowerCase() == name.toLowerCase()) return term.color
+			if (term.id == id) return term.color
 		}
 	}
 

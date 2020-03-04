@@ -24,7 +24,13 @@ const Token = (props) => {
 
 	const getLegendColor = (type) => {
 		for (const term of global.state.legend) {
-			if (type.toLowerCase() == term.name.toLowerCase()) return term.color
+			if (type == term.id) return term.color
+		}
+	}
+
+	const getLegendName = (type) => {
+		for (const term of global.state.legend) {
+			if (type == term.id) return term.name
 		}
 	}
 
@@ -77,7 +83,7 @@ const Token = (props) => {
 			onDragStart={handleDragStart}
 			onDrag={handleDrag}
 			onDragEnd={handleDragEnd}>
-			{props.pref == 'word' ? props.value : props.type}
+			{props.pref == 'word' ? props.value : getLegendName(props.type)}
 		</div>
 	)
 }

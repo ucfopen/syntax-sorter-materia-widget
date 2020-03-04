@@ -44,7 +44,7 @@ const PhraseBuilder = (props) => {
 	}
 
 	const tokenTypeSelection = (event) => {
-		let selection = event.target.value
+		let selection = parseInt(event.target.value)
 		dispatch({type:'phrase_token_type_select', payload: {
 			questionIndex: global.state.currentIndex,
 			phraseIndex: global.state.selectedTokenIndex,
@@ -57,8 +57,8 @@ const PhraseBuilder = (props) => {
 	})
 
 	let legendSelection = props.legend.map((term, index) => {
-		return(<label key={index} className={`${global.state.selectedTokenIndex != -1 && global.state.items[global.state.currentIndex].phrase[global.state.selectedTokenIndex].legend.toLowerCase() == term.name.toLowerCase() ?  'selected' : ''}`}>
-			<input type="radio" name="token-type-selection" value={term.name} onChange={tokenTypeSelection} checked={global.state.selectedTokenIndex != -1 && global.state.items[global.state.currentIndex].phrase[global.state.selectedTokenIndex].legend.toLowerCase() == term.name.toLowerCase()}/>
+		return(<label key={index} className={`${global.state.selectedTokenIndex != -1 && global.state.items[global.state.currentIndex].phrase[global.state.selectedTokenIndex].legend == term.id ?  'selected' : ''}`}>
+			<input type="radio" name="token-type-selection" value={term.id} onChange={tokenTypeSelection} checked={global.state.selectedTokenIndex != -1 && global.state.items[global.state.currentIndex].phrase[global.state.selectedTokenIndex].legend == term.id}/>
 			<span className="color-radio" style={{background: term.color}}></span>{term.name}
 		</label>)
 	})

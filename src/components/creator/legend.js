@@ -11,7 +11,7 @@ const Legend = (props) => {
 	const colors = ['#00FF00', '#0000FF', '#ffd900', '#6200ff', '#00fff2', '#ff0080'] // TODO: color picker, not hard-coded values
 	
 	let legendItems = props.legend.map((item, index) => {
-		return <LegendItem key={index} color={item.color} name={item.name} index={index} handleRemoveLegendItem={{}} handleEditLegendItem={{}}></LegendItem>
+		return <LegendItem key={index} color={item.color} name={item.name} id={item.id} index={index} handleRemoveLegendItem={{}} handleEditLegendItem={{}}></LegendItem>
 	})
 
 	const addLegendItem = () => {
