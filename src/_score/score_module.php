@@ -2,28 +2,45 @@
 
 namespace Materia;
 
-class Score_Modules_LanguageWidget extends Score_Module{
+class Score_Modules_LanguageWidget extends Score_Module {
+
+	public function getLegendValue($id) {
+		$legend = $this->inst->qset->data['options']['legend'];
+
+		foreach ($legend as $item) {
+			if ($id == $item['id']) return $item['name'];
+		}
+		return '';
+	}
 
 	public function check_answer($log)
 	{
 		if (isset($this->questions[$log->item_id]))
 		{
-		// 	foreach ($this->questions[$log->item_id]->answers as $answer)
-		// 	{
-        //         // if ($log->text == $a)
-		// 		// if ($use_answer_text)
-		// 		// {
-		// 		// 	if ($log->text == $answer['text']) return $answer['value'];
-		// 		// }
-		// 		// else
-		// 		// {
-		// 		// 	if ($log->text == $answer['id']) return $answer['value'];
-		// 		// }
-		// 	}
-        // }
-        }
+			$response = explode(',',$log->text);
 
-		return 100;
+			$answer = [];
+
+			foreach ($this->questions[$log->item_id]->answers[0]['options']['phrase'] as $token) {
+				if ($this->questions[$log->item_id]->options['displayPref'] == 'word') {
+					array_push($answer, $token['value']);
+				}
+				else {
+					array_push($answer, $this->getLegendValue($token['legend']));
+				}
+			}
+
+			$max = count($answer);
+			$correct = 0;
+
+			foreach ($answer as $index => $token) {
+				if (strcmp($token, $response[$index]) == 0) {
+					$correct++;
+				}
+			}
+
+			return ($correct / $max) * 100;
+		}
 	}
 
 	// public function get_ss_answer($log, $question)

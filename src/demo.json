@@ -15,23 +15,23 @@
 						"phrase": [
 							{
 								"value": "J'",
-								"legend": "pronoun"
+								"legend": 6
 							},
 							{
 								"value": "aime",
-								"legend": "verb"
+								"legend": 3
 							},
 							{
 								"value": "les",
-								"legend": "article"
+								"legend": 5
 							},
 							{
 								"value": "chats",
-								"legend": "noun"
+								"legend": 1
 							},
 							{
 								"value": "noirs",
-								"legend": "adjective"
+								"legend": 4
 							}
 						]
 					}
@@ -52,19 +52,19 @@
 						"phrase": [
 							{
 								"value": "où",
-								"legend": "adverb"
+								"legend": 2
 							},
 							{
 								"value": "est",
-								"legend": "verb"
+								"legend": 3
 							},
 							{
 								"value": "la",
-								"legend": "article"
+								"legend": 5
 							},
 							{
 								"value": "bibliothèque",
-								"legend": "noun"
+								"legend": 1
 							}
 						]
 					}
@@ -76,26 +76,32 @@
 			"options": {
 				"legend": [
 					{
+						"id": 1,
 						"color": "#FF0000",
 						"name": "Noun"
 					},
 					{
+						"id": 2,
 						"color": "#0000FF",
 						"name": "Adverb"
 					},
 					{
+						"id": 3,
 						"color": "#ffd900",
 						"name": "Verb"
 					},
 					{
+						"id": 4,
 						"color": "#6200ff",
 						"name": "Adjective"
 					},
 					{
+						"id": 5,
 						"color": "#00fff2",
 						"name": "Article"
 					},
 					{
+						"id": 6,
 						"color": "#ff0080",
 						"name": "Pronoun"
 					}

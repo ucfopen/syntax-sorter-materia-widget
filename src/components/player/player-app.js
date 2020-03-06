@@ -3,14 +3,6 @@ import QuestionSelect from './question-select'
 import PhrasePlayer from './phrase-player'
 import { store } from '../../player-store'
 
-const convertSortedToString = (sorted) => {
-	let string = ''
-	for (let i=0;i<sorted.length;i++) {
-		string += sorted[i].value + ','
-	}
-	return string.substring(0,string.length-1)
-}
-
 const PlayerApp = (props) => {
 
 	const global = useContext(store)
@@ -25,10 +17,23 @@ const PlayerApp = (props) => {
 		}		
 	}, [global.state.requireInit])
 
+	const convertSortedToString = (sorted, pref = 'word') => {
+		let string = ''
+		for (let i=0;i<sorted.length;i++) {
+			if (pref == 'word') string += sorted[i].value + ','
+			else {
+				for (const term of global.state.legend) {
+					if (parseInt(sorted[i].legend) == term.id) string += term.name + ','
+				}
+			}
+		}
+		return string.substring(0,string.length-1)
+	}
+
 	const handleSubmit = () => {
 
 		for (let item of global.state.items) {
-			Materia.Score.submitQuestionForScoring(item.qsetId, convertSortedToString(item.sorted))
+			Materia.Score.submitQuestionForScoring(item.qsetId, convertSortedToString(item.sorted, item.displayPref))
 		}
 		Materia.Engine.end(true)
 	}
