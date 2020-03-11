@@ -4,7 +4,13 @@ const outputPath = path.join(__dirname, 'build') + path.sep
 const widgetWebpack = require('materia-widget-development-kit/webpack-widget')
 
 const rules = widgetWebpack.getDefaultRules()
-const copy = widgetWebpack.getDefaultCopyList()
+const copy = [
+	...widgetWebpack.getDefaultCopyList(),
+	{
+		from: path.join(__dirname, 'src', 'scoreDemo.json'),
+		to: path.join(outputPath, 'scoreDemo.json')
+	}	
+]
 
 const entries = {
 	'common.css': [
@@ -23,7 +29,14 @@ const entries = {
 	],
 	'creator.js': [
 		path.join(srcPath, 'creator.js')
-	]
+	],
+	'scoreScreen.js': [
+		path.join(srcPath, 'scoreScreen.js')
+	],
+	'scoreScreen.css': [
+		path.join(srcPath, 'scoreScreen.html'),
+		path.join(srcPath, 'scoreScreen.scss')
+	],
 }
 
 const customReactLoader = {
@@ -45,6 +58,7 @@ const customRules = [
 
 const options = {
 	entries: entries,
+	copyList: copy,
 	moduleRules: customRules,
 }
 

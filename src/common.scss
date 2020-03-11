@@ -35,7 +35,7 @@ button {
 	height: 100%;
 }
 
-.creator-header, .player-header {
+.creator-header, .player-header, .score-header {
 	width: 90%;
 	padding: 15px 5%;
 	background: $colorAccent;
@@ -94,7 +94,7 @@ button {
 		}
 	}
 
-	section.phrase-builder, section.phrase-player {
+	section.phrase-builder, section.phrase-player, section.question-container {
 
 		padding: 15px 15px 0 15px;
 
