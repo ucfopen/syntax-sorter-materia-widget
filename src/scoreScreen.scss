@@ -1,6 +1,50 @@
 /* Score Screen */
 
+@import 'common';
+
+$colorBGCorrect: #beffcf;
+$colorBGIncorrect: #e7b0b0;
+
 .content-container {
 	width: calc(100% - 50px);
+	height: 100%;
 	margin-left: 0px;
+
+	.question-container {
+
+		h3 {
+			margin: 0 0 1em 0;
+		}
+
+		h5 {
+			margin: 0 0 1em 0;
+			font-size: 0.8em;
+			font-weight: 400;
+		}
+
+		.response-container, .correct-container {
+
+			position: relative;
+			left: -15px;
+			width: 100%;
+			padding: 15px;
+
+			.token {
+				font-size: 1.2em;
+				margin-right: 5px;
+			}
+		}
+		
+		.correct-container {
+			background-color: $colorBGTertiary;
+		}
+
+		.correct {
+			background-color: $colorBGCorrect;
+		}
+
+		.incorrect {
+			background-color: $colorBGIncorrect;
+		}
+	}
 }
