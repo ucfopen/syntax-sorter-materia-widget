@@ -61,9 +61,10 @@ const Question = (props) => {
 	return (
 		<section className='card question-container'>
 			<h3>{props.questionText}</h3>
-			<div className={`response-container ${props.correct ? 'correct' : 'incorrect'}`}>
+			<div className={`response-container ${props.score > 99 ? 'correct' : 'incorrect'}`}>
 				<h5>How you responded:</h5>
 				{responseTokenList}
+				<span className='deduction-indicator'>{`${props.score == 100 ? 'Correct!' : '- ' + (100 - props.score) / props.count + '%' }`}</span>
 			</div>
 			<div className='correct-container'>
 				<h5>Here's the correct order:</h5>

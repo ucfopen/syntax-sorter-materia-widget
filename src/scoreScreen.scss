@@ -33,6 +33,18 @@ $colorBGIncorrect: #e7b0b0;
 				font-size: 1.2em;
 				margin-right: 5px;
 			}
+
+			.deduction-indicator {
+				position: absolute;
+				right: 18px;
+				top: 10px;
+	
+				font-size: 0.8em;
+				font-weight: 700;
+				font-style: italic;
+
+				opacity: 0.5;
+			}
 		}
 		
 		.correct-container {
