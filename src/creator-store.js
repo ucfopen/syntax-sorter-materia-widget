@@ -21,6 +21,7 @@ const init = {
 		}
 	],
 	showLegend: false,
+	legendColorPickerTarget: -1,
 	devColorSelectIndex: 0
 }
 const store = React.createContext(init)
@@ -162,6 +163,17 @@ const legendReducer = (legend, action) => {
 				...legend.slice(0, action.payload.index),
 				...legend.slice(action.payload.index + 1)
 			]
+		case 'legend_color_picker_change':
+			console.log("color picker change: index: " + action.payload.index + " and color: " + action.payload.color)
+			return legend.map((term, index) => {
+				if (index == action.payload.index) {
+					return {
+						...term,
+						color: action.payload.color
+					}
+				}
+				else return term
+			})
 		default:
 			throw new Error('Legend reducer: this action type was not defined')
 	}
@@ -200,6 +212,11 @@ const StateProvider = ( { children } ) => {
 				return {...state, legend: legendReducer(state.legend, action)}
 			case 'remove_legend_item':
 				return {...state, items: questionItemReducer(state.items, action), legend: legendReducer(state.legend, action)}
+			case 'legend_color_picker_toggle':
+				if (state.legendColorPickerTarget != action.payload.index) return {...state, legendColorPickerTarget: action.payload.index}
+				else return {...state, legendColorPickerTarget: -1}
+			case 'legend_color_picker_change':
+				return {...state, legend: legendReducer(state.legend, action), legendColorPickerTarget: -1}
 			default:
 			  throw new Error('Base reducer: this action type was not defined')
 		  }
