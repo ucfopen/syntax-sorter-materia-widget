@@ -3,8 +3,6 @@ import { BlockPicker } from 'react-color'
 
 const LegendColorPicker = (props) => {
 
-	console.log(props.offset)
-
 	return (
 		<div className='legend-color-picker-wrapper' style={{
 				top: `${props.offset + 40}px`,

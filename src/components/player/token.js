@@ -72,10 +72,25 @@ const Token = (props) => {
 		})
 	}
 
+	// function that returns a value 0-255 based on the "lightness" of a given hex value
+	const contrastCalc = (color) => {
+		var r, g, b
+		var m = color.substr(1).match(color.length == 7 ? /(\S{2})/g : /(\S{1})/g)
+		if (m) {
+			r = parseInt(m[0], 16)
+			g = parseInt(m[1], 16)
+			b = parseInt(m[2], 16)
+		}
+		if (typeof r != "undefined") return ((r*299)+(g*587)+(b*114))/1000;
+	}
+
+	let tokenColor = getLegendColor(props.type)
+
 	return (
 		<div className={`token ${state.dragging ? 'dragging' : ''} ${props.arrangement == 'left' ? 'is-left' : ''} ${props.arrangement == 'right' ? 'is-right' : ''}`}
 			style={{
-				background: getLegendColor(props.type),
+				background: tokenColor,
+				color: contrastCalc(tokenColor) > 160 ? '#000000' : '#ffffff',
 				display: props.status == "relocated" ? "none" : "inline-block"
 			}}
 			ref={tokenRef}

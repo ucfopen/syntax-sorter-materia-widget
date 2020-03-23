@@ -18,9 +18,26 @@ const Token = (props) => {
 		dispatch({type: 'toggle_token_select', payload: props.index})
 	}
 
+	// function that returns a value 0-255 based on the "lightness" of a given hex value
+	const contrastCalc = (color) => {
+		var r, g, b
+		var m = color.substr(1).match(color.length == 7 ? /(\S{2})/g : /(\S{1})/g)
+		if (m) {
+			r = parseInt(m[0], 16)
+			g = parseInt(m[1], 16)
+			b = parseInt(m[2], 16)
+		}
+		if (typeof r != "undefined") return ((r*299)+(g*587)+(b*114))/1000;
+	}
+
+	let tokenColor = getLegendColor(props.type)
+
 	return (
 		<span className={`token ${!props.type ? "unassigned" : ""} ${global.state.selectedTokenIndex == props.index ? "selected" : ""}`}
-			style={{background: getLegendColor(props.type)}}
+			style={{
+				background: tokenColor,
+				color: contrastCalc(tokenColor) > 160 ? '#000000' : '#ffffff'
+			}}
 			onClick={toggleTokenSelection}>{decodeURIComponent(props.value)}</span>
 	)
 }
