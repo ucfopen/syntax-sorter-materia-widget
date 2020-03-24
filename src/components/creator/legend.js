@@ -8,9 +8,6 @@ const Legend = (props) => {
 	const global = useContext(store)
 	const dispatch = global.dispatch
 
-	const colorSelectIndex = global.state.devColorSelectIndex
-	const colors = ['#00FF00', '#0000FF', '#ffd900', '#6200ff', '#00fff2', '#ff0080'] // TODO: color picker, not hard-coded values
-
 	const [state, setState] = useState({colorSelectOffset: 0})
 
 	let colorSelectRef = global.state.legendColorPickerTarget != -1 ? global.state.legend[global.state.legendColorPickerTarget].color : '#FF0000'
@@ -22,7 +19,11 @@ const Legend = (props) => {
 	}
 	
 	const addLegendItem = () => {
-		dispatch({type: 'add_legend_item', payload: {text: '', color: colors[colorSelectIndex]}})
+		// generates a random hex color code
+		let newRandColor = '#000000'.replace(/0/g, () => {
+			return (~~(Math.random()*16)).toString(16)
+		})
+		dispatch({type: 'add_legend_item', payload: {text: '', color: newRandColor}})
 	}
 	
 	const handleColorChangeComplete = (color, event) => {

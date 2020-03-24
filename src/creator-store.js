@@ -21,8 +21,7 @@ const init = {
 		}
 	],
 	showLegend: false,
-	legendColorPickerTarget: -1,
-	devColorSelectIndex: 0
+	legendColorPickerTarget: -1
 }
 const store = React.createContext(init)
 const { Provider } = store
@@ -207,7 +206,7 @@ const StateProvider = ( { children } ) => {
 			case 'toggle_legend':
 				return {...state, showLegend: !state.showLegend}
 			case 'add_legend_item':
-				return {...state, legend: legendReducer(state.legend, action), devColorSelectIndex: state.devColorSelectIndex+1}
+				return {...state, legend: legendReducer(state.legend, action)}
 			case 'update_legend_item':
 				return {...state, legend: legendReducer(state.legend, action)}
 			case 'remove_legend_item':

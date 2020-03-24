@@ -52,6 +52,39 @@
 			&.show {
 				display: block;
 			}
+
+			div.empty-section {
+				display: none;
+
+				span.empty-message {
+					display: inline-block;
+					width: 66%;
+				}
+
+				button {
+					display: block;
+					float: right;
+					margin: 10px 20px 0 0;
+					color: #000;
+					background: #fff;
+					border: none;
+					padding: 10px 20px;
+					outline: none;
+
+					&:hover {
+						background: $colorAccentHover;
+					}
+				}
+			}
+
+			&.empty {
+				font-size: 0.9em;
+				background: $colorBGCorrect;
+
+				div.empty-section {
+					display: inline-block;
+				}
+			}
 		}
 	}
 

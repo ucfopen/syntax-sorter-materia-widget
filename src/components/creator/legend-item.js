@@ -8,10 +8,6 @@ const LegendItem = (props) => {
 	const dispatch = global.dispatch
 
 	const legendItemRef = useRef(null)
-	// const coords = legendItemRef.current?.getBoundingClientRect()
-
-	// console.log(coords)
-
 	const currentColor = global.state.legend[props.index].color
 
 	const handleColorPickerClick = (event) => {
@@ -32,7 +28,6 @@ const LegendItem = (props) => {
 			<button className="item-color" style={{backgroundColor: currentColor }} onClick={handleColorPickerClick}></button>
 			<input value={props.name} onChange={onNameChange} placeholder='Legend Value'></input>
 			<button className="remove-item" onClick={remove}>X</button>
-			{/* <LegendColorPicker handleColorChangeComplete={handleColorChangeComplete} visible={global.state.legendColorPickerTarget != -1} /> */}
 		</div>
 	)
 }

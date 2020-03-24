@@ -5,7 +5,8 @@ const init = {
 	items: [],
 	legend: [],
 	currentIndex: 0,
-	requireInit: true
+	requireInit: true,
+	showTutorial: true
 }
 
 const store = React.createContext(init)
@@ -206,8 +207,14 @@ const StateProvider = ( { children } ) => {
 			case 'init':
 				let imported = importFromQset(action.payload.qset)
 				return {...state, title: action.payload.title, items: imported.items, legend: imported.legend, requireInit: false}
+			case 'dismiss_tutorial':
+				return {...state, showTutorial: false}
 			case 'select_question':
 				return {...state, currentIndex: action.payload}
+			case 'paginate_question_forward':
+				console.log('current indx: ' + state.currentIndex)
+				let forward = state.currentIndex < state.items.length -1 ? state.currentIndex + 1: state.currentIndex
+				return {...state, currentIndex: forward}
 			case 'token_dragging':
 			case 'token_drag_complete':
 			case 'token_update_position':

@@ -1,6 +1,7 @@
 import React, {useContext, useEffect} from 'react'
 import QuestionSelect from './question-select'
 import PhrasePlayer from './phrase-player'
+import PlayerTutorial from './player-tutorial'
 import { store } from '../../player-store'
 
 const PlayerApp = (props) => {
@@ -38,8 +39,13 @@ const PlayerApp = (props) => {
 		Materia.Engine.end(true)
 	}
 
+	const legendList = global.state.legend.map((term, index) => {
+		return <span key={index} className='legend-item'><span className='legend-color' style={{background: term.color}}></span>{term.name}</span>
+	})
+
 	return(
 		<div className="player-container">
+			<PlayerTutorial></PlayerTutorial>
 			<header className="player-header">
 				{global.state.title}
 				<button className="submit" onClick={handleSubmit}>Submit</button>
@@ -53,6 +59,10 @@ const PlayerApp = (props) => {
 					phrase={global.state.items[global.state.currentIndex]?.phrase}
 					sorted={global.state.items[global.state.currentIndex]?.sorted}
 					displayPref={global.state.items[global.state.currentIndex]?.displayPref}></PhrasePlayer>
+					<section className="card legend">
+						<header>Color Legend</header>
+						{legendList}
+					</section>
 			</section>
 		</div>
 	)

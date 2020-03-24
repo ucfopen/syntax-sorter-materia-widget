@@ -3,6 +3,8 @@
 $colorBGPrimary: #e1e1e1;
 $colorBGSecondary: #ffffff;
 $colorBGTertiary: #c5c5c5;
+$colorBGCorrect: #beffcf;
+$colorBGIncorrect: #e7b0b0;
 $colorInput: #5e5e5e;
 $colorAccent: #f1814b;
 $colorAccentHover: #f1bea5;
@@ -30,6 +32,62 @@ body {
 button {
 	cursor: pointer;
 }
+
+.tutorial-wrapper {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+
+	.tutorial {
+		position: absolute;
+		z-index: 101;
+		width: 480px;
+		
+		top: 30%;
+		left: 50%;
+		margin-left: -240px;
+		padding: 25px;
+
+		font-size: 0.9em;
+	
+		background: #fff;
+
+		button {
+			position: relative;
+			display: block;
+			left: 50%;
+			width: 120px;
+			margin: 20px 0 10px -60px;
+			padding: 10px 20px;
+			background: $colorAccent;
+			border: none;
+
+			font-size: 1.2em;
+
+			cursor: pointer;
+
+			&:hover {
+				background: $colorAccentHover;
+			}
+		}
+
+		.dev-warning {
+			color: #990000;
+			font-weight: 700;
+		}
+	}
+
+	.tutorial-bg {
+		position: absolute;
+		width: 100%;
+		height: 100%;
+		z-index: 100;
+
+		background: rgba(0,0,0,0.5);
+	}
+}
+
+
 
 .creator-container, .player-container {
 	width: 100%;
