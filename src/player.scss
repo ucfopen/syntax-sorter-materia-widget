@@ -5,12 +5,16 @@
 	header {
 		button.submit {
 			float: right;
-			padding: 5px 15px;
+			padding: 5px 25px;
 
 			border: none;
 			background: #fff;
 			color: #000;
-			font-weight: 700;			
+			font-weight: 700;
+
+			&:hover {
+				background: $colorAccentHover;
+			}
 		}
 	}
 	section.phrase-player {
@@ -67,12 +71,15 @@
 					margin: 10px 20px 0 0;
 					color: #000;
 					background: #fff;
-					border: none;
+					border: solid 1px $colorBGTertiary;
 					padding: 10px 20px;
 					outline: none;
 
+					font-weight: 700;
+
 					&:hover {
-						background: $colorAccentHover;
+						color: #000;
+						background: #ecfff1;
 					}
 				}
 			}
