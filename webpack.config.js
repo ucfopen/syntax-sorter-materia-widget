@@ -9,7 +9,7 @@ const copy = [
 	{
 		from: path.join(__dirname, 'src', 'scoreDemo.json'),
 		to: path.join(outputPath, 'scoreDemo.json')
-	}	
+	}
 ]
 
 const entries = {

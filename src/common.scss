@@ -33,6 +33,10 @@ button {
 	cursor: pointer;
 }
 
+span.strong {
+	font-weight: 700;
+}
+
 .tutorial-wrapper {
 	position: absolute;
 	width: 100%;
@@ -51,6 +55,15 @@ button {
 		font-size: 0.9em;
 	
 		background: #fff;
+
+		img {
+			// display: inline-block;
+			position: relative;
+			top: -20px;
+			max-width: 180px;
+			float: right;
+			border: solid 1px $colorBGTertiary;
+		}
 
 		button {
 			position: relative;

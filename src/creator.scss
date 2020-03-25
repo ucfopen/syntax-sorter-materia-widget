@@ -1,6 +1,25 @@
 
 @import 'common';
 
+.tutorial.creator {
+	width: 600px;
+	margin-left: -300px;
+
+	p {
+		margin-bottom: 60px;
+	}
+
+	img:nth-child(odd) {
+		float: left;
+		margin-right: 15px;
+	}
+	
+	button {
+		position: absolute;
+		bottom: 15px;
+	}
+}
+
 .creator-header {
 
 	input {

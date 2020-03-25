@@ -6,6 +6,7 @@ let legendIdIncrement = 1
 const init = {
 	requireInit: true,
 	currentIndex: 0,
+	showTutorial: true,
 	selectedTokenIndex: -1,
 	title: 'New Foreign Language Wiget',
 	items: [{
@@ -186,6 +187,8 @@ const StateProvider = ( { children } ) => {
 			case 'init-existing':
 				let imported = importFromQset(action.payload.qset)
 				return {...state, title: action.payload.title, items: imported.items, legend: imported.legend, requireInit: false}
+			case 'dismiss_tutorial':
+				return {...state, showTutorial: false}
 			case 'update_title':
 				return {...state, title: action.payload}
 			case 'remove_question':

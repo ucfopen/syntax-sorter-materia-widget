@@ -5,6 +5,7 @@ import PhraseBuilder from './phrase-builder'
 import Legend from './legend'
 import PrefSelect from './pref-select';
 import { store } from '../../creator-store'
+import CreatorTutorial from './creator-tutorial';
 
 const CreatorApp = (props) => {
 
@@ -93,6 +94,7 @@ const CreatorApp = (props) => {
 
 	return(
 		<div className="creator-container">
+			<CreatorTutorial></CreatorTutorial>
 			<header className="creator-header">
 				<input value={global.state.title} onChange={handleTitleUpdate}/>
 				<button className="toggleLegend" onClick={toggleLegend}>Legend</button>
