@@ -6,6 +6,7 @@ import Legend from './legend'
 import PrefSelect from './pref-select';
 import { store } from '../../creator-store'
 import CreatorTutorial from './creator-tutorial';
+import CreatorHintsModal from './creator-hints-modal';
 
 const CreatorApp = (props) => {
 
@@ -61,7 +62,6 @@ const CreatorApp = (props) => {
 						displayPref: item.displayPref,
 						checkPref: item.checkPref,
 						numChecks: item.numChecks,
-						hintPref: item.hintPref,
 						fakeoutPref: item.fakeoutPref
 					}
 				}
@@ -101,9 +101,11 @@ const CreatorApp = (props) => {
 	return(
 		<div className="creator-container">
 			<CreatorTutorial></CreatorTutorial>
+			<CreatorHintsModal></CreatorHintsModal>
 			<header className="creator-header">
 				<input value={global.state.title} onChange={handleTitleUpdate}/>
 				<button className="toggleLegend" onClick={toggleLegend}>Legend</button>
+				<button className="toggleBank">Question Bank</button>
 			</header>
 			 <QuestionSelect questions={global.state.items}></QuestionSelect>
 

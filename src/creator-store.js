@@ -7,6 +7,8 @@ const init = {
 	requireInit: true,
 	currentIndex: 0,
 	showTutorial: true,
+	showHintModal: false,
+	showFakeoutModal: false,
 	selectedTokenIndex: -1,
 	title: 'New Foreign Language Wiget',
 	items: [{
@@ -14,8 +16,7 @@ const init = {
 		phrase: [],
 		displayPref: 'word',
 		checkPref: 'no',
-		numChecks: 0,
-		hintPref: 'no',
+		numChecks: 1,
 		hint: '',
 		fakeoutPref: 'no',
 		fakeout: ''
@@ -42,7 +43,6 @@ const importFromQset = (qset) => {
 			displayPref: item.options.displayPref,
 			checkPref: item.options.checkPref,
 			numChecks: item.options.numChecks,
-			hintPref: item.options.hintPref,
 			hint: item.questions[0].hint,
 			fakeoutPref: item.options.fakeoutPref,
 			fakeout: item.questions[0].fakeout
@@ -64,7 +64,6 @@ const questionItemReducer = (items, action) => {
 				displayPref: 'word',
 				checkPref: 'no',
 				numChecks: 0,
-				hintPref: 'no',
 				hint: '',
 				fakeoutPref: 'no',
 				fakeout: ''
@@ -122,16 +121,6 @@ const questionItemReducer = (items, action) => {
 					return {
 						...item,
 						numChecks: parseInt(action.payload.pref)
-					}
-				}
-				else return item
-			})
-		case 'update_hint_pref':
-			return items.map((item, index) => {
-				if (index == action.payload.questionIndex) {
-					return {
-						...item,
-						hintPref: action.payload.pref
 					}
 				}
 				else return item
@@ -277,7 +266,6 @@ const StateProvider = ( { children } ) => {
 			case 'update_display_pref':
 			case 'update_check_pref':
 			case 'update_num_checks':
-			case 'update_hint_pref':
 			case 'update_fakeout_pref':
 			case 'update_fakeout':
 			case 'update_hint':
@@ -303,6 +291,8 @@ const StateProvider = ( { children } ) => {
 				else return {...state, legendColorPickerTarget: -1}
 			case 'legend_color_picker_change':
 				return {...state, legend: legendReducer(state.legend, action), legendColorPickerTarget: -1}
+			case 'toggle_hint_modal':
+				return {...state, showHintModal: !state.showHintModal}
 			default:
 			  throw new Error('Base reducer: this action type was not defined')
 		  }

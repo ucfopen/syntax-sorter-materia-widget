@@ -100,7 +100,130 @@ span.strong {
 	}
 }
 
+.modal-wrapper {
+	position: absolute;
+	width: 100%;
+	height: 100%;
 
+	.modal {
+		position: absolute;
+		z-index: 101;
+		width: 480px;
+
+		top: 20%;
+		left: 50%;
+		margin-left: -240px;
+		padding: 25px;
+		min-height: 300px;
+
+		font-size: 0.9em;
+
+		background: #fff;
+
+		button {
+			position: relative;
+			display: block;
+			left: 50%;
+			width: 120px;
+			margin: 20px 0 10px -60px;
+			padding: 10px 20px;
+			background: $colorAccent;
+			border: none;
+
+			font-size: 1.2em;
+
+			cursor: pointer;
+
+			&:hover {
+				background: $colorAccentHover;
+			}
+		}
+
+		.pref-select {
+			input {
+				position: absolute;
+				width: 30px;
+				height: 30px;
+				opacity: 0;
+				z-index: 10;
+
+				cursor: pointer;
+			}
+			.radio-overlay {
+				position: relative;
+				display: inline-block;
+				width: 20px;
+				height: 20px;
+				top: 4px;
+
+				margin-right: 10px;
+
+				background: #fff;
+				border: solid 1px #000;
+				border-radius: 12px;
+
+				&.selected {
+					background: $colorAccent;
+					border-color: #000;
+				}
+
+				&.left {
+					margin-left: 10px;
+				}
+
+			}
+		}
+
+		.check-select {
+			display: none;
+			position: relative;
+
+			height: 24px;
+			padding-top: 20px;
+
+			&.show {
+				display: block;
+			}
+
+			&.bottom {
+				margin-bottom: 30px;
+			}
+
+			input {
+				margin-left: 25px;
+				position: relative;
+				z-index: 10;
+				height: 30px;
+				width: 40px;
+				font-size: 1.1em;
+
+				cursor: pointer;
+			}
+
+			.hint-text {
+				margin-left: 51px;
+				width: 60%;
+				height: 30px;
+				overflow-x: wrap;
+			}
+
+		}
+
+		.dev-warning {
+			color: #990000;
+			font-weight: 700;
+		}
+	}
+
+	.modal-bg {
+		position: absolute;
+		width: 100%;
+		height: 100%;
+		z-index: 100;
+
+		background: rgba(0,0,0,0.5);
+	}
+}
 
 .creator-container, .player-container {
 	width: 100%;
@@ -150,7 +273,7 @@ span.strong {
 
 .content-container {
 	width: calc(100% - 60px - 50px); // 100% - question-select - padding
-	height: calc(100% + 325px); // 100% - header - padding 100% - 52px - 50px
+	height: calc(100% - 52px - 50px); // 100% - header - padding 100% - 52px - 50px
 	padding: 25px;
 	margin-left: $questionSelectWidth;
 	background: $colorBGPrimary;
@@ -163,6 +286,35 @@ span.strong {
 		header {
 			font-weight: 700;
 			margin-bottom: 1.5em;
+		}
+
+		&.pref-card {
+			width: 46.8%;
+			max-height: 80px;
+		}
+
+		&.more-card {
+			margin-bottom: 0;
+			width: 100%;
+			height: 46%;
+			padding: 0;
+			background-color: $colorAccent;
+			cursor: pointer;
+
+			&:hover {
+				background-color: $colorAccentHover;
+
+				p {
+					color: black;
+				}
+			}
+
+			p {
+				justify-self: center;
+				padding-left: 15px;
+				color: white;
+			}
+
 		}
 	}
 

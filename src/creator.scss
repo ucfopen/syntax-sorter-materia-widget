@@ -18,6 +18,7 @@
 		position: absolute;
 		bottom: 15px;
 	}
+
 }
 
 .creator-header {
@@ -56,6 +57,23 @@
 		padding: 5px 25px;
 		outline: none;
 		border: none;
+
+		color: #ffffff;
+		background: $colorAccentHover;
+		font-weight: bold;
+
+		&:hover {
+			color: #000000;
+			background: #ffffff;
+		}
+	}
+
+	.toggleBank {
+		float: right;
+		padding: 5px 25px;
+		outline: none;
+		border: none;
+		margin-right: 5px;
 
 		color: #ffffff;
 		background: $colorAccentHover;
@@ -159,20 +177,29 @@
 		}
 	}
 
-	.additional-options {
+	.pref-holder {
 		display: flex;
 		flex-direction: row;
 
-		.pref-options {
-			margin-left: auto;
-			margin-right: auto;
+		.pref-spacer {
+			margin-left:auto;
+			margin-right:auto;
 		}
 
-		.vl {
-			margin: auto;
-			border-left: 3px solid $colorAccent;
-  		height: 50px;
+		.options-holder {
+			display: flex;
+			flex-direction: column;
+			width: calc(46.8% + 30px); // Adjusts for the padding of the card on the left
+			max-height: calc(80px + 30px); // Adjusts for the padding of the card on the left
+			margin-bottom: 15px;
+
+			.options-spacer {
+				margin-top: auto;
+				margin-bottom: auto;
+			}
+
 		}
+
 	}
 
 	.pref-select {
@@ -212,86 +239,6 @@
 				border-color: #000;
 			}
 		}
-	}
-
-	.pref-single {
-		width: 90%;
-	}
-
-	.hint-select {
-		display: none;
-		position: relative;
-
-		height: 24px;
-		padding: 2px 10px;
-		padding-top: 20px;
-		padding-bottom: 20px;
-
-		&.show {
-			display: block;
-		}
-
-		input {
-			margin-left: 25px;
-			position: relative;
-			z-index: 10;
-			height: 30px;
-			width: 90%;
-			font-size: 1.1em;
-
-			cursor: pointer;
-		}
-	}
-
-	.check-select {
-		display: none;
-		position: relative;
-
-		height: 24px;
-		padding: 2px 10px;
-		padding-top: 20px;
-
-		&.show {
-			display: block;
-		}
-
-		input {
-			margin-left: 25px;
-			position: relative;
-			z-index: 10;
-			height: 20px;
-			width: 40px;
-			font-size: 1.1em;
-
-			cursor: pointer;
-		}
-
-	}
-
-	.fake-select {
-		display: none;
-		position: relative;
-
-		height: 24px;
-		padding: 2px 10px;
-		padding-top: 20px;
-		padding-bottom: 45px;
-
-		&.show {
-			display: block;
-		}
-
-		input {
-			position: relative;
-			margin-top: 10px;
-			z-index: 10;
-			height: 30px;
-			width: 90%;
-			font-size: 1.1em;
-
-			cursor: pointer;
-		}
-
 	}
 
 	.delete-question {
