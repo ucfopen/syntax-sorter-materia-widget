@@ -12,7 +12,13 @@ const init = {
 	items: [{
 		question: '',
 		phrase: [],
-		displayPref: 'word'
+		displayPref: 'word',
+		checkPref: 'no',
+		numChecks: 0,
+		hintPref: 'no',
+		hint: '',
+		fakeoutPref: 'no',
+		fakeout: ''
 	}],
 	legend: [
 		{
@@ -33,7 +39,13 @@ const importFromQset = (qset) => {
 		return {
 			question: item.questions[0].text,
 			phrase: item.answers[0].options.phrase,
-			displayPref: item.options.displayPref
+			displayPref: item.options.displayPref,
+			checkPref: item.options.checkPref,
+			numChecks: item.options.numChecks,
+			hintPref: item.options.hintPref,
+			hint: item.questions[0].hint,
+			fakeoutPref: item.options.fakeoutPref,
+			fakeout: item.questions[0].fakeout
 		}
 	})
 
@@ -49,7 +61,13 @@ const questionItemReducer = (items, action) => {
 			return [...items, {
 				question: '',
 				phrase: [],
-				displayPref: 'word'
+				displayPref: 'word',
+				checkPref: 'no',
+				numChecks: 0,
+				hintPref: 'no',
+				hint: '',
+				fakeoutPref: 'no',
+				fakeout: ''
 			}]
 		case 'update_question_text':
 			return items.map((item, index) => {
@@ -84,6 +102,66 @@ const questionItemReducer = (items, action) => {
 					return {
 						...item,
 						displayPref: action.payload.pref
+					}
+				}
+				else return item
+			})
+		case 'update_check_pref':
+			return items.map((item, index) => {
+				if (index == action.payload.questionIndex) {
+					return {
+						...item,
+						checkPref: action.payload.pref
+					}
+				}
+				else return item
+			})
+		case 'update_num_checks':
+			return items.map((item, index) => {
+				if (index == action.payload.questionIndex) {
+					return {
+						...item,
+						numChecks: parseInt(action.payload.pref)
+					}
+				}
+				else return item
+			})
+		case 'update_hint_pref':
+			return items.map((item, index) => {
+				if (index == action.payload.questionIndex) {
+					return {
+						...item,
+						hintPref: action.payload.pref
+					}
+				}
+				else return item
+			})
+		case 'update_hint':
+			return items.map((item, index) => {
+				if (index == action.payload.questionIndex) {
+					return {
+						...item,
+						hint: action.payload.pref
+					}
+				}
+				else return item
+			})
+		case 'update_fakeout_pref':
+			return items.map((item, index) => {
+				if (index == action.payload.questionIndex) {
+					return {
+						...item,
+						fakeoutPref: action.payload.pref
+					}
+				}
+				else return item
+			})
+		case 'update_fakeout':
+			return items.map((item, index) => {
+				if (index == action.payload.questionIndex) {
+					return {
+						...item,
+						fakeout: action.payload.pref
 					}
 				}
 				else return item
@@ -197,6 +275,12 @@ const StateProvider = ( { children } ) => {
 			case 'add_new_question':
 			case 'update_question_text':
 			case 'update_display_pref':
+			case 'update_check_pref':
+			case 'update_num_checks':
+			case 'update_hint_pref':
+			case 'update_fakeout_pref':
+			case 'update_fakeout':
+			case 'update_hint':
 			case 'phrase_token_to_input':
 			case 'phrase_input_to_token':
 				return {...state, items: questionItemReducer(state.items, action)}

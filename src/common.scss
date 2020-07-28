@@ -46,14 +46,14 @@ span.strong {
 		position: absolute;
 		z-index: 101;
 		width: 480px;
-		
+
 		top: 20%;
 		left: 50%;
 		margin-left: -240px;
 		padding: 25px;
 
 		font-size: 0.9em;
-	
+
 		background: #fff;
 
 		img {
@@ -150,7 +150,7 @@ span.strong {
 
 .content-container {
 	width: calc(100% - 60px - 50px); // 100% - question-select - padding
-	height: calc(100% - 52px - 50px); // 100% - header - padding
+	height: calc(100% + 325px); // 100% - header - padding 100% - 52px - 50px
 	padding: 25px;
 	margin-left: $questionSelectWidth;
 	background: $colorBGPrimary;
@@ -176,17 +176,17 @@ span.strong {
 			padding-bottom: 25px;
 			// margin-bottom: 25px;
 		}
-		
+
 		.token {
 			display: inline-block;
 			padding: 5px 8px;
-			
-	
+
+
 			margin-right: 10px;
-	
+
 			font-size: 1.5em;
 			color: #fff;
-			
+
 			border: solid 2px #fff;
 			border-radius: 3px;
 

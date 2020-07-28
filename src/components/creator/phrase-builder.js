@@ -3,7 +3,7 @@ import Token from './token'
 import { store } from '../../creator-store'
 
 const PhraseBuilder = (props) => {
-	
+
 	const global = useContext(store)
 	const dispatch = global.dispatch
 

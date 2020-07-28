@@ -25,7 +25,7 @@ const CreatorApp = (props) => {
 					qset: props.qset
 				}
 			})
-		}		
+		}
 	}
 
 	// using this as equivalent to componentDidMount
@@ -46,7 +46,9 @@ const CreatorApp = (props) => {
 					materiaType: 'question',
 					type: 'language-widget',
 					questions: [{
-						text: item.question
+						text: item.question,
+						hint: item.hint,
+						fakeout: item.fakeout
 					}],
 					answers: [{
 						id: null,
@@ -56,7 +58,11 @@ const CreatorApp = (props) => {
 						}
 					}],
 					options: {
-						displayPref: item.displayPref
+						displayPref: item.displayPref,
+						checkPref: item.checkPref,
+						numChecks: item.numChecks,
+						hintPref: item.hintPref,
+						fakeoutPref: item.fakeoutPref
 					}
 				}
 			}),
@@ -100,10 +106,10 @@ const CreatorApp = (props) => {
 				<button className="toggleLegend" onClick={toggleLegend}>Legend</button>
 			</header>
 			 <QuestionSelect questions={global.state.items}></QuestionSelect>
-			
+
 			<section className="content-container">
 				<Question></Question>
-				
+
 				<PhraseBuilder
 					phrase={global.state.items[global.state.currentIndex].phrase}
 					legend={global.state.legend}></PhraseBuilder>

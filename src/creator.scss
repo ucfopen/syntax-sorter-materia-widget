@@ -13,7 +13,7 @@
 		float: left;
 		margin-right: 15px;
 	}
-	
+
 	button {
 		position: absolute;
 		bottom: 15px;
@@ -32,7 +32,7 @@
 		font-size: 1em;
 
 		outline: none;
-		
+
 	}
 
 	.debug {
@@ -125,7 +125,7 @@
 				margin-bottom: 0.5em;
 
 				max-width: 250px;
-				
+
 				cursor: pointer;
 
 				input {
@@ -160,45 +160,138 @@
 	}
 
 	.additional-options {
-		
-		.pref-select {
-			display: inline-block;
+		display: flex;
+		flex-direction: row;
+
+		.pref-options {
+			margin-left: auto;
+			margin-right: auto;
+		}
+
+		.vl {
+			margin: auto;
+			border-left: 3px solid $colorAccent;
+  		height: 50px;
+		}
+	}
+
+	.pref-select {
+		display: inline-block;
+		position: relative;
+
+		height: 24px;
+		padding: 2px 10px;
+
+		input {
+			position: absolute;
+			top: 4px;
+			left: 9px;
+			width: 20px;
+			height: 20px;
+			opacity: 0;
+			z-index: 10;
+
+			cursor: pointer;
+		}
+
+		.radio-overlay {
 			position: relative;
+			display: inline-block;
+			width: 20px;
+			height: 20px;
+			top: 4px;
 
-			height: 24px;
-			padding: 2px 10px;
+			margin-right: 10px;
 
-			input {
-				position: absolute;
-				top: 4px;
-				left: 9px;
-				width: 20px;
-				height: 20px;
-				opacity: 0;
-				z-index: 10;
+			background: #fff;
+			border: solid 1px #000;
+			border-radius: 12px;
 
-				cursor: pointer;
-			}
-	
-			.radio-overlay {
-				position: relative;
-				display: inline-block;
-				width: 20px;
-				height: 20px;
-				top: 4px;
-	
-				margin-right: 10px;
-	
-				background: #fff;
-				border: solid 1px #000;
-				border-radius: 12px;
-	
-				&.selected {
-					background: $colorAccent;
-					border-color: #000;
-				}
+			&.selected {
+				background: $colorAccent;
+				border-color: #000;
 			}
 		}
+	}
+
+	.pref-single {
+		width: 90%;
+	}
+
+	.hint-select {
+		display: none;
+		position: relative;
+
+		height: 24px;
+		padding: 2px 10px;
+		padding-top: 20px;
+		padding-bottom: 20px;
+
+		&.show {
+			display: block;
+		}
+
+		input {
+			margin-left: 25px;
+			position: relative;
+			z-index: 10;
+			height: 30px;
+			width: 90%;
+			font-size: 1.1em;
+
+			cursor: pointer;
+		}
+	}
+
+	.check-select {
+		display: none;
+		position: relative;
+
+		height: 24px;
+		padding: 2px 10px;
+		padding-top: 20px;
+
+		&.show {
+			display: block;
+		}
+
+		input {
+			margin-left: 25px;
+			position: relative;
+			z-index: 10;
+			height: 20px;
+			width: 40px;
+			font-size: 1.1em;
+
+			cursor: pointer;
+		}
+
+	}
+
+	.fake-select {
+		display: none;
+		position: relative;
+
+		height: 24px;
+		padding: 2px 10px;
+		padding-top: 20px;
+		padding-bottom: 45px;
+
+		&.show {
+			display: block;
+		}
+
+		input {
+			position: relative;
+			margin-top: 10px;
+			z-index: 10;
+			height: 30px;
+			width: 90%;
+			font-size: 1.1em;
+
+			cursor: pointer;
+		}
+
 	}
 
 	.delete-question {
@@ -297,7 +390,7 @@
 
 			// margin-top: 15px;
 			margin-right: 10px;
-			
+
 			vertical-align: middle;
 		}
 
@@ -313,7 +406,7 @@
 			vertical-align: middle;
 
 			font-size: 1.1em;
-			
+
 		}
 
 		.remove-item {
