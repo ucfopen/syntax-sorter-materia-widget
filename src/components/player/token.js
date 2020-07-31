@@ -8,6 +8,9 @@ const Token = (props) => {
 
 	const tokenRef = useRef(null)
 	const coords = tokenRef.current?.getBoundingClientRect()
+	const currentChecksUsed = global.state.items[global.state.currentIndex] ? global.state.items[global.state.currentIndex].checksUsed : 0
+	const maxChecks = global.state.items[global.state.currentIndex] ? global.state.items[global.state.currentIndex].numChecks : 0
+	const currentAnswerVal = global.state.items[global.state.currentIndex] ? global.state.items[global.state.currentIndex].correct : 'none'
 
 	const [state, setState] = useState({dragging: false, origin: null})
 
@@ -35,6 +38,13 @@ const Token = (props) => {
 	}
 
 	const handleDragStart = (event) => {
+
+		// Exits the function if the max number of checks have been used
+		if (currentAnswerVal == "yes" || currentChecksUsed >= maxChecks)
+		{
+			return
+		}
+
 		setState(state => ({...state,origin:props.status}))
 
 		event.dataTransfer.dropEffect = "move"
@@ -59,6 +69,12 @@ const Token = (props) => {
 	}
 
 	const handleDragEnd = (event) => {
+
+		// Exits the function if the max number of checks have been used
+		if (currentAnswerVal == "yes" || currentChecksUsed >= maxChecks)
+		{
+			return
+		}
 
 		dispatch({type: 'token_drag_complete', payload: {
 			origin: state.origin,

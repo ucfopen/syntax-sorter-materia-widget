@@ -7,7 +7,18 @@
 				"materiaType": "question",
 				"id": null,
 				"type": "language-widget",
-				"questions": [{"text":"Arrange the following items in the correct order."}],
+				"questions": [
+					{
+						"text":"Arrange the following items in the correct order.",
+						"hint":"This is your hint",
+						"fakeout": [
+							{
+								"value": "fake",
+								"legend": 6
+							}
+						]
+					}
+				],
 				"answers": [{
 					"id": null,
 					"text":"J'aime les chats noirs",
@@ -37,14 +48,28 @@
 					}
 				}],
 				"options": {
-					"displayPref": "word"
+					"displayPref": "word",
+					"checkPref": "yes",
+					"numChecks": 5,
+					"fakeoutPref": "no"
 				}
 			},
 			{
 				"materiaType": "question",
 				"id": null,
 				"type": "language-widget",
-				"questions": [{"text":"Instead of the spoken phrase, we've replaced each word with its part of speech. Arrange them in the proper order."}],
+				"questions": [
+					{
+						"text":"Instead of the spoken phrase, we've replaced each word with its part of speech. Arrange them in the proper order.",
+						"hint":"This is your hint",
+						"fakeout": [
+							{
+								"value": "fake",
+								"legend": 6
+							}
+						]
+					}
+				],
 				"answers": [{
 					"id": null,
 					"text":"bibliothèque",
@@ -70,7 +95,10 @@
 					}
 				}],
 				"options": {
-					"displayPref": "part-of-speech"
+					"displayPref": "part-of-speech",
+					"checkPref": "yes",
+					"numChecks": 5,
+					"fakeoutPref": "no"
 				}
 			}],
 			"options": {
@@ -105,7 +133,9 @@
 						"color": "#ff0080",
 						"name": "Pronoun"
 					}
-				]
+				],
+				"numAsk": 2,
+				"askLimit": "no"
 			}
 		}
 	}

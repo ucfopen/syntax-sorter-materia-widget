@@ -6,7 +6,9 @@ const init = {
 	legend: [],
 	currentIndex: 0,
 	requireInit: true,
-	showTutorial: true
+	showTutorial: true,
+	numAsk: 1,
+	askLimit: "no"
 }
 
 const store = React.createContext(init)
@@ -26,15 +28,27 @@ const importFromQset = (qset) => {
 			return {
 				question: item.questions[0].text,
 				answer: item.answers[0].text,
+				hint: item.questions[0].hint,
+				fakeout: shuffle(item.questions[0].fakeout.map((token) => {
+					return {...token, status: 'unsorted'}
+				})),
 				phrase: shuffle(item.answers[0].options.phrase.map((token) => {
 					return {...token, status: 'unsorted'}
 				})),
 				sorted: [],
 				displayPref: item.options.displayPref,
+				checkPref: item.options.checkPref,
+				numChecks: item.options.numChecks,
+				fakeoutPref: item.options.fakeoutPref,
+				checksUsed: 0,
+				correct: "none",
+				correctPhrase: item.answers[0].options.phrase,
 				qsetId: item.id
 			}
 		}),
-		legend: qset.options.legend
+		legend: qset.options.legend,
+		numAsk: qset.options.numAsk,
+		askLimit: qset.options.askLimit,
 	}
 }
 
@@ -107,7 +121,7 @@ const tokenSortedPhraseReducer = (list, action) => {
 			]
 		case 'adjacent_token_update':
 			return list.map((token) => {
-				
+
 				if (action.payload.left != undefined && token.index == action.payload.left) {
 					return {
 						...token,
@@ -172,7 +186,7 @@ const questionItemReducer = (items, action) => {
 				}
 				else return item
 			})
-		case 'token_drag_complete': 
+		case 'token_drag_complete':
 			return items.map((item, index) => {
 				if (index == action.payload.questionIndex) {
 					if (action.payload.origin == 'unsorted') return { ...item, phrase: tokenUnsortedPhraseReducer(item.phrase, action) }
@@ -193,6 +207,13 @@ const questionItemReducer = (items, action) => {
 			return items.map((item, index) => {
 				if (index == action.payload.questionIndex) {
 					return {...item, sorted: tokenSortedPhraseReducer(item.sorted, action)}
+				}
+				else return item
+			})
+		case 'correct_update':
+			return items.map((item, index) => {
+				if (index == action.payload.questionIndex) {
+					return {...item, correct: action.payload.answer, checksUsed: (item.checksUsed + 1)}
 				}
 				else return item
 			})
@@ -221,6 +242,7 @@ const StateProvider = ( { children } ) => {
 			case 'response_token_sort':
 			case 'response_token_rearrange':
 			case 'adjacent_token_update':
+			case 'correct_update':
 				return {...state, items: questionItemReducer(state.items, action)}
 			default:
 				throw new Error(`Base reducer: action type: ${action.type} not found.`)

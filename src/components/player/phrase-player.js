@@ -8,10 +8,20 @@ const PhrasePlayer = (props) => {
 
 	const global = useContext(store)
 	const dispatch = global.dispatch
+	const currentChecksUsed = global.state.items[global.state.currentIndex] ? global.state.items[global.state.currentIndex].checksUsed : 0
+	const maxChecks = global.state.items[global.state.currentIndex] ? global.state.items[global.state.currentIndex].numChecks : 0
+	const currentAnswerVal = global.state.items[global.state.currentIndex] ? global.state.items[global.state.currentIndex].correct : 'none'
 
 	const handleTokenDragOver = (event) => {
+
+		// Exits the function if the max number of checks have been used
+		if (currentAnswerVal == "yes" || currentChecksUsed >= maxChecks)
+		{
+			return
+		}
+
 		event.preventDefault()
-		
+
 		const cursor = event.clientX
 
 		let leftToken = null
