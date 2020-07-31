@@ -6,6 +6,7 @@ const PhraseBuilder = (props) => {
 
 	const global = useContext(store)
 	const dispatch = global.dispatch
+	const currentLegend = global.state.items[global.state.currentIndex].phrase[global.state.selectedTokenIndex] ? global.state.items[global.state.currentIndex].phrase[global.state.selectedTokenIndex].legend : -1
 
 	const handleTokenInput = (event) => {
 		switch (event.which) {
@@ -57,8 +58,8 @@ const PhraseBuilder = (props) => {
 	})
 
 	let legendSelection = props.legend.map((term, index) => {
-		return(<label key={index} className={`${global.state.selectedTokenIndex != -1 && global.state.items[global.state.currentIndex].phrase[global.state.selectedTokenIndex].legend == term.id ?  'selected' : ''}`}>
-			<input type="radio" name="token-type-selection" value={term.id} onChange={tokenTypeSelection} checked={global.state.selectedTokenIndex != -1 && global.state.items[global.state.currentIndex].phrase[global.state.selectedTokenIndex].legend == term.id}/>
+		return(<label key={index} className={`${global.state.selectedTokenIndex != -1 && currentLegend == term.id ?  'selected' : ''}`}>
+			<input type="radio" name="token-type-selection" value={term.id} onChange={tokenTypeSelection} checked={global.state.selectedTokenIndex != -1 && currentLegend == term.id}/>
 			<span className="color-radio" style={{background: term.color}}></span>{term.name}
 		</label>)
 	})

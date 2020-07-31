@@ -13,7 +13,7 @@ const LegendItem = (props) => {
 	const handleColorPickerClick = (event) => {
 		let heightOffset = legendItemRef.current.getBoundingClientRect().y
 		props.toggleColorPicker(props.index, heightOffset)
-	}	
+	}
 
 	const onNameChange = (event) => {
 		dispatch({type: 'update_legend_item', payload: {index: props.index, text: event.target.value}})
@@ -21,6 +21,7 @@ const LegendItem = (props) => {
 
 	const remove = () => {
 		dispatch({type: 'remove_legend_item', payload: {index: props.index, id: props.id}})
+		dispatch({type: 'fakeout_remove_legend_item', payload: {index: props.index, id: props.id}})
 	}
 
 	return (

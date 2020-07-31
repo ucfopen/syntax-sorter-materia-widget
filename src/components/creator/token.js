@@ -6,6 +6,8 @@ const Token = (props) => {
 	const global = useContext(store)
 	const dispatch = global.dispatch
 
+	let index = props.type == "fakeout" ? global.state.selectedFakeoutIndex : global.state.selectedTokenIndex
+
 	const getLegendColor = (id) => {
 		if (!id) return '#ffffff'
 
@@ -15,7 +17,14 @@ const Token = (props) => {
 	}
 
 	const toggleTokenSelection = () => {
-		dispatch({type: 'toggle_token_select', payload: props.index})
+		if (props.format == "fakeout")
+		{
+			dispatch({type: 'toggle_fakeout_select', payload: props.index})
+		}
+		else
+		{
+			dispatch({type: 'toggle_token_select', payload: props.index})
+		}
 	}
 
 	// function that returns a value 0-255 based on the "lightness" of a given hex value
@@ -33,7 +42,7 @@ const Token = (props) => {
 	let tokenColor = getLegendColor(props.type)
 
 	return (
-		<span className={`token ${!props.type ? "unassigned" : ""} ${global.state.selectedTokenIndex == props.index ? "selected" : ""}`}
+		<span className={`token ${!props.type ? "unassigned" : ""} ${index == props.index ? "selected" : ""}`}
 			style={{
 				background: tokenColor,
 				color: contrastCalc(tokenColor) > 160 ? '#000000' : '#ffffff'

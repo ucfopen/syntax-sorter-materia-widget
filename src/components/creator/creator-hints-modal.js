@@ -8,7 +8,6 @@ const CreatorHintsModal = (props) => {
 
   const currentCheckPref = global.state.items[global.state.currentIndex] ? global.state.items[global.state.currentIndex].checkPref : 'no'
   const currentNumChecks = global.state.items[global.state.currentIndex] ? global.state.items[global.state.currentIndex].numChecks : 1
-  const currentHintPref = global.state.items[global.state.currentIndex] ? global.state.items[global.state.currentIndex].hintPref : 'no'
   const currentHint = global.state.items[global.state.currentIndex] ? global.state.items[global.state.currentIndex].hint : ''
 
   const dismiss = () => {
@@ -59,7 +58,7 @@ const CreatorHintsModal = (props) => {
           Hint (optional)
           <input className="hint-text" type="text" name="hint-val" onChange={handleHint} value={currentHint}/>
         </span>
-        <button onClick={dismiss}>Save</button>
+        <button onClick={dismiss}>Okay</button>
       </div>
       <div className='modal-bg'></div>
     </div>

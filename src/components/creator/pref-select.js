@@ -9,6 +9,9 @@ const PrefSelect = (props) => {
 	const currentPref = global.state.items[global.state.currentIndex] ? global.state.items[global.state.currentIndex].displayPref : 'word'
 	const currentFakeoutPref = global.state.items[global.state.currentIndex] ? global.state.items[global.state.currentIndex].fakeoutPref : 'no'
 	const currentFakeout = global.state.items[global.state.currentIndex] ? global.state.items[global.state.currentIndex].fakeout : ''
+	const currentCheckPref = global.state.items[global.state.currentIndex] ? global.state.items[global.state.currentIndex].checkPref : 'no'
+  const currentNumChecks = global.state.items[global.state.currentIndex] ? global.state.items[global.state.currentIndex].numChecks : 1
+  const currentHint = global.state.items[global.state.currentIndex] ? global.state.items[global.state.currentIndex].hint : ''
 
 	const handleTokenDisplayPref = (event) => {
 		dispatch({type: 'update_display_pref', payload: {
@@ -35,6 +38,10 @@ const PrefSelect = (props) => {
     dispatch({type: 'toggle_hint_modal'})
   }
 
+  const toggleFakeoutModal = () => {
+    dispatch({type: 'toggle_fakeout_modal'})
+  }
+
 	return (
 		<div className="pref-holder">
 			<div className="card pref-card">
@@ -56,10 +63,12 @@ const PrefSelect = (props) => {
 			<div className="options-holder">
 				<div className="card more-card" onClick={toggleHintModal}>
 					<p>Set Guess Limits and Hints</p>
+					<p className={`guess-limit-tip ${currentCheckPref == "yes" ? "show" : ""}`} >Guess limit: {currentNumChecks}, hint: {currentHint.length > 0 ? "enabled" : "disabled"}</p>
 				</div>
 				<div className="options-spacer"></div>
-				<div className="card more-card">
+				<div className="card more-card" onClick={toggleFakeoutModal}>
 					<p>Add "Fake" Tokens</p>
+					<p className={`guess-limit-tip ${currentFakeoutPref == "yes" ? "show" : ""}`} >Fake Tokens: {currentFakeout.length}</p>
 				</div>
 			</div>
 		</div>

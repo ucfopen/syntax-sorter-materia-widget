@@ -189,7 +189,7 @@ span.strong {
 				margin-bottom: 30px;
 			}
 
-			input {
+			input:not(.num-ask):not(.hint-text) {
 				margin-left: 25px;
 				position: relative;
 				z-index: 10;
@@ -200,9 +200,18 @@ span.strong {
 				cursor: pointer;
 			}
 
+			.num-ask {
+				height: 25px;
+				width: 35px;
+				margin-left: 5px;
+				margin-right: 5px;
+				font-size: 1.1em;
+				cursor: pointer;
+			}
+
 			.hint-text {
 				margin-left: 51px;
-				width: 60%;
+				width: 250px;
 				height: 30px;
 				overflow-x: wrap;
 			}
@@ -273,7 +282,9 @@ span.strong {
 
 .content-container {
 	width: calc(100% - 60px - 50px); // 100% - question-select - padding
-	height: calc(100% - 52px - 50px); // 100% - header - padding 100% - 52px - 50px
+	//height: calc(100% - 52px - 50px); // 100% - header - padding 100% - 52px - 50px
+	max-height: calc(100% + 50px);
+
 	padding: 25px;
 	margin-left: $questionSelectWidth;
 	background: $colorBGPrimary;
@@ -294,6 +305,8 @@ span.strong {
 		}
 
 		&.more-card {
+			display:flex;
+			flex-direction: row;
 			margin-bottom: 0;
 			width: 100%;
 			height: 46%;
@@ -311,8 +324,21 @@ span.strong {
 
 			p {
 				justify-self: center;
+				align-self: center;
 				padding-left: 15px;
 				color: white;
+			}
+
+			.guess-limit-tip {
+				display: none;
+				align-self: center;
+				font-size: .7em;
+				margin-left:auto;
+				padding-right: 20px;
+
+				&.show {
+					display: block;
+				}
 			}
 
 		}
