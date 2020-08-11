@@ -6,7 +6,7 @@ const Token = (props) => {
 	const global = useContext(store)
 	const dispatch = global.dispatch
 
-	let index = props.type == "fakeout" ? global.state.selectedFakeoutIndex : global.state.selectedTokenIndex
+	let index = props.type == "fakeout" ? global.state?.selectedFakeoutIndex : global.state.selectedTokenIndex
 
 	const getLegendColor = (id) => {
 		if (!id) return '#ffffff'

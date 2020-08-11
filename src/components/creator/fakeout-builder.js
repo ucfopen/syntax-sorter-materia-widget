@@ -7,8 +7,8 @@ const FakeoutBuilder = (props) => {
   const global = useContext(store)
   const dispatch = global.dispatch
 
-  const currentFakePref = global.state.items[global.state.currentIndex] ? global.state.items[global.state.currentIndex].fakeoutPref : 'no'
-  const currentLegend = global.state.items[global.state.currentIndex].fakeout[global.state.selectedFakeoutIndex] ? global.state.items[global.state.currentIndex].fakeout[global.state.selectedFakeoutIndex].legend : -1
+  const currentFakePref = (global.state.items[global.state.currentIndex] && global.state.items[global.state.currentIndex].fakeoutPref != undefined) ? global.state.items[global.state.currentIndex].fakeoutPref : 'no'
+  const currentLegend = (global.state.selectedFakeoutIndex != -1 && global.state?.items[global.state.currentIndex]?.fakeout[global.state.selectedFakeoutIndex]?.legend != undefined) ? global.state.items[global.state.currentIndex].fakeout[global.state.selectedFakeoutIndex].legend : -1
 
   const handleTokenInput = (event) => {
     switch (event.which) {
@@ -59,7 +59,7 @@ const FakeoutBuilder = (props) => {
 
   }
 
-  let tokenList = props.phrase.map((term, index) => {
+  let tokenList = props.phrase?.map((term, index) => {
     return <Token key={index} index={index} type={term.legend} format={props.format} value={term.value}></Token>
   })
 

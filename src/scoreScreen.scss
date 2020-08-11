@@ -7,7 +7,9 @@
 	height: 100%;
 	margin-left: 0px;
 
-	.question-container {
+	.question-text-container {
+		display: flex;
+		flex-direction: column;
 
 		h3 {
 			margin: 0 0 1em 0;
@@ -27,15 +29,22 @@
 			padding: 15px;
 
 			.token {
-				font-size: 1.2em;
+				display: inline-block;
+				padding: 5px 8px;
 				margin-right: 5px;
+
+				font-size: 1.2em;
+				color: #fff;
+
+				border: solid 2px #fff;
+				border-radius: 3px;
 			}
 
 			.deduction-indicator {
 				position: absolute;
 				right: 18px;
 				top: 10px;
-	
+
 				font-size: 0.8em;
 				font-weight: 700;
 				font-style: italic;
@@ -43,7 +52,7 @@
 				opacity: 0.5;
 			}
 		}
-		
+
 		.correct-container {
 			background-color: $colorBGTertiary;
 		}
@@ -56,4 +65,5 @@
 			background-color: $colorBGIncorrect;
 		}
 	}
+
 }

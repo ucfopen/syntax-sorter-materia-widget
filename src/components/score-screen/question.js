@@ -59,7 +59,7 @@ const Question = (props) => {
 	// console.log(responseTokenList)
 
 	return (
-		<section className='card question-container'>
+		<section className='card question-text-container'>
 			<h3>{props.questionText}</h3>
 			<div className={`response-container ${props.score > 99 ? 'correct' : 'incorrect'}`}>
 				<h5>How you responded:</h5>

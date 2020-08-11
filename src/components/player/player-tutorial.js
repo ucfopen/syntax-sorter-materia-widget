@@ -6,8 +6,8 @@ const PlayerTutorial = (props) => {
 	const global = useContext(store)
 	const dispatch = global.dispatch
 
-	const dismiss = () => {
-		dispatch({type: 'dismiss_tutorial'})
+	const toggle = () => {
+		dispatch({type: 'toggle_tutorial'})
 	}
 
 	return(
@@ -20,7 +20,7 @@ const PlayerTutorial = (props) => {
 				<span>(PH - need an image)</span>
 				<p>Tokens are color-coded based on their part of speech.</p>
 				<span>(PH - need an image)</span>
-				<button onClick={dismiss}>I'm Ready</button>
+				<button onClick={toggle}>I'm Ready</button>
 			</div>
 
 			<div className='tutorial-bg'>

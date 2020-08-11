@@ -9,14 +9,7 @@
 				"type": "language-widget",
 				"questions": [
 					{
-						"text":"Arrange the following items in the correct order.",
-						"hint":"This is your hint",
-						"fakeout": [
-							{
-								"value": "fake",
-								"legend": 6
-							}
-						]
+						"text":"Arrange the following items in the correct order."
 					}
 				],
 				"answers": [{
@@ -51,7 +44,14 @@
 					"displayPref": "word",
 					"checkPref": "yes",
 					"numChecks": 5,
-					"fakeoutPref": "no"
+					"fakeoutPref": "no",
+					"hint":"This is your hint",
+					"fakeout": [
+						{
+							"value": "fake",
+							"legend": 6
+						}
+					]
 				}
 			},
 			{
@@ -60,14 +60,7 @@
 				"type": "language-widget",
 				"questions": [
 					{
-						"text":"Instead of the spoken phrase, we've replaced each word with its part of speech. Arrange them in the proper order.",
-						"hint":"This is your hint",
-						"fakeout": [
-							{
-								"value": "fake",
-								"legend": 6
-							}
-						]
+						"text":"Instead of the spoken phrase, we've replaced each word with its part of speech. Arrange them in the proper order."
 					}
 				],
 				"answers": [{
@@ -98,7 +91,14 @@
 					"displayPref": "part-of-speech",
 					"checkPref": "yes",
 					"numChecks": 5,
-					"fakeoutPref": "no"
+					"fakeoutPref": "no",
+					"hint":"This is your hint",
+					"fakeout": [
+						{
+							"value": "fake",
+							"legend": 6
+						}
+					]
 				}
 			}],
 			"options": {

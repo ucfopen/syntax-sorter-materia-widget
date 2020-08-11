@@ -49,9 +49,9 @@ const importFromQset = (qset) => {
 			displayPref: item.options.displayPref,
 			checkPref: item.options.checkPref,
 			numChecks: item.options.numChecks,
-			hint: item.questions[0].hint,
+			hint: item.options.hint,
 			fakeoutPref: item.options.fakeoutPref,
-			fakeout: item.questions[0].fakeout
+			fakeout: item.options.fakeout
 		}
 	})
 
@@ -178,7 +178,7 @@ const questionItemReducer = (items, action) => {
 			return items.map((item) => {
 				return {
 					...item,
-					fakeout: fakeoutReducer(item.phrase, action)
+					fakeout: fakeoutReducer(item.fakeout, action)
 				}
 			})
 		default:

@@ -48,7 +48,7 @@ const CreatorApp = (props) => {
 		// Tests each individual question
 		for (let i = 0; i < theItems.length; i++)
 		{
-			// Stops it running if not needed
+			// Stops it running if there is already an error
 			if (invalid.length > 0)
 			{
 				break
@@ -57,14 +57,14 @@ const CreatorApp = (props) => {
 			// Test to make sure there is actually an item
 			if (!theItems[i])
 			{
-				invalid = "Missing a question item"
+				invalid = "Missing a question item."
 				break
 			}
 
 			// Test to make sure a phrase has atleast one token
 			if (theItems[i].phrase.length <= 0)
 			{
-				invalid = `Question ${i + 1} needs at least one phrase token`
+				invalid = `Question ${i + 1} needs at least one phrase token.`
 				break
 			}
 
@@ -73,30 +73,35 @@ const CreatorApp = (props) => {
 			{
 				if (!theItems[i].numChecks || theItems[i].numChecks <= 0)
 				{
-					invalid = `Question ${i + 1} has an invalid number of answer checks`
+					invalid = `Question ${i + 1} has an invalid number of answer checks.`
 					break
 				}
 				else if (theItems[i].numChecks > 5)
 				{
-					invalid = `Question ${i + 1} has too many answer checks`
+					invalid = `Question ${i + 1} has too many answer checks.`
+					break
+				}
+				else if (theItems[i].hint.length > 0 && theItems[i].numChecks <= 1)
+				{
+					invalid = `Question ${i + 1} needs at lease two answer checks because it has a hint.`
 					break
 				}
 			}
 
-			// Test to make sure each word in each phrase has a legend
+			// Test to make sure each word in each phrase token is valid
 			for (let j = 0; j < theItems[i].phrase.length; j++)
 			{
 				// Test to make sure there is actually a phrase
 				if (!theItems[i].phrase[j])
 				{
-					invalid = "Missing a phrase"
+					invalid = "Missing a phrase."
 					break
 				}
 
 				// Test if each phrase item has an assigned legend value
 				if (!theItems[i].phrase[j].legend)
 				{
-					invalid = `Question ${i + 1} has a phrase token that is missing a part of speech`
+					invalid = `Question ${i + 1} has a phrase token that is missing a part of speech.`
 					break
 				}
 			}
@@ -104,7 +109,7 @@ const CreatorApp = (props) => {
 			// Test to make sure if they allow fakeouts for a question that it actually has fakeouts
 			if (theItems[i].fakeoutPref == "yes" && theItems[i].fakeout.length <= 0)
 			{
-				invalid = `Question ${i + 1} has a fakeouts enabled but has no fakeout tokens`
+				invalid = `Question ${i + 1} has a fakeouts enabled but has no fakeout tokens.`
 				break
 			}
 
@@ -115,15 +120,39 @@ const CreatorApp = (props) => {
 				// Test to make sure there is actually a fakeout
 				if (!theItems[i].fakeout[j])
 				{
-					invalid = "Missing a fakeout set"
+					invalid = "Missing a fakeout set."
 					break
 				}
 
 				// Test if each phrase item has an assigned legend value
 				if (!theItems[i].fakeout[j].legend)
 				{
-					invalid = `Question ${i + 1} has a fakeout token that is missing a part of speech`
+					invalid = `Question ${i + 1} has a fakeout token that is missing a part of speech.`
 					break
+				}
+
+				// Tests to make sure each fakeout isn't also in the phrase
+				if (theItems[i].displayPref == "word")
+				{
+					for (let k = 0; k < theItems[i].phrase.length; k++)
+					{
+						if (theItems[i].fakeout[j].value == theItems[i].phrase[k].value)
+						{
+							invalid = `Question ${i + 1} has a fakeout token that is the same word as a token in the answer phrase.`
+							break
+						}
+					}
+				}
+				else // part-of-speech
+				{
+					for (let k = 0; k < theItems[i].phrase.length; k++)
+					{
+						if (theItems[i].fakeout[j].legend == theItems[i].phrase[k].legend)
+						{
+							invalid = `Question ${i + 1} has a fakeout token that has the same part of speech as the answer phrase.`
+							break
+						}
+					}
 				}
 			}
 		}
@@ -133,7 +162,7 @@ const CreatorApp = (props) => {
 		{
 			if (global.state.numAsk <= 0 || global.state.numAsk > theItems.length)
 			{
-				invalid = "You have entered an invalid number of questions to ask"
+				invalid = "You have entered an invalid number of questions to ask."
 			}
 		}
 
@@ -167,9 +196,7 @@ const CreatorApp = (props) => {
 					materiaType: 'question',
 					type: 'language-widget',
 					questions: [{
-						text: item.question,
-						hint: item.hint,
-						fakeout: item.fakeout
+						text: item.question
 					}],
 					answers: [{
 						id: null,
@@ -182,7 +209,9 @@ const CreatorApp = (props) => {
 						displayPref: item.displayPref,
 						checkPref: item.checkPref,
 						numChecks: item.numChecks,
-						fakeoutPref: item.fakeoutPref
+						fakeoutPref: item.fakeoutPref,
+						hint: item.hint,
+						fakeout: item.fakeout
 					}
 				}
 			}),
@@ -192,6 +221,7 @@ const CreatorApp = (props) => {
 				numAsk: global.state.numAsk
 			}
 		}
+
 		Materia.CreatorCore.save(global.state.title, qset, 1)
 	}
 
@@ -240,15 +270,14 @@ const CreatorApp = (props) => {
 				<button className="toggleLegend" onClick={toggleLegend}>Legend</button>
 				<button className="toggleBank" onClick={toggleBank}>Question Bank</button>
 			</header>
-			 <QuestionSelect questions={global.state.items}></QuestionSelect>
-
+			<QuestionSelect questions={global.state.items}></QuestionSelect>
 			<section className="content-container">
 				<Question></Question>
-
 				<PhraseBuilder
 					phrase={global.state.items[global.state.currentIndex].phrase}
 					legend={global.state.legend}
-					format="phrase"></PhraseBuilder>
+					format="phrase">
+				</PhraseBuilder>
 				<PrefSelect></PrefSelect>
 				<button className="card delete-question" onClick={handleDeleteQuestion} disabled={global.state.items.length < 2}>Delete Question</button>
 			</section>

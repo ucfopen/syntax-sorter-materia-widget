@@ -52,7 +52,7 @@ const CreatorHintsModal = (props) => {
         </span>
         <span className={`check-select ${currentCheckPref == "yes" ? "show" : ""}`}>
           Number of checks
-          <input type="number" name="check-val" onChange={handleNumChecks} value={currentNumChecks} placeholder={currentNumChecks} min="1" max="5"/>
+          <input type="number" name="check-val" onChange={handleNumChecks} value={currentNumChecks} placeholder="1" min="1" max="5"/>
         </span>
         <span className={`check-select bottom ${currentCheckPref == "yes" ? "show" : ""}`}>
           Hint (optional)

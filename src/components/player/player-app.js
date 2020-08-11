@@ -12,6 +12,7 @@ const PlayerApp = (props) => {
 	const currentChecksUsed = global.state.items[global.state.currentIndex] ? global.state.items[global.state.currentIndex].checksUsed : 0
 	const maxChecks = global.state.items[global.state.currentIndex] ? global.state.items[global.state.currentIndex].numChecks : 0
 	const currentAnswerVal = global.state.items[global.state.currentIndex] ? global.state.items[global.state.currentIndex].correct : 'none'
+	const currentHint = global.state.items[global.state.currentIndex] ? global.state.items[global.state.currentIndex].hint : ''
 
 	useEffect(() => {
 		if (global.state.requireInit) {
@@ -35,62 +36,16 @@ const PlayerApp = (props) => {
 		return string.substring(0,string.length-1)
 	}
 
-	const handleCheck = () => {
-
-		// Disables the button if the number of checks has been reached
-		if (currentAnswerVal == "yes" || currentChecksUsed >= maxChecks)
-		{
-			return
-		}
-
-		let item = global.state.items[global.state.currentIndex]
-		let correct = "yes"
-		let correctPhrase = item.correctPhrase
-		let sortedArr = item.sorted
-
-		// Answer is of the incorrect size
-		if (sortedArr.length != correctPhrase.length)
-		{
-			correct = "no"
-		}
-
-		if (correct == "yes" && item.displayPref == "word")
-		{
-			// Makes sure the text of the answer array and user sorted array are the same
-			for (let i = 0; i < correctPhrase.length; i++)
-			{
-				if (correctPhrase[i].value != item.sorted[i].value)
-				{
-					correct = "no"
-				}
-			}
-		}
-		else if (correct == "yes" && item.displayPref == "part-of-speech")
-		{
-			// Makes sure the parts of speech of the answer array and user sorted array are the same
-			for (let i = 0; i < correctPhrase.length; i++)
-			{
-				if (correctPhrase[i].legend != item.sorted[i].legend)
-				{
-					console.log(item.sorted[i].value)
-					correct = "no"
-				}
-			}
-		}
-
-		dispatch({type: 'correct_update', payload: {
-			questionIndex: global.state.currentIndex,
-			answer: correct
-		}})
-
-	}
-
 	const handleSubmit = () => {
 
 		for (let item of global.state.items) {
 			Materia.Score.submitQuestionForScoring(item.qsetId, convertSortedToString(item.sorted, item.displayPref))
 		}
 		Materia.Engine.end(true)
+	}
+
+	const toggleTutorial = () => {
+		dispatch({type: 'toggle_tutorial'})
 	}
 
 	const legendList = global.state.legend.map((term, index) => {
@@ -102,26 +57,24 @@ const PlayerApp = (props) => {
 			<PlayerTutorial></PlayerTutorial>
 			<header className="player-header">
 				{global.state.title}
-				<button className="submit" onClick={handleSubmit}>Submit</button>
+				<button className="headerBtn" onClick={handleSubmit}>Submit</button>
+				<button className="headerBtn" onClick={toggleTutorial}>Tutorial</button>
 			</header>
 			<QuestionSelect></QuestionSelect>
 			<section className="content-container">
 				<section className="card question-container">
 					<p>{global.state.items[global.state.currentIndex]?.question}</p>
-					<p className={`answer-indicator ${currentAnswerVal == "yes" ? "show" : ""}`}>Correct</p>
-					<p className={`answer-indicator wrong ${currentAnswerVal == "no" ? "show" : ""}`}>Incorrect</p>
 				</section>
 				<PhrasePlayer
 					phrase={global.state.items[global.state.currentIndex]?.phrase}
 					sorted={global.state.items[global.state.currentIndex]?.sorted}
 					displayPref={global.state.items[global.state.currentIndex]?.displayPref}></PhrasePlayer>
+				<div className={`card hint-text ${(currentAnswerVal == "no" && currentChecksUsed > 0 && currentHint?.length > 0) ? 'show' : ''}`}>
+					<span>{currentHint}</span>
+				</div>
 				<section className="card legend">
 					<header>Color Legend</header>
 					{legendList}
-				</section>
-				<section className={`check-holder ${currentCheckPref == "yes" ? "show" : ""}`}>
-					<span className="check-val">Checks left: {maxChecks-currentChecksUsed} / {maxChecks}</span>
-					<button className={`check-btn ${currentChecksUsed >= maxChecks ? "disabled" : ""}`} onClick={handleCheck}>Check</button>
 				</section>
 			</section>
 		</div>

@@ -63,12 +63,12 @@ const PrefSelect = (props) => {
 			<div className="options-holder">
 				<div className="card more-card" onClick={toggleHintModal}>
 					<p>Set Guess Limits and Hints</p>
-					<p className={`guess-limit-tip ${currentCheckPref == "yes" ? "show" : ""}`} >Guess limit: {currentNumChecks}, hint: {currentHint.length > 0 ? "enabled" : "disabled"}</p>
+					<p className={`guess-limit-tip ${currentCheckPref == "yes" ? "show" : ""}`} >Guess limit: {currentNumChecks}, hint: {currentHint?.length > 0 ? "enabled" : "disabled"}</p>
 				</div>
 				<div className="options-spacer"></div>
 				<div className="card more-card" onClick={toggleFakeoutModal}>
 					<p>Add "Fake" Tokens</p>
-					<p className={`guess-limit-tip ${currentFakeoutPref == "yes" ? "show" : ""}`} >Fake Tokens: {currentFakeout.length}</p>
+					<p className={`guess-limit-tip ${currentFakeoutPref == "yes" ? "show" : ""}`} >Fake Tokens: {currentFakeout?.length}</p>
 				</div>
 			</div>
 		</div>

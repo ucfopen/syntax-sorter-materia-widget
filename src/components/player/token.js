@@ -8,6 +8,7 @@ const Token = (props) => {
 
 	const tokenRef = useRef(null)
 	const coords = tokenRef.current?.getBoundingClientRect()
+	const currentCheckPref = global.state.items[global.state.currentIndex] ? global.state.items[global.state.currentIndex].checkPref : 'no'
 	const currentChecksUsed = global.state.items[global.state.currentIndex] ? global.state.items[global.state.currentIndex].checksUsed : 0
 	const maxChecks = global.state.items[global.state.currentIndex] ? global.state.items[global.state.currentIndex].numChecks : 0
 	const currentAnswerVal = global.state.items[global.state.currentIndex] ? global.state.items[global.state.currentIndex].correct : 'none'
@@ -40,7 +41,7 @@ const Token = (props) => {
 	const handleDragStart = (event) => {
 
 		// Exits the function if the max number of checks have been used
-		if (currentAnswerVal == "yes" || currentChecksUsed >= maxChecks)
+		if (currentCheckPref == "yes" && (currentAnswerVal == "yes" || currentChecksUsed >= maxChecks))
 		{
 			return
 		}
@@ -52,6 +53,7 @@ const Token = (props) => {
 		event.dataTransfer.setData("tokenType",props.type)
 		event.dataTransfer.setData("tokenPhraseIndex",props.index)
 		event.dataTransfer.setData("tokenStatus",props.status)
+		event.dataTransfer.setData("tokenFakeout",props.fakeout)
 
 		setTimeout(() => {
 			setState(state => ({...state,dragging: true}))
@@ -60,7 +62,8 @@ const Token = (props) => {
 		dispatch({type: 'token_dragging', payload: {
 			questionIndex: global.state.currentIndex,
 			tokenIndex: props.index,
-			status: props.status
+			status: props.status,
+			fakeout: props.fakeout
 		}})
 	}
 
@@ -68,10 +71,36 @@ const Token = (props) => {
 	const handleDrag = (event) => {
 	}
 
+	const handleClick = (event) => {
+
+		// Gets the right click
+		if (event.nativeEvent.which === 3) {
+	  	event.preventDefault();
+
+	  	if (currentCheckPref == "yes" && (currentAnswerVal == "yes" || currentChecksUsed >= maxChecks))
+			{
+				return
+			}
+
+	  	if (props.status == "sorted")
+	  	{
+	  		dispatch({type: 'sorted_right_click', payload: {
+					origin: state.origin,
+					tokenIndex: props.index,
+					questionIndex: global.state.currentIndex,
+					fakeout: props.fakeout,
+					legend: props.type,
+					value: props.value
+				}})
+	  	}
+
+	  }
+	}
+
 	const handleDragEnd = (event) => {
 
 		// Exits the function if the max number of checks have been used
-		if (currentAnswerVal == "yes" || currentChecksUsed >= maxChecks)
+		if (currentCheckPref == "yes" && (currentAnswerVal == "yes" || currentChecksUsed >= maxChecks))
 		{
 			return
 		}
@@ -80,7 +109,8 @@ const Token = (props) => {
 			origin: state.origin,
 			status: props.status,
 			tokenIndex: props.index,
-			questionIndex: global.state.currentIndex
+			questionIndex: global.state.currentIndex,
+			fakeout: props.fakeout
 		}})
 
 		setTimeout(() => {
@@ -113,7 +143,8 @@ const Token = (props) => {
 			draggable
 			onDragStart={handleDragStart}
 			onDrag={handleDrag}
-			onDragEnd={handleDragEnd}>
+			onDragEnd={handleDragEnd}
+			onContextMenu={handleClick}>
 			{props.pref == 'word' ? props.value : getLegendName(props.type)}
 		</div>
 	)

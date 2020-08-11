@@ -8,14 +8,17 @@ const PhrasePlayer = (props) => {
 
 	const global = useContext(store)
 	const dispatch = global.dispatch
+	const currentCheckPref = global.state.items[global.state.currentIndex] ? global.state.items[global.state.currentIndex].checkPref : 'no'
 	const currentChecksUsed = global.state.items[global.state.currentIndex] ? global.state.items[global.state.currentIndex].checksUsed : 0
 	const maxChecks = global.state.items[global.state.currentIndex] ? global.state.items[global.state.currentIndex].numChecks : 0
 	const currentAnswerVal = global.state.items[global.state.currentIndex] ? global.state.items[global.state.currentIndex].correct : 'none'
+	const currentPhrase = global.state.items[global.state.currentIndex] ? global.state.items[global.state.currentIndex].phrase : []
+	const currentFakeoutPref = global.state.items[global.state.currentIndex] ? global.state.items[global.state.currentIndex].fakeoutPref : 'no'
 
 	const handleTokenDragOver = (event) => {
 
 		// Exits the function if the max number of checks have been used
-		if (currentAnswerVal == "yes" || currentChecksUsed >= maxChecks)
+		if (currentCheckPref == "yes" && (currentAnswerVal == "yes" || currentChecksUsed >= maxChecks))
 		{
 			return
 		}
@@ -55,6 +58,7 @@ const PhrasePlayer = (props) => {
 		let dropTokenType = event.dataTransfer.getData("tokenType")
 		let dropTokenPhraseIndex = event.dataTransfer.getData("tokenPhraseIndex")
 		let dropTokenStatus = event.dataTransfer.getData("tokenStatus")
+		let dropTokenFakeout = (event.dataTransfer.getData("tokenFakeout") == "true") ? true : false
 
 		let index = 0
 
@@ -77,12 +81,14 @@ const PhrasePlayer = (props) => {
 						targetIndex: index,
 						legend: dropTokenType,
 						value: dropTokenName,
-						originIndex: parseInt(dropTokenPhraseIndex)
+						originIndex: parseInt(dropTokenPhraseIndex),
+						fakeout: dropTokenFakeout
 					}
 				})
 				break
 			case 'unsorted':
 			default:
+			console.log(parseInt(dropTokenPhraseIndex) + ": index")
 				dispatch({
 					type: 'response_token_sort',
 					payload: {
@@ -90,7 +96,8 @@ const PhrasePlayer = (props) => {
 						targetIndex: index,
 						legend: dropTokenType,
 						value: dropTokenName,
-						phraseIndex: parseInt(dropTokenPhraseIndex)
+						phraseIndex: parseInt(dropTokenPhraseIndex),
+						fakeout: dropTokenFakeout
 					}
 				})
 
@@ -116,17 +123,23 @@ const PhrasePlayer = (props) => {
 			pref={props.displayPref}
 			status={token.status}
 			arrangement={token.arrangement}
-			position={token.position}>
+			position={token.position}
+			fakeout={token.fakeout}>
 		</Token>
 	})
 
 	return(
-		<section className="card phrase-player">
-			<div className="token-container">
+		<section className={`card phrase-player`
+			+ ` ${(currentCheckPref == 'yes' && (currentPhrase.length == 0 || currentFakeoutPref == "yes") && currentChecksUsed == 0) ? 'pending' : ''}`
+			+ ` ${(currentCheckPref == 'yes' && currentAnswerVal == 'no') ? 'incorrect' : ''}`
+			+ ` ${(currentCheckPref == 'yes' && currentAnswerVal == 'yes') ? 'correct' : ''}`
+			+ ` ${currentFakeoutPref == "yes" ? "fakeout" : ''}`}>
+			<div className={`token-container ${currentFakeoutPref == "yes" ? "fakeout" : ''}`}>
 				<div className="token-target" onDragOver={handleTokenDragOver} onDrop={handleTokenDrop}>
 					{props.sorted?.length ? '' : 'Drag and drop the words below to arrange them.'}
 					{sortedTokens}
 				</div>
+				<span className={`fakeout-tip icon-notification ${currentFakeoutPref == "yes" ? "show" : ''}`}>Not all of the items below may be part of the final phrase.</span>
 			</div>
 			<TokenDrawer phrase={props.phrase} displayPref={props.displayPref}></TokenDrawer>
 		</section>
