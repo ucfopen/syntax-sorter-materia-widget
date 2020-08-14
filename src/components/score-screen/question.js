@@ -9,6 +9,7 @@ const Question = (props) => {
 
 		let legendIdOfToken = -1
 		let legendColor = '#f1814b'
+		let isFake = false
 
 		if (props.displayPref == 'word') {
 			for (let item of props.phrase) {
@@ -18,7 +19,19 @@ const Question = (props) => {
 				}
 			}
 
-			if (legendIdOfToken != -1) {
+			if (legendIdOfToken == -1 && props.options.fakeoutPref == "yes")
+			{
+				for (let item of props.options.fakeout) {
+					if (item.value == token) {
+						legendIdOfToken = item.legend
+						isFake = true
+						legendColor = '#c8c8c8'
+						break
+					}
+				}
+			}
+
+			if (legendIdOfToken != -1 && isFake == false) {
 				for (let term of props.legend) {
 					if (term.id == legendIdOfToken) {
 						legendColor = term.color
@@ -34,9 +47,27 @@ const Question = (props) => {
 					break
 				}
 			}
+
+			if (props.options.fakeoutPref == "yes")
+			{
+				for (let term of props.legend) {
+					if (term.name.toLowerCase() == token.toLowerCase()) {
+						legendIdOfToken = term.id
+						break
+					}
+				}
+
+				for (let item of props.options.fakeout) {
+					if (item.legend == legendIdOfToken) {
+						isFake = true
+						legendColor = '#c8c8c8'
+						break
+					}
+				}
+			}
 		}
 
-		return <Token key={index} value={token} color={legendColor}></Token>
+		return <Token key={index} value={token} color={legendColor} fakeout={isFake}></Token>
 	})
 
 	const correctList = props.phrase.map((term, index) => {

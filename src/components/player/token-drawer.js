@@ -194,6 +194,10 @@ const TokenDrawer = (props) => {
 
 	let currentResponseText = <span>You've sorted every item! When you're ready, select <strong>Check Answer</strong> to verify if it is correct.</span>
 
+	console.log("-------------------------")
+	console.log(currentCheckPref)
+	console.log(currentAnswerVal)
+
 	// Sets the feeback message
 	if (currentCheckPref == "yes" && currentAnswerVal == "yes")
 		currentResponseText = <span><strong>Correct!</strong> Nice work. You're ready to continue to the next question.</span>
@@ -201,7 +205,7 @@ const TokenDrawer = (props) => {
 		currentResponseText = <div className="response-text"><strong>Incorrect.</strong> That's not quite right.<br/> You have <strong>{maxChecks-currentChecksUsed}</strong> attempts left for this question.</div>
 	else if (currentCheckPref == "no")
 		currentResponseText = <span>You've sorted every item! When you're ready, select <strong>Next Question</strong> to continue.</span>
-	else if (currentFakeoutPref == "yes")
+	else if (currentFakeoutPref == "yes" && currentCheckPref == "yes")
 		currentResponseText = <span>You have <strong>{maxChecks-currentChecksUsed}</strong> attempts left for this question.</span>
 
 	return(
@@ -211,7 +215,7 @@ const TokenDrawer = (props) => {
 			+ ` ${(currentFakeoutPref == "yes") ? 'fakeout' : ''}`}>
 			{tokenList}
 			<div className='empty-section'>
-				<div style={{display: currentFakeoutPref == "no" ? 'inline' : 'none'}}>
+				<div style={{display: (currentFakeoutPref == "no" || currentAnswerVal == "yes") ? 'inline' : 'none'}}>
 					<span className='empty-message' style={{display: (isLastQuestion && displayLastText) ? 'none' : 'inline-block'}}>
 						{currentResponseText}
 					</span>
@@ -219,7 +223,7 @@ const TokenDrawer = (props) => {
 						You've sorted every item! Select <strong>Submit</strong> at the top-right for scoring or feel free to go back and adjust your answers.
 					</span>
 				</div>
-				<div style={{display: currentFakeoutPref == "yes" ? 'inline' : 'none'}}>
+				<div style={{display: currentFakeoutPref == "yes" && currentAnswerVal != "yes" ? 'inline' : 'none'}}>
 					<span className='empty-message' style={{display: (isLastQuestion && displayLastText) ? 'none' : 'inline-block'}}>
 						{currentResponseText}
 					</span>

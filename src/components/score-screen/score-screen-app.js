@@ -3,12 +3,7 @@ import Question from './question'
 
 const ScoreScreenApp = (props) => {
 
-	//console.log(props.scoreTable)
-
 	const legend = props.qset.options.legend
-	// console.log(legend)
-
-	//console.log(props.qset)
 
 	// Sets the answer as the first question if for some reason the question id isn't valid (doesn't change score)
 	const getQuestionIndex = (id) => {
@@ -34,6 +29,7 @@ const ScoreScreenApp = (props) => {
 				response={question.data[2]}
 				phrase={props.qset.items[questionIndex].answers[0].options.phrase}
 				displayPref={props.qset.items[questionIndex].options.displayPref}
+				options = {props.qset.items[questionIndex].options}
 				legend={legend}
 				score={parseInt(props.scoreTable[index].score)}
 				count={props.scoreTable.length}></Question>

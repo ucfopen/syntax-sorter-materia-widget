@@ -7,6 +7,7 @@ const init = {
 	currentIndex: 0,
 	requireInit: true,
 	showTutorial: true,
+	showWarning: false,
 	numAsk: 1,
 	askLimit: "no",
 	questionsAsked: []
@@ -368,6 +369,8 @@ const StateProvider = ( { children } ) => {
 				return {...state, title: action.payload.title, items: importedReduced.items, legend: imported.legend, questionsAsked: importedReduced.questionsAsked, requireInit: false}
 			case 'toggle_tutorial':
 				return {...state, showTutorial: !state.showTutorial}
+			case 'toggle_warning':
+				return {...state, showWarning: !state.showWarning}
 			case 'select_question':
 				return {...state, currentIndex: action.payload}
 			case 'paginate_question_forward':

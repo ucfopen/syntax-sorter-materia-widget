@@ -17,12 +17,17 @@ const Token = (props) => {
 		if (typeof r != "undefined") return ((r*299)+(g*587)+(b*114))/1000;
 	}
 
+	let textColor = (contrastCalc(props.color) > 160 ? '#000000' : '#ffffff')
+
+	if (props.fakeout == true)
+		textColor = '#656464'
+
 	return (
 		<div className='token' style={{
 				background: props.color,
-				color: (contrastCalc(props.color) > 160 ? '#000000' : '#ffffff')
+				color: textColor
 			}}>
-			{props.value}
+			{props.fakeout == true ? <del>{props.value}</del> : `${props.value}`}
 		</div>
 	)
 }

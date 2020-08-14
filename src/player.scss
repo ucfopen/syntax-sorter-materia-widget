@@ -231,3 +231,75 @@
   padding-right: .5em;
 }
 
+.warning-wrapper {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+
+	.warning {
+		position: absolute;
+		z-index: 101;
+		width: 480px;
+
+		top: 20%;
+		left: 50%;
+		margin-left: -240px;
+		padding: 25px;
+
+		font-size: 0.9em;
+
+		background: #fff;
+
+		.warning-submit-holder {
+			display: flex;
+			flex-direction: row;
+
+			button {
+				position: relative;
+				display: block;
+				width: 120px;
+				margin-top: 20px;
+				margin-bottom: 20px;
+				padding: 10px 20px;
+				background: $colorAccent;
+				border: none;
+
+				font-size: 1.2em;
+
+				cursor: pointer;
+
+				&:hover {
+					background: $colorAccentHover;
+				}
+			}
+
+			button:first-child {
+				margin-left: auto;
+			}
+
+			button + button {
+				margin-left: 20px;
+				margin-right: auto;
+			}
+		}
+
+		.dev-warning {
+			color: #990000;
+			font-weight: 700;
+		}
+	}
+
+	.warning-bg {
+		position: fixed;
+		width: 100%;
+		min-height: 100%;
+		height: 120%;
+		max-height: 150%;
+		z-index: 100;
+		overflow-y: hidden;
+
+		background: rgba(0,0,0,0.5);
+	}
+}
+
+

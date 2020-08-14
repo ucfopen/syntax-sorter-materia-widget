@@ -2,6 +2,7 @@ import React, {useContext, useEffect} from 'react'
 import QuestionSelect from './question-select'
 import PhrasePlayer from './phrase-player'
 import PlayerTutorial from './player-tutorial'
+import WarningModal from './warning-modal'
 import { store } from '../../player-store'
 
 const PlayerApp = (props) => {
@@ -33,14 +34,40 @@ const PlayerApp = (props) => {
 				}
 			}
 		}
+
+		if (string.length == 0)
+			string = ','
+
 		return string.substring(0,string.length-1)
+	}
+
+	const emptyQuestionCheck = () => {
+
+		let isEmpty = false
+
+		for (let item of global.state.items) {
+			if (item.sorted.length <= 0)
+			{
+				isEmpty = true
+				break
+			}
+		}
+
+		return isEmpty
 	}
 
 	const handleSubmit = () => {
 
+		if (emptyQuestionCheck() == true)
+		{
+			dispatch({type: 'toggle_warning'})
+			return
+		}
+
 		for (let item of global.state.items) {
 			Materia.Score.submitQuestionForScoring(item.qsetId, convertSortedToString(item.sorted, item.displayPref))
 		}
+
 		Materia.Engine.end(true)
 	}
 
@@ -54,6 +81,7 @@ const PlayerApp = (props) => {
 
 	return(
 		<div className="player-container">
+			<WarningModal></WarningModal>
 			<PlayerTutorial></PlayerTutorial>
 			<header className="player-header">
 				{global.state.title}

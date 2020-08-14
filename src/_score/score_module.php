@@ -17,7 +17,13 @@ class Score_Modules_LanguageWidget extends Score_Module {
 	{
 		if (isset($this->questions[$log->item_id]))
 		{
+			if (strlen($log->text) <= 1)
+			{
+				return 0;
+			}
+
 			$response = explode(',',$log->text);
+			$respNoFake = [];
 
 			$answer = [];
 
@@ -32,14 +38,67 @@ class Score_Modules_LanguageWidget extends Score_Module {
 
 			$max = count($answer);
 			$correct = 0;
+			$leadTrailFakes = 0;
+			$firstReal = -1;
+			$lastReal = -1;
 
-			foreach ($answer as $index => $token) {
-				if (strcmp($token, $response[$index]) == 0) {
+			// Gets the indeces of the 1st and last real token
+			for ($i = 0; $i < count($response); $i++)
+			{
+				$isFake = TRUE;
+
+				foreach ($answer as $goodToken) {
+					if (strcmp($response[$i], $goodToken) == 0) {
+						$isFake = FALSE;
+						break;
+					}
+				}
+
+				if ($isFake == FALSE)
+				{
+					if ($firstReal == -1)
+					{
+						$firstReal = $i;
+					}
+					$lastReal = $i;
+				}
+			}
+
+
+			// There are no real tokens
+			if ($firstReal == -1)
+				return 0;
+
+			// Gets the number of leading and trailing fakes
+			$leadTrailFakes = (count($response) - 1) - ($lastReal - $firstReal);
+
+
+			// Up to here works and gets first/last real
+
+
+			// Gets the response with no leading and trailing fakes
+			for ($i = $firstReal; $i <= $lastReal; $i++)
+			{
+				array_push($respNoFake, $response[$i]);
+			}
+
+			// Tells if their answer has correct tokens
+			for ($i = 0; $i < count($answer) && $i < count($respNoFake); $i++)
+			{
+				if (strcmp($answer[$i], $respNoFake[$i]) == 0) {
 					$correct++;
 				}
 			}
 
-			return ($correct / $max) * 100;
+			// Calculates the final score
+			$score = ($correct / $max) - (.1 * $leadTrailFakes);
+
+			if ($score < 0)
+			{
+				$score = 0;
+			}
+
+			return $score * 100;
 		}
 	}
 
