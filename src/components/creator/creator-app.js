@@ -261,12 +261,19 @@ const CreatorApp = (props) => {
 	return(
 		<div className="creator-container">
 			<CreatorTutorial></CreatorTutorial>
-			<CreatorHintsModal></CreatorHintsModal>
+			<CreatorHintsModal
+				checkPref={global.state.items[global.state.currentIndex].checkPref}
+				numChecks={global.state.items[global.state.currentIndex].numChecks}
+				hint={global.state.items[global.state.currentIndex].hint}></CreatorHintsModal>
+			<CreatorBankModal
+				enableQuestionBank={global.state.enableQuestionBank}
+				numAsk={global.state.numAsk}
+				questionCount={global.state.items.length}></CreatorBankModal>
 			<CreatorFakeoutModal></CreatorFakeoutModal>
-			<CreatorBankModal></CreatorBankModal>
+			
 			<CreatorErrorModal></CreatorErrorModal>
 			<header className="creator-header">
-				<input value={global.state.title} onChange={handleTitleUpdate}/>
+				<input value={global.state.title} onChange={handleTitleUpdate} placeholder="Give Your Widget a Title"/>
 				<button className="toggleLegend" onClick={toggleLegend}>Legend</button>
 				<button className="toggleBank" onClick={toggleBank}>Question Bank</button>
 			</header>

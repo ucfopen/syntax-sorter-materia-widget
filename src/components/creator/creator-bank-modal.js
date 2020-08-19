@@ -3,50 +3,54 @@ import { store } from '../../creator-store'
 
 const CreatorBankModal = (props) => {
 
-  const global = useContext(store)
-  const dispatch = global.dispatch
+	const global = useContext(store)
+	const dispatch = global.dispatch
 
-  const currentNumAsk = global.state ? global.state.numAsk : 1
-  const currentAskLimit = global.state ? global.state.askLimit : "no"
-  const currentNumQs = global.state.items ? global.state.items.length : 1
+	const handleToggleQuestionBank = (event) => {
+		dispatch({type:'toggle_ask_limit', payload: event.target.value == 'true' ? true : false})
+	}
 
-  const handleAskLimitUpdate = (event) => {
-    dispatch({type:'update_ask_limit', payload: event.target.value})
-  }
+	const handleNumAskUpdate = (event) => {
+		dispatch({type:'update_num_ask', payload: event.target.value})
+	}
 
-  const handleNumAskUpdate = (event) => {
-    dispatch({type:'update_num_ask', payload: event.target.value})
-  }
+	const dismiss = () => {
+		dispatch({type: 'toggle_bank_modal'})
+	}
 
-  const dismiss = () => {
-    dispatch({type: 'toggle_bank_modal'})
-  }
-
-  return (
-    <div className='modal-wrapper' style={{display: global.state.showBankModal ? 'block' : 'none'}}>
-      <div className='modal creator'>
-        <h3>Question Bank</h3>
-        <h4>Should the student have a set number of questions?</h4>
-        <span className="pref-select">
-          <input type="radio" name="check-select" value={"yes"} onChange={handleAskLimitUpdate} checked={currentAskLimit == "yes"}/>
-          <span className={`radio-overlay ${currentAskLimit == "yes" ? 'selected' : ''}`}></span>
-          Yes
-        </span>
-        <span className="pref-select">
-          <input type="radio" name="check-select" value={"no"} onChange={handleAskLimitUpdate} checked={currentAskLimit == "no"}/>
-          <span className={`radio-overlay left ${currentAskLimit == "no" ? 'selected' : ''}`}></span>
-          No
-        </span>
-        <span className={`check-select ${currentAskLimit == "yes" ? "show" : ""}`}>
-          Number of questions to ask
-          <input className="num-ask" type="number" name="check-val" onChange={handleNumAskUpdate} value={currentNumAsk} placeholder={currentNumAsk} min="1" max={currentNumQs}/>
-          out of {currentNumQs}
-        </span>
-        <button onClick={dismiss}>Okay</button>
-      </div>
-      <div className='modal-bg'></div>
-    </div>
-  )
+	return (
+		<div className='modal-wrapper' style={{display: global.state.showBankModal ? 'block' : 'none'}}>
+			<div className='modal creator'>
+				<h3>Question Bank Settings</h3>
+				<p>Optionally set a question limit that's lower than the total number of questions created for this widget. The questions will be randomly selected each time the widget is played.</p>
+				<span className="select-wrapper">
+					<strong>Enable Question Bank?</strong>
+					<span className="pref-select">
+						<input type="radio" name="question-bank-toggle" value={true} onChange={handleToggleQuestionBank} checked={props.enableQuestionBank == true}/>
+						<span className={`radio-overlay ${props.enableQuestionBank == true ? 'selected' : ''}`}></span>
+						Yes
+						</span>
+						<span className="pref-select">
+						<input type="radio" name="question-bank-toggle" value={false} onChange={handleToggleQuestionBank} checked={props.enableQuestionBank == false}/>
+						<span className={`radio-overlay left ${props.enableQuestionBank == false ? 'selected' : ''}`}></span>
+						No
+					</span>
+				</span>
+				<span className={`check-select strong select-wrapper ${props.enableQuestionBank ? '' : 'disabled'}`}>
+					Number of questions to ask:
+					<input className="num-ask"
+						type="number" name="check-val"
+						onChange={handleNumAskUpdate}
+						value={props.enableQuestionBank ? props.numAsk : props.questionCount}
+						min="1" max={props.questionCount}
+						disabled={props.enableQuestionBank == false}/>
+					out of {props.questionCount}
+				</span>
+				<button onClick={dismiss}>Okay</button>
+			</div>
+			<div className='modal-bg'></div>
+		</div>
+	)
 }
 
 export default CreatorBankModal

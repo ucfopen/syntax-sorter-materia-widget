@@ -14,9 +14,47 @@ $colorAccent: #f1814b;
 $colorAccentHover: #f1bea5;
 $legendBG: #ffe7db;
 $darkBG: rgb(51,51,51);
+$darkishBG: rgb(120,120,120);
+$lightBG: rgb(215,215,215);
 
 $questionSelectWidth: 60px;
 $defaultPadding: 15px;
+
+/* icomoon font icons */
+
+@font-face {
+	font-family: 'icomoon';
+	src:  url('assets/fonts/icomoon.eot?tr4b0z');
+	src:  url('assets/fonts/icomoon.eot?tr4b0z#iefix') format('embedded-opentype'),
+		url('assets/fonts/icomoon.ttf?tr4b0z') format('truetype'),
+		url('assets/fonts/icomoon.woff?tr4b0z') format('woff'),
+		url('assets/fonts/icomoon.svg?tr4b0z#icomoon') format('svg');
+	font-weight: normal;
+	font-style: normal;
+	font-display: block;
+}
+
+[class^="icon-"], [class*=" icon-"] {
+	/* use !important to prevent issues with browser extensions that change fonts */
+	font-family: 'icomoon' !important;
+	speak: never;
+	font-style: normal;
+	font-weight: normal;
+	font-variant: normal;
+	text-transform: none;
+	line-height: 1;
+
+	/* Better Font Rendering =========== */
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+
+.icon-notification:before {
+	content: "\ea08";
+	padding-right: .5em;
+}
+
+/* common styles */
 
 html, body, #root {
 	height: 100%;
@@ -41,12 +79,12 @@ span.strong {
 	font-weight: 700;
 }
 
-.tutorial-wrapper {
+.modal-wrapper {
 	position: absolute;
 	width: 100%;
 	height: 100%;
 
-	.tutorial {
+	.modal {
 		position: absolute;
 		z-index: 101;
 		width: 480px;
@@ -55,10 +93,20 @@ span.strong {
 		left: 50%;
 		margin-left: -240px;
 		padding: 25px;
+		min-height: 300px;
 
 		font-size: 0.9em;
 
 		background: #fff;
+
+		h3 {
+			margin: 0 0 15px 0;
+		}
+
+		p {
+			padding-bottom: 1em;
+			margin: 2em 0 1em 0;
+		}
 
 		img {
 			// display: inline-block;
@@ -83,70 +131,29 @@ span.strong {
 
 			cursor: pointer;
 
+			color: #ffffff;
+
 			&:hover {
 				background: $colorAccentHover;
 			}
 		}
 
-		.dev-warning {
-			color: #990000;
-			font-weight: 700;
-		}
-	}
-
-	.tutorial-bg {
-		position: fixed;
-		width: 100%;
-		min-height: 100%;
-		height: 120%;
-		max-height: 150%;
-		z-index: 100;
-		overflow-y: hidden;
-
-		background: rgba(0,0,0,0.5);
-	}
-}
-
-.modal-wrapper {
-	position: absolute;
-	width: 100%;
-	height: 100%;
-
-	.modal {
-		position: absolute;
-		z-index: 101;
-		width: 480px;
-
-		top: 20%;
-		left: 50%;
-		margin-left: -240px;
-		padding: 25px;
-		min-height: 300px;
-
-		font-size: 0.9em;
-
-		background: #fff;
-
-		button {
-			position: relative;
+		.select-wrapper {
 			display: block;
-			left: 50%;
-			width: 120px;
-			margin: 20px 0 10px -60px;
-			padding: 10px 20px;
-			background: $colorAccent;
-			border: none;
+			border: solid 1px $lightBG;
+			padding: 1em;
 
-			font-size: 1.2em;
-
-			cursor: pointer;
-
-			&:hover {
-				background: $colorAccentHover;
+			&.disabled {
+				opacity: 0.75;
+				color: $colorInput;
+				background: $lightBG;
+				border-color: #ffffff;
 			}
 		}
 
 		.pref-select {
+			margin-left: 1em;
+
 			input {
 				position: absolute;
 				width: 30px;
@@ -182,19 +189,17 @@ span.strong {
 		}
 
 		.check-select {
-			display: none;
 			position: relative;
 
-			height: 24px;
 			padding-top: 20px;
-
-			&.show {
-				display: block;
-			}
 
 			&.bottom {
 				margin-bottom: 30px;
 			}
+
+			// &.disabled {
+
+			// }
 
 			input:not(.num-ask):not(.hint-text) {
 				margin-left: 25px;
@@ -259,7 +264,7 @@ span.strong {
 .question-select {
 	position: fixed;
 	left: 0px;
-	top: 52px;
+	top: 65px;
 	display: inline-block;
 	width: $questionSelectWidth;
 
@@ -416,33 +421,26 @@ span.strong {
 		}
 	}
 
-	section.question-container {
-		padding: 15px;
-		display: flex;
-		flex-direction: row;
-		align-items: center;
-	}
+	// .answer-indicator {
+	// 	color: green;
+	// 	font-size: 1.2em;
+	// 	margin-left: auto;
+	// 	margin-right: 20px;
+	// 	padding: 1px 10px;
+	// 	display: none;
+	// 	border: solid 1px green;
+	// 	border-radius: 10px;
+	// 	text-align: center;
 
-	.answer-indicator {
-		color: green;
-		font-size: 1.2em;
-		margin-left: auto;
-		margin-right: 20px;
-		padding: 1px 10px;
-		display: none;
-		border: solid 1px green;
-		border-radius: 10px;
-		text-align: center;
+	// 	&.wrong {
+	// 		border: solid 1px red;
+	// 		color: red;
+	// 	}
 
-		&.wrong {
-			border: solid 1px red;
-			color: red;
-		}
-
-		&.show {
-			display: block;
-		}
-	}
+	// 	&.show {
+	// 		display: block;
+	// 	}
+	// }
 
 	.check-val {
 		align-self: center;

@@ -14,12 +14,12 @@ const init = {
 	errorMsg: "",
 	selectedTokenIndex: -1,
 	selectedFakeoutIndex: -1,
-	title: 'New Foreign Language Wiget',
+	title: 'New Foreign Language Widget',
 	items: [{
 		question: '',
 		phrase: [],
 		displayPref: 'word',
-		checkPref: 'no',
+		checkPref: false,
 		numChecks: 1,
 		hint: '',
 		fakeoutPref: 'no',
@@ -33,7 +33,7 @@ const init = {
 		}
 	],
 	numAsk: 1,
-	askLimit: "no",
+	enableQuestionBank: false,
 	showLegend: false,
 	legendColorPickerTarget: -1
 }
@@ -61,7 +61,7 @@ const importFromQset = (qset) => {
 		items: items,
 		legend: qset.options.legend,
 		numAsk: qset.options.numAsk,
-		askLimit: qset.options.askLimit
+		enableQuestionBank: qset.options.enableQuestionBank
 	}
 }
 
@@ -72,7 +72,7 @@ const questionItemReducer = (items, action) => {
 				question: '',
 				phrase: [],
 				displayPref: 'word',
-				checkPref: 'no',
+				checkPref: false,
 				numChecks: 0,
 				hint: '',
 				fakeoutPref: 'no',
@@ -312,7 +312,7 @@ const StateProvider = ( { children } ) => {
 				return {...state, requireInit: false}
 			case 'init-existing':
 				let imported = importFromQset(action.payload.qset)
-				return {...state, title: action.payload.title, items: imported.items, legend: imported.legend, numAsk: imported.numAsk, askLimit: imported.askLimit, requireInit: false}
+				return {...state, title: action.payload.title, items: imported.items, legend: imported.legend, numAsk: imported.numAsk, enableQuestionBank: imported.enableQuestionBank, requireInit: false}
 			case 'dismiss_tutorial':
 				return {...state, showTutorial: false}
 			case 'update_title':
@@ -369,8 +369,8 @@ const StateProvider = ( { children } ) => {
 				return {...state, errorMsg: action.payload.error, showErrorModal: !state.showErrorModal}
 			case 'update_num_ask':
 				return {...state, numAsk: action.payload}
-			case 'update_ask_limit':
-				return {...state, askLimit: action.payload}
+			case 'toggle_ask_limit':
+				return {...state, enableQuestionBank: action.payload}
 			default:
 			  throw new Error('Base reducer: this action type was not defined')
 		  }

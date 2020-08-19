@@ -23,10 +23,12 @@
 
 .creator-header {
 	position: fixed;
-  top: 0;
-
+	top: 0;
+	 
 	input {
 		width: 400px;
+		margin-top: 5px;
+		margin-left: -25px;
 		background: none;
 		border: none;
 		border-bottom: solid 2px #fff;
@@ -54,38 +56,42 @@
 		font-weight: bold;
 	}
 
-	.toggleLegend {
+	.toggleLegend, .toggleBank {
 		float: right;
-		padding: 5px 25px;
+		padding: 10px 30px;
 		outline: none;
 		border: none;
 
-		color: #ffffff;
-		background: $colorAccentHover;
+		color: #000000;
+		background: #ffffff;
 		font-weight: bold;
 
+		&.toggleBank {
+			margin-right: 10px;
+		}
+
 		&:hover {
-			color: #000000;
-			background: #ffffff;
+			color: #ffffff;
+			background: $colorAccentHover;
 		}
 	}
 
-	.toggleBank {
-		float: right;
-		padding: 5px 25px;
-		outline: none;
-		border: none;
-		margin-right: 5px;
+	// .toggleBank {
+	// 	float: right;
+	// 	padding: 5px 25px;
+	// 	outline: none;
+	// 	border: none;
+	// 	margin-right: 5px;
 
-		color: #ffffff;
-		background: $colorAccentHover;
-		font-weight: bold;
+	// 	color: #ffffff;
+	// 	background: $darkBG;
+	// 	font-weight: bold;
 
-		&:hover {
-			color: #000000;
-			background: #ffffff;
-		}
-	}
+	// 	&:hover {
+	// 		color: #000000;
+	// 		background: #ffffff;
+	// 	}
+	// }
 }
 
 .question-select button.add-new {
@@ -102,9 +108,11 @@
 .content-container {
 
 	section.question-container input {
+		width: 90%;
+		margin: 0 0 15px 0;
 		border-width: 0 0 2px 0;
 		border-color: $colorInput;
-		width: 90%;
+		
 		font-size: 1.1em;
 
 		&:focus {
@@ -379,13 +387,28 @@ section.fakeout-builder {
 
 	width: 300px;
 	height: calc(100% - 50px); // 100% - header - padding
-	padding: 25px;
+	padding: 77px 25px 25px 25px;
 
-	background: $legendBG;
+	// background: $legendBG;
+	background: $darkBG;
+	color: #ffffff;
 
 	header {
+		position: absolute;
+		top: 0px;
+		right: 0px;
+		width: 300px;
+		height: 25px;
+		padding: 20px 25px;
 		font-weight: 700;
 		margin-bottom: 2.5em;
+
+		background: $darkishBG;
+	}
+
+	p {
+		font-size: 0.75em;
+		margin: 10px 0 25px 0;
 	}
 
 	&.show {
@@ -394,21 +417,21 @@ section.fakeout-builder {
 
 	button.addNew {
 		width: 200px;
+		margin-top: 15px;
+		margin-left: 35px;
+
 		outline: none;
 		border: none;
 		background: none;
-		color: rgb(109, 109, 109);
-		border-bottom: solid 2px rgb(109, 109, 109);
-
-		margin-top: 15px;
-		margin-left: 35px;
+		color: rgb(200, 200, 200);
+		border-bottom: solid 2px rgb(200, 200, 200);
 
 		font-size:1em;
 		text-align: left;
 
 		&:hover {
-			color: #000;
-			border-color: #000;
+			color: #ffffff;
+			border-color: #ffffff;
 		}
 	}
 
@@ -416,7 +439,7 @@ section.fakeout-builder {
 		display: block;
 		position: absolute;
 		right: 25px;
-		top: 25px;
+		top: 18px;
 
 		padding: 5px 25px;
 		outline: none;
@@ -427,13 +450,11 @@ section.fakeout-builder {
 		font-weight: bold;
 
 		&:hover {
-			color: #ffffff;
-			background: $colorAccent;
+			background: $colorAccentHover;
 		}
 	}
 
 	.legend-item {
-		// height: 25px;
 		margin-bottom: 15px;
 
 		.item-color {
@@ -442,7 +463,6 @@ section.fakeout-builder {
 			height: 25px;
 			border-radius: 2px;
 
-			// margin-top: 15px;
 			margin-right: 10px;
 
 			vertical-align: middle;
@@ -453,13 +473,15 @@ section.fakeout-builder {
 			background: none;
 			outline: none;
 			border: none;
-			border-bottom: solid 2px #000;
+			border-bottom: solid 2px #ffffff;
 
 			margin: 0;
 			padding: 0;
 			vertical-align: middle;
 
 			font-size: 1.1em;
+
+			color: #ffffff;
 
 		}
 
@@ -471,6 +493,10 @@ section.fakeout-builder {
 
 			margin-left: 10px;
 			font-size: 1.1em;
+
+			&:hover {
+				background: $colorAccentHover;
+			}
 		}
 	}
 
