@@ -158,14 +158,8 @@ const questionItemReducer = (items, action) => {
 			return items.map((item) => {
 				return {
 					...item,
-					phrase: phraseReducer(item.phrase, action)
-				}
-			})
-		case 'fakeout_remove_legend_item':
-			return items.map((item) => {
-				return {
-					...item,
-					fakeout: fakeoutReducer(item.fakes, action)
+					phrase: phraseReducer(item.phrase, action),
+					fakes: fakeoutReducer(item.fakes, action)
 				}
 			})
 		default:
@@ -238,7 +232,7 @@ const fakeoutReducer = (fakes, action) => {
 				}
 				else return token
 			})
-		case 'fakeout_remove_legend_item':
+		case 'remove_legend_item':
 			return fakes.map((token) => {
 				if (token.legend == action.payload.id) {
 					return {
@@ -336,8 +330,6 @@ const StateProvider = ( { children } ) => {
 				return {...state, legend: legendReducer(state.legend, action)}
 			case 'remove_legend_item':
 				return {...state, items: questionItemReducer(state.items, action), legend: legendReducer(state.legend, action)}
-			case 'fakeout_remove_legend_item':
-				return {...state, items: questionItemReducer(state.items, action)}
 			case 'legend_color_picker_toggle':
 				if (state.legendColorPickerTarget != action.payload.index) return {...state, legendColorPickerTarget: action.payload.index}
 				else return {...state, legendColorPickerTarget: -1}

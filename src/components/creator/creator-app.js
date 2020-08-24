@@ -113,7 +113,7 @@ const CreatorApp = (props) => {
 			}),
 			options: {
 				legend: global.state.legend,
-				askLimit: global.state.askLimit,
+				enableQuestionBank: global.state.enableQuestionBank,
 				numAsk: global.state.numAsk
 			}
 		}
