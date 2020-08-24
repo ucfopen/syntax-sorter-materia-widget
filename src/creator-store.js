@@ -11,7 +11,7 @@ const init = {
 	showFakeoutModal: false,
 	showBankModal: false,
 	showErrorModal: false,
-	errorMsg: "",
+	errors: [],
 	selectedTokenIndex: -1,
 	selectedFakeoutIndex: -1,
 	title: 'New Foreign Language Widget',
@@ -350,7 +350,7 @@ const StateProvider = ( { children } ) => {
 			case 'toggle_bank_modal':
 				return {...state, showBankModal: !state.showBankModal}
 			case 'toggle_error_modal':
-				return {...state, errorMsg: action.payload.error, showErrorModal: !state.showErrorModal}
+				return {...state, errors: action.payload.error, showErrorModal: !state.showErrorModal}
 			case 'update_num_ask':
 				return {...state, numAsk: action.payload}
 			case 'toggle_ask_limit':

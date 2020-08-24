@@ -11,7 +11,9 @@ const CreatorBankModal = (props) => {
 	}
 
 	const handleNumAskUpdate = (event) => {
-		dispatch({type:'update_num_ask', payload: event.target.value})
+		let count = event.target.value
+		if (event.target.value > props.questionCount || event.target.value < 0) count = props.questionCount
+		dispatch({type:'update_num_ask', payload: count})
 	}
 
 	const dismiss = () => {

@@ -18,9 +18,12 @@ const CreatorHintsModal = (props) => {
 	}
 
 	const handleNumChecks = (event) => {
+		let pref = event.target.value
+		if (pref < 0 || typeof pref != 'Number') pref = 1
+		else pref = parseInt(pref)
 		dispatch({type: 'update_num_checks', payload: {
 			questionIndex: global.state.currentIndex,
-			pref: event.target.value
+			pref: pref
 		}})
 	}
 

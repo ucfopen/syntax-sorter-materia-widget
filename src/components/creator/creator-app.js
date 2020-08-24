@@ -41,125 +41,22 @@ const CreatorApp = (props) => {
 
 	// Used to validate the data before saving.
 	const validateData = () => {
-		let invalid = ""
+		let invalid = []
 
-		let theItems = global.state.items
-
-		// Tests each individual question
-		for (let i = 0; i < theItems.length; i++)
-		{
-			// Stops it running if there is already an error
-			if (invalid.length > 0)
-			{
-				break
-			}
-
-			// Test to make sure there is actually an item
-			if (!theItems[i])
-			{
-				invalid = "Missing a question item."
-				break
-			}
-
+		global.state.items.forEach((item, index) => {
 			// Test to make sure a phrase has atleast one token
-			if (theItems[i].phrase.length <= 0)
-			{
-				invalid = `Question ${i + 1} needs at least one phrase token.`
-				break
-			}
+			if (item.phrase.length <= 0) invalid.push(`Question ${index+1} needs at least one phrase token.`)
 
-			// Test to make sure the guess limit is valid
-			if (theItems[i].checkPref == "yes")
-			{
-				if (!theItems[i].numChecks || theItems[i].numChecks <= 0)
-				{
-					invalid = `Question ${i + 1} has an invalid number of answer checks.`
-					break
-				}
-				else if (theItems[i].numChecks > 5)
-				{
-					invalid = `Question ${i + 1} has too many answer checks.`
-					break
-				}
-				else if (theItems[i].hint.length > 0 && theItems[i].numChecks <= 1)
-				{
-					invalid = `Question ${i + 1} needs at lease two answer checks because it has a hint.`
-					break
-				}
-			}
+			item.phrase.forEach((token, index) => {
+				if (token.legend == null) invalid.push(`Question ${index+1} phrase token "${token.value}" is missing a legend type selection.`)
+			})
 
-			// Test to make sure each word in each phrase token is valid
-			for (let j = 0; j < theItems[i].phrase.length; j++)
-			{
-				// Test to make sure there is actually a phrase
-				if (!theItems[i].phrase[j])
-				{
-					invalid = "Missing a phrase."
-					break
-				}
+			item.fakes.forEach((fake, index) => {
+				if (fake.legend == null) invalid.push(`Question ${index+1} has a fake token "${fake.value}" without a legend type selection.`)
+			})
+		})
 
-				// Test if each phrase item has an assigned legend value
-				if (!theItems[i].phrase[j].legend)
-				{
-					invalid = `Question ${i + 1} has a phrase token that is missing a part of speech.`
-					break
-				}
-			}
-
-			// Test to make sure each word in each fakeout has a legend
-			for (let j = 0; j < theItems[i].fakes.length; j++)
-			{
-
-				// Test to make sure there is actually a fakeout
-				if (!theItems[i].fakes[j])
-				{
-					invalid = "Missing a fakeout set."
-					break
-				}
-
-				// Test if each phrase item has an assigned legend value
-				if (!theItems[i].fakes[j].legend)
-				{
-					invalid = `Question ${i + 1} has a fakeout token that is missing a part of speech.`
-					break
-				}
-
-				// Tests to make sure each fakeout isn't also in the phrase
-				if (theItems[i].displayPref == "word")
-				{
-					for (let k = 0; k < theItems[i].phrase.length; k++)
-					{
-						if (theItems[i].fakes[j].value == theItems[i].phrase[k].value)
-						{
-							invalid = `Question ${i + 1} has a fakeout token that is the same word as a token in the answer phrase.`
-							break
-						}
-					}
-				}
-				else // part-of-speech
-				{
-					for (let k = 0; k < theItems[i].phrase.length; k++)
-					{
-						if (theItems[i].fakes[j].legend == theItems[i].phrase[k].legend)
-						{
-							invalid = `Question ${i + 1} has a fakeout token that has the same part of speech as the answer phrase.`
-							break
-						}
-					}
-				}
-			}
-		}
-
-		// Tests if they have an invalid ask limit
-		if (global.state.askLimit == "yes")
-		{
-			if (global.state.numAsk <= 0 || global.state.numAsk > theItems.length)
-			{
-				invalid = "You have entered an invalid number of questions to ask."
-			}
-		}
-
-		return invalid;
+		return invalid
 	}
 
 	// Materia callbacks
