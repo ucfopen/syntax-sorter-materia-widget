@@ -106,26 +106,19 @@ const CreatorApp = (props) => {
 				}
 			}
 
-			// Test to make sure if they allow fakeouts for a question that it actually has fakeouts
-			if (theItems[i].fakeoutPref == "yes" && theItems[i].fakeout.length <= 0)
-			{
-				invalid = `Question ${i + 1} has a fakeouts enabled but has no fakeout tokens.`
-				break
-			}
-
 			// Test to make sure each word in each fakeout has a legend
-			for (let j = 0; j < theItems[i].fakeout.length; j++)
+			for (let j = 0; j < theItems[i].fakes.length; j++)
 			{
 
 				// Test to make sure there is actually a fakeout
-				if (!theItems[i].fakeout[j])
+				if (!theItems[i].fakes[j])
 				{
 					invalid = "Missing a fakeout set."
 					break
 				}
 
 				// Test if each phrase item has an assigned legend value
-				if (!theItems[i].fakeout[j].legend)
+				if (!theItems[i].fakes[j].legend)
 				{
 					invalid = `Question ${i + 1} has a fakeout token that is missing a part of speech.`
 					break
@@ -136,7 +129,7 @@ const CreatorApp = (props) => {
 				{
 					for (let k = 0; k < theItems[i].phrase.length; k++)
 					{
-						if (theItems[i].fakeout[j].value == theItems[i].phrase[k].value)
+						if (theItems[i].fakes[j].value == theItems[i].phrase[k].value)
 						{
 							invalid = `Question ${i + 1} has a fakeout token that is the same word as a token in the answer phrase.`
 							break
@@ -147,7 +140,7 @@ const CreatorApp = (props) => {
 				{
 					for (let k = 0; k < theItems[i].phrase.length; k++)
 					{
-						if (theItems[i].fakeout[j].legend == theItems[i].phrase[k].legend)
+						if (theItems[i].fakes[j].legend == theItems[i].phrase[k].legend)
 						{
 							invalid = `Question ${i + 1} has a fakeout token that has the same part of speech as the answer phrase.`
 							break
@@ -209,9 +202,8 @@ const CreatorApp = (props) => {
 						displayPref: item.displayPref,
 						checkPref: item.checkPref,
 						numChecks: item.numChecks,
-						fakeoutPref: item.fakeoutPref,
 						hint: item.hint,
-						fakeout: item.fakeout
+						fakes: item.fakes
 					}
 				}
 			}),
@@ -269,7 +261,8 @@ const CreatorApp = (props) => {
 				enableQuestionBank={global.state.enableQuestionBank}
 				numAsk={global.state.numAsk}
 				questionCount={global.state.items.length}></CreatorBankModal>
-			<CreatorFakeoutModal></CreatorFakeoutModal>
+			<CreatorFakeoutModal
+				fakes={global.state.items[global.state.currentIndex].fakes}></CreatorFakeoutModal>
 			
 			<CreatorErrorModal></CreatorErrorModal>
 			<header className="creator-header">
@@ -285,7 +278,12 @@ const CreatorApp = (props) => {
 					legend={global.state.legend}
 					format="phrase">
 				</PhraseBuilder>
-				<PrefSelect></PrefSelect>
+				<PrefSelect
+					displayPref={global.state.items[global.state.currentIndex].displayPref}
+					fakes={global.state.items[global.state.currentIndex].fakes}
+					checkPref={global.state.items[global.state.currentIndex].checkPref}
+					numChecks={global.state.items[global.state.currentIndex].numChecks}
+					hint={global.state.items[global.state.currentIndex].hint}></PrefSelect>
 				<button className="card delete-question" onClick={handleDeleteQuestion} disabled={global.state.items.length < 2}>Delete Question</button>
 			</section>
 			<Legend show={global.state.showLegend ? global.state.showLegend : false} legend={global.state.legend} toggle={toggleLegend}></Legend>

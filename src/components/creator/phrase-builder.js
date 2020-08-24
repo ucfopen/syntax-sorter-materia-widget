@@ -54,7 +54,7 @@ const PhraseBuilder = (props) => {
 	}
 
 	let tokenList = props.phrase.map((term, index) => {
-		return <Token key={index} index={index} type={term.legend} value={term.value}></Token>
+		return <Token key={index} index={index} type={term.legend} value={term.value} context="phrase"></Token>
 	})
 
 	let legendSelection = props.legend.map((term, index) => {

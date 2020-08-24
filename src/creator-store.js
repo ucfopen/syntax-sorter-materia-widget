@@ -22,8 +22,7 @@ const init = {
 		checkPref: false,
 		numChecks: 1,
 		hint: '',
-		fakeoutPref: 'no',
-		fakeout: []
+		fakes: []
 	}],
 	legend: [
 		{
@@ -50,8 +49,7 @@ const importFromQset = (qset) => {
 			checkPref: item.options.checkPref,
 			numChecks: item.options.numChecks,
 			hint: item.options.hint,
-			fakeoutPref: item.options.fakeoutPref,
-			fakeout: item.options.fakeout
+			fakes: item.options.fakes
 		}
 	})
 
@@ -75,8 +73,7 @@ const questionItemReducer = (items, action) => {
 				checkPref: false,
 				numChecks: 0,
 				hint: '',
-				fakeoutPref: 'no',
-				fakeout: []
+				fakes: []
 			}]
 		case 'update_question_text':
 			return items.map((item, index) => {
@@ -112,7 +109,7 @@ const questionItemReducer = (items, action) => {
 				if (index == action.payload.questionIndex) {
 					return {
 						...item,
-						fakeout: fakeoutReducer(item.fakeout, action)
+						fakes: fakeoutReducer(item.fakes, action)
 					}
 				}
 				else return item
@@ -157,16 +154,6 @@ const questionItemReducer = (items, action) => {
 				}
 				else return item
 			})
-		case 'update_fakeout_pref':
-			return items.map((item, index) => {
-				if (index == action.payload.questionIndex) {
-					return {
-						...item,
-						fakeoutPref: action.payload.pref
-					}
-				}
-				else return item
-			})
 		case 'remove_legend_item':
 			return items.map((item) => {
 				return {
@@ -178,7 +165,7 @@ const questionItemReducer = (items, action) => {
 			return items.map((item) => {
 				return {
 					...item,
-					fakeout: fakeoutReducer(item.fakeout, action)
+					fakeout: fakeoutReducer(item.fakes, action)
 				}
 			})
 		default:
@@ -226,23 +213,23 @@ const phraseReducer = (phrase, action) => {
 	}
 }
 
-const fakeoutReducer = (fakeout, action) => {
+const fakeoutReducer = (fakes, action) => {
 	switch (action.type) {
 		case 'fakeout_token_to_input':
 			return [
-				...fakeout.slice(0,action.payload.fakeoutIndex),
-				...fakeout.slice(action.payload.fakeoutIndex + 1)
+				...fakes.slice(0,action.payload.fakeoutIndex),
+				...fakes.slice(action.payload.fakeoutIndex + 1)
 			]
 		case 'fakeout_input_to_token':
 			return [
-				...fakeout,
+				...fakes,
 				{
 					value: action.payload.text,
 					legend: null
 				}
 			]
 		case 'fakeout_token_type_select':
-			return fakeout.map((token, index) => {
+			return fakes.map((token, index) => {
 				if (index == action.payload.fakeoutIndex) {
 					return {
 						...token,
@@ -252,7 +239,7 @@ const fakeoutReducer = (fakeout, action) => {
 				else return token
 			})
 		case 'fakeout_remove_legend_item':
-			return fakeout.map((token) => {
+			return fakes.map((token) => {
 				if (token.legend == action.payload.id) {
 					return {
 						...token,
@@ -262,7 +249,7 @@ const fakeoutReducer = (fakeout, action) => {
 				else return token
 			})
 		default:
-			throw new Error('Phrase item reducer: this action type was not defined')
+			throw new Error('Fakeout item reducer: this action type was not defined')
 	}
 }
 
@@ -325,12 +312,9 @@ const StateProvider = ( { children } ) => {
 			case 'update_display_pref':
 			case 'update_check_pref':
 			case 'update_num_checks':
-			case 'update_fakeout_pref':
-			case 'update_fakeout':
 			case 'update_hint':
 			case 'phrase_token_to_input':
 			case 'phrase_input_to_token':
-				return {...state, items: questionItemReducer(state.items, action)}
 			case 'fakeout_token_to_input':
 			case 'fakeout_input_to_token':
 				return {...state, items: questionItemReducer(state.items, action)}

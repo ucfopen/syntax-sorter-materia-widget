@@ -58,12 +58,13 @@
 
 	.toggleLegend, .toggleBank {
 		float: right;
-		padding: 10px 30px;
+		padding: 8px 28px;
 		outline: none;
 		border: none;
 
 		color: #000000;
 		background: #ffffff;
+		border: solid 1px $colorAccentHover;
 		font-weight: bold;
 
 		&.toggleBank {
@@ -75,23 +76,6 @@
 			background: $colorAccentHover;
 		}
 	}
-
-	// .toggleBank {
-	// 	float: right;
-	// 	padding: 5px 25px;
-	// 	outline: none;
-	// 	border: none;
-	// 	margin-right: 5px;
-
-	// 	color: #ffffff;
-	// 	background: $darkBG;
-	// 	font-weight: bold;
-
-	// 	&:hover {
-	// 		color: #000000;
-	// 		background: #ffffff;
-	// 	}
-	// }
 }
 
 .question-select button.add-new {
@@ -274,17 +258,16 @@
 
 section.fakeout-builder {
 
-	display: none;
-	padding: 15px 15px 0 15px;
-
-	&.show {
-		display: block;
-	}
+	display: block;
+	padding: 15px 0;
 
 	.token-container {
 
-		width: 100%;
-		padding-bottom: 25px;
+		// width: 100%;
+		width: calc(100% - 20px);
+		padding: 10px;
+
+		border: solid 1px $lightBG;
 		// margin-bottom: 25px;
 	}
 
@@ -293,7 +276,7 @@ section.fakeout-builder {
 		padding: 5px 8px;
 
 
-		margin-right: 10px;
+		margin: 0 10px 10px 0;
 
 		font-size: 1.5em;
 		color: #fff;
@@ -323,10 +306,9 @@ section.fakeout-builder {
 
 	.token-type-selector {
 		display: none;
-		position: relative;
-		left: -15px;
-		// width: calc(100% + 30px);
-		width: 100%;
+		// position: relative;
+		width: calc(100% - 28px);
+		// width: 100%;
 
 		padding: 15px;
 
@@ -336,11 +318,16 @@ section.fakeout-builder {
 			display: block;
 		}
 
+		header {
+			font-weight: 700;
+			margin-bottom: 1.2em;
+		}
+
 		label {
 			position: relative;
-			display: block;
-			padding: 3px;
-			margin-bottom: 0.5em;
+			display: inline-block;
+			padding: 5px 6px;
+			margin: 0 1em 0.5em 0;
 
 			max-width: 250px;
 
@@ -363,7 +350,7 @@ section.fakeout-builder {
 				width: 20px;
 				height: 20px;
 
-				margin-right: 1em;
+				margin-right: 0.5em;
 
 				background: #fff;
 
@@ -378,12 +365,12 @@ section.fakeout-builder {
 }
 
 .legend {
-	display: none;
+	display: block;
 	position: fixed;
 	z-index: 100;
 
 	top: 0px;
-	right: 0px;
+	right: -350px;
 
 	width: 300px;
 	height: calc(100% - 50px); // 100% - header - padding
@@ -392,6 +379,9 @@ section.fakeout-builder {
 	// background: $legendBG;
 	background: $darkBG;
 	color: #ffffff;
+
+	transition-property: right;
+	transition-duration: 0.25s;
 
 	header {
 		position: absolute;
@@ -412,7 +402,8 @@ section.fakeout-builder {
 	}
 
 	&.show {
-		display: block;
+		// display: block;
+		right: 0px;
 	}
 
 	button.addNew {

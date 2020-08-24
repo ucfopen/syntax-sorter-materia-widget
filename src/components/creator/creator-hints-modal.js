@@ -35,7 +35,7 @@ const CreatorHintsModal = (props) => {
 		<div className='modal-wrapper' style={{display: global.state.showHintModal ? 'block' : 'none'}}>
 			<div className='modal creator'>
 				<h3>Guess Limits and Hints</h3>
-				<p>Enable guess attempts for each question? Students will be informed whether or not the provided token arrangement is correct prior to submitting the widget for scoring.</p>
+				<p>Enable guess attempts for each question? Note that each guess attempt is added <span className="strong">in addition to the normal submission limit of 1.</span></p>
 				<span className="select-wrapper">
 					<span className="strong">Enable Guess Attempts?</span>
 					<span className="pref-select">
