@@ -30,6 +30,10 @@ const Legend = (props) => {
 		dispatch({type: 'legend_color_picker_change', payload: {index: global.state.legendColorPickerTarget, color: color.hex}})
 	}
 
+	const handleCloseColorPicker = (event) => {
+		dispatch({type: 'legend_color_picker_toggle', payload: {index: global.state.legendColorPickerTarget}})
+	}
+
 	let legendItems = props.legend.map((item, index) => {
 		return <LegendItem key={index} name={item.name} id={item.id} index={index} toggleColorPicker={toggleColorPicker}></LegendItem>
 	})
@@ -43,7 +47,12 @@ const Legend = (props) => {
 			{legendItems}
 			<button className="addNew" onClick={addLegendItem}>+ Add Another</button>
 			<button className="doneBtn" onClick={props.toggle}>Done</button>
-			<LegendColorPicker handleColorChangeComplete={handleColorChangeComplete} color={colorSelectRef} visible={global.state.legendColorPickerTarget != -1} offset={state.colorSelectOffset}/>
+			<LegendColorPicker
+				handleColorChangeComplete={handleColorChangeComplete}
+				handleClose={handleCloseColorPicker}
+				color={colorSelectRef}
+				visible={global.state.legendColorPickerTarget != -1}
+				offset={state.colorSelectOffset}/>
 		</section>
 	)	
 }

@@ -64,7 +64,7 @@ const FakeoutBuilder = (props) => {
 	let legendSelection = props.legend.map((term, index) => {
 		return(<label key={index} className={`${global.state.selectedFakeoutIndex != -1 && currentLegend == term.id ?  'selected' : ''}`}>
 			<input type="radio" name="token-type-selection" value={term.id} onChange={tokenTypeSelection} checked={global.state.selectedFakeoutIndex != -1 && currentLegend == term.id}/>
-			<span className="color-radio" style={{background: term.color}}></span>{term.name}
+			<span className="color-radio" style={{background: term.color}}></span>{term.name.length > 0 ? term.name : 'Untitled Legend Item'}
 		</label>)
 	})
 

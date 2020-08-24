@@ -329,7 +329,7 @@ const StateProvider = ( { children } ) => {
 			case 'select_question':
 				return {...state, currentIndex: action.payload}
 			case 'toggle_legend':
-				return {...state, showLegend: !state.showLegend}
+				return {...state, showLegend: !state.showLegend, legendColorPickerTarget: -1}
 			case 'add_legend_item':
 				return {...state, legend: legendReducer(state.legend, action)}
 			case 'update_legend_item':
@@ -342,7 +342,7 @@ const StateProvider = ( { children } ) => {
 				if (state.legendColorPickerTarget != action.payload.index) return {...state, legendColorPickerTarget: action.payload.index}
 				else return {...state, legendColorPickerTarget: -1}
 			case 'legend_color_picker_change':
-				return {...state, legend: legendReducer(state.legend, action), legendColorPickerTarget: -1}
+				return {...state, legend: legendReducer(state.legend, action)}
 			case 'toggle_hint_modal':
 				return {...state, showHintModal: !state.showHintModal}
 			case 'toggle_fakeout_modal':

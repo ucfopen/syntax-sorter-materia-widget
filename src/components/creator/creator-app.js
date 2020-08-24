@@ -56,6 +56,13 @@ const CreatorApp = (props) => {
 			})
 		})
 
+		var blankLegendCount = 0
+		global.state.legend.forEach((term, index) => {
+			if (!term.name.length) blankLegendCount++
+		})
+
+		if (blankLegendCount > 0) invalid.push(`You have ${blankLegendCount} blank Legend value(s).`)
+
 		return invalid
 	}
 

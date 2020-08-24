@@ -14,7 +14,7 @@ const Question = (props) => {
 
 	return(
 		<section className="card question-container">
-			<header>Question Text</header>
+			<header>Question {global.state.currentIndex + 1} Text</header>
 			<input
 				value={global.state.items[index].question}
 				onChange={onQuestionUpdate}

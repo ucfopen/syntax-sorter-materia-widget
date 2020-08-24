@@ -1,5 +1,5 @@
 import React from 'react'
-import { BlockPicker } from 'react-color'
+import { ChromePicker } from 'react-color'
 
 const LegendColorPicker = (props) => {
 
@@ -8,7 +8,8 @@ const LegendColorPicker = (props) => {
 				top: `${props.offset + 40}px`,
 				display: props.visible ? 'block' : 'none'
 			}}>
-			<BlockPicker onChangeComplete={props.handleColorChangeComplete} color={props.color} />
+			<ChromePicker onChange={props.handleColorChangeComplete} color={props.color} disableAlpha={true} />
+			<button onClick={props.handleClose}>Close</button>
 		</div>
 	)
 }

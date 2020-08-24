@@ -26,7 +26,7 @@ const LegendItem = (props) => {
 
 	return (
 		<div className="legend-item" ref={legendItemRef}>
-			<button className="item-color" style={{backgroundColor: currentColor }} onClick={handleColorPickerClick}></button>
+			<button className={`item-color ${global.state.legendColorPickerTarget == props.index ? 'selected' : ''}`} style={{backgroundColor: currentColor}} onClick={handleColorPickerClick}></button>
 			<input value={props.name} onChange={onNameChange} placeholder='Legend Value'></input>
 			<button className="remove-item" onClick={remove}>X</button>
 		</div>
