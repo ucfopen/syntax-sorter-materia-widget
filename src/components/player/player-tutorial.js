@@ -11,9 +11,9 @@ const PlayerTutorial = (props) => {
 	}
 
 	return(
-		<div className='tutorial-wrapper' style={{display: global.state.showTutorial ? 'block' : 'none'}}>
+		<div className='modal-wrapper' style={{display: global.state.showTutorial ? 'block' : 'none'}}>
 
-			<div className='tutorial'>
+			<div className='modal tutorial player'>
 				<span className='dev-warning'>This widget is still a work in progress.</span>
 				<h3>Arrange Speech Tokens in the Proper Order</h3>
 				<p>Read each question prompt and arrange the tokens based on the instructions provided. Tokens may be a word, part of a word, or a part of speech.</p>
@@ -23,7 +23,7 @@ const PlayerTutorial = (props) => {
 				<button onClick={toggle}>I'm Ready</button>
 			</div>
 
-			<div className='tutorial-bg'>
+			<div className='modal-bg'>
 			</div>
 		</div>
 	)

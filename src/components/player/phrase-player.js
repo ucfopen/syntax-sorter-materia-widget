@@ -8,20 +8,11 @@ const PhrasePlayer = (props) => {
 
 	const global = useContext(store)
 	const dispatch = global.dispatch
-	const currentCheckPref = global.state.items[global.state.currentIndex] ? global.state.items[global.state.currentIndex].checkPref : 'no'
-	const currentChecksUsed = global.state.items[global.state.currentIndex] ? global.state.items[global.state.currentIndex].checksUsed : 0
-	const maxChecks = global.state.items[global.state.currentIndex] ? global.state.items[global.state.currentIndex].numChecks : 0
-	const currentAnswerVal = global.state.items[global.state.currentIndex] ? global.state.items[global.state.currentIndex].correct : 'none'
-	const currentPhrase = global.state.items[global.state.currentIndex] ? global.state.items[global.state.currentIndex].phrase : []
-	const currentFakeoutPref = global.state.items[global.state.currentIndex] ? global.state.items[global.state.currentIndex].fakeoutPref : 'no'
 
 	const handleTokenDragOver = (event) => {
 
-		// Exits the function if the max number of checks have been used
-		if (currentCheckPref == "yes" && (currentAnswerVal == "yes" || currentChecksUsed >= maxChecks))
-		{
-			return
-		}
+		// Exits the function if the max number of guesses have been used
+		if (props.guessPref && (props.attemptsUsed >= props.attemptLimit)) return false
 
 		event.preventDefault()
 
@@ -48,6 +39,10 @@ const PhrasePlayer = (props) => {
 				}
 			}
 		}
+
+		// console.log(props.sorted)
+		// console.log(leftToken)
+		// console.log(rightToken)
 
 		manageAdjacentTokenDisplay(leftToken, rightToken)
 	}
@@ -88,7 +83,6 @@ const PhrasePlayer = (props) => {
 				break
 			case 'unsorted':
 			default:
-			console.log(parseInt(dropTokenPhraseIndex) + ": index")
 				dispatch({
 					type: 'response_token_sort',
 					payload: {
@@ -124,24 +118,37 @@ const PhrasePlayer = (props) => {
 			status={token.status}
 			arrangement={token.arrangement}
 			position={token.position}
-			fakeout={token.fakeout}>
+			fakeout={token.fakeout}
+			dragEligible={!(props.guessPref && props.attemptsUsed >= props.attemptLimit)}>
 		</Token>
 	})
 
+	// console.log(sortedTokens)
+
 	return(
-		<section className={`card phrase-player`
-			+ ` ${(currentCheckPref == 'yes' && (currentPhrase.length == 0 || currentFakeoutPref == "yes") && currentChecksUsed == 0) ? 'pending' : ''}`
-			+ ` ${(currentCheckPref == 'yes' && currentAnswerVal == 'no') ? 'incorrect' : ''}`
-			+ ` ${(currentCheckPref == 'yes' && currentAnswerVal == 'yes') ? 'correct' : ''}`
-			+ ` ${currentFakeoutPref == "yes" ? "fakeout" : ''}`}>
-			<div className={`token-container ${currentFakeoutPref == "yes" ? "fakeout" : ''}`}>
+		<section className={'card phrase-player ' +
+			`${props.guessPref && (props.phrase.length == 0 || props.hasFakes) ? 'pending ' : ''}` +
+			`${props.guessPref ? props.responseState + ' ' : ''}` +
+			`${props.hasFakes ? 'fakeout ' : ''}`}>
+			<div className={`token-container ${props.hasFakes ? "fakeout" : ''}`}>
 				<div className="token-target" onDragOver={handleTokenDragOver} onDrop={handleTokenDrop}>
 					{props.sorted?.length ? '' : 'Drag and drop the words below to arrange them.'}
 					{sortedTokens}
 				</div>
-				<span className={`fakeout-tip icon-notification ${currentFakeoutPref == "yes" ? "show" : ''}`}>Not all of the items below may be part of the final phrase.</span>
+				<span className={`fakeout-tip ${props.hasFakes ? "show" : ''}`}>
+					<span className='icon-notification'></span>Not all of the items below may be part of the final phrase.
+				</span>
 			</div>
-			<TokenDrawer phrase={props.phrase} displayPref={props.displayPref}></TokenDrawer>
+			<TokenDrawer
+				phrase={props.phrase}
+				empty={props.sorted?.length == 0}
+				displayPref={props.displayPref}
+				guessPref={props.guessPref}
+				attemptsUsed={props.attemptsUsed}
+				attemptLimit={props.attemptLimit}
+				hasFakes={props.hasFakes}
+				responseState={props.responseState}
+				></TokenDrawer>
 		</section>
 	)
 }

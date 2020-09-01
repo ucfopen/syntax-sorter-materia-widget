@@ -8,13 +8,10 @@ const Token = (props) => {
 
 	const tokenRef = useRef(null)
 	const coords = tokenRef.current?.getBoundingClientRect()
-	const currentCheckPref = global.state.items[global.state.currentIndex] ? global.state.items[global.state.currentIndex].checkPref : 'no'
-	const currentChecksUsed = global.state.items[global.state.currentIndex] ? global.state.items[global.state.currentIndex].checksUsed : 0
-	const maxChecks = global.state.items[global.state.currentIndex] ? global.state.items[global.state.currentIndex].numChecks : 0
-	const currentAnswerVal = global.state.items[global.state.currentIndex] ? global.state.items[global.state.currentIndex].correct : 'none'
 
 	const [state, setState] = useState({dragging: false, origin: null})
 
+	// update token position when element's x value changes
 	useEffect( () => {
 		if (props.status == 'sorted' && coords) {
 			dispatch({type:'token_update_position',payload: {
@@ -25,6 +22,19 @@ const Token = (props) => {
 			}})
 		}
 	},[coords?.x])
+
+	// the above hook works MOST of the time, but certain events (token rearrange) clear this token's position information in the store, and the hook doesn't fire
+	// manually update the position in cases where the position value does not get updated after being cleared
+	useEffect( () => {
+		if (props.status == 'sorted' && !props.position.x && coords) {
+			dispatch({type:'token_update_position',payload: {
+				questionIndex: global.state.currentIndex,
+				tokenIndex: props.index,
+				x: coords.x,
+				width: coords.width
+			}})
+		}
+	}, [props.position])
 
 	const getLegendColor = (type) => {
 		for (const term of global.state.legend) {
@@ -39,12 +49,6 @@ const Token = (props) => {
 	}
 
 	const handleDragStart = (event) => {
-
-		// Exits the function if the max number of checks have been used
-		if (currentCheckPref == "yes" && (currentAnswerVal == "yes" || currentChecksUsed >= maxChecks))
-		{
-			return
-		}
 
 		setState(state => ({...state,origin:props.status}))
 
@@ -77,10 +81,7 @@ const Token = (props) => {
 		if (event.nativeEvent.which === 3) {
 	  	event.preventDefault();
 
-	  	if (currentCheckPref == "yes" && (currentAnswerVal == "yes" || currentChecksUsed >= maxChecks))
-			{
-				return
-			}
+	  	if (!props.dragEligible) return
 
 	  	if (props.status == "sorted")
 	  	{
@@ -93,17 +94,10 @@ const Token = (props) => {
 					value: props.value
 				}})
 	  	}
-
 	  }
 	}
 
 	const handleDragEnd = (event) => {
-
-		// Exits the function if the max number of checks have been used
-		if (currentCheckPref == "yes" && (currentAnswerVal == "yes" || currentChecksUsed >= maxChecks))
-		{
-			return
-		}
 
 		dispatch({type: 'token_drag_complete', payload: {
 			origin: state.origin,
@@ -140,7 +134,7 @@ const Token = (props) => {
 				display: props.status == "relocated" ? "none" : "inline-block"
 			}}
 			ref={tokenRef}
-			draggable
+			draggable={props.dragEligible}
 			onDragStart={handleDragStart}
 			onDrag={handleDrag}
 			onDragEnd={handleDragEnd}

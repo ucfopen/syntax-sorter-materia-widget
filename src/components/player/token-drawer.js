@@ -6,236 +6,130 @@ const TokenDrawer = (props) => {
 
 	const global = useContext(store)
 	const dispatch = global.dispatch
-	const currentCheckPref = global.state.items[global.state.currentIndex] ? global.state.items[global.state.currentIndex].checkPref : 'no'
-	const currentChecksUsed = global.state.items[global.state.currentIndex] ? global.state.items[global.state.currentIndex].checksUsed : 0
-	const maxChecks = global.state.items[global.state.currentIndex] ? global.state.items[global.state.currentIndex].numChecks : 0
-	const currentAnswerVal = global.state.items[global.state.currentIndex] ? global.state.items[global.state.currentIndex].correct : 'none'
-	const displayLastText = (currentCheckPref == "no" || (currentAnswerVal == "yes" || currentChecksUsed >= maxChecks))
-	const currentFakeoutPref = global.state.items[global.state.currentIndex] ? global.state.items[global.state.currentIndex].fakeoutPref : 'no'
-	const currentTokenOrder = global.state.items[global.state.currentIndex] ? global.state.items[global.state.currentIndex].tokenOrder : []
-	const currentAllReals = global.state.items[global.state.currentIndex] ? global.state.items[global.state.currentIndex].allReals : []
-	const currentAllFakes = global.state.items[global.state.currentIndex] ? global.state.items[global.state.currentIndex].allFakes : []
-	const currentSorted = global.state.items[global.state.currentIndex] ? global.state.items[global.state.currentIndex].sorted : []
 
 	const paginate = () => {
 		dispatch({type: 'paginate_question_forward'})
 	}
 
-	const handleCheck = () => {
-
-		// Disables the button if the number of checks has been reached
-		if (currentAnswerVal == "yes" || currentChecksUsed >= maxChecks)
-		{
-			return
-		}
-
+	const HandleGuessCheck = () => {
 		let item = global.state.items[global.state.currentIndex]
-		let correct = "yes"
-		let correctPhrase = item.correctPhrase
-		let sortedArr = item.sorted
 
-		// Answer is of the incorrect size
-		if (sortedArr.length != correctPhrase.length)
-		{
-			correct = "no"
-		}
+		// attempt limit already reached, assume call is invalid
+		if (props.responseState == 'incorrect-no-attempts') return
 
-		if (correct == "yes" && item.displayPref == "word")
-		{
-			// Makes sure the text of the answer array and user sorted array are the same
-			for (let i = 0; i < correctPhrase.length; i++)
-			{
-				if (correctPhrase[i].value != item.sorted[i].value)
-				{
-					correct = "no"
-				}
+		let response = verify(item)
+		let state = 'none'
+
+		if (!response) {
+			if ((props.attemptLimit - 1) > props.attemptsUsed) {
+				state = 'incorrect-attempts-remaining'
+			}
+			else {
+				state = 'incorrect-no-attempts'
 			}
 		}
-		else if (correct == "yes" && item.displayPref == "part-of-speech")
-		{
-			// Makes sure the parts of speech of the answer array and user sorted array are the same
-			for (let i = 0; i < correctPhrase.length; i++)
-			{
-				if (correctPhrase[i].legend != item.sorted[i].legend)
-				{
-					correct = "no"
-				}
-			}
+		else {
+			state = 'correct'
 		}
 
-		dispatch({type: 'correct_update', payload: {
+		dispatch({type: 'attempt_submit', payload: {
 			questionIndex: global.state.currentIndex,
-			answer: correct
+			response: state
 		}})
-
 	}
 
-	// Makes sure the order is random but still doesn't randomize every time
-	const getTokenList = () => {
-
-		let tokenList = []
-
-		if (currentFakeoutPref == "yes")
-		{
-			let unsortedFakes = []
-			let unsortedReals = []
-
-			// Removes the real tokens that are already in sorted
-			for (let i = 0; i < currentAllReals?.length; i++)
-			{
-				let shouldPush = true
-
-				for (let j = 0; j < currentSorted?.length; j++)
-				{
-					if (currentSorted[j].value == currentAllReals[i].value)
-					{
-						shouldPush = false
-					}
-				}
-
-				if (shouldPush)
-					unsortedReals.push({token: currentAllReals[i], index: i})
-			}
-
-			// Removes the fake tokens that are already in sorted
-			for (let i = 0; i < currentAllFakes?.length; i++)
-			{
-				let shouldPush = true
-
-				for (let j = 0; j < currentSorted?.length; j++)
-				{
-					if (currentSorted[j].value == currentAllFakes[i].value)
-					{
-						shouldPush = false
-					}
-				}
-
-				if (shouldPush)
-					unsortedFakes.push({token: currentAllFakes[i], index: i + currentAllReals.length})
-			}
-
-			// Creates the tokens
-			for (let key = 0, numReal = 0, numFake = 0, i = 0; i < currentTokenOrder?.length; i++)
-			{
-				let token = null
-				let index = -1
-
-				// Token is real
-				if (currentTokenOrder[i] < currentAllReals.length)
-				{
-					for (let j = 0; j < unsortedReals.length; j++)
-					{
-						if (unsortedReals[j].index == currentTokenOrder[i])
-						{
-							token = unsortedReals[j].token
-							index = numReal
-							numReal++
-							break
-						}
-					}
-				}
-				// Token is fake
-				else
-				{
-					for (let j = 0; j < unsortedFakes.length; j++)
-					{
-						if (unsortedFakes[j].index == currentTokenOrder[i])
-						{
-							token = unsortedFakes[j].token
-							index = numFake
-							numFake++
-							break
-						}
-					}
-				}
-
-				// Token is in sorted
-				if (token == null)
-					continue
-
-				tokenList.push(<Token
-						key={key}
-						index={index}
-						type={token?.legend}
-						value={token?.value}
-						pref={props.displayPref}
-						status={token.status}
-						fakeout={token.fakeout}>
-					</Token>
-				)
-
-				key++
-			}
-
-		}
-		else
-		{
-
-			tokenList = props.phrase?.map((token, index) => {
-
-				return <Token
-							key={index}
-							index={index}
-							type={token.legend}
-							value={token.value}
-							pref={props.displayPref}
-							status={token.status}
-							fakeout={token.fakeout}>
-						</Token>
-			})
+	const verify = (item) => {
+		
+		if (item.sorted.length != item.correctPhrase.length) {
+			return false
 		}
 
-		return tokenList
+		for (let i = 0; i < item.sorted.length; i++) {
+
+			if (item.displayPref == 'word') {
+				if (item.sorted[i].value != item.correctPhrase[i].value) return false
+			}
+			else if (item.displayPref == 'part-of-speech') {
+				if (item.sorted[i].legend != item.correctPhrase[i].legend) return false
+			}
+		}
+		return true
 	}
 
-	let tokenList = getTokenList()
+	let tokenList = props.phrase?.map((token, index) => {
+		return <Token
+					key={index}
+					index={index}
+					type={token.legend}
+					value={token.value}
+					pref={props.displayPref}
+					status={token.status}
+					fakeout={token.fakeout}
+					dragEligible={!(props.guessPref && props.attemptsUsed >= props.attemptLimit)}>
+				</Token>
+	})
 
 	let isLastQuestion = global.state.currentIndex == global.state.items.length - 1
 
-	let currentResponseText = <span>You've sorted every item! When you're ready, select <strong>Check Answer</strong> to verify if it is correct.</span>
+	let currentResponseText = ''
 
-	console.log("-------------------------")
-	console.log(currentCheckPref)
-	console.log(currentAnswerVal)
-
-	// Sets the feeback message
-	if (currentCheckPref == "yes" && currentAnswerVal == "yes")
-		currentResponseText = <span><strong>Correct!</strong> Nice work. You're ready to continue to the next question.</span>
-	else if (currentCheckPref == "yes" && currentAnswerVal == "no")
-		currentResponseText = <div className="response-text"><strong>Incorrect.</strong> That's not quite right.<br/> You have <strong>{maxChecks-currentChecksUsed}</strong> attempts left for this question.</div>
-	else if (currentCheckPref == "no")
-		currentResponseText = <span>You've sorted every item! When you're ready, select <strong>Next Question</strong> to continue.</span>
-	else if (currentFakeoutPref == "yes" && currentCheckPref == "yes")
-		currentResponseText = <span>You have <strong>{maxChecks-currentChecksUsed}</strong> attempts left for this question.</span>
+	switch (props.responseState) {
+		case 'ready':
+			if (isLastQuestion) {
+				currentResponseText = <span className='controls-message'>When you're ready, select <strong>Submit</strong> at the top-right for scoring or go back and review your answers.</span>
+			}
+			else if (props.hasFakes) {
+				currentResponseText = <span className='controls-message'>When you're ready, select <strong>Next Question</strong> to continue.</span>
+			}
+			else {
+				currentResponseText = <span className='controls-message'>You've sorted every item! When you're ready, select <strong>Next Question</strong> to continue.</span>
+			}
+			break
+		case 'pending':
+			currentResponseText = <span>PENDING</span>
+			break
+		case 'incorrect-attempts-remaining':
+			let remaining = props.attemptLimit - props.attemptsUsed
+			currentResponseText = <span className='controls-message'>That's not quite right. You have {remaining} attempt{remaining > 1 ? 's' : ''} remaining.</span>
+			break
+		case 'incorrect-no-attempts':
+			if (isLastQuestion) {
+				currentResponseText = <span className='controls-message'>That's not quite right. You've exhausted your attempts for this question. When you're ready, select <strong>Submit</strong> at the top-right for scoring or go back and review your answers.</span>
+			}
+			else {
+				currentResponseText = <span className='controls-message'>That's not quite right. You've exhausted your attempts for this question. Select <strong>Next Question</strong> to continue.</span>
+			}
+			break
+		case 'correct':
+			if (isLastQuestion) {
+				currentResponseText = <span className='controls-message'>Nice work! You aced it. When you're ready, select <strong>Submit</strong> at the top-right for scoring or go back and review your answers.</span>
+			}
+			else
+			{
+				currentResponseText = <span className='controls-message'>Nice work! You aced it. Select <strong>Next Question</strong> to continue.</span>
+			}
+			break
+		case 'none':
+		default:
+			currentResponseText = <span>NONE</span>
+			break
+	}
 
 	return(
-		<section className={`token-drawer ${(props.phrase?.length == 0 || currentFakeoutPref == "yes") ? 'empty' : ''}`
-			+ ` ${(currentCheckPref == "yes" && currentAnswerVal == "yes") ? 'correct' : ''}`
-			+ ` ${(currentCheckPref == "yes" && currentAnswerVal == "no") ? 'incorrect' : ''}`
-			+ ` ${(currentFakeoutPref == "yes") ? 'fakeout' : ''}`}>
+		<section className={'token-drawer ' +
+			`${(props.phrase?.length == 0) ? 'empty ' : ''}` +
+			`${props.responseState} ` +
+			`${props.hasFakes ? 'has-fakes ' : ''}`}>
 			{tokenList}
-			<div className='empty-section'>
-				<div style={{display: (currentFakeoutPref == "no" || currentAnswerVal == "yes") ? 'inline' : 'none'}}>
-					<span className='empty-message' style={{display: (isLastQuestion && displayLastText) ? 'none' : 'inline-block'}}>
-						{currentResponseText}
-					</span>
-					<span className='empty-message' style={{display: (isLastQuestion && displayLastText) ? 'inline-block' : 'none'}}>
-						You've sorted every item! Select <strong>Submit</strong> at the top-right for scoring or feel free to go back and adjust your answers.
-					</span>
+			<section className='response-controls'>
+				<div className='response-message-container'>
+					{currentResponseText}
 				</div>
-				<div style={{display: currentFakeoutPref == "yes" && currentAnswerVal != "yes" ? 'inline' : 'none'}}>
-					<span className='empty-message' style={{display: (isLastQuestion && displayLastText) ? 'none' : 'inline-block'}}>
-						{currentResponseText}
-					</span>
+				<div className='button-container'>
+					<button className={`verify ${props.guessPref && props.attemptLimit > props.attemptsUsed && props.responseState != 'correct' ? 'show' : ''}`} onClick={HandleGuessCheck}>Check Answer</button>
+					<button className={`paginate ${!isLastQuestion ? 'show' : ''}`} onClick={paginate}>Next Question</button>
 				</div>
-				<button onClick={paginate} style={{display: (isLastQuestion || (currentCheckPref == "yes" && currentChecksUsed == 0)) ? 'none' : 'inline-block'}}>Next Question</button>
-				<button onClick={handleCheck}
-					className= {
-						`check-btn ${(currentAnswerVal == "yes" || currentChecksUsed >= maxChecks) ? "disabled" : ""}`
-						+ ` ${currentCheckPref == "yes" ? "show" : ""}`
-				}>
-				{`${currentChecksUsed > 0 ? "Check Again" : "Check"}`}</button>
-			</div>
+			</section>
 		</section>
 	)
 }

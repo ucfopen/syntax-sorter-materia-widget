@@ -9,11 +9,11 @@ const PlayerApp = (props) => {
 
 	const global = useContext(store)
 	const dispatch = global.dispatch
-	const currentCheckPref = global.state.items[global.state.currentIndex] ? global.state.items[global.state.currentIndex].checkPref : 'no'
-	const currentChecksUsed = global.state.items[global.state.currentIndex] ? global.state.items[global.state.currentIndex].checksUsed : 0
-	const maxChecks = global.state.items[global.state.currentIndex] ? global.state.items[global.state.currentIndex].numChecks : 0
-	const currentAnswerVal = global.state.items[global.state.currentIndex] ? global.state.items[global.state.currentIndex].correct : 'none'
-	const currentHint = global.state.items[global.state.currentIndex] ? global.state.items[global.state.currentIndex].hint : ''
+	// const currentCheckPref = global.state.items[global.state.currentIndex] ? global.state.items[global.state.currentIndex].checkPref : 'no'
+	// const currentChecksUsed = global.state.items[global.state.currentIndex] ? global.state.items[global.state.currentIndex].checksUsed : 0
+	// const maxChecks = global.state.items[global.state.currentIndex] ? global.state.items[global.state.currentIndex].numChecks : 0
+	// const currentAnswerVal = global.state.items[global.state.currentIndex] ? global.state.items[global.state.currentIndex].correct : 'none'
+	// const currentHint = global.state.items[global.state.currentIndex] ? global.state.items[global.state.currentIndex].hint : ''
 
 	useEffect(() => {
 		if (global.state.requireInit) {
@@ -46,13 +46,11 @@ const PlayerApp = (props) => {
 		let isEmpty = false
 
 		for (let item of global.state.items) {
-			if (item.sorted.length <= 0)
-			{
+				if (item.sorted.length <= 0) {
 				isEmpty = true
 				break
 			}
 		}
-
 		return isEmpty
 	}
 
@@ -96,9 +94,19 @@ const PlayerApp = (props) => {
 				<PhrasePlayer
 					phrase={global.state.items[global.state.currentIndex]?.phrase}
 					sorted={global.state.items[global.state.currentIndex]?.sorted}
-					displayPref={global.state.items[global.state.currentIndex]?.displayPref}></PhrasePlayer>
-				<div className={`card hint-text ${(currentAnswerVal == "no" && currentChecksUsed > 0 && currentHint?.length > 0) ? 'show' : ''}`}>
-					<span>{currentHint}</span>
+					displayPref={global.state.items[global.state.currentIndex]?.displayPref}
+					guessPref={global.state.items[global.state.currentIndex]?.checkPref}
+					attemptsUsed={global.state.items[global.state.currentIndex]?.checksUsed}
+					attemptLimit={global.state.items[global.state.currentIndex]?.numChecks + 1}
+					hasFakes={global.state.items[global.state.currentIndex]?.fakeout.length}
+					responseState={global.state.items[global.state.currentIndex]?.responseState}></PhrasePlayer>
+				<div className={'card hint-text' + 
+					`${(
+						global.state.items[global.state.currentIndex]?.checkPref &&
+						global.state.items[global.state.currentIndex]?.checksUsed > 0 && 
+						global.state.items[global.state.currentIndex]?.checksUsed < global.state.items[global.state.currentIndex]?.numChecks &&
+						global.state.items[global.state.currentIndex]?.hint.length > 0) ? 'show' : ''}`}>
+					<span>{global.state.items[global.state.currentIndex]?.hint}</span>
 				</div>
 				<section className="card legend">
 					<header>Color Legend</header>

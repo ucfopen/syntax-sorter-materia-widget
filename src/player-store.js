@@ -9,7 +9,7 @@ const init = {
 	showTutorial: true,
 	showWarning: false,
 	numAsk: 1,
-	askLimit: "no",
+	enableQuestionBank: "no",
 	questionsAsked: []
 }
 
@@ -26,103 +26,76 @@ const shuffle = (array) => {
 }
 
 const randTokenOrder = (reals, fakes) => {
-	let tLen = reals.length + fakes.length
-	let tArr = reals.concat(fakes)
-	let indxArr = []
-	let orderArr = []
 
-	for (let i = 0; i < tLen; i++)
-	{
-		indxArr.push(i)
-	}
-
-	for (let i = 0; i < tLen; i++)
-	{
-		let rand = Math.floor(Math.random() * indxArr.length);
-
-		if (indxArr[rand] != undefined)
-		{
-			orderArr.push(indxArr[rand])
-			indxArr.splice(rand, 1)
-		}
-	}
-
-	return orderArr
+	let merged = reals.concat(fakes)
+	return shuffle(merged)
 }
 
 const importFromQset = (qset) => {
 	return {
 		items: qset.items.map((item) => {
-			let fakes = item.options.fakeout ? shuffle(item.options.fakeout.map((token) => { return {...token, status: 'unsorted', fakeout: true}})) : []
-			let reals = shuffle(item.answers[0].options.phrase.map((token) => { return {...token, status: 'unsorted', fakeout: false} }))
+
+			let fakes = item.options.fakes.map((token) => { return {...token, status: 'unsorted', fakeout: true}})
+			let reals = item.answers[0].options.phrase.map((token) => { return {...token, status: 'unsorted', fakeout: false} })
+			
 			return {
 				question: item.questions[0].text,
 				answer: item.answers[0].text,
 				hint: item.options.hint,
 				fakeout: fakes,
-				phrase: reals,
+				phrase: shuffle(reals.concat(fakes)),
 				sorted: [],
 				displayPref: item.options.displayPref,
 				checkPref: item.options.checkPref,
 				numChecks: item.options.numChecks,
-				fakeoutPref: item.options.fakeoutPref,
 				checksUsed: 0,
-				correct: "none",
+				responseState: 'none',
 				correctPhrase: item.answers[0].options.phrase,
-				allFakes: fakes,
-				allReals: reals,
-				tokenOrder: [],
 				qsetId: item.id
 			}
 		}),
 		legend: qset.options.legend,
 		numAsk: qset.options.numAsk,
-		askLimit: qset.options.askLimit,
+		enableQuestionBank: qset.options.enableQuestionBank,
 		questionsAsked: []
 	}
 }
 
-const reduceNumAsk = (imported) => {
-
+const prepareQuestionBank = (imported) => {
 	let items = imported.items
+	return shuffle(items).slice(0,imported.numAsk)
+}
 
-	if (imported.askLimit == "yes")
+const calcResponseState = (item) => {
+
+	var state = 'none'
+	switch (item.responseState)
 	{
-		let cloneImported = JSON.parse(JSON.stringify(imported)) // Makes a deep copy
-		let newItems = []
-		let indxArr = []
-
-		// Initalizes the index array
-		for (let i = 0; i < items.length; i++)
-		{
-			indxArr.push(i)
-		}
-
-		// Gets the random questions to ask
-		for (let i = 0; i < imported.numAsk; i++)
-		{
-			let rand = Math.floor(Math.random() * indxArr.length); // [0 - length-1]
-
-			if (items[rand])
-			{
-				cloneImported.questionsAsked.push(indxArr[rand])
-				newItems.push(items[indxArr[rand]])
-				indxArr.splice(rand,1) // Gets rid of 1 number at the rand index
+		case 'none':
+			if (item.sorted.length > 0) {
+				if (item.fakeout.length == 0) {
+					state = 'pending'
+				}
+				else state = 'ready'
+			} 
+			break
+			
+		case 'pending':
+			if (item.fakeout.length == 0 && item.phrase.length == 0) {
+				state = 'ready'
 			}
-			else
-			{
-				i--
-				continue
-			}
-		}
+			break
 
-		cloneImported.items = newItems
-
-		return cloneImported
+		case 'ready':
+			state = 'ready'
+			break
+		default:
+			state = item.responseState
 	}
-	else
-	{
-		return imported
+
+	return {
+		...item,
+		responseState: state
 	}
 }
 
@@ -273,14 +246,7 @@ const questionItemReducer = (items, action) => {
 				if (index == action.payload.questionIndex) {
 					if (action.payload.status == 'unsorted')
 					{
-						if (action.payload.fakeout == true)
-						{
-							return { ...item, fakeout: tokenUnsortedPhraseReducer(item.fakeout, action) }
-						}
-						else
-						{
-							return { ...item, phrase: tokenUnsortedPhraseReducer(item.phrase, action) }
-						}
+						return { ...item, phrase: tokenUnsortedPhraseReducer(item.phrase, action) }
 					}
 					else if (action.payload.status == 'sorted') return {...item, sorted: tokenSortedPhraseReducer(item.sorted, action)}
 				}
@@ -291,14 +257,7 @@ const questionItemReducer = (items, action) => {
 				if (index == action.payload.questionIndex) {
 					if (action.payload.origin == 'unsorted')
 					{
-						if (action.payload.fakeout == true)
-						{
-							return { ...item, fakeout: tokenUnsortedPhraseReducer(item.fakeout, action) }
-						}
-						else
-						{
-							return { ...item, phrase: tokenUnsortedPhraseReducer(item.phrase, action) }
-						}
+						return { ...item, phrase: tokenUnsortedPhraseReducer(item.phrase, action) }
 					}
 					else if (action.payload.origin == 'sorted') return {...item, sorted: tokenSortedPhraseReducer(item.sorted, action)}
 				}
@@ -308,30 +267,14 @@ const questionItemReducer = (items, action) => {
 			return items.map((item, index) => {
 				if (index == action.payload.questionIndex) {
 
-					if (action.payload.fakeout == true)
-					{
-						return { ...item, sorted: tokenSortedPhraseReducer(item.sorted, action), fakeout: tokenUnsortedPhraseReducer(item.fakeout, action) }
-					}
-					else
-					{
-						return { ...item, sorted: tokenSortedPhraseReducer(item.sorted, action), phrase: tokenUnsortedPhraseReducer(item.phrase, action) }
-					}
-
-					//else if (action.payload.origin == 'sorted') return {...item, sorted: tokenSortedPhraseReducer(item.sorted, action)}
+					return { ...item, sorted: tokenSortedPhraseReducer(item.sorted, action), phrase: tokenUnsortedPhraseReducer(item.phrase, action) }
 				}
 				else return item
 			})
 		case 'response_token_sort':
 			return items.map((item, index) => {
 				if (index == action.payload.questionIndex) {
-					if (action.payload.fakeout == true)
-					{
-						return {...item, sorted: tokenSortedPhraseReducer(item.sorted, action), fakeout: tokenUnsortedPhraseReducer(item.fakeout, action)}
-					}
-					else
-					{
-						return {...item, sorted: tokenSortedPhraseReducer(item.sorted, action), phrase: tokenUnsortedPhraseReducer(item.phrase, action)}
-					}
+					return calcResponseState({...item, sorted: tokenSortedPhraseReducer(item.sorted, action), phrase: tokenUnsortedPhraseReducer(item.phrase, action)})
 				}
 				else return item
 			})
@@ -344,10 +287,10 @@ const questionItemReducer = (items, action) => {
 				}
 				else return item
 			})
-		case 'correct_update':
+		case 'attempt_submit':
 			return items.map((item, index) => {
 				if (index == action.payload.questionIndex) {
-					return {...item, correct: action.payload.answer, checksUsed: (item.checksUsed + 1)}
+					return {...item, responseState: action.payload.response, checksUsed: item.checksUsed + 1}
 				}
 				else return item
 			})
@@ -360,13 +303,18 @@ const StateProvider = ( { children } ) => {
 	const [state, dispatch] = useReducer((state, action) => {
 		switch (action.type) {
 			case 'init':
-				let imported = importFromQset(action.payload.qset)
-				let importedReduced = reduceNumAsk(imported)
-				for (let i = 0; i < importedReduced.items.length; i++)
-				{
-					importedReduced.items[i].tokenOrder = randTokenOrder(importedReduced.items[i].phrase, importedReduced.items[i].fakeout)
+				let qset = importFromQset(action.payload.qset)
+				var items = qset.items
+
+				if (qset.enableQuestionBank == true) {
+					items = prepareQuestionBank(qset)
 				}
-				return {...state, title: action.payload.title, items: importedReduced.items, legend: imported.legend, questionsAsked: importedReduced.questionsAsked, requireInit: false}
+
+				items.forEach((item) => {
+					item.tokenOrder = randTokenOrder(item.phrase,item.fakeout)
+				})
+
+				return {...state, title: action.payload.title, items: items, legend: qset.legend, questionsAsked: items.questionsAsked, requireInit: false}
 			case 'toggle_tutorial':
 				return {...state, showTutorial: !state.showTutorial}
 			case 'toggle_warning':
@@ -374,7 +322,6 @@ const StateProvider = ( { children } ) => {
 			case 'select_question':
 				return {...state, currentIndex: action.payload}
 			case 'paginate_question_forward':
-				//console.log('current indx: ' + state.currentIndex)
 				let forward = state.currentIndex < state.items.length -1 ? state.currentIndex + 1: state.currentIndex
 				return {...state, currentIndex: forward}
 			case 'token_dragging':
@@ -384,7 +331,7 @@ const StateProvider = ( { children } ) => {
 			case 'response_token_sort':
 			case 'response_token_rearrange':
 			case 'adjacent_token_update':
-			case 'correct_update':
+			case 'attempt_submit':
 				return {...state, items: questionItemReducer(state.items, action)}
 			default:
 				throw new Error(`Base reducer: action type: ${action.type} not found.`)
