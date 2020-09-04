@@ -108,6 +108,10 @@ const PhrasePlayer = (props) => {
 		}})
 	}
 
+	const forceClearAdjacentTokens = () => {
+		manageAdjacentTokenDisplay(null, null)
+	}
+
 	let sortedTokens = props.sorted?.map((token, index) => {
 		return <Token
 			key={index}
@@ -119,7 +123,8 @@ const PhrasePlayer = (props) => {
 			arrangement={token.arrangement}
 			position={token.position}
 			fakeout={token.fakeout}
-			dragEligible={!(props.guessPref && props.attemptsUsed >= props.attemptLimit)}>
+			dragEligible={!(props.guessPref && props.attemptsUsed >= props.attemptLimit) || token.responseState == 'correct'}
+			forceClearAdjacentTokens={forceClearAdjacentTokens}>
 		</Token>
 	})
 
@@ -136,7 +141,7 @@ const PhrasePlayer = (props) => {
 					{sortedTokens}
 				</div>
 				<span className={`fakeout-tip ${props.hasFakes ? "show" : ''}`}>
-					<span className='icon-notification'></span>Not all of the items below may be part of the final phrase.
+					<span className='icon-notification'></span>Not all of the items below may be part of the correct phrase.
 				</span>
 			</div>
 			<TokenDrawer

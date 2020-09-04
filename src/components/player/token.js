@@ -33,6 +33,8 @@ const Token = (props) => {
 				x: coords.x,
 				width: coords.width
 			}})
+
+			props.forceClearAdjacentTokens()
 		}
 	}, [props.position])
 

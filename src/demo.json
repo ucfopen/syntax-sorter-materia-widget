@@ -42,11 +42,10 @@
 				}],
 				"options": {
 					"displayPref": "word",
-					"checkPref": "yes",
+					"checkPref": "true",
 					"numChecks": 5,
-					"fakeoutPref": "no",
 					"hint":"This is your hint",
-					"fakeout": [
+					"fakes": [
 						{
 							"value": "fake",
 							"legend": 6
@@ -89,16 +88,10 @@
 				}],
 				"options": {
 					"displayPref": "part-of-speech",
-					"checkPref": "yes",
+					"checkPref": true,
 					"numChecks": 5,
-					"fakeoutPref": "no",
 					"hint":"This is your hint",
-					"fakeout": [
-						{
-							"value": "fake",
-							"legend": 6
-						}
-					]
+					"fakes": []
 				}
 			}],
 			"options": {

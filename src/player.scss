@@ -25,6 +25,34 @@
 	.content-container {
 		min-height: calc(100% - 100px);
 		padding: 75px 25px 25px 25px;
+
+		.card.question-container {
+			padding: 15px;
+
+			p {
+				margin: 0;
+			}
+
+			.hint-text {
+				display: none;
+				margin: 10px 0 0 0;
+				padding: 10px 0 0 0;
+				border-top: solid 1px $lightBG;
+
+				&.show {
+					display: block;
+				}
+
+				h5 {
+					// margin: 0 0 10px 0;
+					margin: 0 0 5px 0;
+					font-weight: 700;
+					font-size: 1em;
+				}
+
+				font-size: 0.8em;
+			}
+		}
 	}
 
 	section.phrase-player {
@@ -79,6 +107,10 @@
 				display: block;
 			}
 
+			&.empty {
+				padding-top: 0px;
+			}
+
 			// RESPONSE STATE: NONE
 			&.none {
 				section.response-controls {
@@ -118,7 +150,7 @@
 
 				span.controls-message {
 					display: inline-block;
-					width: 60%;
+					padding-right: 15px;
 					font-size: 0.8em;
 
 					div {
@@ -185,74 +217,7 @@
 					}
 					
 				}
-
-				// // button:not(.check-btn) {
-				// button.paginate {
-				// 	display: block;
-				// 	float: right;
-				// 	margin: 0 10px 0 0;
-				// 	color: #000;
-				// 	background: #fff;
-				// 	border: solid 1px $colorBGTertiary;
-				// 	padding: 10px 20px;
-				// 	outline: none;
-
-				// 	font-weight: 700;
-
-				// 	&:hover {
-				// 		color: #000;
-				// 		background: #ecfff1;
-				// 	}
-				// }
-
-				// .check-btn {
-				// button.verify {
-
-				// 	display: none;
-
-				// 	&.disabled {
-				// 		cursor: default;
-				// 		color: #808080;
-				// 		background: #d4d4d4;
-				// 	}
-
-				// 	&.show {
-				// 		display: block;
-				// 		// display: inline-block;
-				// 		float: right;
-				// 		margin: 0 10px 0 0;
-				// 		border: solid 1px $colorBGTertiary;
-				// 		padding: 10px 20px;
-				// 		outline: none;
-
-				// 		font-weight: 700;
-				// 	}
-
-				// 	&.show:not(.disabled) {
-				// 		color: #000;
-				// 		background: #fff;
-				// 	}
-
-				// 	&:hover:not(.disabled) {
-				// 		color: #000;
-				// 		background: #ecfff1;
-				// 	}
-
-				// }
 			}
-
-			// &.empty {
-
-			// 	font-size: 0.9em;
-
-			// 	&:not(.correct):not(.incorrect):not(.fakeout) {
-			// 		background: $colorBGPending;
-			// 	}
-
-			// 	section.response-controls {
-			// 		display: inline-block;
-			// 	}
-			// }
 		}
 	}
 

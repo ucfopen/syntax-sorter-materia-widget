@@ -75,14 +75,22 @@ const TokenDrawer = (props) => {
 
 	switch (props.responseState) {
 		case 'ready':
-			if (isLastQuestion) {
-				currentResponseText = <span className='controls-message'>When you're ready, select <strong>Submit</strong> at the top-right for scoring or go back and review your answers.</span>
+			if (isLastQuestion && props.guessPref) {
+				let remaining = props.attemptLimit - props.attemptsUsed
+				currentResponseText = <span className='controls-message'>You have <span className='strong'>{remaining}</span> attempt{remaining > 1 ? 's' : ''} remaining. Select <span className='strong'>Check Answer</span> to check your answer, or select <span className='strong'>Submit</span> at the top-right for scoring.</span>
+			}
+			else if (isLastQuestion) {
+				currentResponseText = <span className='controls-message'>When you're ready, select <span className='strong'>Submit</span> at the top-right for scoring or go back and review your answers.</span>
+			}
+			else if (props.guessPref) {
+				let remaining = props.attemptLimit - props.attemptsUsed
+				currentResponseText = <span className='controls-message'>You have <span className='strong'>{remaining}</span> attempt{remaining > 1 ? 's' : ''} remaining. Select <span className='strong'>Check Answer</span> to check your answer, or select <span className='strong'>Next Question</span> to continue.</span>
 			}
 			else if (props.hasFakes) {
-				currentResponseText = <span className='controls-message'>When you're ready, select <strong>Next Question</strong> to continue.</span>
+				currentResponseText = <span className='controls-message'>When you're ready, select <span className='strong'>Next Question</span> to continue.</span>
 			}
 			else {
-				currentResponseText = <span className='controls-message'>You've sorted every item! When you're ready, select <strong>Next Question</strong> to continue.</span>
+				currentResponseText = <span className='controls-message'>You've sorted every item! When you're ready, select <span className='strong'>Next Question</span> to continue.</span>
 			}
 			break
 		case 'pending':
@@ -90,23 +98,23 @@ const TokenDrawer = (props) => {
 			break
 		case 'incorrect-attempts-remaining':
 			let remaining = props.attemptLimit - props.attemptsUsed
-			currentResponseText = <span className='controls-message'>That's not quite right. You have {remaining} attempt{remaining > 1 ? 's' : ''} remaining.</span>
+			currentResponseText = <span className='controls-message'>That's not quite right. You have <span className='strong'>{remaining}</span> attempt{remaining > 1 ? 's' : ''} remaining.</span>
 			break
 		case 'incorrect-no-attempts':
 			if (isLastQuestion) {
-				currentResponseText = <span className='controls-message'>That's not quite right. You've exhausted your attempts for this question. When you're ready, select <strong>Submit</strong> at the top-right for scoring or go back and review your answers.</span>
+				currentResponseText = <span className='controls-message'>That's not quite right. You've exhausted your attempts for this question. When you're ready, select <span className='strong'>Submit</span> at the top-right for scoring or go back and review your answers.</span>
 			}
 			else {
-				currentResponseText = <span className='controls-message'>That's not quite right. You've exhausted your attempts for this question. Select <strong>Next Question</strong> to continue.</span>
+				currentResponseText = <span className='controls-message'>That's not quite right. You've exhausted your attempts for this question. Select <span className='strong'>Next Question</span> to continue.</span>
 			}
 			break
 		case 'correct':
 			if (isLastQuestion) {
-				currentResponseText = <span className='controls-message'>Nice work! You aced it. When you're ready, select <strong>Submit</strong> at the top-right for scoring or go back and review your answers.</span>
+				currentResponseText = <span className='controls-message'>Nice work! You aced it. When you're ready, select <span className='strong'>Submit</span> at the top-right for scoring or go back and review your answers.</span>
 			}
 			else
 			{
-				currentResponseText = <span className='controls-message'>Nice work! You aced it. Select <strong>Next Question</strong> to continue.</span>
+				currentResponseText = <span className='controls-message'>Nice work! You aced it. Select <span className='strong'>Next Question</span> to continue.</span>
 			}
 			break
 		case 'none':

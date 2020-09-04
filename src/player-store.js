@@ -42,15 +42,15 @@ const importFromQset = (qset) => {
 				question: item.questions[0].text,
 				answer: item.answers[0].text,
 				hint: item.options.hint,
-				fakeout: fakes,
-				phrase: shuffle(reals.concat(fakes)),
+				fakeout: fakes, // ONLY the fake tokens
+				phrase: shuffle(reals.concat(fakes)), // randomized sum of real and fake tokens
 				sorted: [],
 				displayPref: item.options.displayPref,
-				checkPref: item.options.checkPref,
-				numChecks: item.options.numChecks,
+				checkPref: item.options.checkPref, // are there additional attempts?
+				numChecks: item.options.numChecks, // number of additional attempts
 				checksUsed: 0,
-				responseState: 'none',
-				correctPhrase: item.answers[0].options.phrase,
+				responseState: 'none', // used to track display of various phrasePlayer states
+				correctPhrase: item.answers[0].options.phrase, // used for client-side assessment of the phrase if guess attempts are enabled
 				qsetId: item.id
 			}
 		}),
@@ -66,9 +66,10 @@ const prepareQuestionBank = (imported) => {
 	return shuffle(items).slice(0,imported.numAsk)
 }
 
+// responseState may change based on tokens being sorted or unsorted
 const calcResponseState = (item) => {
 
-	var state = 'none'
+	var state = item.responseState
 	switch (item.responseState)
 	{
 		case 'none':
@@ -84,10 +85,18 @@ const calcResponseState = (item) => {
 			if (item.fakeout.length == 0 && item.phrase.length == 0) {
 				state = 'ready'
 			}
+			else if (item.sorted.length == 0) {
+				state = 'none'
+			}
 			break
 
 		case 'ready':
-			state = 'ready'
+			if (item.fakeout.length == 0 && item.phrase.length > 0) {
+				state = 'pending'
+			}
+			else if (item.sorted.length == 0) {
+				state = 'none'
+			}
 			break
 		default:
 			state = item.responseState
@@ -267,7 +276,7 @@ const questionItemReducer = (items, action) => {
 			return items.map((item, index) => {
 				if (index == action.payload.questionIndex) {
 
-					return { ...item, sorted: tokenSortedPhraseReducer(item.sorted, action), phrase: tokenUnsortedPhraseReducer(item.phrase, action) }
+					return calcResponseState({ ...item, sorted: tokenSortedPhraseReducer(item.sorted, action), phrase: tokenUnsortedPhraseReducer(item.phrase, action) })
 				}
 				else return item
 			})
@@ -313,7 +322,6 @@ const StateProvider = ( { children } ) => {
 				items.forEach((item) => {
 					item.tokenOrder = randTokenOrder(item.phrase,item.fakeout)
 				})
-
 				return {...state, title: action.payload.title, items: items, legend: qset.legend, questionsAsked: items.questionsAsked, requireInit: false}
 			case 'toggle_tutorial':
 				return {...state, showTutorial: !state.showTutorial}

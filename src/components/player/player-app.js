@@ -9,11 +9,6 @@ const PlayerApp = (props) => {
 
 	const global = useContext(store)
 	const dispatch = global.dispatch
-	// const currentCheckPref = global.state.items[global.state.currentIndex] ? global.state.items[global.state.currentIndex].checkPref : 'no'
-	// const currentChecksUsed = global.state.items[global.state.currentIndex] ? global.state.items[global.state.currentIndex].checksUsed : 0
-	// const maxChecks = global.state.items[global.state.currentIndex] ? global.state.items[global.state.currentIndex].numChecks : 0
-	// const currentAnswerVal = global.state.items[global.state.currentIndex] ? global.state.items[global.state.currentIndex].correct : 'none'
-	// const currentHint = global.state.items[global.state.currentIndex] ? global.state.items[global.state.currentIndex].hint : ''
 
 	useEffect(() => {
 		if (global.state.requireInit) {
@@ -90,6 +85,17 @@ const PlayerApp = (props) => {
 			<section className="content-container">
 				<section className="card question-container">
 					<p>{global.state.items[global.state.currentIndex]?.question}</p>
+					<div className={'hint-text ' +
+					`${(
+						global.state.items[global.state.currentIndex]?.checkPref &&
+						global.state.items[global.state.currentIndex]?.checksUsed > 0 && 
+						global.state.items[global.state.currentIndex]?.checksUsed < global.state.items[global.state.currentIndex]?.numChecks + 1 &&
+						global.state.items[global.state.currentIndex]?.responseState != 'correct' &&
+						global.state.items[global.state.currentIndex]?.responseState != 'incorrect-no-attempts' &&
+						global.state.items[global.state.currentIndex]?.hint.length > 0) ? 'show' : ''}`}>
+						<h5>Hint:</h5>
+						<span>{global.state.items[global.state.currentIndex]?.hint}</span>
+				</div>
 				</section>
 				<PhrasePlayer
 					phrase={global.state.items[global.state.currentIndex]?.phrase}
@@ -100,14 +106,6 @@ const PlayerApp = (props) => {
 					attemptLimit={global.state.items[global.state.currentIndex]?.numChecks + 1}
 					hasFakes={global.state.items[global.state.currentIndex]?.fakeout.length}
 					responseState={global.state.items[global.state.currentIndex]?.responseState}></PhrasePlayer>
-				<div className={'card hint-text' + 
-					`${(
-						global.state.items[global.state.currentIndex]?.checkPref &&
-						global.state.items[global.state.currentIndex]?.checksUsed > 0 && 
-						global.state.items[global.state.currentIndex]?.checksUsed < global.state.items[global.state.currentIndex]?.numChecks &&
-						global.state.items[global.state.currentIndex]?.hint.length > 0) ? 'show' : ''}`}>
-					<span>{global.state.items[global.state.currentIndex]?.hint}</span>
-				</div>
 				<section className="card legend">
 					<header>Color Legend</header>
 					{legendList}
