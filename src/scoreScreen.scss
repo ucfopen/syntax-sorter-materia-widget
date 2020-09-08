@@ -6,12 +6,16 @@
 	width: calc(100% - 50px);
 	height: 100%;
 	margin-left: 0px;
+	padding-top: 25px;
 
 	.question-text-container {
 		display: flex;
 		flex-direction: column;
+		padding-bottom: 0;
 
 		h3 {
+			font-size: 0.8em;
+			font-weight: 400;
 			margin: 0 0 1em 0;
 		}
 
