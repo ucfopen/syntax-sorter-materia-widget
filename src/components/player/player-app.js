@@ -93,8 +93,7 @@ const PlayerApp = (props) => {
 						global.state.items[global.state.currentIndex]?.responseState != 'correct' &&
 						global.state.items[global.state.currentIndex]?.responseState != 'incorrect-no-attempts' &&
 						global.state.items[global.state.currentIndex]?.hint.length > 0) ? 'show' : ''}`}>
-						<h5>Hint:</h5>
-						<span>{global.state.items[global.state.currentIndex]?.hint}</span>
+						<span className="strong">Hint: </span><span>{global.state.items[global.state.currentIndex]?.hint}</span>
 				</div>
 				</section>
 				<PhrasePlayer

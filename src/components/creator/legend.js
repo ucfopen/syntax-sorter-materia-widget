@@ -35,7 +35,7 @@ const Legend = (props) => {
 	}
 
 	let legendItems = props.legend.map((item, index) => {
-		return <LegendItem key={index} name={item.name} id={item.id} index={index} toggleColorPicker={toggleColorPicker}></LegendItem>
+		return <LegendItem key={index} name={item.name} id={item.id} index={index} toggleColorPicker={toggleColorPicker} focus={item.focus} addLegendItem={addLegendItem}></LegendItem>
 	})
 
 	return (

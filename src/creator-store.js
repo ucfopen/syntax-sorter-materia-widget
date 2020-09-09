@@ -28,7 +28,8 @@ const init = {
 		{
 			id: legendIdIncrement,
 			color: '#FF0000',
-			name: 'Part of Speech'
+			name: 'Part of Speech',
+			focus: false
 		}
 	],
 	numAsk: 1,
@@ -253,14 +254,16 @@ const legendReducer = (legend, action) => {
 			return [...legend, {
 				id: ++legendIdIncrement,
 				color: action.payload.color,
-				name: action.payload.text
+				name: action.payload.text,
+				focus: true
 			}]
 		case 'update_legend_item':
 			return legend.map((term, index) => {
 				if (index == action.payload.index) {
 					return {
 						...term,
-						name: action.payload.text
+						name: action.payload.text,
+						focus: false
 					}
 				}
 				else return term
@@ -271,7 +274,6 @@ const legendReducer = (legend, action) => {
 				...legend.slice(action.payload.index + 1)
 			]
 		case 'legend_color_picker_change':
-			console.log("color picker change: index: " + action.payload.index + " and color: " + action.payload.color)
 			return legend.map((term, index) => {
 				if (index == action.payload.index) {
 					return {
