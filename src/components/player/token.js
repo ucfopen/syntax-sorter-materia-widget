@@ -13,11 +13,12 @@ const Token = (props) => {
 
 	// update token position when element's x value changes
 	useEffect( () => {
-		if (props.status == 'sorted' && coords) {
+		if (props.status == 'sorted' && coords && coords.x > 0) {
 			dispatch({type:'token_update_position',payload: {
 				questionIndex: global.state.currentIndex,
 				tokenIndex: props.index,
 				x: coords.x,
+				y: coords.y + coords.height/2,
 				width: coords.width
 			}})
 		}
@@ -25,18 +26,35 @@ const Token = (props) => {
 
 	// the above hook works MOST of the time, but certain events (token rearrange) clear this token's position information in the store, and the hook doesn't fire
 	// manually update the position in cases where the position value does not get updated after being cleared
+	// useEffect( () => {
+	// 	if (props.status == 'sorted' && !props.position.x && coords) {
+	// 		dispatch({type:'token_update_position',payload: {
+	// 			questionIndex: global.state.currentIndex,
+	// 			tokenIndex: props.index,
+	// 			x: coords.x,
+	// 			y: coords.y + coords.height/2,
+	// 			width: coords.width
+	// 		}})
+
+	// 		props.forceClearAdjacentTokens()
+	// 	}
+	// }, [props.position])
+
+	// a token was sorted or rearranged, prompting the reqPositionUpdate flag to update for all sorted tokens. This forces them to update their position information
+	// in scenarios where it wouldn't otherwise get updated
 	useEffect( () => {
-		if (props.status == 'sorted' && !props.position.x && coords) {
+		if (props.status == 'sorted' && props.reqPositionUpdate == true && coords) {
 			dispatch({type:'token_update_position',payload: {
 				questionIndex: global.state.currentIndex,
 				tokenIndex: props.index,
 				x: coords.x,
+				y: coords.y + coords.height/2,
 				width: coords.width
 			}})
 
 			props.forceClearAdjacentTokens()
 		}
-	}, [props.position])
+	}, [props?.reqPositionUpdate])
 
 	const getLegendColor = (type) => {
 		for (const term of global.state.legend) {
@@ -114,6 +132,10 @@ const Token = (props) => {
 		})
 	}
 
+	const handleDebugClick = () => {
+		console.log(props)
+	}
+
 	// function that returns a value 0-255 based on the "lightness" of a given hex value
 	const contrastCalc = (color) => {
 		var r, g, b
@@ -140,7 +162,8 @@ const Token = (props) => {
 			onDragStart={handleDragStart}
 			onDrag={handleDrag}
 			onDragEnd={handleDragEnd}
-			onContextMenu={handleClick}>
+			onContextMenu={handleClick}
+			onClick={handleDebugClick}>
 			{props.pref == 'word' ? props.value : getLegendName(props.type)}
 		</div>
 	)

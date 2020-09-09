@@ -4,7 +4,7 @@
 		"cleanName": "foreign-language-widget"
 	},
 	"dependencies": {
-		"materia-widget-development-kit": "^2.4.2"
+		"materia-widget-development-kit": "2.5.1-alpha1"
 	},
 	"devDependencies": {
 		"@babel/plugin-proposal-class-properties": "7.8.3",

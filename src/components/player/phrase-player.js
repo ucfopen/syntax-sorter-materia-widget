@@ -17,6 +17,7 @@ const PhrasePlayer = (props) => {
 		event.preventDefault()
 
 		const cursor = event.clientX
+		const cursorY = event.clientY
 
 		let leftToken = null
 		let rightToken = null
@@ -25,17 +26,20 @@ const PhrasePlayer = (props) => {
 			let pos = props.sorted[i].position
 			let left = pos.x
 			let right = pos.x + pos.width
+			let height = pos.y
 
-			if (cursor > left) {
-				if (!leftToken || (leftToken && left > leftToken.position.x)) {
-					leftToken = props.sorted[i]
-					leftToken.index = i
+			if (cursorY > height - 25 && cursorY < height + 25) {
+				if (cursor > left) {
+					if (!leftToken || (leftToken && left > leftToken.position.x)) {
+						leftToken = props.sorted[i]
+						leftToken.index = i
+					}
 				}
-			}
-			else if (cursor < right) {
-				if (!rightToken || (rightToken && right < rightToken.position.x + rightToken.position.width)) {
-					rightToken = props.sorted[i]
-					rightToken.index = i
+				else if (cursor < right) {
+					if (!rightToken || (rightToken && right < rightToken.position.x + rightToken.position.width)) {
+						rightToken = props.sorted[i]
+						rightToken.index = i
+					}
 				}
 			}
 		}
@@ -122,6 +126,7 @@ const PhrasePlayer = (props) => {
 			status={token.status}
 			arrangement={token.arrangement}
 			position={token.position}
+			reqPositionUpdate={token.reqPositionUpdate}
 			fakeout={token.fakeout}
 			dragEligible={!(props.guessPref && props.attemptsUsed >= props.attemptLimit) || token.responseState == 'correct'}
 			forceClearAdjacentTokens={forceClearAdjacentTokens}>

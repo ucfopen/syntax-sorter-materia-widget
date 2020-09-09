@@ -131,10 +131,18 @@ const tokenSortedPhraseReducer = (list, action) => {
 				else return token
 			})
 		case 'sorted_right_click':
-			return [
+		{
+			let sorted = [
 				...list.slice(0, action.payload.tokenIndex),
 				...list.slice(action.payload.tokenIndex + 1)
 			]
+			
+			return sorted.map((token) => ({
+				...token,
+					reqPositionUpdate: true
+				})
+			)
+		}
 		case 'token_update_position':
 			return list.map((token, index) => {
 				if (action.payload.tokenIndex == index) {
@@ -142,25 +150,35 @@ const tokenSortedPhraseReducer = (list, action) => {
 						...token,
 						position: {
 							x: action.payload.x,
+							y: action.payload.y,
 							width: action.payload.width
-						}
+						},
+						reqPositionUpdate: false
 					}
 				}
 				else return token
 			})
 		case 'response_token_sort':
-			return [
-					...list.slice(0, action.payload.targetIndex),
-					{
-						legend: action.payload.legend,
-						value: action.payload.value,
-						status: 'sorted',
-						fakeout: action.payload.fakeout,
-						position: {},
-						arrangement: null
-					},
-					...list.slice(action.payload.targetIndex)
-				]
+		{
+			let sorted = [
+				...list.slice(0, action.payload.targetIndex),
+				{
+					legend: action.payload.legend,
+					value: action.payload.value,
+					status: 'sorted',
+					fakeout: action.payload.fakeout,
+					position: {},
+					arrangement: null
+				},
+				...list.slice(action.payload.targetIndex)
+			]
+			
+			return sorted.map((token) => ({
+					...token,
+					reqPositionUpdate: true
+				})
+			)
+		} 
 		case 'response_token_rearrange':
 			let target = action.payload.targetIndex
 			if (action.payload.originIndex < target) target--
@@ -170,7 +188,7 @@ const tokenSortedPhraseReducer = (list, action) => {
 				...list.slice(action.payload.originIndex + 1)
 			]
 
-			return [
+			let stageTwo = [
 				...stageOne.slice(0, target),
 				{
 					legend: action.payload.legend,
@@ -182,7 +200,15 @@ const tokenSortedPhraseReducer = (list, action) => {
 				},
 				...stageOne.slice(target)
 			]
+
+			return stageTwo.map((token) => {
+				return {
+					...token,
+					reqPositionUpdate: true
+				}
+			})
 		case 'adjacent_token_update':
+			console.log(list)
 			return list.map((token) => {
 
 				if (action.payload.left != undefined && token.index == action.payload.left) {

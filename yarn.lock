@@ -5567,10 +5567,10 @@ materia-server-client-assets@2.1.0:
     js-snakecase "^1.2.0"
     ngmodal ucfcdl/ngModal#v1.2.2
 
-materia-widget-development-kit@^2.4.2:
-  version "2.5.0"
-  resolved "https://registry.yarnpkg.com/materia-widget-development-kit/-/materia-widget-development-kit-2.5.0.tgz#0cc4d82854abf21286c18367cbede374529385b6"
-  integrity sha512-nvYBA/ZBm4SXpLWo6cccm0EDplmBAkcY4c9mjWCuY2BUwJvBgxvA33cKscYg0ktmI3dolPCYMXnb5CERx4239g==
+materia-widget-development-kit@2.5.1-alpha1:
+  version "2.5.1-alpha1"
+  resolved "https://registry.yarnpkg.com/materia-widget-development-kit/-/materia-widget-development-kit-2.5.1-alpha1.tgz#40744053ff7cb3003cc71881af1df5d74cebcb0d"
+  integrity sha512-C8zcjsv0paYGwKtGgPVufThQOX33Ivy4xgvcwTq8ZipR3qd7LKYw8sqrbGYFokuU98clwhKhaID6OugwJdBPCQ==
   dependencies:
     "@babel/core" "^7.4.5"
     "@babel/preset-env" "^7.4.5"
