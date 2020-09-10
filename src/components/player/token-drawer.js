@@ -58,6 +58,7 @@ const TokenDrawer = (props) => {
 
 	let tokenList = props.phrase?.map((token, index) => {
 		return <Token
+					id={token.id}
 					key={index}
 					index={index}
 					type={token.legend}

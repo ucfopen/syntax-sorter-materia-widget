@@ -25,6 +25,13 @@ const shuffle = (array) => {
 	return array
 }
 
+// create a small randomized hash to assign to each token
+// used to provide each token with a unique identifier - token index and legend/value are potentially untrustworthy and/or not unique
+const createTokenKey = () => {
+	let num = Math.floor(Math.random() * (10000 - 1) + 1)
+	return btoa(num)
+}
+
 const randTokenOrder = (reals, fakes) => {
 
 	let merged = reals.concat(fakes)
@@ -35,8 +42,8 @@ const importFromQset = (qset) => {
 	return {
 		items: qset.items.map((item) => {
 
-			let fakes = item.options.fakes.map((token) => { return {...token, status: 'unsorted', fakeout: true}})
-			let reals = item.answers[0].options.phrase.map((token) => { return {...token, status: 'unsorted', fakeout: false} })
+			let fakes = item.options.fakes.map((token) => { return {...token, status: 'unsorted', fakeout: true, id: createTokenKey()}})
+			let reals = item.answers[0].options.phrase.map((token) => { return {...token, status: 'unsorted', fakeout: false, id: createTokenKey()} })
 			
 			return {
 				question: item.questions[0].text,
@@ -163,6 +170,7 @@ const tokenSortedPhraseReducer = (list, action) => {
 			let sorted = [
 				...list.slice(0, action.payload.targetIndex),
 				{
+					id: action.payload.id,
 					legend: action.payload.legend,
 					value: action.payload.value,
 					status: 'sorted',
@@ -180,6 +188,7 @@ const tokenSortedPhraseReducer = (list, action) => {
 			)
 		} 
 		case 'response_token_rearrange':
+			console.log(action.payload)
 			let target = action.payload.targetIndex
 			if (action.payload.originIndex < target) target--
 
@@ -191,6 +200,7 @@ const tokenSortedPhraseReducer = (list, action) => {
 			let stageTwo = [
 				...stageOne.slice(0, target),
 				{
+					id: action.payload.id,
 					legend: action.payload.legend,
 					value: action.payload.value,
 					status: 'sorted',
@@ -208,16 +218,15 @@ const tokenSortedPhraseReducer = (list, action) => {
 				}
 			})
 		case 'adjacent_token_update':
-			console.log(list)
 			return list.map((token) => {
 
-				if (action.payload.left != undefined && token.index == action.payload.left) {
+				if (action.payload.left != undefined && token.id == action.payload.left) {
 					return {
 						...token,
 						arrangement: 'left'
 					}
 				}
-				else if (action.payload.right != undefined && token.index == action.payload.right) {
+				else if (action.payload.right != undefined && token.id == action.payload.right) {
 					return {
 						...token,
 						arrangement: 'right'
@@ -262,13 +271,15 @@ const tokenUnsortedPhraseReducer = (list, action) => {
 			]
 		case 'sorted_right_click':
 			return [
-				...list, {
-					legend: action.payload.legend,
-					value: action.payload.value,
-					status: 'unsorted',
-					fakeout: action.payload.fakeout
-				}
-			]
+					...list,
+					{
+						id: action.payload.id,
+						legend: action.payload.legend,
+						value: action.payload.value,
+						status: 'unsorted',
+						fakeout: action.payload.fakeout
+					}
+				]
 		default:
 			throw new Error(`Token phrase reducer: action type: ${action.type} not found.`)
 	}

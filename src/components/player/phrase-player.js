@@ -28,7 +28,7 @@ const PhrasePlayer = (props) => {
 			let right = pos.x + pos.width
 			let height = pos.y
 
-			if (cursorY > height - 25 && cursorY < height + 25) {
+			if (cursorY > height - 40 && cursorY < height + 40) {
 				if (cursor > left) {
 					if (!leftToken || (leftToken && left > leftToken.position.x)) {
 						leftToken = props.sorted[i]
@@ -44,15 +44,12 @@ const PhrasePlayer = (props) => {
 			}
 		}
 
-		// console.log(props.sorted)
-		// console.log(leftToken)
-		// console.log(rightToken)
-
 		manageAdjacentTokenDisplay(leftToken, rightToken)
 	}
 
 	const handleTokenDrop = (event) => {
 		event.preventDefault()
+		let dropTokenId = event.dataTransfer.getData("tokenId")
 		let dropTokenName = event.dataTransfer.getData("tokenName")
 		let dropTokenType = event.dataTransfer.getData("tokenType")
 		let dropTokenPhraseIndex = event.dataTransfer.getData("tokenPhraseIndex")
@@ -62,6 +59,8 @@ const PhrasePlayer = (props) => {
 		let index = 0
 
 		for (let i = 0; i<props.sorted.length; i++) {
+
+			if (props.sorted[i].id == dropTokenId) continue
 
 			if (props.sorted[i].arrangement == "left") {
 				index = i + 1
@@ -78,6 +77,7 @@ const PhrasePlayer = (props) => {
 					payload: {
 						questionIndex: global.state.currentIndex,
 						targetIndex: index,
+						id: dropTokenId,
 						legend: dropTokenType,
 						value: dropTokenName,
 						originIndex: parseInt(dropTokenPhraseIndex),
@@ -92,6 +92,7 @@ const PhrasePlayer = (props) => {
 					payload: {
 						questionIndex: global.state.currentIndex,
 						targetIndex: index,
+						id: dropTokenId,
 						legend: dropTokenType,
 						value: dropTokenName,
 						phraseIndex: parseInt(dropTokenPhraseIndex),
@@ -107,8 +108,8 @@ const PhrasePlayer = (props) => {
 	const manageAdjacentTokenDisplay = (left, right) => {
 		dispatch({type: 'adjacent_token_update', payload: {
 			questionIndex: global.state.currentIndex,
-			left: left?.index,
-			right: right?.index
+			left: left?.id,
+			right: right?.id
 		}})
 	}
 
@@ -118,6 +119,7 @@ const PhrasePlayer = (props) => {
 
 	let sortedTokens = props.sorted?.map((token, index) => {
 		return <Token
+			id={token.id}
 			key={index}
 			index={index}
 			type={token.legend}
@@ -132,8 +134,6 @@ const PhrasePlayer = (props) => {
 			forceClearAdjacentTokens={forceClearAdjacentTokens}>
 		</Token>
 	})
-
-	// console.log(sortedTokens)
 
 	return(
 		<section className={'card phrase-player ' +

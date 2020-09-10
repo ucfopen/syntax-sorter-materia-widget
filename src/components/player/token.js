@@ -77,7 +77,7 @@ const Token = (props) => {
 		event.dataTransfer.setData("tokenType",props.type)
 		event.dataTransfer.setData("tokenPhraseIndex",props.index)
 		event.dataTransfer.setData("tokenStatus",props.status)
-		event.dataTransfer.setData("tokenFakeout",props.fakeout)
+		event.dataTransfer.setData("tokenId",props.id)
 
 		setTimeout(() => {
 			setState(state => ({...state,dragging: true}))
@@ -86,8 +86,7 @@ const Token = (props) => {
 		dispatch({type: 'token_dragging', payload: {
 			questionIndex: global.state.currentIndex,
 			tokenIndex: props.index,
-			status: props.status,
-			fakeout: props.fakeout
+			status: props.status
 		}})
 	}
 
@@ -111,7 +110,8 @@ const Token = (props) => {
 					questionIndex: global.state.currentIndex,
 					fakeout: props.fakeout,
 					legend: props.type,
-					value: props.value
+					value: props.value,
+					id: props.id
 				}})
 	  	}
 	  }
@@ -124,7 +124,8 @@ const Token = (props) => {
 			status: props.status,
 			tokenIndex: props.index,
 			questionIndex: global.state.currentIndex,
-			fakeout: props.fakeout
+			fakeout: props.fakeout,
+			id: props.id
 		}})
 
 		setTimeout(() => {
