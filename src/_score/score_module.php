@@ -17,23 +17,17 @@ class Score_Modules_LanguageWidget extends Score_Module {
 	{
 		if (isset($this->questions[$log->item_id]))
 		{
-			if (strlen($log->text) <= 1)
-			{
-				return 0;
-			}
-
-			$response = explode(',',$log->text);
+			$response = json_decode($log->text);
 			$respNoFake = [];
 
 			$answer = [];
 
 			foreach ($this->questions[$log->item_id]->answers[0]['options']['phrase'] as $token) {
-				if ($this->questions[$log->item_id]->options['displayPref'] == 'word') {
-					array_push($answer, $token['value']);
-				}
-				else {
-					array_push($answer, $this->getLegendValue($token['legend']));
-				}
+
+				$answer[] = [
+					'value' => $token['value'],
+					'legend' => $this->getLegendValue($token['legend'])
+				];
 			}
 
 			$max = count($answer);
@@ -48,33 +42,42 @@ class Score_Modules_LanguageWidget extends Score_Module {
 				$isFake = TRUE;
 
 				foreach ($answer as $goodToken) {
-					if (strcmp($response[$i], $goodToken) == 0) {
-						$isFake = FALSE;
-						break;
+					
+					if ($this->questions[$log->item_id]->options['displayPref'] == 'word') {
+						// verify WORD and LEGEND
+						if (strcmp($response[$i]->value, $goodToken['value']) == 0 && strcmp($response[$i]->legend, $goodToken['legend']) == 0) {
+							$isFake = FALSE;
+							break;
+						}
 					}
+					else {
+						// just verify LEGEND
+						if (strcmp($response[$i]->legend, $goodToken['legend']) == 0) {
+							$isFake = FALSE;
+							break;
+						}
+					}
+					
 				}
 
 				if ($isFake == FALSE)
 				{
-					if ($firstReal == -1)
-					{
+					if ($firstReal == -1) {
 						$firstReal = $i;
 					}
 					$lastReal = $i;
 				}
 			}
 
-
 			// There are no real tokens
 			if ($firstReal == -1)
 				return 0;
+			
+			trace("FIRST REAL: ".$firstReal);
+				
 
 			// Gets the number of leading and trailing fakes
 			$leadTrailFakes = (count($response) - 1) - ($lastReal - $firstReal);
-
-
-			// Up to here works and gets first/last real
-
 
 			// Gets the response with no leading and trailing fakes
 			for ($i = $firstReal; $i <= $lastReal; $i++)
@@ -82,13 +85,29 @@ class Score_Modules_LanguageWidget extends Score_Module {
 				array_push($respNoFake, $response[$i]);
 			}
 
+			trace("ALL REAL TOKENS: ");
+			trace($respNoFake);
+
 			// Tells if their answer has correct tokens
 			for ($i = 0; $i < count($answer) && $i < count($respNoFake); $i++)
 			{
-				if (strcmp($answer[$i], $respNoFake[$i]) == 0) {
-					$correct++;
+				if ($this->questions[$log->item_id]->options['displayPref'] == 'word') {
+
+					trace("Comparing ANSWER ".$answer[$i]['value']." TO RESPONSE ".$respNoFake[$i]->value);
+					trace("COMPARING ANSWER LEGEND ".$answer[$i]['legend']." TO RESPONSE ".$respNoFake[$i]->legend);
+					
+					if (strcmp($answer[$i]['value'], $respNoFake[$i]->value) == 0 && strcmp($answer[$i]['legend'], $respNoFake[$i]->legend) == 0) {
+						$correct++;
+					}
+				}
+				else {
+					if (strcmp($answer[$i]['legend'], $respNoFake[$i]->legend) == 0) {
+						$correct++;
+					}
 				}
 			}
+			
+			trace("FOUND ".$correct." ANSWERS out of ".$max);
 
 			// Calculates the final score
 			$score = ($correct / $max) - (.1 * $leadTrailFakes);

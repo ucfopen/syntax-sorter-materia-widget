@@ -188,7 +188,6 @@ const tokenSortedPhraseReducer = (list, action) => {
 			)
 		} 
 		case 'response_token_rearrange':
-			console.log(action.payload)
 			let target = action.payload.targetIndex
 			if (action.payload.originIndex < target) target--
 

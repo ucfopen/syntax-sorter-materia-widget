@@ -19,21 +19,36 @@ const PlayerApp = (props) => {
 		}
 	}, [global.state.requireInit])
 
-	const convertSortedToString = (sorted, pref = 'word') => {
-		let string = ''
+	const convertSortedForLogging = (sorted) => {
+
+		let response = []
 		for (let i=0;i<sorted.length;i++) {
-			if (pref == 'word') string += sorted[i].value + ','
-			else {
-				for (const term of global.state.legend) {
-					if (parseInt(sorted[i].legend) == term.id) string += term.name + ','
-				}
+
+			for (const term of global.state.legend) {
+				if (parseInt(sorted[i].legend) == term.id) var legend = term.name
 			}
+
+			response.push({
+				value: sorted[i].value,
+				legend: legend
+			})
 		}
 
-		if (string.length == 0)
-			string = ','
+		return JSON.stringify(response)
 
-		return string.substring(0,string.length-1)
+		// for (let i=0;i<sorted.length;i++) {
+		// 	if (pref == 'word') string += sorted[i].value + ','
+		// 	else {
+		// 		for (const term of global.state.legend) {
+		// 			if (parseInt(sorted[i].legend) == term.id) string += term.name + ','
+		// 		}
+		// 	}
+		// }
+
+		// if (string.length == 0)
+		// 	string = ','
+
+		// return string.substring(0,string.length-1)
 	}
 
 	const emptyQuestionCheck = () => {
@@ -58,7 +73,7 @@ const PlayerApp = (props) => {
 		}
 
 		for (let item of global.state.items) {
-			Materia.Score.submitQuestionForScoring(item.qsetId, convertSortedToString(item.sorted, item.displayPref))
+			Materia.Score.submitQuestionForScoring(item.qsetId, convertSortedForLogging(item.sorted))
 		}
 
 		Materia.Engine.end(true)
@@ -67,6 +82,8 @@ const PlayerApp = (props) => {
 	const toggleTutorial = () => {
 		dispatch({type: 'toggle_tutorial'})
 	}
+
+	const questionText = global.state.items[global.state.currentIndex]?.question.length > 0 ? global.state.items[global.state.currentIndex].question : "Drag and drop to arrange the items below in the correct order."
 
 	const legendList = global.state.legend.map((term, index) => {
 		return <span key={index} className='legend-item'><span className='legend-color' style={{background: term.color}}></span>{term.name}</span>
@@ -84,7 +101,7 @@ const PlayerApp = (props) => {
 			<QuestionSelect></QuestionSelect>
 			<section className="content-container">
 				<section className="card question-container">
-					<p>{global.state.items[global.state.currentIndex]?.question}</p>
+					<p>{questionText}</p>
 					<div className={'hint-text ' +
 					`${(
 						global.state.items[global.state.currentIndex]?.checkPref &&

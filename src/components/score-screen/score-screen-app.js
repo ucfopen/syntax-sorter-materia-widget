@@ -19,14 +19,32 @@ const ScoreScreenApp = (props) => {
 		return 0
 	}
 
+	const formatResponseData = (response) => {
+		let parsed = JSON.parse(response)
+		let formatted = []
+
+		for (let token of parsed) {
+			formatted.push({
+				value: token.value,
+				legend: token.legend
+			})
+		}
+
+		return formatted
+	}
+
 	const questionList = props.scoreTable.map((question, index) => {
 
+		console.log(props.scoreTable)
+
 		let questionIndex = getQuestionIndex(question.data[1])
+
+		let responses = formatResponseData(question.data[2])
 
 		return <Question
 				key={index}
 				questionText={question.data[0]}
-				response={question.data[2]}
+				response={responses}
 				phrase={props.qset.items[questionIndex].answers[0].options.phrase}
 				displayPref={props.qset.items[questionIndex].options.displayPref}
 				options = {props.qset.items[questionIndex].options}
