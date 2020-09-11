@@ -40,7 +40,7 @@ const Question = (props) => {
 			<div className={`response-container ${props.score > 99 ? 'correct' : 'incorrect'}`}>
 				<h5>How you responded:</h5>
 				{responseTokenList}
-				<span className='deduction-indicator'>{`${props.score == 100 ? 'Correct!' : '- ' + (100 - props.score) / props.count + '%' }`}</span>
+				<span className='deduction-indicator'>{`${props.score == 100 ? 'Correct!' : 'Incorrect' }`}</span>
 			</div>
 			<div className='correct-container'>
 				<h5>Here's the correct order:</h5>

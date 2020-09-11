@@ -4,9 +4,8 @@
 
 .content-container {
 	width: calc(100% - 50px);
-	height: 100%;
 	margin-left: 0px;
-	padding-top: 25px;
+	padding: 25px 25px 100px 25px;
 
 	.question-text-container {
 		display: flex;
@@ -35,7 +34,7 @@
 			.token {
 				display: inline-block;
 				padding: 5px 8px;
-				margin-right: 5px;
+				margin: 0 5px 5px 0;
 
 				font-size: 1.2em;
 				color: #fff;

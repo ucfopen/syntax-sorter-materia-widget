@@ -35,8 +35,6 @@ const ScoreScreenApp = (props) => {
 
 	const questionList = props.scoreTable.map((question, index) => {
 
-		console.log(props.scoreTable)
-
 		let questionIndex = getQuestionIndex(question.data[1])
 
 		let responses = formatResponseData(question.data[2])
