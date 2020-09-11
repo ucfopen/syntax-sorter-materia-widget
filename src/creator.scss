@@ -1,34 +1,39 @@
 
 @import 'common';
 
-// .tutorial.creator {
-// 	display: flex;
-// 	flex-flow: row wrap;
-// 	width: 600px;
-// 	margin-left: -300px;
+div.startupTooltip {
+	display: none;
+	position: absolute;
+	z-index: 99;
 
-// 	p {
-// 		display: inline-block;
-// 		flex-grow: 1;
-// 		margin-bottom: 60px;
-// 	}
+	top: 68px;
+	right: 5%;
 
-// 	img {
-// 		display: inline-block;
-// 		flex-shrink: 0;
-// 	}
+	width: 180px;
+	height: 60px;
 
-// 	// img:nth-child(odd) {
-// 	// 	float: left;
-// 	// 	margin-right: 15px;
-// 	// }
+	padding: 10px;
 
-// 	button {
-// 		position: absolute;
-// 		bottom: 15px;
-// 	}
+	color: #ffffff;
+	background: rgb(185, 68, 204);
 
-// }
+	font-size: 0.8em;
+	animation: Bounce 1s infinite;
+
+	@keyframes Bounce {
+		0%, 100% {
+			top: 68px;
+		}
+		50% {
+			top: 65px;
+		}
+	}
+
+	&.show {
+		display: block;
+	}
+	
+}
 
 .creator-header {
 	position: fixed;
@@ -116,6 +121,15 @@
 
 	section.phrase-builder {
 
+		header {
+			margin-bottom: 1em;
+		}
+
+		p {
+			margin: 0 0 10px 0;
+			font-size: 0.8em;
+		}
+
 		.token-container {
 
 			.token-input {
@@ -130,10 +144,10 @@
 			left: -15px;
 			// width: calc(100% + 30px);
 			width: 100%;
-
 			padding: 15px;
+			color: #ffffff;
+			background: $darkBG;
 
-			background: #cacaca;
 
 			&.show {
 				display: block;
@@ -141,8 +155,9 @@
 
 			label {
 				position: relative;
-				display: block;
-				padding: 3px;
+				display: inline-block;
+				padding: 8px 5px 5px 5px;
+				margin-right: 0.5em;
 				margin-bottom: 0.5em;
 
 				max-width: 250px;
@@ -166,15 +181,16 @@
 					width: 20px;
 					height: 20px;
 
-					margin-right: 1em;
+					margin-right: 0.4em;
 
 					background: #fff;
+					border: solid 2px #fff;
 
 					vertical-align: middle;
 				}
 
 				&.selected {
-					background: #e7e7e7;
+					background: $darkishBG;
 				}
 			}
 		}
@@ -315,13 +331,12 @@ section.fakeout-builder {
 
 	.token-type-selector {
 		display: none;
-		// position: relative;
 		width: calc(100% - 28px);
-		// width: 100%;
 
 		padding: 15px;
 
-		background: #cacaca;
+		color: #ffffff;
+		background: $darkBG;
 
 		&.show {
 			display: block;
@@ -335,7 +350,7 @@ section.fakeout-builder {
 		label {
 			position: relative;
 			display: inline-block;
-			padding: 5px 6px;
+			padding: 8px 10px;
 			margin: 0 1em 0.5em 0;
 
 			max-width: 250px;
@@ -359,15 +374,16 @@ section.fakeout-builder {
 				width: 20px;
 				height: 20px;
 
-				margin-right: 0.5em;
+				margin-right: 0.4em;
 
 				background: #fff;
+				border: solid 2px #fff;
 
 				vertical-align: middle;
 			}
 
 			&.selected {
-				background: #e7e7e7;
+				background: $darkishBG;
 			}
 		}
 	}

@@ -35,7 +35,8 @@ const init = {
 	numAsk: 1,
 	enableQuestionBank: false,
 	showLegend: false,
-	legendColorPickerTarget: -1
+	legendColorPickerTarget: -1,
+	onboarding: true
 }
 const store = React.createContext(init)
 const { Provider } = store
@@ -304,6 +305,7 @@ const StateProvider = ( { children } ) => {
 				if (state.items.length < 2) return state
 				else return {...state, items: questionItemReducer(state.items, action), currentIndex: state.currentIndex - 1}
 			case 'add_new_question':
+				return {...state, items: questionItemReducer(state.items, action), currentIndex: state.items.length}
 			case 'update_question_text':
 			case 'update_display_pref':
 			case 'update_check_pref':
@@ -325,7 +327,7 @@ const StateProvider = ( { children } ) => {
 			case 'select_question':
 				return {...state, currentIndex: action.payload}
 			case 'toggle_legend':
-				return {...state, showLegend: !state.showLegend, legendColorPickerTarget: -1}
+				return {...state, showLegend: !state.showLegend, legendColorPickerTarget: -1, onboarding: false}
 			case 'add_legend_item':
 				return {...state, legend: legendReducer(state.legend, action)}
 			case 'update_legend_item':

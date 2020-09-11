@@ -67,6 +67,7 @@ const PhraseBuilder = (props) => {
 	return (
 		<section className="card phrase-builder">
 			<header>Phrase to Complete</header>
+			<p>Use the input below to create the individual <span className="strong">tokens</span> that will make up your phrase. Tokens can be a word, multiple words, a part of speech, grammar symbol, or any combination.</p>
 			<div className="token-container">
 				{tokenList}
 				<input className="token-input" onKeyDown={handleTokenInput} placeholder="..."></input>

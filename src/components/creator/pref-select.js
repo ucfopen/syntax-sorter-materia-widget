@@ -34,7 +34,7 @@ const PrefSelect = (props) => {
 					<span className="pref-select">
 						<input type="radio" name="token-display-select" value={"part-of-speech"} onChange={handleTokenDisplayPref} checked={props.displayPref == 'part-of-speech'}/>
 						<span className={`radio-overlay ${props.displayPref == 'part-of-speech' ? 'selected' : ''}`}></span>
-						Part of Speech
+						Legend
 					</span>
 				</div>
 			</div>

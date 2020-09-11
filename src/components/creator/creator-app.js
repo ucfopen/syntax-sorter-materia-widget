@@ -57,8 +57,19 @@ const CreatorApp = (props) => {
 		})
 
 		var blankLegendCount = 0
+		var duplicates = []
+
 		global.state.legend.forEach((term, index) => {
+			// make sure a legend value isn't blank
 			if (!term.name.length) blankLegendCount++
+
+			// check for duplicate legend values
+			global.state.legend.forEach((otherTerm, otherIndex) => {
+				if (term.name == otherTerm.name && index != otherIndex && !duplicates.includes(index) && !duplicates.includes(otherIndex)) {
+					duplicates.push(index, otherIndex)
+					invalid.push(`You have two or more legend items with the name "${term.name}". They must be unique!`)
+				}
+			})
 		})
 
 		if (blankLegendCount > 0) invalid.push(`You have ${blankLegendCount} blank Legend value(s).`)
@@ -138,10 +149,6 @@ const CreatorApp = (props) => {
 		dispatch({type:'update_title', payload: event.target.value})
 	}
 
-	const handleNumAskUpdate = (event) => {
-		dispatch({type:'update_num_ask', payload: event.target.value})
-	}
-
 	const handleDeleteQuestion = () => {
 		dispatch({type:'remove_question', payload: global.state.currentIndex})
 	}
@@ -156,6 +163,9 @@ const CreatorApp = (props) => {
 
 	return(
 		<div className="creator-container">
+			<div className={`startupTooltip ${global.state.onboarding ? 'show' : ''}`} onClick={toggleLegend}>
+				Open the Legend to start defining individual labels for phrase tokens
+			</div>
 			<CreatorTutorial></CreatorTutorial>
 			<CreatorHintsModal
 				checkPref={global.state.items[global.state.currentIndex].checkPref}
