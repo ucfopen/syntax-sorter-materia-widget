@@ -40,12 +40,12 @@ const PrefSelect = (props) => {
 			</div>
 			<div className="pref-spacer"></div>
 			<div className="options-holder">
-				<div className="card more-card" onClick={toggleHintModal}>
+				<div role="button" className="card more-card" onClick={toggleHintModal}>
 					<p>Set Guess Limits and Hints</p>
 					<p className={`guess-limit-tip ${props.checkPref == true ? "show" : ""}`} >Guess limit: {props.numChecks}, hint: {props.hint?.length > 0 ? "enabled" : "disabled"}</p>
 				</div>
 				<div className="options-spacer"></div>
-				<div className="card more-card" onClick={toggleFakeoutModal}>
+				<div role="button" className="card more-card" onClick={toggleFakeoutModal}>
 					<p>Add "Fake" Tokens</p>
 					<p className={`guess-limit-tip ${props.fakes.length > 0 ? "show" : ""}`} >Fake Tokens: {props.fakes?.length}</p>
 				</div>

@@ -67,13 +67,18 @@ const PhraseBuilder = (props) => {
 	return (
 		<section className="card phrase-builder">
 			<header>Phrase to Complete</header>
-			<p>Use the input below to create the individual <span className="strong">tokens</span> that will make up your phrase. Tokens can be a word, multiple words, a part of speech, grammar symbol, or any combination.</p>
+			<div className={`token-tutorial ${global.state.items[global.state.currentIndex].phrase.length ? '' : 'show'}`}>
+				<p><span className="icon-notification"></span>Use the input to the left to create the individual <span className="strong">tokens</span> that will make up your phrase. Tokens can be a word, multiple words, a part of speech, grammar symbol, or any combination.
+					The tokens will be randomly ordered when a student plays the widget.</p>
+			</div>
 			<div className="token-container">
 				{tokenList}
-				<input className="token-input" onKeyDown={handleTokenInput} placeholder="..."></input>
+				<div className="token-input-container">
+					<input className="token-input" onKeyDown={handleTokenInput} placeholder="..."></input>
+				</div>
 			</div>
 			<div className={`token-type-selector ${global.state.selectedTokenIndex != -1 ? "show" : ""}`}>
-				<header>What type of word is this?</header>
+				<header>Select the corresponding legend item for this token:</header>
 				<form id="tokenTypeSelection">
 					{legendSelection}
 				</form>

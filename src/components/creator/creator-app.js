@@ -164,7 +164,7 @@ const CreatorApp = (props) => {
 	return(
 		<div className="creator-container">
 			<div className={`startupTooltip ${global.state.onboarding ? 'show' : ''}`} onClick={toggleLegend}>
-				Open the Legend to start defining individual labels for phrase tokens
+				Open the Legend to start defining individual labels for phrase tokens.
 			</div>
 			<CreatorTutorial></CreatorTutorial>
 			<CreatorHintsModal

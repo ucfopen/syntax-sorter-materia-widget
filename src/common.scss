@@ -392,17 +392,21 @@ span.strong {
 			display:flex;
 			flex-direction: row;
 			margin-bottom: 0;
-			width: 100%;
-			height: 46%;
+			width: calc(100% - 6px);
+			height: calc(46% - 2px);
 			padding: 0;
-			background-color: $colorAccent;
 			cursor: pointer;
+			font-weight: 700;
+
+			background-color: #ffffff;
+			border: solid 1px $colorAccent;
+			border-left: solid 5px $colorAccent;
 
 			&:hover {
 				background-color: $colorAccentHover;
 
 				p {
-					color: black;
+					color: #ffffff;
 				}
 			}
 
@@ -410,7 +414,7 @@ span.strong {
 				justify-self: center;
 				align-self: center;
 				padding-left: 15px;
-				color: white;
+				color: #000000;
 			}
 
 			.guess-limit-tip {
@@ -435,7 +439,7 @@ span.strong {
 		.token-container {
 
 			width: 100%;
-			padding-bottom: 25px;
+			padding-bottom: 35px;
 
 			&.fakeout {
 				padding-bottom: 10px;

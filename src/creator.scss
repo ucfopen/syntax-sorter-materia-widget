@@ -121,20 +121,61 @@ div.startupTooltip {
 
 	section.phrase-builder {
 
+		position: relative;
+
 		header {
 			margin-bottom: 1em;
 		}
 
-		p {
-			margin: 0 0 10px 0;
-			font-size: 0.8em;
+		.token-tutorial {
+			display: none;
+			position: absolute;
+			top: 0px;
+			right: 0px;
+
+			height: calc(100% - 40px);
+			width: calc(50% - 40px);
+
+			padding: 20px;
+
+			color: #fff;
+			background: $darkishBG;
+
+			p {
+				width: 90%;
+				margin: 0 0 10px 0;
+				font-size: 0.8em;
+			}
+
+			&.show {
+				display: block;
+			}
 		}
+
+		
 
 		.token-container {
 
-			.token-input {
-				padding: 5px 8px;
-				font-size: 1.5em;
+			.token-input-container {
+				display: inline-block;
+				position: relative;
+
+				&:after {
+					// height: 12px;
+					width: 90%;
+					content: "Use Enter or Return to submit. Use Backspace to edit the previous token.";
+					font-size: 0.6em;
+					position: absolute;
+					// right: 5px;
+					top: 45px;
+					left: 5px;
+				}
+
+				.token-input {
+					position: relative;
+					padding: 5px 8px;
+					font-size: 1.5em;
+				}
 			}
 		}
 
