@@ -188,7 +188,7 @@ const CreatorApp = (props) => {
 				<PhraseBuilder
 					phrase={global.state.items[global.state.currentIndex].phrase}
 					legend={global.state.legend}
-					showTokenTutorial={global.state.items[global.state.currentIndex].showTokenTutorial}
+					showTokenTutorial={global.state.showTokenTutorial}
 					format="phrase">
 				</PhraseBuilder>
 				<PrefSelect

@@ -21,8 +21,7 @@ const init = {
 		displayPref: 'word',
 		attempts: 1,
 		hint: '',
-		fakes: [],
-		showTokenTutorial: true
+		fakes: []
 	}],
 	legend: [
 		{
@@ -36,7 +35,8 @@ const init = {
 	enableQuestionBank: false,
 	showLegend: false,
 	legendColorPickerTarget: -1,
-	onboarding: true
+	onboarding: true,
+	showTokenTutorial: true
 }
 const store = React.createContext(init)
 const { Provider } = store
@@ -73,8 +73,7 @@ const questionItemReducer = (items, action) => {
 				displayPref: 'word',
 				attempts: 1,
 				hint: '',
-				fakes: [],
-				showTokenTutorial: false
+				fakes: []
 			}]
 		case 'update_question_text':
 			return items.map((item, index) => {
@@ -98,8 +97,7 @@ const questionItemReducer = (items, action) => {
 				if (index == action.payload.questionIndex) {
 					return {
 						...item,
-						phrase: phraseReducer(item.phrase, action),
-						showTokenTutorial: (item.phrase.length == 0 ? false : item.showTokenTutorial)
+						phrase: phraseReducer(item.phrase, action)
 					}
 				}
 				else return item
@@ -155,16 +153,6 @@ const questionItemReducer = (items, action) => {
 					phrase: phraseReducer(item.phrase, action),
 					fakes: fakeoutReducer(item.fakes, action)
 				}
-			})
-		case 'toggle_token_tutorial':
-			return items.map((item, index) => {
-				if (index == action.payload.questionIndex) {
-					return {
-						...item,
-						showTokenTutorial: action.payload.toggle
-					}
-				}
-				else return item
 			})
 		default:
 			throw new Error('Question item reducer: this action type was not defined')
@@ -301,6 +289,8 @@ const StateProvider = ( { children } ) => {
 				return {...state, title: action.payload.title, items: imported.items, legend: imported.legend, numAsk: imported.numAsk, enableQuestionBank: imported.enableQuestionBank, requireInit: false}
 			case 'dismiss_tutorial':
 				return {...state, showTutorial: false}
+			case 'toggle_token_tutorial':
+				return {...state, showTokenTutorial: !state.showTokenTutorial}
 			case 'update_title':
 				return {...state, title: action.payload}
 			case 'remove_question':
@@ -312,14 +302,14 @@ const StateProvider = ( { children } ) => {
 			case 'update_display_pref':
 			case 'update_attempts':
 			case 'update_hint':
-			case 'phrase_token_to_input':
-				return {...state, items: questionItemReducer(state.items, action), selectedTokenIndex: action.payload.phraseIndex == state.selectedTokenIndex ? -1 : state.selectedTokenIndex }
+			case 'fakeout_input_to_token':
+				return {...state, items: questionItemReducer(state.items, action)}
 			case 'phrase_input_to_token':
+				return {...state, items: questionItemReducer(state.items, action), showTokenTutorial: false}
+			case 'phrase_token_to_input':
+				return {...state, items: questionItemReducer(state.items, action), selectedTokenIndex: action.payload.phraseIndex == state.selectedTokenIndex ? -1 : state.selectedTokenIndex }		
 			case 'fakeout_token_to_input':
 				return {...state, items: questionItemReducer(state.items, action), selectedFakeoutIndex: action.payload.fakeoutIndex == state.selectedFakeoutIndex ? -1 : state.selectedFakeoutIndex }
-			case 'fakeout_input_to_token':
-			case 'toggle_token_tutorial':
-				return {...state, items: questionItemReducer(state.items, action)}
 			case 'phrase_token_type_select':
 				return {...state, items: questionItemReducer(state.items, action), selectedTokenIndex: -1}
 			case 'fakeout_token_type_select':

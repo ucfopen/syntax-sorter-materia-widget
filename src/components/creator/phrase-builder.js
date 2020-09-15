@@ -58,7 +58,6 @@ const PhraseBuilder = (props) => {
 
 	const toggleTokenTutorial = (event) => {
 		dispatch({type: 'toggle_token_tutorial', payload: {
-			questionIndex: global.state.currentIndex,
 			toggle: !props.showTokenTutorial
 		}})
 	}
