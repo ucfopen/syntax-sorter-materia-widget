@@ -31,7 +31,7 @@ const CreatorHintsModal = (props) => {
 		<div className='modal-wrapper' style={{display: global.state.showHintModal ? 'block' : 'none'}}>
 			<div className='modal creator'>
 				<h3>Attempts and Hint</h3>
-				<p>Edit the total number of attempts for this question. If higher than 1, students can verify whether their response is correct prior to scoring.</p>
+				<p>Edit the total number of attempts for this question. If a question allows more than one attempt, you can provide an optional hint should they respond incorrectly.</p>
 				<span className='select-wrapper'>
 					<span className="check-select">
 						<span className="strong">Number of attempts:</span>

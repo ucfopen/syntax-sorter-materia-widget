@@ -26,7 +26,7 @@ const Question = (props) => {
 		for (let legend of props.legend) {
 			if (legend.id == term.legend) {
 				legendColor = legend.color
-				if (props.displayPref == 'part-of-speech') value = legend.name
+				if (props.displayPref == 'legend') value = legend.name
 				break
 			}
 		}

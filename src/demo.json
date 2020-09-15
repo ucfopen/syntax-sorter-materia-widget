@@ -86,7 +86,7 @@
 					}
 				}],
 				"options": {
-					"displayPref": "part-of-speech",
+					"displayPref": "legend",
 					"attempts": 5,
 					"hint":"This is your hint",
 					"fakes": []

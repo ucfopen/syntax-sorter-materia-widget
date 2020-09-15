@@ -71,7 +71,7 @@ const questionItemReducer = (items, action) => {
 				question: '',
 				phrase: [],
 				displayPref: 'word',
-				attempts: 0,
+				attempts: 1,
 				hint: '',
 				fakes: [],
 				showTokenTutorial: false
@@ -316,6 +316,7 @@ const StateProvider = ( { children } ) => {
 				return {...state, items: questionItemReducer(state.items, action), selectedTokenIndex: action.payload.phraseIndex == state.selectedTokenIndex ? -1 : state.selectedTokenIndex }
 			case 'phrase_input_to_token':
 			case 'fakeout_token_to_input':
+				return {...state, items: questionItemReducer(state.items, action), selectedFakeoutIndex: action.payload.fakeoutIndex == state.selectedFakeoutIndex ? -1 : state.selectedFakeoutIndex }
 			case 'fakeout_input_to_token':
 			case 'toggle_token_tutorial':
 				return {...state, items: questionItemReducer(state.items, action)}

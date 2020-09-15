@@ -32,8 +32,8 @@ const PrefSelect = (props) => {
 						Word
 					</span>
 					<span className="pref-select">
-						<input type="radio" name="token-display-select" value={"part-of-speech"} onChange={handleTokenDisplayPref} checked={props.displayPref == 'part-of-speech'}/>
-						<span className={`radio-overlay ${props.displayPref == 'part-of-speech' ? 'selected' : ''}`}></span>
+						<input type="radio" name="token-display-select" value={"legend"} onChange={handleTokenDisplayPref} checked={props.displayPref == 'legend'}/>
+						<span className={`radio-overlay ${props.displayPref == 'legend' ? 'selected' : ''}`}></span>
 						Legend
 					</span>
 				</div>
