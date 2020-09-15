@@ -35,20 +35,6 @@ const PlayerApp = (props) => {
 		}
 
 		return JSON.stringify(response)
-
-		// for (let i=0;i<sorted.length;i++) {
-		// 	if (pref == 'word') string += sorted[i].value + ','
-		// 	else {
-		// 		for (const term of global.state.legend) {
-		// 			if (parseInt(sorted[i].legend) == term.id) string += term.name + ','
-		// 		}
-		// 	}
-		// }
-
-		// if (string.length == 0)
-		// 	string = ','
-
-		// return string.substring(0,string.length-1)
 	}
 
 	const emptyQuestionCheck = () => {
@@ -104,9 +90,8 @@ const PlayerApp = (props) => {
 					<p>{questionText}</p>
 					<div className={'hint-text ' +
 					`${(
-						global.state.items[global.state.currentIndex]?.checkPref &&
-						global.state.items[global.state.currentIndex]?.checksUsed > 0 && 
-						global.state.items[global.state.currentIndex]?.checksUsed < global.state.items[global.state.currentIndex]?.numChecks + 1 &&
+						global.state.items[global.state.currentIndex]?.attemptsUsed > 0 && 
+						global.state.items[global.state.currentIndex]?.attemptsUsed < global.state.items[global.state.currentIndex]?.attempts &&
 						global.state.items[global.state.currentIndex]?.responseState != 'correct' &&
 						global.state.items[global.state.currentIndex]?.responseState != 'incorrect-no-attempts' &&
 						global.state.items[global.state.currentIndex]?.hint.length > 0) ? 'show' : ''}`}>
@@ -117,9 +102,8 @@ const PlayerApp = (props) => {
 					phrase={global.state.items[global.state.currentIndex]?.phrase}
 					sorted={global.state.items[global.state.currentIndex]?.sorted}
 					displayPref={global.state.items[global.state.currentIndex]?.displayPref}
-					guessPref={global.state.items[global.state.currentIndex]?.checkPref}
-					attemptsUsed={global.state.items[global.state.currentIndex]?.checksUsed}
-					attemptLimit={global.state.items[global.state.currentIndex]?.numChecks + 1}
+					attemptsUsed={global.state.items[global.state.currentIndex]?.attemptsUsed}
+					attemptLimit={global.state.items[global.state.currentIndex]?.attempts}
 					hasFakes={global.state.items[global.state.currentIndex]?.fakeout.length}
 					responseState={global.state.items[global.state.currentIndex]?.responseState}></PhrasePlayer>
 				<section className="card legend">

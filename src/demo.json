@@ -42,8 +42,7 @@
 				}],
 				"options": {
 					"displayPref": "word",
-					"checkPref": "true",
-					"numChecks": 5,
+					"attempts": 5,
 					"hint":"This is your hint",
 					"fakes": [
 						{
@@ -88,8 +87,7 @@
 				}],
 				"options": {
 					"displayPref": "part-of-speech",
-					"checkPref": true,
-					"numChecks": 5,
+					"attempts": 5,
 					"hint":"This is your hint",
 					"fakes": []
 				}

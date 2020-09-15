@@ -38,15 +38,15 @@ const CreatorBankModal = (props) => {
 						No
 					</span>
 				</span>
-				<span className={`check-select strong select-wrapper ${props.enableQuestionBank ? '' : 'disabled'}`}>
-					Number of questions to ask:
+				<span className={`check-select select-wrapper ${props.enableQuestionBank ? '' : 'disabled'}`}>
+					<span className="strong">Number of questions to ask:</span>
 					<input className="num-ask"
 						type="number" name="check-val"
 						onChange={handleNumAskUpdate}
 						value={props.enableQuestionBank ? props.numAsk : props.questionCount}
 						min="1" max={props.questionCount}
 						disabled={props.enableQuestionBank == false}/>
-					out of {props.questionCount}
+					<span>out of {props.questionCount}</span>
 				</span>
 				<button onClick={dismiss}>Okay</button>
 			</div>

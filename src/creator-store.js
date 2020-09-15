@@ -19,10 +19,10 @@ const init = {
 		question: '',
 		phrase: [],
 		displayPref: 'word',
-		checkPref: false,
-		numChecks: 1,
+		attempts: 1,
 		hint: '',
-		fakes: []
+		fakes: [],
+		showTokenTutorial: true
 	}],
 	legend: [
 		{
@@ -48,8 +48,7 @@ const importFromQset = (qset) => {
 			question: item.questions[0].text,
 			phrase: item.answers[0].options.phrase,
 			displayPref: item.options.displayPref,
-			checkPref: item.options.checkPref,
-			numChecks: item.options.numChecks,
+			attempts: item.options.attempts,
 			hint: item.options.hint,
 			fakes: item.options.fakes
 		}
@@ -72,10 +71,10 @@ const questionItemReducer = (items, action) => {
 				question: '',
 				phrase: [],
 				displayPref: 'word',
-				checkPref: false,
-				numChecks: 0,
+				attempts: 0,
 				hint: '',
-				fakes: []
+				fakes: [],
+				showTokenTutorial: false
 			}]
 		case 'update_question_text':
 			return items.map((item, index) => {
@@ -99,7 +98,8 @@ const questionItemReducer = (items, action) => {
 				if (index == action.payload.questionIndex) {
 					return {
 						...item,
-						phrase: phraseReducer(item.phrase, action)
+						phrase: phraseReducer(item.phrase, action),
+						showTokenTutorial: (item.phrase.length == 0 ? false : item.showTokenTutorial)
 					}
 				}
 				else return item
@@ -126,23 +126,15 @@ const questionItemReducer = (items, action) => {
 				}
 				else return item
 			})
-		case 'update_check_pref':
+		case 'update_attempts':
 			return items.map((item, index) => {
 				if (index == action.payload.questionIndex) {
+					console.log(action.payload)
 					return {
 						...item,
-						checkPref: action.payload.pref
+						attempts: parseInt(action.payload.pref)
 					}
-				}
-				else return item
-			})
-		case 'update_num_checks':
-			return items.map((item, index) => {
-				if (index == action.payload.questionIndex) {
-					return {
-						...item,
-						numChecks: parseInt(action.payload.pref)
-					}
+					
 				}
 				else return item
 			})
@@ -163,6 +155,16 @@ const questionItemReducer = (items, action) => {
 					phrase: phraseReducer(item.phrase, action),
 					fakes: fakeoutReducer(item.fakes, action)
 				}
+			})
+		case 'toggle_token_tutorial':
+			return items.map((item, index) => {
+				if (index == action.payload.questionIndex) {
+					return {
+						...item,
+						showTokenTutorial: action.payload.toggle
+					}
+				}
+				else return item
 			})
 		default:
 			throw new Error('Question item reducer: this action type was not defined')
@@ -308,13 +310,14 @@ const StateProvider = ( { children } ) => {
 				return {...state, items: questionItemReducer(state.items, action), currentIndex: state.items.length}
 			case 'update_question_text':
 			case 'update_display_pref':
-			case 'update_check_pref':
-			case 'update_num_checks':
+			case 'update_attempts':
 			case 'update_hint':
 			case 'phrase_token_to_input':
+				return {...state, items: questionItemReducer(state.items, action), selectedTokenIndex: action.payload.phraseIndex == state.selectedTokenIndex ? -1 : state.selectedTokenIndex }
 			case 'phrase_input_to_token':
 			case 'fakeout_token_to_input':
 			case 'fakeout_input_to_token':
+			case 'toggle_token_tutorial':
 				return {...state, items: questionItemReducer(state.items, action)}
 			case 'phrase_token_type_select':
 				return {...state, items: questionItemReducer(state.items, action), selectedTokenIndex: -1}

@@ -12,7 +12,7 @@ const PhrasePlayer = (props) => {
 	const handleTokenDragOver = (event) => {
 
 		// Exits the function if the max number of guesses have been used
-		if (props.guessPref && (props.attemptsUsed >= props.attemptLimit)) return false
+		if (props.attemptLimit > 1 && (props.attemptsUsed >= props.attemptLimit)) return false
 
 		event.preventDefault()
 
@@ -130,15 +130,15 @@ const PhrasePlayer = (props) => {
 			position={token.position}
 			reqPositionUpdate={token.reqPositionUpdate}
 			fakeout={token.fakeout}
-			dragEligible={!(props.guessPref && props.attemptsUsed >= props.attemptLimit) || token.responseState == 'correct'}
+			dragEligible={!(props.attemptLimit > 1 && props.attemptsUsed >= props.attemptLimit) || token.responseState == 'correct'}
 			forceClearAdjacentTokens={forceClearAdjacentTokens}>
 		</Token>
 	})
 
 	return(
 		<section className={'card phrase-player ' +
-			`${props.guessPref && (props.phrase.length == 0 || props.hasFakes) ? 'pending ' : ''}` +
-			`${props.guessPref ? props.responseState + ' ' : ''}` +
+			`${props.attemptLimit > 1 && (props.phrase.length == 0 || props.hasFakes) ? 'pending ' : ''}` +
+			`${props.attemptLimit > 1 ? props.responseState + ' ' : ''}` +
 			`${props.hasFakes ? 'fakeout ' : ''}`}>
 			<div className={`token-container ${props.hasFakes ? "fakeout" : ''}`}>
 				<div className="token-target" onDragOver={handleTokenDragOver} onDrop={handleTokenDrop}>
@@ -153,7 +153,6 @@ const PhrasePlayer = (props) => {
 				phrase={props.phrase}
 				empty={props.sorted?.length == 0}
 				displayPref={props.displayPref}
-				guessPref={props.guessPref}
 				attemptsUsed={props.attemptsUsed}
 				attemptLimit={props.attemptLimit}
 				hasFakes={props.hasFakes}

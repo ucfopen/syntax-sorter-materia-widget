@@ -66,7 +66,7 @@ const TokenDrawer = (props) => {
 					pref={props.displayPref}
 					status={token.status}
 					fakeout={token.fakeout}
-					dragEligible={!(props.guessPref && props.attemptsUsed >= props.attemptLimit)}>
+					dragEligible={!(props.attemptLimit > 1 && props.attemptsUsed >= props.attemptLimit)}>
 				</Token>
 	})
 
@@ -76,14 +76,14 @@ const TokenDrawer = (props) => {
 
 	switch (props.responseState) {
 		case 'ready':
-			if (isLastQuestion && props.guessPref) {
+			if (isLastQuestion && props.attemptLimit > 1) {
 				let remaining = props.attemptLimit - props.attemptsUsed
 				currentResponseText = <span className='controls-message'>You have <span className='strong'>{remaining}</span> attempt{remaining > 1 ? 's' : ''} remaining. Select <span className='strong'>Check Answer</span> to check your answer, or select <span className='strong'>Submit</span> at the top-right for scoring.</span>
 			}
 			else if (isLastQuestion) {
 				currentResponseText = <span className='controls-message'>When you're ready, select <span className='strong'>Submit</span> at the top-right for scoring or go back and review your answers.</span>
 			}
-			else if (props.guessPref) {
+			else if (props.attemptLimit > 1) {
 				let remaining = props.attemptLimit - props.attemptsUsed
 				currentResponseText = <span className='controls-message'>You have <span className='strong'>{remaining}</span> attempt{remaining > 1 ? 's' : ''} remaining. Select <span className='strong'>Check Answer</span> to check your answer, or select <span className='strong'>Next Question</span> to continue.</span>
 			}
@@ -135,7 +135,7 @@ const TokenDrawer = (props) => {
 					{currentResponseText}
 				</div>
 				<div className='button-container'>
-					<button className={`verify ${props.guessPref && props.attemptLimit > props.attemptsUsed && props.responseState != 'correct' ? 'show' : ''}`} onClick={HandleGuessCheck}>Check Answer</button>
+					<button className={`verify ${props.attemptLimit > 1 && props.attemptLimit > props.attemptsUsed && props.responseState != 'correct' ? 'show' : ''}`} onClick={HandleGuessCheck}>Check Answer</button>
 					<button className={`paginate ${!isLastQuestion ? 'show' : ''}`} onClick={paginate}>Next Question</button>
 				</div>
 			</section>

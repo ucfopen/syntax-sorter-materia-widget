@@ -72,7 +72,9 @@ const FakeoutBuilder = (props) => {
 		<section className="fakeout-builder">
 			<div className="token-container">
 				{tokenList}
-				<input className="token-input" onKeyDown={handleTokenInput} placeholder="..."></input>
+				<div className="token-input-container">
+					<input className="token-input" onKeyDown={handleTokenInput} placeholder="..."></input>
+				</div>
 			</div>
 			<div className={`token-type-selector ${global.state.selectedFakeoutIndex != -1 ? "show" : ""}`}>
 				<header>What type of word is this?</header>

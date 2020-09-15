@@ -132,6 +132,7 @@ div.startupTooltip {
 			position: absolute;
 			top: 0px;
 			right: 0px;
+			z-index: 11;
 
 			height: calc(100% - 40px);
 			width: calc(50% - 40px);
@@ -140,11 +141,44 @@ div.startupTooltip {
 
 			color: #fff;
 			background: $darkishBG;
+			text-align: left;
+
+			transition-duration: 0.1s;
+			transition-property: height, width, background-color;
 
 			p {
 				width: 90%;
 				margin: 0 0 10px 0;
 				font-size: 0.8em;
+			}
+
+			&.minimized {
+				display: block;
+				height: 16px;
+				width: 16px;
+				margin: 5px 5px 0 0;
+				padding: 4px;
+				overflow: hidden;
+				text-align: center;
+				// border-radius: 8px;
+				color: $darkishBG;
+				background: none;
+
+				cursor: pointer;
+
+				
+
+				&:before {
+					position: relative;
+					top: -4px;
+					font-family: 'icomoon';
+					content: "\ea08";
+					font-size: 0.9em;
+				}
+
+				p {
+					display: none;
+				}
 			}
 
 			&.show {
@@ -161,12 +195,10 @@ div.startupTooltip {
 				position: relative;
 
 				&:after {
-					// height: 12px;
 					width: 90%;
 					content: "Use Enter or Return to submit. Use Backspace to edit the previous token.";
 					font-size: 0.6em;
 					position: absolute;
-					// right: 5px;
 					top: 45px;
 					left: 5px;
 				}
@@ -329,12 +361,24 @@ section.fakeout-builder {
 
 	.token-container {
 
-		// width: 100%;
 		width: calc(100% - 20px);
-		padding: 10px;
+		padding: 10px 10px 36px 10px;
 
 		border: solid 1px $lightBG;
-		// margin-bottom: 25px;
+
+		.token-input-container {
+			display: inline-block;
+			position: relative;
+
+			&:after {
+				width: 90%;
+				content: "Use Enter or Return to submit. Use Backspace to edit the previous token.";
+				font-size: 0.65em;
+				position: absolute;
+				top: 45px;
+				left: 5px;
+			}
+		}
 	}
 
 	.token {

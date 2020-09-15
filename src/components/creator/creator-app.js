@@ -115,8 +115,7 @@ const CreatorApp = (props) => {
 					}],
 					options: {
 						displayPref: item.displayPref,
-						checkPref: item.checkPref,
-						numChecks: item.numChecks,
+						attempts: item.attempts,
 						hint: item.hint,
 						fakes: item.fakes
 					}
@@ -168,8 +167,7 @@ const CreatorApp = (props) => {
 			</div>
 			<CreatorTutorial></CreatorTutorial>
 			<CreatorHintsModal
-				checkPref={global.state.items[global.state.currentIndex].checkPref}
-				numChecks={global.state.items[global.state.currentIndex].numChecks}
+				attempts={global.state.items[global.state.currentIndex].attempts}
 				hint={global.state.items[global.state.currentIndex].hint}></CreatorHintsModal>
 			<CreatorBankModal
 				enableQuestionBank={global.state.enableQuestionBank}
@@ -190,13 +188,13 @@ const CreatorApp = (props) => {
 				<PhraseBuilder
 					phrase={global.state.items[global.state.currentIndex].phrase}
 					legend={global.state.legend}
+					showTokenTutorial={global.state.items[global.state.currentIndex].showTokenTutorial}
 					format="phrase">
 				</PhraseBuilder>
 				<PrefSelect
 					displayPref={global.state.items[global.state.currentIndex].displayPref}
 					fakes={global.state.items[global.state.currentIndex].fakes}
-					checkPref={global.state.items[global.state.currentIndex].checkPref}
-					numChecks={global.state.items[global.state.currentIndex].numChecks}
+					attempts={global.state.items[global.state.currentIndex].attempts}
 					hint={global.state.items[global.state.currentIndex].hint}></PrefSelect>
 				<button className="card delete-question" onClick={handleDeleteQuestion} disabled={global.state.items.length < 2}>Delete Question</button>
 			</section>

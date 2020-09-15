@@ -21,10 +21,13 @@ const PhraseBuilder = (props) => {
 				break;
 			case 13: // enter
 				// convert input to token
-				convertInputToToken(event.target.value)
+				if (event.target.value.length > 0) {
+					convertInputToToken(event.target.value)
 				event.target.value = ""
+				} else return
+				
 			default:
-				return;
+				return
 		}
 	}
 
@@ -46,10 +49,17 @@ const PhraseBuilder = (props) => {
 
 	const tokenTypeSelection = (event) => {
 		let selection = parseInt(event.target.value)
-		dispatch({type:'phrase_token_type_select', payload: {
+		dispatch({type: 'phrase_token_type_select', payload: {
 			questionIndex: global.state.currentIndex,
 			phraseIndex: global.state.selectedTokenIndex,
 			selection: selection
+		}})
+	}
+
+	const toggleTokenTutorial = (event) => {
+		dispatch({type: 'toggle_token_tutorial', payload: {
+			questionIndex: global.state.currentIndex,
+			toggle: !props.showTokenTutorial
 		}})
 	}
 
@@ -67,7 +77,7 @@ const PhraseBuilder = (props) => {
 	return (
 		<section className="card phrase-builder">
 			<header>Phrase to Complete</header>
-			<div className={`token-tutorial ${global.state.items[global.state.currentIndex].phrase.length ? '' : 'show'}`}>
+			<div className={`token-tutorial ${props.showTokenTutorial ? 'show' : 'minimized'}`} onClick={toggleTokenTutorial}>
 				<p><span className="icon-notification"></span>Use the input to the left to create the individual <span className="strong">tokens</span> that will make up your phrase. Tokens can be a word, multiple words, a part of speech, grammar symbol, or any combination.
 					The tokens will be randomly ordered when a student plays the widget.</p>
 			</div>

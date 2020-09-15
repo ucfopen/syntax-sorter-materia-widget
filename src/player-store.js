@@ -53,9 +53,8 @@ const importFromQset = (qset) => {
 				phrase: shuffle(reals.concat(fakes)), // randomized sum of real and fake tokens
 				sorted: [],
 				displayPref: item.options.displayPref,
-				checkPref: item.options.checkPref, // are there additional attempts?
-				numChecks: item.options.numChecks, // number of additional attempts
-				checksUsed: 0,
+				attempts: item.options.attempts, // number of additional attempts
+				attemptsUsed: 0,
 				responseState: 'none', // used to track display of various phrasePlayer states
 				correctPhrase: item.answers[0].options.phrase, // used for client-side assessment of the phrase if guess attempts are enabled
 				qsetId: item.id
@@ -335,7 +334,7 @@ const questionItemReducer = (items, action) => {
 		case 'attempt_submit':
 			return items.map((item, index) => {
 				if (index == action.payload.questionIndex) {
-					return {...item, responseState: action.payload.response, checksUsed: item.checksUsed + 1}
+					return {...item, responseState: action.payload.response, attemptsUsed: item.attemptsUsed + 1}
 				}
 				else return item
 			})
