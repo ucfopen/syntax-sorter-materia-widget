@@ -127,7 +127,6 @@ const questionItemReducer = (items, action) => {
 		case 'update_attempts':
 			return items.map((item, index) => {
 				if (index == action.payload.questionIndex) {
-					console.log(action.payload)
 					return {
 						...item,
 						attempts: parseInt(action.payload.pref)

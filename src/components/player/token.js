@@ -133,10 +133,6 @@ const Token = (props) => {
 		})
 	}
 
-	const handleDebugClick = () => {
-		console.log(props)
-	}
-
 	// function that returns a value 0-255 based on the "lightness" of a given hex value
 	const contrastCalc = (color) => {
 		var r, g, b
@@ -163,8 +159,7 @@ const Token = (props) => {
 			onDragStart={handleDragStart}
 			onDrag={handleDrag}
 			onDragEnd={handleDragEnd}
-			onContextMenu={handleClick}
-			onClick={handleDebugClick}>
+			onContextMenu={handleClick}>
 			{props.pref == 'word' ? props.value : getLegendName(props.type)}
 		</div>
 	)
