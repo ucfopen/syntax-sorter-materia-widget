@@ -42,7 +42,7 @@ const PrefSelect = (props) => {
 			<div className="options-holder">
 				<div role="button" className="card more-card" onClick={toggleHintModal}>
 					<p>Edit Attempts and Hint</p>
-					<p className={`guess-limit-tip ${props.attempts > 1 ? "show" : ""}`} >Guess limit: {props.attempts}, hint: {props.hint?.length > 0 ? "enabled" : "disabled"}</p>
+					<p className={`guess-limit-tip ${props.attempts > 1 ? "show" : ""}`} >Attempts: {props.attempts}, Hint: {props.hint?.length > 0 ? "enabled" : "No Hint"}</p>
 				</div>
 				<div className="options-spacer"></div>
 				<div role="button" className="card more-card" onClick={toggleFakeoutModal}>

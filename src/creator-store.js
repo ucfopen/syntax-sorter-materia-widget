@@ -295,7 +295,7 @@ const StateProvider = ( { children } ) => {
 				return {...state, title: action.payload}
 			case 'remove_question':
 				if (state.items.length < 2) return state
-				else return {...state, items: questionItemReducer(state.items, action), currentIndex: state.currentIndex - 1, selectedTokenIndex: -1}
+				else return {...state, items: questionItemReducer(state.items, action), currentIndex: state.currentIndex == 0 ? 0 : state.currentIndex - 1, selectedTokenIndex: -1}
 			case 'add_new_question':
 				return {...state, items: questionItemReducer(state.items, action), currentIndex: state.items.length, selectedTokenIndex: -1}
 			case 'update_question_text':

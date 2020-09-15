@@ -146,6 +146,16 @@ div.startupTooltip {
 			transition-duration: 0.1s;
 			transition-property: height, width, background-color;
 
+			&:before {
+				position: absolute;
+				top: 6px;
+				right: 12px;
+				content: "x";
+				font-size: 0.9em;
+
+				cursor: pointer;
+			}
+
 			p {
 				width: 90%;
 				margin: 0 0 10px 0;
@@ -166,11 +176,10 @@ div.startupTooltip {
 
 				cursor: pointer;
 
-				
-
 				&:before {
 					position: relative;
 					top: -4px;
+					right: 0;
 					font-family: 'icomoon';
 					content: "\ea08";
 					font-size: 0.9em;
