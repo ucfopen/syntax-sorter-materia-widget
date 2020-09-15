@@ -286,7 +286,7 @@ const StateProvider = ( { children } ) => {
 				return {...state, requireInit: false}
 			case 'init-existing':
 				let imported = importFromQset(action.payload.qset)
-				return {...state, title: action.payload.title, items: imported.items, legend: imported.legend, numAsk: imported.numAsk, enableQuestionBank: imported.enableQuestionBank, requireInit: false}
+				return {...state, title: action.payload.title, items: imported.items, legend: imported.legend, numAsk: imported.numAsk, enableQuestionBank: imported.enableQuestionBank, requireInit: false, onboarding: false, showTokenTutorial: false}
 			case 'dismiss_tutorial':
 				return {...state, showTutorial: false}
 			case 'toggle_token_tutorial':
@@ -295,9 +295,9 @@ const StateProvider = ( { children } ) => {
 				return {...state, title: action.payload}
 			case 'remove_question':
 				if (state.items.length < 2) return state
-				else return {...state, items: questionItemReducer(state.items, action), currentIndex: state.currentIndex - 1}
+				else return {...state, items: questionItemReducer(state.items, action), currentIndex: state.currentIndex - 1, selectedTokenIndex: -1}
 			case 'add_new_question':
-				return {...state, items: questionItemReducer(state.items, action), currentIndex: state.items.length}
+				return {...state, items: questionItemReducer(state.items, action), currentIndex: state.items.length, selectedTokenIndex: -1}
 			case 'update_question_text':
 			case 'update_display_pref':
 			case 'update_attempts':
@@ -319,7 +319,7 @@ const StateProvider = ( { children } ) => {
 			case 'toggle_fakeout_select':
 				return {...state, selectedFakeoutIndex: action.payload != state.selectedFakeoutIndex ? action.payload : -1}
 			case 'select_question':
-				return {...state, currentIndex: action.payload}
+				return {...state, currentIndex: action.payload, selectedTokenIndex: -1}
 			case 'toggle_legend':
 				return {...state, showLegend: !state.showLegend, legendColorPickerTarget: -1, onboarding: false}
 			case 'add_legend_item':
