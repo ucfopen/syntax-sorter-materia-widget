@@ -189,6 +189,7 @@ span.strong {
 			color: #ffffff;
 
 			&:hover {
+				color: #000000;
 				background: $colorAccentHover;
 			}
 		}
@@ -337,6 +338,7 @@ span.strong {
 		outline: none;
 
 		&:hover {
+			color: #000000;
 			background: $colorAccentHover;
 		}
 
@@ -352,7 +354,6 @@ span.strong {
 	width: calc(100% - 60px - 50px); // 100% - question-select - padding
 	//height: calc(100% - 52px - 50px); // 100% - header - padding 100% - 52px - 50px
 	min-height: calc(100% - 130px);
-	max-height: calc(100% + 50px);
 
 	padding: 25px;
 	padding-top: 100px;
@@ -396,23 +397,19 @@ span.strong {
 			cursor: pointer;
 			font-weight: 700;
 
+			color: #000000;
 			background-color: #ffffff;
 			border: solid 1px $colorAccent;
 			border-left: solid 5px $colorAccent;
 
 			&:hover {
 				background-color: $colorAccentHover;
-
-				p {
-					color: #ffffff;
-				}
 			}
 
 			p {
 				justify-self: center;
 				align-self: center;
 				padding-left: 15px;
-				color: #000000;
 			}
 
 			.guess-limit-tip {

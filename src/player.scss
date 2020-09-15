@@ -3,6 +3,14 @@
 .player-container {
 
 	header {
+
+		span.title {
+			display: inline-block;
+			max-width: 66%;
+			max-height: 25px;
+			overflow: auto;
+		}
+
 		button.headerBtn {
 			float: right;
 			padding: 5px 25px;

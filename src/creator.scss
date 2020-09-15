@@ -3,7 +3,7 @@
 
 div.startupTooltip {
 	display: none;
-	position: absolute;
+	position: fixed;
 	z-index: 99;
 
 	top: 68px;
@@ -38,6 +38,7 @@ div.startupTooltip {
 .creator-header {
 	position: fixed;
 	top: 0;
+	z-index: 9;
 	 
 	input {
 		width: 400px;
@@ -86,7 +87,7 @@ div.startupTooltip {
 		}
 
 		&:hover {
-			color: #ffffff;
+			color: #000000;
 			background: $colorAccentHover;
 		}
 	}
@@ -132,7 +133,7 @@ div.startupTooltip {
 			position: absolute;
 			top: 0px;
 			right: 0px;
-			z-index: 11;
+			z-index: 8;
 
 			height: calc(100% - 40px);
 			width: calc(50% - 40px);
@@ -560,60 +561,67 @@ section.fakeout-builder {
 		font-weight: bold;
 
 		&:hover {
+			color: #000000;
 			background: $colorAccentHover;
 		}
 	}
 
-	.legend-item {
-		margin-bottom: 15px;
+	.legend-item-container {
 
-		.item-color {
-			display: inline-block;
-			width:25px;
-			height: 25px;
-			border-style: solid;
-			border-radius: 2px;
+		max-height: calc(100% - 160px);
+		overflow: auto;
 
-			margin-right: 10px;
-
-			vertical-align: middle;
-
-			&.selected {
-				border: solid 2px #fff;
+		.legend-item {
+			margin-bottom: 15px;
+	
+			.item-color {
+				display: inline-block;
+				width:25px;
+				height: 25px;
+				border-style: solid;
+				border-radius: 2px;
+	
+				margin-right: 10px;
+	
+				vertical-align: middle;
+	
+				&.selected {
+					border: solid 2px #fff;
+				}
+			}
+	
+			input {
+				display: inline-block;
+				background: none;
+				outline: none;
+				border: none;
+				border-bottom: solid 2px #ffffff;
+	
+				margin: 0;
+				padding: 0;
+				vertical-align: middle;
+	
+				font-size: 1.1em;
+	
+				color: #ffffff;
+	
+			}
+	
+			.remove-item {
+				display: inline-block;
+				outline: none;
+				border: none;
+				vertical-align: middle;
+	
+				margin-left: 10px;
+				font-size: 1.1em;
+	
+				&:hover {
+					background: $colorAccentHover;
+				}
 			}
 		}
-
-		input {
-			display: inline-block;
-			background: none;
-			outline: none;
-			border: none;
-			border-bottom: solid 2px #ffffff;
-
-			margin: 0;
-			padding: 0;
-			vertical-align: middle;
-
-			font-size: 1.1em;
-
-			color: #ffffff;
-
-		}
-
-		.remove-item {
-			display: inline-block;
-			outline: none;
-			border: none;
-			vertical-align: middle;
-
-			margin-left: 10px;
-			font-size: 1.1em;
-
-			&:hover {
-				background: $colorAccentHover;
-			}
-		}
-	}
+	}	
 
 	.legend-color-picker-wrapper {
 		position: absolute;

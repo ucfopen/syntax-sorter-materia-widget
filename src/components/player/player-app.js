@@ -80,7 +80,7 @@ const PlayerApp = (props) => {
 			<WarningModal></WarningModal>
 			<PlayerTutorial></PlayerTutorial>
 			<header className="player-header">
-				{global.state.title}
+				<span className="title">{global.state.title}</span>
 				<button className="headerBtn" onClick={handleSubmit}>Submit</button>
 				<button className="headerBtn" onClick={toggleTutorial}>Tutorial</button>
 			</header>

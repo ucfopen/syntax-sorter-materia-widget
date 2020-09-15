@@ -61,15 +61,18 @@ const CreatorApp = (props) => {
 
 		global.state.legend.forEach((term, index) => {
 			// make sure a legend value isn't blank
-			if (!term.name.length) blankLegendCount++
-
-			// check for duplicate legend values
-			global.state.legend.forEach((otherTerm, otherIndex) => {
-				if (term.name == otherTerm.name && index != otherIndex && !duplicates.includes(index) && !duplicates.includes(otherIndex)) {
-					duplicates.push(index, otherIndex)
-					invalid.push(`You have two or more legend items with the name "${term.name}". They must be unique!`)
-				}
-			})
+			if (!term.name.length) {
+				blankLegendCount++
+			}
+			else {
+				// check for duplicate legend values
+				global.state.legend.forEach((otherTerm, otherIndex) => {
+					if (term.name == otherTerm.name && index != otherIndex && !duplicates.includes(term.name)) {
+						duplicates.push(term.name)
+						invalid.push(`You have two or more legend items with the name "${term.name}". They must be unique!`)
+					}
+				})
+			}
 		})
 
 		if (blankLegendCount > 0) invalid.push(`You have ${blankLegendCount} blank Legend value(s).`)

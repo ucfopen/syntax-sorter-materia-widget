@@ -11,7 +11,7 @@ const TokenDrawer = (props) => {
 		dispatch({type: 'paginate_question_forward'})
 	}
 
-	const HandleGuessCheck = () => {
+	const handleCheckAnswer = () => {
 		let item = global.state.items[global.state.currentIndex]
 
 		// attempt limit already reached, assume call is invalid
@@ -47,7 +47,7 @@ const TokenDrawer = (props) => {
 		for (let i = 0; i < item.sorted.length; i++) {
 
 			if (item.displayPref == 'word') {
-				if (item.sorted[i].value != item.correctPhrase[i].value) return false
+				if (item.sorted[i].value != item.correctPhrase[i].value || item.sorted[i].legend != item.sorted[i].legend) return false
 			}
 			else if (item.displayPref == 'legend') {
 				if (item.sorted[i].legend != item.correctPhrase[i].legend) return false
@@ -66,7 +66,7 @@ const TokenDrawer = (props) => {
 					pref={props.displayPref}
 					status={token.status}
 					fakeout={token.fakeout}
-					dragEligible={!(props.attemptLimit > 1 && props.attemptsUsed >= props.attemptLimit)}>
+					dragEligible={!(props.attemptsUsed >= props.attemptLimit)}>
 				</Token>
 	})
 
@@ -74,20 +74,18 @@ const TokenDrawer = (props) => {
 
 	let currentResponseText = ''
 
+	let remaining = props.attemptLimit - props.attemptsUsed
+
 	switch (props.responseState) {
 		case 'ready':
-			if (isLastQuestion) {
-				let remaining = props.attemptLimit - props.attemptsUsed
+			
+			if (isLastQuestion && remaining > 0) {
 				currentResponseText = <span className='controls-message'>You have <span className='strong'>{remaining}</span> attempt{remaining > 1 ? 's' : ''} remaining. Select <span className='strong'>Check Answer</span> to check your answer, or select <span className='strong'>Submit</span> at the top-right for scoring.</span>
 			}
 			else if (isLastQuestion) {
 				currentResponseText = <span className='controls-message'>When you're ready, select <span className='strong'>Submit</span> at the top-right for scoring or go back and review your answers.</span>
 			}
-			else if (props.hasFakes) {
-				currentResponseText = <span className='controls-message'>When you're ready, select <span className='strong'>Next Question</span> to continue.</span>
-			}
 			else {
-				let remaining = props.attemptLimit - props.attemptsUsed
 				currentResponseText = <span className='controls-message'>You have <span className='strong'>{remaining}</span> attempt{remaining > 1 ? 's' : ''} remaining. Select <span className='strong'>Check Answer</span> to check your answer, or select <span className='strong'>Next Question</span> to continue.</span>
 			}
 			break
@@ -95,7 +93,6 @@ const TokenDrawer = (props) => {
 			currentResponseText = <span>PENDING</span>
 			break
 		case 'incorrect-attempts-remaining':
-			let remaining = props.attemptLimit - props.attemptsUsed
 			currentResponseText = <span className='controls-message'>That's not quite right. You have <span className='strong'>{remaining}</span> attempt{remaining > 1 ? 's' : ''} remaining.</span>
 			break
 		case 'incorrect-no-attempts':
@@ -132,7 +129,7 @@ const TokenDrawer = (props) => {
 					{currentResponseText}
 				</div>
 				<div className='button-container'>
-					<button className={`verify ${props.attemptLimit > props.attemptsUsed && props.responseState != 'correct' ? 'show' : ''}`} onClick={HandleGuessCheck}>Check Answer</button>
+					<button className={`verify ${props.attemptLimit > props.attemptsUsed && props.responseState != 'correct' ? 'show' : ''}`} onClick={handleCheckAnswer}>Check Answer</button>
 					<button className={`paginate ${!isLastQuestion ? 'show' : ''}`} onClick={paginate}>Next Question</button>
 				</div>
 			</section>

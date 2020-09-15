@@ -118,6 +118,7 @@ const PhrasePlayer = (props) => {
 	}
 
 	let sortedTokens = props.sorted?.map((token, index) => {
+		console.log(props.responseState)
 		return <Token
 			id={token.id}
 			key={index}
@@ -130,7 +131,7 @@ const PhrasePlayer = (props) => {
 			position={token.position}
 			reqPositionUpdate={token.reqPositionUpdate}
 			fakeout={token.fakeout}
-			dragEligible={!(props.attemptLimit > 1 && props.attemptsUsed >= props.attemptLimit) || token.responseState == 'correct'}
+			dragEligible={!(props.attemptsUsed >= props.attemptLimit || props.responseState == 'correct')}
 			forceClearAdjacentTokens={forceClearAdjacentTokens}>
 		</Token>
 	})

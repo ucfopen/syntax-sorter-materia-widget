@@ -44,8 +44,10 @@ const Legend = (props) => {
 			<p><span className="icon-notification"></span>Use the Legend to easily identify the syntax of individual tokens you create. For example, if you're 
 				creating a phrase in another language, you might use the Legend to identify individual parts of speech.
 			</p>
-			{legendItems}
-			<button className="addNew" onClick={addLegendItem}>+ Add Another</button>
+			<div className="legend-item-container">
+				{legendItems}
+				<button className="addNew" onClick={addLegendItem}>+ Add Another</button>
+			</div>
 			<button className="doneBtn" onClick={props.toggle}>Done</button>
 			<LegendColorPicker
 				handleColorChangeComplete={handleColorChangeComplete}

@@ -36,7 +36,7 @@ const Question = (props) => {
 
 	return (
 		<section className='card question-text-container'>
-			<h3>{props.questionText}</h3>
+			<h3>{props.questionText.length > 0 ? props.questionText : "No question text provided."}</h3>
 			<div className={`response-container ${props.score > 99 ? 'correct' : 'incorrect'}`}>
 				<h5>How you responded:</h5>
 				{responseTokenList}
