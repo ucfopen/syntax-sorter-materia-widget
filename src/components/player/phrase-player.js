@@ -138,8 +138,7 @@ const PhrasePlayer = (props) => {
 
 	return(
 		<section className={'card phrase-player ' +
-			`${props.attemptLimit > 1 && (props.phrase.length == 0 || props.hasFakes) ? 'pending ' : ''}` +
-			`${props.attemptLimit > 1 ? props.responseState + ' ' : ''}` +
+			`${props.responseState + ' '}` +
 			`${props.hasFakes ? 'fakeout ' : ''}`}>
 			<div className={`token-container ${props.hasFakes ? "fakeout" : ''}`}>
 				<div className="token-target" onDragOver={handleTokenDragOver} onDrop={handleTokenDrop}>

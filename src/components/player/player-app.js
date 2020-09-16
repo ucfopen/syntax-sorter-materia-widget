@@ -52,12 +52,16 @@ const PlayerApp = (props) => {
 
 	const handleSubmit = () => {
 
-		if (emptyQuestionCheck() == true)
-		{
+		if (emptyQuestionCheck() == true) {
 			dispatch({type: 'toggle_warning'})
 			return
 		}
+		else {
+			submitForScoring()
+		}
+	}
 
+	const submitForScoring = () => {
 		for (let item of global.state.items) {
 			Materia.Score.submitQuestionForScoring(item.qsetId, convertSortedForLogging(item.sorted))
 		}
@@ -77,7 +81,7 @@ const PlayerApp = (props) => {
 
 	return(
 		<div className="player-container">
-			<WarningModal></WarningModal>
+			<WarningModal submitForScoring={submitForScoring}></WarningModal>
 			<PlayerTutorial></PlayerTutorial>
 			<header className="player-header">
 				<span className="title">{global.state.title}</span>

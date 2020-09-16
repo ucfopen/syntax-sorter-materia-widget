@@ -80,7 +80,7 @@ const calcResponseState = (item) => {
 	{
 		case 'none':
 			if (item.sorted.length > 0) {
-				if (item.fakeout.length == 0) {
+				if (item.fakeout.length == 0 && item.phrase.length > 0) {
 					state = 'pending'
 				}
 				else state = 'ready'
