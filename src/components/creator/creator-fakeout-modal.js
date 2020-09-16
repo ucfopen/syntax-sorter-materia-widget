@@ -15,8 +15,8 @@ const CreatorFakeoutModal = (props) => {
 		<div className='modal-wrapper' style={{display: global.state.showFakeoutModal ? 'block' : 'none'}}>
 			<div className='modal creator wide'>
 				<h3>Add "Fake" Tokens</h3>
-				<p>You can optionally create additional tokens that will be added to the "real" tokens students are provided for this question.
-					The student will be penalized for adding any of these "fake" tokens to the arrangement.</p>
+				<p>Increase the difficulty of your question by adding additional tokens alongside the "real" ones. The student will be notified that these extra tokens exist, and that not all
+					tokens available may be part of the final phrase.</p>
 				<FakeoutBuilder
 					fakes={props.fakes}
 					legend={global.state.legend}></FakeoutBuilder>

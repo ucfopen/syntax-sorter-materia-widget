@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect, useRef } from 'react'
 import Token from './token'
 import { store } from '../../creator-store'
 
@@ -7,8 +7,16 @@ const FakeoutBuilder = (props) => {
 	const global = useContext(store)
 	const dispatch = global.dispatch
 
-	// const currentFakePref = (global.state.items[global.state.currentIndex] && global.state.items[global.state.currentIndex].fakesPref != undefined) ? global.state.items[global.state.currentIndex].fakesPref : 'no'
 	const currentLegend = (global.state.selectedFakeoutIndex != -1 && global.state?.items[global.state.currentIndex]?.fakes[global.state.selectedFakeoutIndex]?.legend != undefined) ? global.state.items[global.state.currentIndex].fakes[global.state.selectedFakeoutIndex].legend : -1
+
+	const inputRef = useRef(null)
+
+	useEffect( () => {
+		if (global.state.showFakeoutModal == false && inputRef.current.value.length > 0) {
+			convertInputToToken(inputRef.current.value)
+			inputRef.current.value = ""
+		} 
+	},[global.state.showFakeoutModal])
 
 	const handleTokenInput = (event) => {
 		switch (event.which) {
@@ -23,7 +31,9 @@ const FakeoutBuilder = (props) => {
 				break;
 			case 13: // enter
 				// convert input to token
-				convertInputToToken(event.target.value)
+				if (event.target.value.length > 0) {
+					convertInputToToken(event.target.value)
+				}
 				event.target.value = ""
 			default:
 				return;
@@ -73,7 +83,7 @@ const FakeoutBuilder = (props) => {
 			<div className="token-container">
 				{tokenList}
 				<div className="token-input-container">
-					<input className="token-input" onKeyDown={handleTokenInput} placeholder="..."></input>
+					<input className="token-input" onKeyDown={handleTokenInput} placeholder="..." ref={inputRef}></input>
 				</div>
 			</div>
 			<div className={`token-type-selector ${global.state.selectedFakeoutIndex != -1 ? "show" : ""}`}>
