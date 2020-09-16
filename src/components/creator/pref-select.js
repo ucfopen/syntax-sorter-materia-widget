@@ -25,16 +25,16 @@ const PrefSelect = (props) => {
 		<div className="pref-holder">
 			<div className="card pref-card">
 				<div className="pref-options">
-					<header>How should each token be displayed to students?</header>
+					<header>How should each token be displayed &amp; scored?</header>
 					<span className="pref-select">
 						<input type="radio" name="token-display-select" value={"word"} onChange={handleTokenDisplayPref} checked={props.displayPref == 'word'}/>
 						<span className={`radio-overlay ${props.displayPref == 'word' ? 'selected' : ''}`}></span>
-						Word
+						<span className="strong">By Word</span>: Both the word and the legend value must match.
 					</span>
 					<span className="pref-select">
 						<input type="radio" name="token-display-select" value={"legend"} onChange={handleTokenDisplayPref} checked={props.displayPref == 'legend'}/>
 						<span className={`radio-overlay ${props.displayPref == 'legend' ? 'selected' : ''}`}></span>
-						Legend
+						<span className="strong">By Legend</span>: Only the legend value of a token matters. The word will not be shown.
 					</span>
 				</div>
 			</div>
