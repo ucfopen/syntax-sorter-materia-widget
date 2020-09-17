@@ -17,10 +17,10 @@ const QuestionSelect = (props) => {
 
 		if (questionList.length > 10) {
 			if (currentIndex < state.paginateMin) {
-				setState(state => ({paginateMin: state.paginateMin - 1, paginateMax: state.paginateMax - 1}))
+				setState(state => ({...state, paginateMin: currentIndex, paginateMax: currentIndex + 8}))
 			}
 			else if (currentIndex > state.paginateMax) {
-				setState(state => ({paginateMin: state.paginateMin + 1, paginateMax: state.paginateMax + 1}))
+				setState(state => ({...state, paginateMin: currentIndex - 8, paginateMax: currentIndex}))
 			}
 	
 			setState(state => ({...state, visibleQuestions: [
