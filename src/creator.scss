@@ -432,9 +432,11 @@ div.startupTooltip {
 
 		.button-context {
 			display: none;
+			margin-top: 12px;
 
 			&.show {
-				display: inline-block;
+				display: block;
+				float: right;
 			}
 		}
 		
