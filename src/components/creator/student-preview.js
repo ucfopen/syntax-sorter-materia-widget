@@ -37,7 +37,6 @@ const StudentPreview = (props) => {
 	}
 
 	const mockTokenList = phrase.map((token, index) => {
-		console.log(token)
 		let tokenColor = getLegendColor(token.legend)
 		return <div 
 				className="mock-token"

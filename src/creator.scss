@@ -135,6 +135,7 @@ div.startupTooltip {
 		.token-tutorial {
 			display: none;
 			position: absolute;
+			overflow: hidden;
 			top: 0px;
 			right: 0px;
 			z-index: 8;
@@ -281,7 +282,7 @@ div.startupTooltip {
 
 			.legend-reminder {
 				position: absolute;
-				bottom: 6px;
+				bottom: 10px;
 				left: 15px;
 
 				font-size: 0.7em;

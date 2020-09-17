@@ -1,41 +1,47 @@
-import React, { useContext } from 'react'
+import React, { useContext, useState, useEffect } from 'react'
 import { store } from '../../player-store'
 
 const QuestionSelect = (props) => {
 
 	const global = useContext(store)
 	const dispatch = global.dispatch
+	
+	const [state, setState] = useState({paginateMin: 0, paginateMax: 8, visibleQuestions: []})
 
 	const currentIndex = global.state.currentIndex
 
-	let questionList = global.state.items.map((item, index) => {
-		return <button className={`select-btn ${currentIndex == index ? 'selected' : ''}`} key={index} onClick={() => {dispatch({type: 'select_question', payload: index})}}>{index + 1}</button>
-	})
+	useEffect(() => {
+		let questionList = global.state.items.map((item, index) => {
+			return <button className={`select-btn ${currentIndex == index ? 'selected' : ''}`} key={index} onClick={() => {selectQuestion(index)}}>{index + 1}</button>
+		})
 
-	let visibleQuestionList = questionList
-	if (questionList.length > 10) {
-		let min = currentIndex < 9 ? 0 : currentIndex - 9
-		let max = min + 10
+		if (questionList.length > 10) {
+			if (currentIndex < state.paginateMin) {
+				setState(state => ({paginateMin: state.paginateMin - 1, paginateMax: state.paginateMax - 1}))
+			}
+			else if (currentIndex > state.paginateMax) {
+				setState(state => ({paginateMin: state.paginateMin + 1, paginateMax: state.paginateMax + 1}))
+			}
+	
+			setState(state => ({...state, visibleQuestions: [
+				...questionList.slice(state.paginateMin, currentIndex),
+				...questionList.slice(currentIndex, state.paginateMax + 1)
+			]}))
+		}
+		else {
+			setState(state => ({...state, visibleQuestions: questionList}))
+		}
+	},[global.state.currentIndex, global.state.items])
 
-		if (currentIndex + 1 > questionList.length - 1) {
-			visibleQuestionList = [
-				...questionList.slice(min, currentIndex),
-				...questionList.slice(currentIndex)
-			]
-		}
-		else { 
-			visibleQuestionList = [
-				...questionList.slice(min, currentIndex),
-				...questionList.slice(currentIndex, max)
-			]
-		}
+	const selectQuestion = (index) => {
+		dispatch({type: 'select_question', payload: index})
 	}
 	
 	return (
 		<div className="question-select">
-			<button className={`select-btn paginate-up ${questionList.length > 10 ? 'show' : ''} ${currentIndex > 0 ? '': 'disabled'}`} onClick={() => {dispatch({type: 'select_question', payload: currentIndex - 1})}} disabled={currentIndex <= 0}><span className="icon-arrow-up2"></span></button>
-			{visibleQuestionList}
-			<button className={`select-btn paginate-down ${questionList.length > 10 ? 'show' : ''} ${currentIndex < questionList.length - 1 ? '': 'disabled'}`} onClick={() => {dispatch({type: 'select_question', payload: currentIndex + 1})}} disabled={currentIndex >= questionList.length - 1}><span className="icon-arrow-down2"></span></button>
+			<button className={`select-btn paginate-up ${global.state.items.length > 10 ? 'show' : ''} ${currentIndex > 0 ? '': 'disabled'}`} onClick={() => {selectQuestion(currentIndex - 1)}} disabled={currentIndex <= 0}><span className="icon-arrow-up2"></span></button>
+			{state.visibleQuestions}
+			<button className={`select-btn paginate-down ${global.state.items.length > 10 ? 'show' : ''} ${currentIndex < global.state.items.length - 1 ? '': 'disabled'}`} onClick={() => {selectQuestion(currentIndex + 1)}} disabled={currentIndex >= global.state.items.length - 1}><span className="icon-arrow-down2"></span></button>
 		</div>
 	)
 }

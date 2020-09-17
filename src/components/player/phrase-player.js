@@ -118,7 +118,6 @@ const PhrasePlayer = (props) => {
 	}
 
 	let sortedTokens = props.sorted?.map((token, index) => {
-		console.log(props.responseState)
 		return <Token
 			id={token.id}
 			key={index}
