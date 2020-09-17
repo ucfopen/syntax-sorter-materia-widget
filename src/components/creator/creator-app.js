@@ -163,6 +163,14 @@ const CreatorApp = (props) => {
 		dispatch({type: 'toggle_bank_modal', payload: {}})
 	}
 
+	const toggleHintModal = () => {
+		dispatch({type: 'toggle_hint_modal'})
+	}
+
+	const toggleFakeoutModal = () => {
+		dispatch({type: 'toggle_fakeout_modal'})
+	}
+
 	return(
 		<div className="creator-container">
 			<div className={`startupTooltip ${global.state.onboarding ? 'show' : ''}`} onClick={toggleLegend}>
@@ -199,7 +207,21 @@ const CreatorApp = (props) => {
 					fakes={global.state.items[global.state.currentIndex].fakes}
 					attempts={global.state.items[global.state.currentIndex].attempts}
 					hint={global.state.items[global.state.currentIndex].hint}></PrefSelect>
-				<button className="card delete-question" onClick={handleDeleteQuestion} disabled={global.state.items.length < 2}>Delete Question</button>
+				<section className="options-container">
+					<button className="card options-button" onClick={toggleHintModal}>
+						<header>Edit Attempts and Hint</header>
+						<span className={`button-context ${global.state.items[global.state.currentIndex].attempts > 1 ? "show" : ""}`}>
+							Attempts: {global.state.items[global.state.currentIndex].attempts}, Hint: {global.state.items[global.state.currentIndex].hint?.length > 0 ? "Enabled" : "No Hint"}
+						</span>
+					</button>
+					<button className="card options-button" onClick={toggleFakeoutModal}>
+						<header>Edit "Fake" Tokens</header>
+						<span className={`button-context ${global.state.items[global.state.currentIndex].fakes.length > 0 ? "show" : ""}`}>
+							Fake Tokens: {global.state.items[global.state.currentIndex].fakes?.length}
+						</span>
+					</button>
+					<button className="card delete-question" onClick={handleDeleteQuestion} disabled={global.state.items.length < 2}>Delete Question</button>
+				</section>
 			</section>
 			<Legend show={global.state.showLegend ? global.state.showLegend : false} legend={global.state.legend} toggle={toggleLegend}></Legend>
 		</div>

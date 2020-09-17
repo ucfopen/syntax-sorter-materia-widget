@@ -1,5 +1,6 @@
 import React, { useContext } from 'react'
 import { store } from '../../creator-store'
+import StudentPreview from './student-preview'
 
 const PrefSelect = (props) => {
 
@@ -12,44 +13,23 @@ const PrefSelect = (props) => {
 			pref: event.target.value
 		}})
 	}
-
-	const toggleHintModal = () => {
-		dispatch({type: 'toggle_hint_modal'})
-	}
-
-	const toggleFakeoutModal = () => {
-		dispatch({type: 'toggle_fakeout_modal'})
-	}
-
+	
 	return (
-		<div className="pref-holder">
-			<div className="card pref-card">
-				<div className="pref-options">
-					<header>How should each token be displayed &amp; scored?</header>
-					<span className="pref-select">
-						<input type="radio" name="token-display-select" value={"word"} onChange={handleTokenDisplayPref} checked={props.displayPref == 'word'}/>
-						<span className={`radio-overlay ${props.displayPref == 'word' ? 'selected' : ''}`}></span>
-						<span className="strong">By Word</span>: Both the word and the legend value must match.
-					</span>
-					<span className="pref-select">
-						<input type="radio" name="token-display-select" value={"legend"} onChange={handleTokenDisplayPref} checked={props.displayPref == 'legend'}/>
-						<span className={`radio-overlay ${props.displayPref == 'legend' ? 'selected' : ''}`}></span>
-						<span className="strong">By Legend</span>: Only the legend value of a token matters. The word will not be shown.
-					</span>
-				</div>
+		<div className="card split">
+			<div className="pref-options">
+				<header>How should each token be displayed &amp; scored?</header>
+				<span className="pref-select">
+					<input type="radio" name="token-display-select" value={"word"} onChange={handleTokenDisplayPref} checked={props.displayPref == 'word'}/>
+					<span className={`radio-overlay ${props.displayPref == 'word' ? 'selected' : ''}`}></span>
+					<span className="strong">By Word</span>: Both the word and the legend value must match.
+				</span>
+				<span className="pref-select">
+					<input type="radio" name="token-display-select" value={"legend"} onChange={handleTokenDisplayPref} checked={props.displayPref == 'legend'}/>
+					<span className={`radio-overlay ${props.displayPref == 'legend' ? 'selected' : ''}`}></span>
+					<span className="strong">By Legend</span>: Only the legend value of a token matters. The word will not be shown.
+				</span>
 			</div>
-			<div className="pref-spacer"></div>
-			<div className="options-holder">
-				<div role="button" className="card more-card" onClick={toggleHintModal}>
-					<p>Edit Attempts and Hint</p>
-					<p className={`guess-limit-tip ${props.attempts > 1 ? "show" : ""}`} >Attempts: {props.attempts}, Hint: {props.hint?.length > 0 ? "enabled" : "No Hint"}</p>
-				</div>
-				<div className="options-spacer"></div>
-				<div role="button" className="card more-card" onClick={toggleFakeoutModal}>
-					<p>Edit "Fake" Tokens</p>
-					<p className={`guess-limit-tip ${props.fakes.length > 0 ? "show" : ""}`} >Fake Tokens: {props.fakes?.length}</p>
-				</div>
-			</div>
+			<StudentPreview displayPref={props.displayPref}></StudentPreview>
 		</div>
 	)
 }

@@ -124,89 +124,6 @@ span.strong {
 			border: solid 1px $colorBGTertiary;
 		}
 
-		&.tutorial {
-			width: 600px;
-			margin-left: -300px;
-
-			h3 {
-				text-align: center;
-			}
-
-			.tutorial-content {
-				display: flex;
-				flex-flow: row nowrap;
-				justify-content: flex-start;
-				align-items: center;
-				margin-bottom: 20px;
-			
-				p {
-					display: inline-block;
-					flex-grow: 1;
-					margin: 0;
-				}
-			
-				img {
-					flex-shrink: 0;
-					margin: 0;
-
-					&.left {
-						margin-right: 15px;
-					}
-
-					&.right {
-						margin-left: 15px;
-					}
-				}
-			
-				// img:nth-child(odd) {
-				// 	float: left;
-				// 	margin-right: 15px;
-				// }
-			}
-		
-			button {
-				position: absolute;
-				bottom: 15px;
-			}
-		
-		}
-
-		button {
-			position: absolute;
-			display: block;
-			bottom: 15px;
-			left: 50%;
-			width: 120px;
-			margin: 20px 0 0 -60px;
-			padding: 10px 20px;
-			background: $colorAccent;
-			border: none;
-
-			font-size: 1.2em;
-
-			cursor: pointer;
-
-			color: #ffffff;
-
-			&:hover {
-				color: #000000;
-				background: $colorAccentHover;
-			}
-		}
-
-		.select-wrapper {
-			display: block;
-			border: solid 1px $lightBG;
-			padding: 1em;
-
-			&.disabled {
-				opacity: 0.75;
-				color: $colorInput;
-				background: $lightBG;
-				border-color: #ffffff;
-			}
-		}
-
 		.pref-select {
 			margin-left: 1em;
 
@@ -240,7 +157,84 @@ span.strong {
 				&.left {
 					margin-left: 10px;
 				}
+			}
+		}
 
+		button {
+			position: absolute;
+			display: block;
+			bottom: 15px;
+			left: 50%;
+			width: 120px;
+			margin: 20px 0 0 -60px;
+			padding: 10px 20px;
+			background: $colorAccent;
+			border: none;
+
+			font-size: 1.2em;
+
+			cursor: pointer;
+
+			color: #ffffff;
+
+			&:hover {
+				color: #000000;
+				background: $colorAccentHover;
+			}
+		}
+
+		&.tutorial {
+			width: 600px;
+			margin-left: -300px;
+
+			h3 {
+				text-align: center;
+			}
+
+			.tutorial-content {
+				display: flex;
+				flex-flow: row nowrap;
+				justify-content: flex-start;
+				align-items: center;
+				margin-bottom: 20px;
+			
+				p {
+					display: inline-block;
+					flex-grow: 1;
+					margin: 0;
+				}
+			
+				img {
+					flex-shrink: 0;
+					margin: 0;
+
+					&.left {
+						margin-right: 15px;
+					}
+
+					&.right {
+						margin-left: 15px;
+					}
+				}
+			}
+		
+			button {
+				position: absolute;
+				bottom: 15px;
+			}
+		
+		}
+
+		.select-wrapper {
+			display: block;
+			border: solid 1px $lightBG;
+			padding: 1em;
+
+			&.disabled {
+				opacity: 0.75;
+				color: $colorInput;
+				background: $lightBG;
+				border-color: #ffffff;
 			}
 		}
 
@@ -365,6 +359,11 @@ span.strong {
 		background: $colorBGSecondary;
 		margin-bottom: 15px;
 
+		&.split {
+			display: flex;
+			flex-direction: row;
+		}
+
 		&.hint-text {
 			margin-top: -15px;
 			display: none;
@@ -380,47 +379,6 @@ span.strong {
 		header {
 			font-weight: 700;
 			margin-bottom: 1.5em;
-		}
-
-		&.more-card {
-			display:flex;
-			flex-direction: row;
-			margin-bottom: 0;
-			width: calc(100% - 6px);
-			height: calc(46% - 2px);
-			padding: 0;
-			cursor: pointer;
-			font-weight: 700;
-
-			color: #000000;
-			background-color: #ffffff;
-			border: solid 1px $colorAccent;
-			border-left: solid 5px $colorAccent;
-
-			&:hover {
-				background-color: $colorAccentHover;
-			}
-
-			p {
-				justify-self: center;
-				align-self: center;
-				padding-left: 15px;
-			}
-
-			.guess-limit-tip {
-				display: none;
-				align-self: center;
-				font-size: .7em;
-				margin-left:auto;
-				padding-right: 20px;
-
-				font-weight: 400;
-
-				&.show {
-					display: block;
-				}
-			}
-
 		}
 	}
 
@@ -472,27 +430,6 @@ span.strong {
 			}
 		}
 	}
-
-	// .answer-indicator {
-	// 	color: green;
-	// 	font-size: 1.2em;
-	// 	margin-left: auto;
-	// 	margin-right: 20px;
-	// 	padding: 1px 10px;
-	// 	display: none;
-	// 	border: solid 1px green;
-	// 	border-radius: 10px;
-	// 	text-align: center;
-
-	// 	&.wrong {
-	// 		border: solid 1px red;
-	// 		color: red;
-	// 	}
-
-	// 	&.show {
-	// 		display: block;
-	// 	}
-	// }
 
 	.check-val {
 		align-self: center;
