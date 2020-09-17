@@ -200,6 +200,7 @@ const CreatorApp = (props) => {
 					phrase={global.state.items[global.state.currentIndex].phrase}
 					legend={global.state.legend}
 					showTokenTutorial={global.state.showTokenTutorial}
+					toggleLegend={toggleLegend}
 					format="phrase">
 				</PhraseBuilder>
 				<PrefSelect

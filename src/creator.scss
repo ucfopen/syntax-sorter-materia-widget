@@ -229,7 +229,7 @@ div.startupTooltip {
 			left: -15px;
 			// width: calc(100% + 30px);
 			width: 100%;
-			padding: 15px;
+			padding: 15px 15px 30px 15px;
 			color: #ffffff;
 			background: $darkBG;
 
@@ -276,6 +276,18 @@ div.startupTooltip {
 
 				&.selected {
 					background: $darkishBG;
+				}
+			}
+
+			.legend-reminder {
+				position: absolute;
+				bottom: 6px;
+				left: 15px;
+
+				font-size: 0.7em;
+
+				a {
+					color: #ffffff;
 				}
 			}
 		}

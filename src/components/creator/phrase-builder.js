@@ -90,6 +90,7 @@ const PhraseBuilder = (props) => {
 				<header>Select the corresponding legend item for this token:</header>
 				<form id="tokenTypeSelection">
 					{legendSelection}
+					<span className="legend-reminder">Open the <a href="#" onClick={() => {props.toggleLegend()}}>Legend</a> to create additional token categories.</span>
 				</form>
 			</div>
 		</section>
