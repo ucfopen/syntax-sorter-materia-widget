@@ -350,6 +350,18 @@ div.startupTooltip {
 			background: $lightBG;
 			border: solid 1px $darkishBG;
 
+			.empty-message {
+				display: none;
+				width: 100%;
+				text-align: center;
+				color: $darkishBG;
+				font-size: 0.8em;
+
+				&.show {
+					display: inline-block;
+				}
+			}
+
 			.mock-token {
 				display: inline-block;
 				margin-right: 10px;
@@ -362,20 +374,18 @@ div.startupTooltip {
 
 	.delete-question {
 		width: 200px;
+		padding: 16px 15px;
 		text-align: left;
-		// color: #850000;
 		color: #fff;
 		font-size: 1em;
 		font-weight: 700;
 		opacity: 0.5;
 		background: #850000;
-		// background: #cccccc;
+		border: none;
 
 		cursor: pointer;
 
 		&:hover {
-			// color: #fff;
-			// background: #850000;
 			opacity: 1.0;
 		}
 	}

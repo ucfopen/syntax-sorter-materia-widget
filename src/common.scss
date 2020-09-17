@@ -54,6 +54,14 @@ $defaultPadding: 15px;
 	padding-right: .5em;
 }
 
+.icon-arrow-up2:before {
+	content: "\ea3a";
+}
+
+.icon-arrow-down2:before {
+	content: "\ea3e";
+}
+
 /* common styles */
 
 html, body, #root {
@@ -339,6 +347,25 @@ span.strong {
 		&.selected {
 			color: #fff;
 			background: $colorAccent;
+		}
+
+		&.paginate-up, &.paginate-down {
+			display: none;
+			// width: 32px;
+			// height: 32px;
+			// margin: 9px 14px;
+
+			// font-size: 0.9em;
+
+			&.show {
+				display: block;
+			}
+
+			&.disabled {
+				color: $darkishBG;
+				background: $lightBG;
+				cursor: default;
+			}
 		}
 
 	}

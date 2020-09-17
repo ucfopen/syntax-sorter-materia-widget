@@ -53,6 +53,7 @@ const StudentPreview = (props) => {
 			<header>Student Preview</header>
 			<div className="preview-container">
 				{mockTokenList}
+				<span className={`empty-message ${phrase.length > 0 ? '' : 'show'}`}>No tokens to preview yet.</span>
 			</div>
 		</div>
 	)
