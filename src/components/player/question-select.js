@@ -14,7 +14,8 @@ const QuestionSelect = (props) => {
 		let questionList = global.state.items.map((item, index) => {
 			return <button className={`select-btn ${currentIndex == index ? 'selected' : ''}`} key={index} onClick={() => {selectQuestion(index)}}>{index + 1}</button>
 		})
-
+		
+		// if the list of questions gets too long, we have to start computing the subset to display
 		if (questionList.length > 10) {
 			if (currentIndex < state.paginateMin) {
 				setState(state => ({...state, paginateMin: currentIndex, paginateMax: currentIndex + 8}))

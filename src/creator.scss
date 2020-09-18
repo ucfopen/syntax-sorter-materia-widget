@@ -105,6 +105,13 @@ div.startupTooltip {
 	&:hover {
 		background: #ffffff;
 		color: #000000;
+		border: none;
+	}
+
+	&.disabled {
+		color: $darkishBG;
+		background: $lightBG;
+		cursor: default;
 	}
 }
 
