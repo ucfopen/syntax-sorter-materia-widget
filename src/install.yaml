@@ -1,5 +1,5 @@
 general:
-  name: Foreign Language Widget
+  name: Syntax Sorter
   group: Materia
   height: 680
   width: 900
@@ -27,6 +27,6 @@ meta_data:
   supported_data:
     - Question/Answer
   about: >
-    Foreign Language Widget. Details TBD.
+    Create sentences or phrases out of individual tokens and categorize them based on their syntax. Students must arrange the tokens correctly.
   excerpt: >
-    Foreign Language Widget. Details TBD.
+    Tokenize sentences or phrases and identify each element based on its syntax. Students are tasked with correctly arranging the tokens.
