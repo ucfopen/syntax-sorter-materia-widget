@@ -1,7 +1,7 @@
 import React, { useReducer } from 'react'
 
 const init = {
-	title: 'New Foreign Language Widget',
+	title: 'New Syntax Sorter Widget',
 	items: [],
 	legend: [],
 	currentIndex: 0,

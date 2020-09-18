@@ -13,6 +13,8 @@ general:
 files:
   player: player.html
   creator: creator.html
+  creator_guide: guides/creator.html
+  player_guide: guides/player.html
   flash_version: 0
 score:
   is_scorable: Yes

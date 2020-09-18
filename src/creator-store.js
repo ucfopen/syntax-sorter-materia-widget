@@ -14,7 +14,7 @@ const init = {
 	errors: [],
 	selectedTokenIndex: -1,
 	selectedFakeoutIndex: -1,
-	title: 'New Foreign Language Widget',
+	title: 'New Syntax Sorter Widget',
 	items: [{
 		question: '',
 		phrase: [],

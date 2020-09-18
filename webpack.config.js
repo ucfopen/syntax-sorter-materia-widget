@@ -9,6 +9,11 @@ const copy = [
 	{
 		from: path.join(__dirname, 'src', 'scoreDemo.json'),
 		to: path.join(outputPath, 'scoreDemo.json')
+	},
+	{
+		from: path.join(__dirname, 'src', '_guides', 'assets'),
+		to: path.join(outputPath, 'guides', 'assets'),
+		toType: 'dir'
 	}
 ]
 
@@ -37,6 +42,12 @@ const entries = {
 		path.join(srcPath, 'scoreScreen.html'),
 		path.join(srcPath, 'scoreScreen.scss')
 	],
+	'guides/player.temp.html': [
+		path.join(srcPath, '_guides/player.md')
+	],
+	'guides/creator.temp.html': [
+		path.join(srcPath, '_guides/creator.md')
+	]
 }
 
 const customReactLoader = {
