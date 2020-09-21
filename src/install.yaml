@@ -25,7 +25,7 @@ meta_data:
     - Customizable
     - Scorable
   supported_data:
-    - Question/Answer
+    - Custom Questions
   about: >
     Create sentences or phrases out of individual tokens and categorize them based on their syntax. Students must arrange the tokens correctly.
   excerpt: >
