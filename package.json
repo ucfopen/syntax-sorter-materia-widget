@@ -1,10 +1,10 @@
 {
-	"name": "@ucfcdl/foreign-language",
+	"name": "@ucfcdl/syntax-sorter",
 	"materia": {
-		"cleanName": "foreign-language-widget"
+		"cleanName": "syntax-sorter-widget"
 	},
 	"dependencies": {
-		"materia-widget-development-kit": "2.5.1-alpha1"
+		"materia-widget-development-kit": "2.5.0"
 	},
 	"devDependencies": {
 		"@babel/plugin-proposal-class-properties": "7.8.3",
@@ -29,6 +29,6 @@
 		"test-ci": "TZ='America/New_York' CI=true jest --ci --useStderr --coverage --coverageReporters text-summary cobertura"
 	},
 	"author": "University of Central Florida, Center for Distributed Learning",
-	"description": "Foreign language widget, details TBD.",
+	"description": "Syntax Sorter Materia Widget. A tool for arranging sentences or phrases based on the syntactic structure of individual tokens.",
 	"version": "1.0.0"
 }
