@@ -3,130 +3,297 @@
 	"qset": {
 		"version": 1,
 		"data": {
-			"items": [{
-				"materiaType": "question",
-				"id": null,
-				"type": "language-widget",
-				"questions": [
-					{
-						"text":"Arrange the following items in the correct order."
-					}
-				],
-				"answers": [{
+			"items": [
+				{
+					"materiaType": "question",
 					"id": null,
-					"text":"J'aime les chats noirs",
+					"type": "language-widget",
+					"questions": [
+						{
+							"text": "Arrange the following sentence, which says \"I love black cats\", in the proper order."
+						}
+					],
+					"answers": [
+						{
+							"id": null,
+							"text": "J',aime,les,chats,noirs",
+							"options": {
+								"phrase": [
+									{
+										"value": "J'",
+										"legend": 2
+									},
+									{
+										"value": "aime",
+										"legend": 3
+									},
+									{
+										"value": "les",
+										"legend": 7
+									},
+									{
+										"value": "chats",
+										"legend": 1
+									},
+									{
+										"value": "noirs",
+										"legend": 5
+									}
+								]
+							}
+						}
+					],
 					"options": {
-						"phrase": [
+						"displayPref": "word",
+						"attempts": 1,
+						"hint": "",
+						"fakes": []
+					},
+					"assets": []
+				},
+				{
+					"materiaType": "question",
+					"id": null,
+					"type": "language-widget",
+					"questions": [
+						{
+							"text": "Now try arranging the same sentence, but in Spanish."
+						}
+					],
+					"answers": [
+						{
+							"id": null,
+							"text": "Amo,a,los,gatos,negros",
+							"options": {
+								"phrase": [
+									{
+										"value": "Amo",
+										"legend": 3
+									},
+									{
+										"value": "a",
+										"legend": 8
+									},
+									{
+										"value": "los",
+										"legend": 7
+									},
+									{
+										"value": "gatos",
+										"legend": 1
+									},
+									{
+										"value": "negros",
+										"legend": 5
+									}
+								]
+							}
+						}
+					],
+					"options": {
+						"displayPref": "word",
+						"attempts": 1,
+						"hint": "",
+						"fakes": []
+					},
+					"assets": []
+				},
+				{
+					"materiaType": "question",
+					"id": null,
+					"type": "language-widget",
+					"questions": [
+						{
+							"text": "Here is the same sentence again, but in Japanese."
+						}
+					],
+					"answers": [
+						{
+							"id": null,
+							"text": "Kuroi,neko,ga,daisuki",
+							"options": {
+								"phrase": [
+									{
+										"value": "Kuroi",
+										"legend": 5
+									},
+									{
+										"value": "neko",
+										"legend": 1
+									},
+									{
+										"value": "ga",
+										"legend": 8
+									},
+									{
+										"value": "daisuki",
+										"legend": 3
+									}
+								]
+							}
+						}
+					],
+					"options": {
+						"displayPref": "word",
+						"attempts": 1,
+						"hint": "",
+						"fakes": []
+					},
+					"assets": []
+				},
+				{
+					"materiaType": "question",
+					"id": null,
+					"type": "language-widget",
+					"questions": [
+						{
+							"text": "The tokens below represent the sentence \"I love black cats\" in English. Can you arrange them in the proper order based on their parts of speech?"
+						}
+					],
+					"answers": [
+						{
+							"id": null,
+							"text": "I,love,black,cats",
+							"options": {
+								"phrase": [
+									{
+										"value": "I",
+										"legend": 2
+									},
+									{
+										"value": "love",
+										"legend": 3
+									},
+									{
+										"value": "black",
+										"legend": 5
+									},
+									{
+										"value": "cats",
+										"legend": 1
+									}
+								]
+							}
+						}
+					],
+					"options": {
+						"displayPref": "legend",
+						"attempts": 2,
+						"hint": "",
+						"fakes": []
+					},
+					"assets": []
+				},
+				{
+					"materiaType": "question",
+					"id": null,
+					"type": "language-widget",
+					"questions": [
+						{
+							"text": "Finally, try arranging the tokens to say \"I love black cats\" in French based on parts of speech. A few extra tokens are included, so be careful!"
+						}
+					],
+					"answers": [
+						{
+							"id": null,
+							"text": "J',aime,les,chats,noirs",
+							"options": {
+								"phrase": [
+									{
+										"value": "J'",
+										"legend": 2
+									},
+									{
+										"value": "aime",
+										"legend": 3
+									},
+									{
+										"value": "les",
+										"legend": 7
+									},
+									{
+										"value": "chats",
+										"legend": 1
+									},
+									{
+										"value": "noirs",
+										"legend": 5
+									}
+								]
+							}
+						}
+					],
+					"options": {
+						"displayPref": "legend",
+						"attempts": 1,
+						"hint": "",
+						"fakes": [
 							{
-								"value": "J'",
+								"value": "conjunction",
 								"legend": 6
 							},
 							{
-								"value": "aime",
-								"legend": 3
-							},
-							{
-								"value": "les",
-								"legend": 5
-							},
-							{
-								"value": "chats",
-								"legend": 1
-							},
-							{
-								"value": "noirs",
-								"legend": 4
+								"value": "preposition",
+								"legend": 8
 							}
 						]
-					}
-				}],
-				"options": {
-					"displayPref": "word",
-					"attempts": 5,
-					"hint":"This is your hint",
-					"fakes": [
-						{
-							"value": "fake",
-							"legend": 6
-						}
-					]
+					},
+					"assets": []
 				}
-			},
-			{
-				"materiaType": "question",
-				"id": null,
-				"type": "language-widget",
-				"questions": [
-					{
-						"text":"Instead of the spoken phrase, we've replaced each word with its part of speech. Arrange them in the proper order."
-					}
-				],
-				"answers": [{
-					"id": null,
-					"text":"bibliothèque",
-					"options": {
-						"phrase": [
-							{
-								"value": "où",
-								"legend": 2
-							},
-							{
-								"value": "est",
-								"legend": 3
-							},
-							{
-								"value": "la",
-								"legend": 5
-							},
-							{
-								"value": "bibliothèque",
-								"legend": 1
-							}
-						]
-					}
-				}],
-				"options": {
-					"displayPref": "legend",
-					"attempts": 5,
-					"hint":"This is your hint",
-					"fakes": []
-				}
-			}],
+			],
 			"options": {
 				"legend": [
 					{
 						"id": 1,
 						"color": "#FF0000",
-						"name": "Noun"
+						"name": "Noun",
+						"focus": false
 					},
 					{
 						"id": 2,
-						"color": "#0000FF",
-						"name": "Adverb"
+						"color": "#0a51c4",
+						"name": "Pronoun",
+						"focus": false
 					},
 					{
 						"id": 3,
-						"color": "#ffd900",
-						"name": "Verb"
+						"color": "#008c7f",
+						"name": "Verb",
+						"focus": false
 					},
 					{
 						"id": 4,
-						"color": "#6200ff",
-						"name": "Adjective"
+						"color": "#26ec6b",
+						"name": "Adverb",
+						"focus": false
 					},
 					{
 						"id": 5,
-						"color": "#00fff2",
-						"name": "Article"
+						"color": "#ffbe29",
+						"name": "Adjective",
+						"focus": false
 					},
 					{
 						"id": 6,
-						"color": "#ff0080",
-						"name": "Pronoun"
+						"color": "#6d59c6",
+						"name": "Conjunction",
+						"focus": false
+					},
+					{
+						"id": 7,
+						"color": "#81a8ce",
+						"name": "Article",
+						"focus": false
+					},
+					{
+						"id": 8,
+						"color": "#fa713e",
+						"name": "Preposition",
+						"focus": false
 					}
 				],
-				"numAsk": 2,
-				"askLimit": "no"
+				"enableQuestionBank": false,
+				"numAsk": 1
 			}
 		}
 	}

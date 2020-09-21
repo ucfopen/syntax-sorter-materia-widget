@@ -29,24 +29,25 @@ class Score_Modules_LanguageWidget extends Score_Module {
 			}
 
 			$max = count($answer);
-			$correct = true;
 
 			foreach ($answer as $index => $token) {
 
+				if (array_key_exists($index, $response)) return 0;
+
 				if ($this->questions[$log->item_id]->options['displayPref'] == 'word') {
 					if (strcmp($response[$index]->value, $token['value']) != 0 || strcmp($response[$index]->legend, $token['legend']) != 0) {
-						$correct = false;
+						return 0;
 					}
 				}
 				else
 				{
 					if (strcmp($response[$index]->legend, $token['legend']) != 0) {
-						$correct = false;
+						return 0;
 					}
 				}
 			}
 
-			return $correct == true ? 100 : 0;
+			return 100;
 		}
 	}
 
