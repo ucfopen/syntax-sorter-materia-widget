@@ -40,6 +40,7 @@ const ScoreScreenApp = (props) => {
 		let responses = formatResponseData(question.data[2])
 
 		return <Question
+				index={index}
 				key={index}
 				questionText={question.data[0]}
 				response={responses}
