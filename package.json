@@ -1,7 +1,7 @@
 {
 	"name": "@ucfcdl/syntax-sorter",
 	"materia": {
-		"cleanName": "syntax-sorter-widget"
+		"cleanName": "syntax-sorter"
 	},
 	"dependencies": {
 		"materia-widget-development-kit": "2.5.0"
