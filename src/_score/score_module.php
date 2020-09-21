@@ -28,11 +28,13 @@ class Score_Modules_LanguageWidget extends Score_Module {
 				];
 			}
 
-			$max = count($answer);
+			// relative length of user response and answer is mismatched
+			if (count($answer) != count($response)) return 0;
 
 			foreach ($answer as $index => $token) {
 
-				if (array_key_exists($index, $response)) return 0;
+				// if index doesn't exist for whatever reason
+				if (array_key_exists($index, $response) == false) return 0;
 
 				if ($this->questions[$log->item_id]->options['displayPref'] == 'word') {
 					if (strcmp($response[$index]->value, $token['value']) != 0 || strcmp($response[$index]->legend, $token['legend']) != 0) {

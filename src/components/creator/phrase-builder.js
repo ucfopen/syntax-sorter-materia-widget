@@ -8,6 +8,9 @@ const PhraseBuilder = (props) => {
 	const dispatch = global.dispatch
 	const currentLegend = global.state.items[global.state.currentIndex].phrase[global.state.selectedTokenIndex] ? global.state.items[global.state.currentIndex].phrase[global.state.selectedTokenIndex].legend : -1
 
+	const MAX_TOKENS = 500
+	const MAX_TOKEN_CHARS = 200
+
 	const handleTokenInput = (event) => {
 		switch (event.which) {
 			case 8: // backspace
@@ -41,6 +44,7 @@ const PhraseBuilder = (props) => {
 	}
 
 	const convertInputToToken = (input) => {
+		if (props.phrase.length >= MAX_TOKENS) return
 		dispatch({type: 'phrase_input_to_token', payload: {
 			questionIndex: global.state.currentIndex,
 			text: input
@@ -83,7 +87,7 @@ const PhraseBuilder = (props) => {
 			<div className="token-container">
 				{tokenList}
 				<div className="token-input-container">
-					<input className="token-input" onKeyDown={handleTokenInput} placeholder="..."></input>
+					<input className="token-input" onKeyDown={handleTokenInput} placeholder="..." maxLength={MAX_TOKEN_CHARS}></input>
 				</div>
 			</div>
 			<div className={`token-type-selector ${global.state.selectedTokenIndex != -1 ? "show" : ""}`}>
