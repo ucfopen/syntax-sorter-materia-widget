@@ -225,7 +225,7 @@
 					],
 					"options": {
 						"displayPref": "legend",
-						"attempts": 1,
+						"attempts": 3,
 						"hint": "",
 						"fakes": [
 							{
