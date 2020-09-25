@@ -1,0 +1,30 @@
+name: Widget Release Build
+on: [push, pull_request]
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [12.3.1, 12.x]
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+      
+    - name: Run tests with Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node-version }}
+    - run: npm install -g yarn
+    - run: yarn install
+#   - run: yarn test-ci
+    - run: yarn build
+
+    - name: Upload .wigt to release
+      uses: svenstaro/upload-release-action@v2
+      with:
+        repo_token: ${{ secrets.GITHUB_TOKEN }}
+        file: build/_output/*
+        tag: ${{ github.ref }}
+        overwrite: true
+        file_glob: true
