@@ -3,9 +3,9 @@ on:
   push:
     # Sequence of patterns matched against refs/tags
     tags:
-     - '[0-9]+.[0-9]+.[0-9]+'
-     - '[0-9]+.[0-9]+.[0-9]+-rc[0-9]+'
-     - '[0-9]+.[0-9]+.[0-9]+-alpha[0-9]+'
+     - 'v[0-9]+.[0-9]+.[0-9]+'
+     - 'v[0-9]+.[0-9]+.[0-9]+-rc[0-9]+'
+     - 'v[0-9]+.[0-9]+.[0-9]+-alpha[0-9]+'
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -16,16 +16,15 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
-      
+
     - name: Test and build with node ${{ matrix.node-version }}
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
-    - run: npm install -g yarn
-    - run: yarn install
-#   - run: yarn test-ci
+
+    - run: yarn install --frozen-lockfile
     - run: yarn build
-          
+
     - name: Upload Release .wigt
       uses: svenstaro/upload-release-action@v2
       with:
