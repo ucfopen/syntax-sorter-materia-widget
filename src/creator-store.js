@@ -54,7 +54,10 @@ const importFromQset = (qset) => {
 		}
 	})
 
-	legendIdIncrement = qset.options.legend.length
+	// sets legendIdIncrement to the highest existing id the qset: prevents an item from ever receiving a duplicate legend id
+	qset.options.legend.forEach((term) => {
+		if (term.id > legendIdIncrement) legendIdIncrement = term.id
+	})
 
 	return {
 		items: items,
