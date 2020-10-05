@@ -7,18 +7,18 @@
 		"materia-widget-development-kit": "2.5.0"
 	},
 	"devDependencies": {
+		"@babel/core": "^7.7.5",
 		"@babel/plugin-proposal-class-properties": "7.8.3",
-		"@babel/plugin-proposal-optional-chaining":"7.8.3",
-        "@babel/preset-react": "^7.0.0",
-        "@babel/core":"^7.7.5",
+		"@babel/plugin-proposal-optional-chaining": "7.8.3",
+		"@babel/preset-react": "^7.0.0",
 		"eslint": "^6.5.1",
 		"eslint-plugin-react": "^7.16.0",
 		"jest": "^24.9",
 		"react": "16.9.0",
+		"react-color": "^2.18.0",
 		"react-dom": "^16.9.0",
 		"react-test-renderer": "^16.9.0",
-		"react-color":"^2.18.0",
-		"sass":"^1.24.4"
+		"sass": "^1.24.4"
 	},
 	"scripts": {
 		"start": "webpack-dev-server",
@@ -30,5 +30,5 @@
 	},
 	"author": "University of Central Florida, Center for Distributed Learning",
 	"description": "Syntax Sorter Materia Widget. A tool for arranging sentences or phrases based on the syntactic structure of individual tokens.",
-	"version": "1.0.0"
+	"version": "1.0.1"
 }
