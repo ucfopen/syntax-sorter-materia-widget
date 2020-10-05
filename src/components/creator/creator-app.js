@@ -47,11 +47,11 @@ const CreatorApp = (props) => {
 			// Test to make sure a phrase has atleast one token
 			if (item.phrase.length <= 0) invalid.push(`Question ${index+1} needs at least one phrase token.`)
 
-			item.phrase.forEach((token, index) => {
+			item.phrase.forEach((token) => {
 				if (token.legend == null) invalid.push(`Question ${index+1} phrase token "${token.value}" is missing a legend type selection.`)
 			})
 
-			item.fakes.forEach((fake, index) => {
+			item.fakes.forEach((fake) => {
 				if (fake.legend == null) invalid.push(`Question ${index+1} has a fake token "${fake.value}" without a legend type selection.`)
 			})
 		})
