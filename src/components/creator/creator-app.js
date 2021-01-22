@@ -9,6 +9,7 @@ import CreatorTutorial from './creator-tutorial';
 import CreatorHintsModal from './creator-hints-modal';
 import CreatorFakeoutModal from './creator-fakeout-modal'
 import CreatorBankModal from './creator-bank-modal'
+import CreatorIncompleteAttemptModal from './creator-incomplete-attempt-modal'
 import CreatorErrorModal from './creator-error-modal'
 
 const CreatorApp = (props) => {
@@ -127,6 +128,7 @@ const CreatorApp = (props) => {
 			options: {
 				legend: global.state.legend,
 				enableQuestionBank: global.state.enableQuestionBank,
+				allowIncompleteAttempt: global.state.allowIncompleteAttempt,
 				numAsk: global.state.numAsk
 			}
 		}
@@ -163,6 +165,10 @@ const CreatorApp = (props) => {
 		dispatch({type: 'toggle_bank_modal', payload: {}})
 	}
 
+	const toggleIncompleteAttempt = () => {
+		dispatch({type: 'toggle_incomplete_attempt_modal', payload: {}})
+	}
+
 	const toggleHintModal = () => {
 		dispatch({type: 'toggle_hint_modal'})
 	}
@@ -184,14 +190,17 @@ const CreatorApp = (props) => {
 				enableQuestionBank={global.state.enableQuestionBank}
 				numAsk={global.state.numAsk}
 				questionCount={global.state.items.length}></CreatorBankModal>
+			<CreatorIncompleteAttemptModal
+				allowIncompleteAttempt={global.state.allowIncompleteAttempt}></CreatorIncompleteAttemptModal>
 			<CreatorFakeoutModal
 				fakes={global.state.items[global.state.currentIndex].fakes}></CreatorFakeoutModal>
-			
+
 			<CreatorErrorModal></CreatorErrorModal>
 			<header className="creator-header">
 				<input value={global.state.title} onChange={handleTitleUpdate} placeholder="Give Your Widget a Title"/>
 				<button className="toggleLegend" onClick={toggleLegend}>Legend</button>
 				<button className="toggleBank" onClick={toggleBank}>Question Bank</button>
+				<button className="toggleIncompleteAttempt" onClick={toggleIncompleteAttempt}>Incomplete Attempt</button>
 			</header>
 			<QuestionSelect questions={global.state.items}></QuestionSelect>
 			<section className="content-container">

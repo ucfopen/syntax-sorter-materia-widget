@@ -32,14 +32,14 @@ div.startupTooltip {
 	&.show {
 		display: block;
 	}
-	
+
 }
 
 .creator-header {
 	position: fixed;
 	top: 0;
 	z-index: 9;
-	 
+
 	input {
 		width: 400px;
 		margin-top: 5px;
@@ -75,7 +75,7 @@ div.startupTooltip {
 		font-weight: bold;
 	}
 
-	.toggleLegend, .toggleBank {
+	.toggleLegend, .toggleBank, .toggleIncompleteAttempt {
 		float: right;
 		padding: 8px 28px;
 		outline: none;
@@ -86,7 +86,7 @@ div.startupTooltip {
 		border: solid 1px $colorAccentHover;
 		font-weight: bold;
 
-		&.toggleBank {
+		&.toggleBank, &.toggleIncompleteAttempt {
 			margin-right: 10px;
 		}
 
@@ -122,7 +122,7 @@ div.startupTooltip {
 		margin: 0 0 15px 0;
 		border-width: 0 0 2px 0;
 		border-color: $colorInput;
-		
+
 		font-size: 1.1em;
 
 		&:focus {
@@ -314,12 +314,12 @@ div.startupTooltip {
 			display: block;
 			position: relative;
 			min-height: 24px;
-			
+
 			padding: 0 10px 0 30px;
 			margin-bottom: 5px;
-	
+
 			font-size: 0.8em;
-	
+
 			input {
 				position: absolute;
 				top: 0px;
@@ -328,10 +328,10 @@ div.startupTooltip {
 				height: 20px;
 				opacity: 0;
 				z-index: 10;
-	
+
 				cursor: pointer;
 			}
-	
+
 			.radio-overlay {
 				position: absolute;
 				display: inline-block;
@@ -339,13 +339,13 @@ div.startupTooltip {
 				height: 20px;
 				top: 0px;
 				left: 0px;
-	
+
 				margin-right: 10px;
-	
+
 				background: #fff;
 				border: solid 1px #000;
 				border-radius: 12px;
-	
+
 				&.selected {
 					background: $colorAccent;
 					border-color: #000;
@@ -387,7 +387,7 @@ div.startupTooltip {
 				margin-right: 10px;
 				margin-bottom: 10px;
 				padding: 5px 10px;
-				
+
 			}
 		}
 	}
@@ -431,7 +431,7 @@ div.startupTooltip {
 		&:hover {
 			background: $colorAccentHover;
 		}
-		
+
 		header {
 			display: inline-block;
 			margin: 12px 10px 12px 0;
@@ -447,7 +447,7 @@ div.startupTooltip {
 				float: right;
 			}
 		}
-		
+
 	}
 }
 
@@ -660,55 +660,55 @@ section.fakeout-builder {
 
 		.legend-item {
 			margin-bottom: 15px;
-	
+
 			.item-color {
 				display: inline-block;
 				width:25px;
 				height: 25px;
 				border-style: solid;
 				border-radius: 2px;
-	
+
 				margin-right: 10px;
-	
+
 				vertical-align: middle;
-	
+
 				&.selected {
 					border: solid 2px #fff;
 				}
 			}
-	
+
 			input {
 				display: inline-block;
 				background: none;
 				outline: none;
 				border: none;
 				border-bottom: solid 2px #ffffff;
-	
+
 				margin: 0;
 				padding: 0;
 				vertical-align: middle;
-	
+
 				font-size: 1.1em;
-	
+
 				color: #ffffff;
-	
+
 			}
-	
+
 			.remove-item {
 				display: inline-block;
 				outline: none;
 				border: none;
 				vertical-align: middle;
-	
+
 				margin-left: 10px;
 				font-size: 1.1em;
-	
+
 				&:hover {
 					background: $colorAccentHover;
 				}
 			}
 		}
-	}	
+	}
 
 	.legend-color-picker-wrapper {
 		position: absolute;

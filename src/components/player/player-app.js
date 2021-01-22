@@ -40,12 +40,15 @@ const PlayerApp = (props) => {
 	const emptyQuestionCheck = () => {
 
 		let isEmpty = false
+		let i = 0;
 
 		for (let item of global.state.items) {
-				if (item.sorted.length <= 0) {
+			if (item.sorted.length <= 0) {
+				dispatch({type: 'select_question', payload: i})
 				isEmpty = true
 				break
 			}
+			i++
 		}
 		return isEmpty
 	}
@@ -81,7 +84,9 @@ const PlayerApp = (props) => {
 
 	return(
 		<div className="player-container">
-			<WarningModal submitForScoring={submitForScoring}></WarningModal>
+			<WarningModal
+				submitForScoring={submitForScoring}
+				allowIncompleteAttempt={props.qset.options.allowIncompleteAttempt}></WarningModal>
 			<PlayerTutorial></PlayerTutorial>
 			<header className="player-header">
 				<span className="title">{global.state.title}</span>
@@ -94,7 +99,7 @@ const PlayerApp = (props) => {
 					<p>{questionText}</p>
 					<div className={'hint-text ' +
 					`${(
-						global.state.items[global.state.currentIndex]?.attemptsUsed > 0 && 
+						global.state.items[global.state.currentIndex]?.attemptsUsed > 0 &&
 						global.state.items[global.state.currentIndex]?.attemptsUsed < global.state.items[global.state.currentIndex]?.attempts &&
 						global.state.items[global.state.currentIndex]?.responseState != 'correct' &&
 						global.state.items[global.state.currentIndex]?.responseState != 'incorrect-no-attempts' &&
