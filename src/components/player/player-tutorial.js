@@ -1,4 +1,4 @@
-import React, {useContext} from 'react'
+import React, { useContext } from 'react'
 import { store } from '../../player-store'
 
 const PlayerTutorial = (props) => {
@@ -7,11 +7,11 @@ const PlayerTutorial = (props) => {
 	const dispatch = global.dispatch
 
 	const toggle = () => {
-		dispatch({type: 'toggle_tutorial'})
+		dispatch({ type: 'toggle_tutorial' })
 	}
 
-	return(
-		<div className='modal-wrapper' style={{display: global.state.showTutorial ? 'block' : 'none'}}>
+	return (
+		<div className='modal-wrapper' style={{ display: global.state.showTutorial ? 'flex' : 'none' }}>
 
 			<div className='modal tutorial player'>
 				<h3>Arrange Tokens in the Proper Order</h3>

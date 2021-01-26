@@ -13,9 +13,9 @@ $colorInput: #5e5e5e;
 $colorAccent: #f1814b;
 $colorAccentHover: #f1bea5;
 $legendBG: #ffe7db;
-$darkBG: rgb(51,51,51);
-$darkishBG: rgb(120,120,120);
-$lightBG: rgb(215,215,215);
+$darkBG: rgb(51, 51, 51);
+$darkishBG: rgb(120, 120, 120);
+$lightBG: rgb(215, 215, 215);
 
 $questionSelectWidth: 60px;
 $defaultPadding: 15px;
@@ -23,20 +23,21 @@ $defaultPadding: 15px;
 /* icomoon font icons */
 
 @font-face {
-	font-family: 'icomoon';
-	src:  url('assets/fonts/icomoon.eot?tr4b0z');
-	src:  url('assets/fonts/icomoon.eot?tr4b0z#iefix') format('embedded-opentype'),
-		url('assets/fonts/icomoon.ttf?tr4b0z') format('truetype'),
-		url('assets/fonts/icomoon.woff?tr4b0z') format('woff'),
-		url('assets/fonts/icomoon.svg?tr4b0z#icomoon') format('svg');
+	font-family: "icomoon";
+	src: url("assets/fonts/icomoon.eot?tr4b0z");
+	src: url("assets/fonts/icomoon.eot?tr4b0z#iefix") format("embedded-opentype"),
+		url("assets/fonts/icomoon.ttf?tr4b0z") format("truetype"),
+		url("assets/fonts/icomoon.woff?tr4b0z") format("woff"),
+		url("assets/fonts/icomoon.svg?tr4b0z#icomoon") format("svg");
 	font-weight: normal;
 	font-style: normal;
 	font-display: block;
 }
 
-[class^="icon-"], [class*=" icon-"] {
+[class^="icon-"],
+[class*=" icon-"] {
 	/* use !important to prevent issues with browser extensions that change fonts */
-	font-family: 'icomoon' !important;
+	font-family: "icomoon" !important;
 	speak: never;
 	font-style: normal;
 	font-weight: normal;
@@ -51,7 +52,7 @@ $defaultPadding: 15px;
 
 .icon-notification:before {
 	content: "\ea08";
-	padding-right: .5em;
+	padding-right: 0.5em;
 }
 
 .icon-arrow-up2:before {
@@ -64,7 +65,9 @@ $defaultPadding: 15px;
 
 /* common styles */
 
-html, body, #root {
+html,
+body,
+#root {
 	height: 100%;
 }
 
@@ -76,7 +79,7 @@ body {
 	margin: 0;
 	padding: 0;
 
-	font-family: 'Open Sans', sans-serif;
+	font-family: "Open Sans", sans-serif;
 }
 
 button {
@@ -89,18 +92,17 @@ span.strong {
 }
 
 .modal-wrapper {
-	position: absolute;
+	position: fixed;
 	width: 100%;
 	height: 100%;
+	z-index: 101;
 
 	.modal {
-		position: absolute;
+		position: relative;
 		z-index: 101;
 		width: 480px;
 
-		top: 10%;
-		left: 50%;
-		margin-left: -240px;
+		margin: auto;
 		padding: 25px 25px 70px 25px;
 		min-height: 300px;
 
@@ -108,9 +110,20 @@ span.strong {
 
 		background: #fff;
 
+		&.centered {
+			margin: auto;
+			position: initial;
+		}
+
 		&.wide {
-			width: 600px;
-			margin-left: -300px;
+			width: 80%;
+			padding: 25px;
+
+			button {
+				position: relative;
+				bottom: 100%;
+				left: 50%;
+			}
 		}
 
 		h3 {
@@ -121,9 +134,14 @@ span.strong {
 			margin: 2em 0 1em 0;
 		}
 
-		span.error {
-			display: block;
-			margin-bottom: 0.5em;
+		.error-holder {
+			max-height: 280px;
+			overflow-y: scroll;
+
+			span.error {
+				display: block;
+				margin-bottom: 0.5em;
+			}
 		}
 
 		img {
@@ -193,7 +211,6 @@ span.strong {
 
 		&.tutorial {
 			width: 600px;
-			margin-left: -300px;
 
 			h3 {
 				text-align: center;
@@ -205,13 +222,13 @@ span.strong {
 				justify-content: flex-start;
 				align-items: center;
 				margin-bottom: 20px;
-			
+
 				p {
 					display: inline-block;
 					flex-grow: 1;
 					margin: 0;
 				}
-			
+
 				img {
 					flex-shrink: 0;
 					margin: 0;
@@ -225,12 +242,11 @@ span.strong {
 					}
 				}
 			}
-		
+
 			button {
 				position: absolute;
 				bottom: 15px;
 			}
-		
 		}
 
 		.select-wrapper {
@@ -284,7 +300,6 @@ span.strong {
 				height: 30px;
 				overflow-x: wrap;
 			}
-
 		}
 
 		.dev-warning {
@@ -301,16 +316,19 @@ span.strong {
 		max-height: 150%;
 		z-index: 100;
 
-		background: rgba(0,0,0,0.5);
+		background: rgba(0, 0, 0, 0.5);
 	}
 }
 
-.creator-container, .player-container {
+.creator-container,
+.player-container {
 	width: 100%;
 	height: 100%;
 }
 
-.creator-header, .player-header, .score-header {
+.creator-header,
+.player-header,
+.score-header {
 	width: 90%;
 	padding: 15px 5%;
 	background: $colorAccent;
@@ -325,7 +343,7 @@ span.strong {
 	display: inline-block;
 	width: $questionSelectWidth;
 
-	background: rgb(51,51,51);
+	background: rgb(51, 51, 51);
 
 	button {
 		display: block;
@@ -355,7 +373,8 @@ span.strong {
 			cursor: default;
 		}
 
-		&.paginate-up, &.paginate-down {
+		&.paginate-up,
+		&.paginate-down {
 			display: none;
 			padding: 4px 6px 1px 6px;
 
@@ -363,7 +382,6 @@ span.strong {
 				display: block;
 			}
 		}
-
 	}
 }
 
@@ -405,12 +423,12 @@ span.strong {
 		}
 	}
 
-	section.phrase-builder, section.phrase-player, section.question-container {
-
+	section.phrase-builder,
+	section.phrase-player,
+	section.question-container {
 		padding: 15px 15px 0 15px;
 
 		.token-container {
-
 			width: 100%;
 			padding-bottom: 35px;
 
@@ -420,7 +438,7 @@ span.strong {
 
 			.fakeout-tip {
 				display: none;
-				font-size: .8em;
+				font-size: 0.8em;
 
 				&.show {
 					display: inline;
@@ -431,7 +449,6 @@ span.strong {
 		.token {
 			display: inline-block;
 			padding: 5px 8px;
-
 
 			margin: 0 10px 10px 0;
 

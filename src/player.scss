@@ -1,9 +1,7 @@
-@import 'common';
+@import "common";
 
 .player-container {
-
 	header {
-
 		span.title {
 			display: inline-block;
 			max-width: 66%;
@@ -24,7 +22,7 @@
 				background: $colorAccentHover;
 			}
 
-			+.headerBtn {
+			+ .headerBtn {
 				margin-right: 15px;
 			}
 		}
@@ -73,9 +71,8 @@
 	}
 
 	section.phrase-player {
-
 		.token.dragging {
-			transform:translateX(-9999px);
+			transform: translateX(-9999px);
 		}
 
 		.token.is-left {
@@ -145,11 +142,12 @@
 
 			// RESPONSE STATE: CORRECT
 			&.correct {
-				background: $colorBGCorrect
+				background: $colorBGCorrect;
 			}
 
 			// RESPONSE STATE: INCORRECT
-			&.incorrect-attempts-remaining, &.incorrect-no-attempts {
+			&.incorrect-attempts-remaining,
+			&.incorrect-no-attempts {
 				background: $colorBGIncorrect;
 			}
 
@@ -176,8 +174,8 @@
 
 					strong {
 						text-shadow: 1px 0 #888888;
-						letter-spacing:1px;
-						font-weight:bold;
+						letter-spacing: 1px;
+						font-weight: bold;
 					}
 				}
 
@@ -186,7 +184,6 @@
 				}
 
 				div.button-container {
-
 					flex-shrink: 0;
 
 					button {
@@ -210,7 +207,6 @@
 						}
 
 						&.verify {
-
 							&.disabled {
 								cursor: default;
 								color: #808080;
@@ -221,21 +217,19 @@
 								color: #000;
 								background: #fff;
 							}
-		
+
 							&:hover:not(.disabled) {
 								color: #000;
 								background: #ecfff1;
 							}
 						}
 					}
-					
 				}
 			}
 		}
 	}
 
 	.legend {
-
 		color: #ffffff;
 		background: $darkBG;
 
@@ -260,23 +254,21 @@
 
 .player-header {
 	position: fixed;
-  top: 0;
-  //padding-bottom: 15px;
+	top: 0;
+	//padding-bottom: 15px;
 }
 
 .warning-wrapper {
-	position: absolute;
+	position: fixed;
+	z-index: 100;
 	width: 100%;
 	height: 100%;
 
 	.warning {
-		position: absolute;
+		position: relative;
 		z-index: 101;
 		width: 480px;
-
-		top: 20%;
-		left: 50%;
-		margin-left: -240px;
+		margin: auto;
 		padding: 25px;
 
 		font-size: 0.9em;
@@ -331,8 +323,6 @@
 		z-index: 100;
 		overflow-y: hidden;
 
-		background: rgba(0,0,0,0.5);
+		background: rgba(0, 0, 0, 0.5);
 	}
 }
-
-

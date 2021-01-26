@@ -1,5 +1,4 @@
-
-@import 'common';
+@import "common";
 
 div.startupTooltip {
 	display: none;
@@ -21,7 +20,8 @@ div.startupTooltip {
 	animation: Bounce 1s infinite;
 
 	@keyframes Bounce {
-		0%, 100% {
+		0%,
+		100% {
 			top: 68px;
 		}
 		50% {
@@ -32,14 +32,13 @@ div.startupTooltip {
 	&.show {
 		display: block;
 	}
-	
 }
 
 .creator-header {
 	position: fixed;
 	top: 0;
 	z-index: 9;
-	 
+
 	input {
 		width: 400px;
 		margin-top: 5px;
@@ -56,7 +55,6 @@ div.startupTooltip {
 		&::placeholder {
 			color: $colorAccentHover;
 		}
-
 	}
 
 	.debug {
@@ -75,7 +73,8 @@ div.startupTooltip {
 		font-weight: bold;
 	}
 
-	.toggleLegend, .toggleBank {
+	.toggleLegend,
+	.toggleBank {
 		float: right;
 		padding: 8px 28px;
 		outline: none;
@@ -116,13 +115,12 @@ div.startupTooltip {
 }
 
 .content-container {
-
 	section.question-container input {
 		width: 90%;
 		margin: 0 0 15px 0;
 		border-width: 0 0 2px 0;
 		border-color: $colorInput;
-		
+
 		font-size: 1.1em;
 
 		&:focus {
@@ -132,7 +130,6 @@ div.startupTooltip {
 	}
 
 	section.phrase-builder {
-
 		position: relative;
 
 		header {
@@ -193,7 +190,7 @@ div.startupTooltip {
 					position: relative;
 					top: -4px;
 					right: 0;
-					font-family: 'icomoon';
+					font-family: "icomoon";
 					content: "\ea08";
 					font-size: 0.9em;
 				}
@@ -209,7 +206,6 @@ div.startupTooltip {
 		}
 
 		.token-container {
-
 			.token-input-container {
 				display: inline-block;
 				position: relative;
@@ -240,7 +236,6 @@ div.startupTooltip {
 			padding: 15px 15px 30px 15px;
 			color: #ffffff;
 			background: $darkBG;
-
 
 			&.show {
 				display: block;
@@ -314,12 +309,12 @@ div.startupTooltip {
 			display: block;
 			position: relative;
 			min-height: 24px;
-			
+
 			padding: 0 10px 0 30px;
 			margin-bottom: 5px;
-	
+
 			font-size: 0.8em;
-	
+
 			input {
 				position: absolute;
 				top: 0px;
@@ -328,10 +323,10 @@ div.startupTooltip {
 				height: 20px;
 				opacity: 0;
 				z-index: 10;
-	
+
 				cursor: pointer;
 			}
-	
+
 			.radio-overlay {
 				position: absolute;
 				display: inline-block;
@@ -339,13 +334,13 @@ div.startupTooltip {
 				height: 20px;
 				top: 0px;
 				left: 0px;
-	
+
 				margin-right: 10px;
-	
+
 				background: #fff;
 				border: solid 1px #000;
 				border-radius: 12px;
-	
+
 				&.selected {
 					background: $colorAccent;
 					border-color: #000;
@@ -387,7 +382,6 @@ div.startupTooltip {
 				margin-right: 10px;
 				margin-bottom: 10px;
 				padding: 5px 10px;
-				
 			}
 		}
 	}
@@ -406,7 +400,7 @@ div.startupTooltip {
 		cursor: pointer;
 
 		&:hover {
-			opacity: 1.0;
+			opacity: 1;
 		}
 	}
 
@@ -431,7 +425,7 @@ div.startupTooltip {
 		&:hover {
 			background: $colorAccentHover;
 		}
-		
+
 		header {
 			display: inline-block;
 			margin: 12px 10px 12px 0;
@@ -447,21 +441,25 @@ div.startupTooltip {
 				float: right;
 			}
 		}
-		
 	}
 }
 
 section.fakeout-builder {
-
 	display: block;
 	padding: 15px 0;
+	max-height: 250px;
 
 	.token-container {
-
 		width: calc(100% - 20px);
 		padding: 10px 10px 36px 10px;
+		max-height: 200px;
+		overflow-y: scroll;
 
 		border: solid 1px $lightBG;
+
+		&.small {
+			max-height: calc(125px - 46px);
+		}
 
 		.token-input-container {
 			display: inline-block;
@@ -481,7 +479,6 @@ section.fakeout-builder {
 	.token {
 		display: inline-block;
 		padding: 5px 8px;
-
 
 		margin: 0 10px 10px 0;
 
@@ -504,7 +501,6 @@ section.fakeout-builder {
 	}
 
 	.token-container {
-
 		.token-input {
 			padding: 5px 8px;
 			font-size: 1.5em;
@@ -527,6 +523,11 @@ section.fakeout-builder {
 		header {
 			font-weight: 700;
 			margin-bottom: 1.2em;
+		}
+
+		#tokenTypeSelectionFake {
+			max-height: calc(125px - 2.1em - 30px);
+			overflow-y: scroll;
 		}
 
 		label {
@@ -624,7 +625,7 @@ section.fakeout-builder {
 		color: rgb(200, 200, 200);
 		border-bottom: solid 2px rgb(200, 200, 200);
 
-		font-size:1em;
+		font-size: 1em;
 		text-align: left;
 
 		&:hover {
@@ -654,61 +655,59 @@ section.fakeout-builder {
 	}
 
 	.legend-item-container {
-
 		max-height: calc(100% - 160px);
 		overflow: auto;
 
 		.legend-item {
 			margin-bottom: 15px;
-	
+
 			.item-color {
 				display: inline-block;
-				width:25px;
+				width: 25px;
 				height: 25px;
 				border-style: solid;
 				border-radius: 2px;
-	
+
 				margin-right: 10px;
-	
+
 				vertical-align: middle;
-	
+
 				&.selected {
 					border: solid 2px #fff;
 				}
 			}
-	
+
 			input {
 				display: inline-block;
 				background: none;
 				outline: none;
 				border: none;
 				border-bottom: solid 2px #ffffff;
-	
+
 				margin: 0;
 				padding: 0;
 				vertical-align: middle;
-	
+
 				font-size: 1.1em;
-	
+
 				color: #ffffff;
-	
 			}
-	
+
 			.remove-item {
 				display: inline-block;
 				outline: none;
 				border: none;
 				vertical-align: middle;
-	
+
 				margin-left: 10px;
 				font-size: 1.1em;
-	
+
 				&:hover {
 					background: $colorAccentHover;
 				}
 			}
 		}
-	}	
+	}
 
 	.legend-color-picker-wrapper {
 		position: absolute;
@@ -736,5 +735,4 @@ section.fakeout-builder {
 			}
 		}
 	}
-
 }
