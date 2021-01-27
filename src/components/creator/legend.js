@@ -5,33 +5,33 @@ import LegendColorPicker from './legend-color-picker'
 
 const Legend = (props) => {
 
-	const global = useContext(store)
-	const dispatch = global.dispatch
+	const manager = useContext(store)
+	const dispatch = manager.dispatch
 
-	const [state, setState] = useState({colorSelectOffset: 0})
+	const [state, setState] = useState({ colorSelectOffset: 0 })
 
-	let colorSelectRef = global.state.legendColorPickerTarget != -1 ? global.state.legend[global.state.legendColorPickerTarget].color : '#FF0000'
+	let colorSelectRef = manager.state.legendColorPickerTarget != -1 ? manager.state.legend[manager.state.legendColorPickerTarget].color : '#FF0000'
 	let colorSelectOffset = 0
 
 	const toggleColorPicker = (index, offset) => {
-		setState(state => ({colorSelectOffset: offset}))
-		dispatch({type: 'legend_color_picker_toggle', payload: {index: index}})
+		setState(state => ({ colorSelectOffset: offset }))
+		dispatch({ type: 'legend_color_picker_toggle', payload: { index: index } })
 	}
-	
+
 	const addLegendItem = () => {
 		// generates a random hex color code
 		let newRandColor = '#000000'.replace(/0/g, () => {
-			return (~~(Math.random()*16)).toString(16)
+			return (~~(Math.random() * 16)).toString(16)
 		})
-		dispatch({type: 'add_legend_item', payload: {text: '', color: newRandColor}})
+		dispatch({ type: 'add_legend_item', payload: { text: '', color: newRandColor } })
 	}
-	
+
 	const handleColorChangeComplete = (color, event) => {
-		dispatch({type: 'legend_color_picker_change', payload: {index: global.state.legendColorPickerTarget, color: color.hex}})
+		dispatch({ type: 'legend_color_picker_change', payload: { index: manager.state.legendColorPickerTarget, color: color.hex } })
 	}
 
 	const handleCloseColorPicker = (event) => {
-		dispatch({type: 'legend_color_picker_toggle', payload: {index: global.state.legendColorPickerTarget}})
+		dispatch({ type: 'legend_color_picker_toggle', payload: { index: manager.state.legendColorPickerTarget } })
 	}
 
 	let legendItems = props.legend.map((item, index) => {
@@ -41,7 +41,7 @@ const Legend = (props) => {
 	return (
 		<section className={`legend ${props.show ? "show" : ""}`}>
 			<header>Legend</header>
-			<p><span className="icon-notification"></span>Use the Legend to easily identify the syntax of individual tokens you create. For example, if you're 
+			<p><span className="icon-notification"></span>Use the Legend to easily identify the syntax of individual tokens you create. For example, if you're
 				creating a phrase in another language, you might use the Legend to identify individual parts of speech.
 			</p>
 			<div className="legend-item-container">
@@ -53,10 +53,10 @@ const Legend = (props) => {
 				handleColorChangeComplete={handleColorChangeComplete}
 				handleClose={handleCloseColorPicker}
 				color={colorSelectRef}
-				visible={global.state.legendColorPickerTarget != -1}
-				offset={state.colorSelectOffset}/>
+				visible={manager.state.legendColorPickerTarget != -1}
+				offset={state.colorSelectOffset} />
 		</section>
-	)	
+	)
 }
 
 export default Legend

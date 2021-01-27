@@ -1,17 +1,17 @@
-import React, {useContext} from 'react'
+import React, { useContext } from 'react'
 import { store } from '../../player-store'
 
 const WarningModal = (props) => {
 
-	const global = useContext(store)
-	const dispatch = global.dispatch
+	const manager = useContext(store)
+	const dispatch = manager.dispatch
 
 	const toggle = () => {
-		dispatch({type: 'toggle_warning'})
+		dispatch({ type: 'toggle_warning' })
 	}
 
-	return(
-		<div className='warning-wrapper' style={{display: global.state.showWarning ? 'block' : 'none'}}>
+	return (
+		<div className='warning-wrapper' style={{ display: manager.state.showWarning ? 'block' : 'none' }}>
 			<div className='warning'>
 				<span className='dev-warning'>You still have unfinished questions.</span>
 				<h3>Are you sure you want to submit?</h3>

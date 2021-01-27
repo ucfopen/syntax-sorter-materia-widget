@@ -4,9 +4,9 @@ import { store } from '../../creator-store'
 
 const PhraseBuilder = (props) => {
 
-	const global = useContext(store)
-	const dispatch = global.dispatch
-	const currentLegend = global.state.items[global.state.currentIndex].phrase[global.state.selectedTokenIndex] ? global.state.items[global.state.currentIndex].phrase[global.state.selectedTokenIndex].legend : -1
+	const manager = useContext(store)
+	const dispatch = manager.dispatch
+	const currentLegend = manager.state.items[manager.state.currentIndex].phrase[manager.state.selectedTokenIndex] ? manager.state.items[manager.state.currentIndex].phrase[manager.state.selectedTokenIndex].legend : -1
 
 	const MAX_TOKENS = 500
 	const MAX_TOKEN_CHARS = 200
@@ -26,44 +26,52 @@ const PhraseBuilder = (props) => {
 				// convert input to token
 				if (event.target.value.length > 0) {
 					convertInputToToken(event.target.value)
-				event.target.value = ""
+					event.target.value = ""
 				} else return
-				
+
 			default:
 				return
 		}
 	}
 
 	const convertTokenToInput = (index) => {
-		let text = global.state.items[global.state.currentIndex].phrase[index].value
-		dispatch({type: 'phrase_token_to_input', payload: {
-			questionIndex: global.state.currentIndex,
-			phraseIndex: index
-		}})
+		let text = manager.state.items[manager.state.currentIndex].phrase[index].value
+		dispatch({
+			type: 'phrase_token_to_input', payload: {
+				questionIndex: manager.state.currentIndex,
+				phraseIndex: index
+			}
+		})
 		return text
 	}
 
 	const convertInputToToken = (input) => {
 		if (props.phrase.length >= MAX_TOKENS) return
-		dispatch({type: 'phrase_input_to_token', payload: {
-			questionIndex: global.state.currentIndex,
-			text: input
-		}})
+		dispatch({
+			type: 'phrase_input_to_token', payload: {
+				questionIndex: manager.state.currentIndex,
+				text: input
+			}
+		})
 	}
 
 	const tokenTypeSelection = (event) => {
 		let selection = parseInt(event.target.value)
-		dispatch({type: 'phrase_token_type_select', payload: {
-			questionIndex: global.state.currentIndex,
-			phraseIndex: global.state.selectedTokenIndex,
-			selection: selection
-		}})
+		dispatch({
+			type: 'phrase_token_type_select', payload: {
+				questionIndex: manager.state.currentIndex,
+				phraseIndex: manager.state.selectedTokenIndex,
+				selection: selection
+			}
+		})
 	}
 
 	const toggleTokenTutorial = (event) => {
-		dispatch({type: 'toggle_token_tutorial', payload: {
-			toggle: !props.showTokenTutorial
-		}})
+		dispatch({
+			type: 'toggle_token_tutorial', payload: {
+				toggle: !props.showTokenTutorial
+			}
+		})
 	}
 
 	let tokenList = props.phrase.map((term, index) => {
@@ -71,9 +79,9 @@ const PhraseBuilder = (props) => {
 	})
 
 	let legendSelection = props.legend.map((term, index) => {
-		return(<label key={index} className={`${global.state.selectedTokenIndex != -1 && currentLegend == term.id ?  'selected' : ''}`}>
-			<input type="radio" name="token-type-selection" value={term.id} onChange={tokenTypeSelection} checked={global.state.selectedTokenIndex != -1 && currentLegend == term.id}/>
-			<span className="color-radio" style={{background: term.color}}></span>{term.name.length > 0 ? term.name : 'Untitled Legend Item'}
+		return (<label key={index} className={`${manager.state.selectedTokenIndex != -1 && currentLegend == term.id ? 'selected' : ''}`}>
+			<input type="radio" name="token-type-selection" value={term.id} onChange={tokenTypeSelection} checked={manager.state.selectedTokenIndex != -1 && currentLegend == term.id} />
+			<span className="color-radio" style={{ background: term.color }}></span>{term.name.length > 0 ? term.name : 'Untitled Legend Item'}
 		</label>)
 	})
 
@@ -90,11 +98,11 @@ const PhraseBuilder = (props) => {
 					<input className="token-input" onKeyDown={handleTokenInput} placeholder="..." maxLength={MAX_TOKEN_CHARS}></input>
 				</div>
 			</div>
-			<div className={`token-type-selector ${global.state.selectedTokenIndex != -1 ? "show" : ""}`}>
+			<div className={`token-type-selector ${manager.state.selectedTokenIndex != -1 ? "show" : ""}`}>
 				<header>Select the corresponding legend item for this token:</header>
 				<form id="tokenTypeSelection">
 					{legendSelection}
-					<span className="legend-reminder">Open the <a href="#" onClick={() => {props.toggleLegend()}}>Legend</a> to create additional token categories.</span>
+					<span className="legend-reminder">Open the <a href="#" onClick={() => { props.toggleLegend() }}>Legend</a> to create additional token categories.</span>
 				</form>
 			</div>
 		</section>

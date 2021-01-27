@@ -3,27 +3,25 @@ import { store } from '../../creator-store'
 
 const Token = (props) => {
 
-	const global = useContext(store)
-	const dispatch = global.dispatch
+	const manager = useContext(store)
+	const dispatch = manager.dispatch
 
-	let index = props.context == "fakeout" ? global.state?.selectedFakeoutIndex : global.state.selectedTokenIndex
+	let index = props.context == "fakeout" ? manager.state?.selectedFakeoutIndex : manager.state.selectedTokenIndex
 
 	const getLegendColor = (id) => {
 		if (!id) return '#ffffff'
 
-		for (const term of global.state.legend) {
+		for (const term of manager.state.legend) {
 			if (term.id == id) return term.color
 		}
 	}
 
 	const toggleTokenSelection = () => {
-		if (props.context == "fakeout")
-		{
-			dispatch({type: 'toggle_fakeout_select', payload: props.index})
+		if (props.context == "fakeout") {
+			dispatch({ type: 'toggle_fakeout_select', payload: props.index })
 		}
-		else
-		{
-			dispatch({type: 'toggle_token_select', payload: props.index})
+		else {
+			dispatch({ type: 'toggle_token_select', payload: props.index })
 		}
 	}
 
@@ -36,7 +34,7 @@ const Token = (props) => {
 			g = parseInt(m[1], 16)
 			b = parseInt(m[2], 16)
 		}
-		if (typeof r != "undefined") return ((r*299)+(g*587)+(b*114))/1000;
+		if (typeof r != "undefined") return ((r * 299) + (g * 587) + (b * 114)) / 1000;
 	}
 
 	let tokenColor = getLegendColor(props.type)
