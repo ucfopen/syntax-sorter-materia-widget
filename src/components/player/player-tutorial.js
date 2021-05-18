@@ -16,7 +16,7 @@ const PlayerTutorial = (props) => {
 			<div className='modal tutorial player'>
 				<h3>Arrange Tokens in the Proper Order</h3>
 				<div className='tutorial-content'>
-					<p>Read each question prompt and arrange the tokens based on the instructions provided. Tokens may be a word, part of a word, or a part of speech. <span className='strong'>Right-click</span> a token to unsort it.</p>
+					<p>Read each question prompt and arrange the tokens based on the instructions provided. Tokens may be a word, part of a word, or a part of speech. <span className='strong'>Right-click</span> or <span className='strong'>drag</span> a token back to the drawer to unsort it.</p>
 					<img className='right' src="assets/img/player-tutorial-1.png" alt="Player tutorial image demonstrating dragging and dropping tokens" />
 				</div>
 				<div className='tutorial-content'>
