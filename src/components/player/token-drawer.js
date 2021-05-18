@@ -30,7 +30,7 @@ const TokenDrawer = (props) => {
 
 		if (dropTokenStatus == "sorted")
 		{
-			dispatch({type: 'sorted_right_click', payload: {
+			dispatch({type: 'sorted_token_unsort', payload: {
 				origin: dropTokenStatus,
 				tokenIndex: parseInt(dropTokenPhraseIndex),
 				questionIndex: global.state.currentIndex,

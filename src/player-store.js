@@ -136,7 +136,7 @@ const tokenSortedPhraseReducer = (list, action) => {
 				}
 				else return token
 			})
-		case 'sorted_right_click':
+		case 'sorted_token_unsort':
 		{
 			let sorted = [
 				...list.slice(0, action.payload.tokenIndex),
@@ -267,7 +267,7 @@ const tokenUnsortedPhraseReducer = (list, action) => {
 				...list.slice(0, action.payload.phraseIndex),
 				...list.slice(action.payload.phraseIndex + 1)
 			]
-		case 'sorted_right_click':
+		case 'sorted_token_unsort':
 			return [
 					...list,
 					{
@@ -307,7 +307,7 @@ const questionItemReducer = (items, action) => {
 				}
 				else return item
 			})
-		case 'sorted_right_click':
+		case 'sorted_token_unsort':
 			return items.map((item, index) => {
 				if (index == action.payload.questionIndex) {
 
@@ -369,7 +369,7 @@ const StateProvider = ( { children } ) => {
 				return {...state, currentIndex: forward}
 			case 'token_dragging':
 			case 'token_drag_complete':
-			case 'sorted_right_click':
+			case 'sorted_token_unsort':
 			case 'token_update_position':
 			case 'response_token_sort':
 			case 'response_token_rearrange':

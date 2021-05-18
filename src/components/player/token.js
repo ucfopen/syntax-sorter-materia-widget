@@ -104,7 +104,7 @@ const Token = (props) => {
 
 	  	if (props.status == "sorted")
 	  	{
-	  		dispatch({type: 'sorted_right_click', payload: {
+	  		dispatch({type: 'sorted_token_unsort', payload: {
 					origin: state.origin,
 					tokenIndex: props.index,
 					questionIndex: global.state.currentIndex,
