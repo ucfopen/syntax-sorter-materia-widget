@@ -644,12 +644,15 @@ section.fakeout-builder {
 
 	.legend-item-container {
 		max-height: calc(100% - 160px);
-		overflow: auto;
+		overflow-x: hidden;
+		overflow-y: auto;
 
 		.legend-item {
+			display: flex;
+			flex-direction: row;
+			width: 100%;
 			padding: 8px;
 			margin-bottom: 7px;
-			width: fit-content;
 
 			&.selected {
 				background-color: #5f5d5d;
@@ -665,10 +668,11 @@ section.fakeout-builder {
 				display: inline-block;
 				width: 25px;
 				height: 25px;
+				flex-basis: 25px;
 				border-style: solid;
 				border-radius: 2px;
 
-				margin-right: 10px;
+				margin-right: 5px;
 
 				vertical-align: middle;
 
