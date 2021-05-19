@@ -1,5 +1,4 @@
-
-@import 'common';
+@import "common";
 
 div.startupTooltip {
 	display: none;
@@ -21,7 +20,8 @@ div.startupTooltip {
 	animation: Bounce 1s infinite;
 
 	@keyframes Bounce {
-		0%, 100% {
+		0%,
+		100% {
 			top: 68px;
 		}
 		50% {
@@ -32,7 +32,6 @@ div.startupTooltip {
 	&.show {
 		display: block;
 	}
-
 }
 
 .creator-header {
@@ -56,7 +55,6 @@ div.startupTooltip {
 		&::placeholder {
 			color: $colorAccentHover;
 		}
-
 	}
 
 	.debug {
@@ -75,7 +73,9 @@ div.startupTooltip {
 		font-weight: bold;
 	}
 
-	.toggleLegend, .toggleBank, .toggleIncompleteAttempt {
+	.toggleLegend,
+	.toggleBank,
+	.toggleIncompleteAttempt {
 		float: right;
 		padding: 8px 28px;
 		outline: none;
@@ -116,7 +116,6 @@ div.startupTooltip {
 }
 
 .content-container {
-
 	section.question-container input {
 		width: 90%;
 		margin: 0 0 15px 0;
@@ -132,7 +131,6 @@ div.startupTooltip {
 	}
 
 	section.phrase-builder {
-
 		position: relative;
 
 		header {
@@ -193,7 +191,7 @@ div.startupTooltip {
 					position: relative;
 					top: -4px;
 					right: 0;
-					font-family: 'icomoon';
+					font-family: "icomoon";
 					content: "\ea08";
 					font-size: 0.9em;
 				}
@@ -209,7 +207,6 @@ div.startupTooltip {
 		}
 
 		.token-container {
-
 			.token-input-container {
 				display: inline-block;
 				position: relative;
@@ -240,7 +237,6 @@ div.startupTooltip {
 			padding: 15px 15px 30px 15px;
 			color: #ffffff;
 			background: $darkBG;
-
 
 			&.show {
 				display: block;
@@ -387,7 +383,6 @@ div.startupTooltip {
 				margin-right: 10px;
 				margin-bottom: 10px;
 				padding: 5px 10px;
-
 			}
 		}
 	}
@@ -406,7 +401,7 @@ div.startupTooltip {
 		cursor: pointer;
 
 		&:hover {
-			opacity: 1.0;
+			opacity: 1;
 		}
 	}
 
@@ -447,17 +442,14 @@ div.startupTooltip {
 				float: right;
 			}
 		}
-
 	}
 }
 
 section.fakeout-builder {
-
 	display: block;
 	padding: 15px 0;
 
 	.token-container {
-
 		width: calc(100% - 20px);
 		padding: 10px 10px 36px 10px;
 
@@ -482,7 +474,6 @@ section.fakeout-builder {
 		display: inline-block;
 		padding: 5px 8px;
 
-
 		margin: 0 10px 10px 0;
 
 		font-size: 1.5em;
@@ -504,7 +495,6 @@ section.fakeout-builder {
 	}
 
 	.token-container {
-
 		.token-input {
 			padding: 5px 8px;
 			font-size: 1.5em;
@@ -624,7 +614,7 @@ section.fakeout-builder {
 		color: rgb(200, 200, 200);
 		border-bottom: solid 2px rgb(200, 200, 200);
 
-		font-size:1em;
+		font-size: 1em;
 		text-align: left;
 
 		&:hover {
@@ -654,21 +644,36 @@ section.fakeout-builder {
 	}
 
 	.legend-item-container {
-
 		max-height: calc(100% - 160px);
-		overflow: auto;
+		overflow-x: hidden;
+		overflow-y: auto;
 
 		.legend-item {
-			margin-bottom: 15px;
+			display: flex;
+			flex-direction: row;
+			width: 100%;
+			padding: 8px;
+			margin-bottom: 7px;
+
+			&.selected {
+				background-color: #5f5d5d;
+				margin-bottom: 7px;
+				padding: 8px;
+			}
+
+			&:not(:first-of-type) {
+				margin-top: -8px;
+			}
 
 			.item-color {
 				display: inline-block;
-				width:25px;
+				width: 25px;
 				height: 25px;
+				flex-basis: 25px;
 				border-style: solid;
 				border-radius: 2px;
 
-				margin-right: 10px;
+				margin-right: 5px;
 
 				vertical-align: middle;
 
@@ -691,7 +696,6 @@ section.fakeout-builder {
 				font-size: 1.1em;
 
 				color: #ffffff;
-
 			}
 
 			.remove-item {
@@ -714,8 +718,12 @@ section.fakeout-builder {
 		position: absolute;
 		top: 0px;
 		left: -45px;
-
+		box-shadow: 0 5px 6px 2px #a0a0a0;
 		background: #ffffff;
+
+		div.chrome-picker {
+			box-shadow: none !important;
+		}
 
 		button {
 			position: relative;
@@ -736,5 +744,4 @@ section.fakeout-builder {
 			}
 		}
 	}
-
 }
