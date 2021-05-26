@@ -34,7 +34,7 @@ const init = {
 	],
 	numAsk: 1,
 	enableQuestionBank: false,
-	requireAllQuestions: true,
+	requireAllQuestions: false,
 	showLegend: false,
 	legendColorPickerTarget: -1,
 	onboarding: true,
