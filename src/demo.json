@@ -293,7 +293,7 @@
 					}
 				],
 				"enableQuestionBank": false,
-				"allowIncompleteAttempt": true,
+				"requireAllQuestions": true,
 				"numAsk": 1
 			}
 		}

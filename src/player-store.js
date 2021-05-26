@@ -9,8 +9,8 @@ const init = {
 	showTutorial: true,
 	showWarning: false,
 	numAsk: 1,
-	enableQuestionBank: "no",
-	allowIncompleteAttempt: "no",
+	enableQuestionBank: false,
+	requireAllQuestions: false,
 	questionsAsked: []
 }
 
@@ -64,7 +64,7 @@ const importFromQset = (qset) => {
 		legend: qset.options.legend,
 		numAsk: qset.options.numAsk,
 		enableQuestionBank: qset.options.enableQuestionBank,
-		allowIncompleteAttempt: qset.options.allowIncompleteAttempt,
+		requireAllQuestions: qset.options.requireAllQuestions ? qset.options.requireAllQuestions : false,
 		questionsAsked: []
 	}
 }

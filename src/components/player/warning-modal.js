@@ -2,7 +2,6 @@ import React, {useContext} from 'react'
 import { store } from '../../player-store'
 
 const WarningModal = (props) => {
-	console.log(props)
 	const global = useContext(store)
 	const dispatch = global.dispatch
 
@@ -14,7 +13,7 @@ const WarningModal = (props) => {
 		<div className='warning-wrapper' style={{display: global.state.showWarning ? 'block' : 'none'}}>
 			<div className='warning'>
 				<span className='dev-warning'>You still have unfinished questions.</span>
-				{props.allowIncompleteAttempt ?
+				{props.requireAllQuestions ?
 					<div>
 						<h3>Please answer all questions before submitting.</h3>
 						<div className='warning-submit-holder'>

@@ -9,7 +9,7 @@ import CreatorTutorial from './creator-tutorial';
 import CreatorHintsModal from './creator-hints-modal';
 import CreatorFakeoutModal from './creator-fakeout-modal'
 import CreatorBankModal from './creator-bank-modal'
-import CreatorIncompleteAttemptModal from './creator-incomplete-attempt-modal'
+import CreatorSubmissionSettingsModal from './creator-submission-settings-modal'
 import CreatorErrorModal from './creator-error-modal'
 
 const CreatorApp = (props) => {
@@ -128,7 +128,7 @@ const CreatorApp = (props) => {
 			options: {
 				legend: global.state.legend,
 				enableQuestionBank: global.state.enableQuestionBank,
-				allowIncompleteAttempt: global.state.allowIncompleteAttempt,
+				requireAllQuestions: global.state.requireAllQuestions,
 				numAsk: global.state.numAsk
 			}
 		}
@@ -165,8 +165,8 @@ const CreatorApp = (props) => {
 		dispatch({type: 'toggle_bank_modal', payload: {}})
 	}
 
-	const toggleIncompleteAttempt = () => {
-		dispatch({type: 'toggle_incomplete_attempt_modal', payload: {}})
+	const toggleSubmissionSettings = () => {
+		dispatch({type: 'toggle_submission_settings_modal', payload: {}})
 	}
 
 	const toggleHintModal = () => {
@@ -190,8 +190,8 @@ const CreatorApp = (props) => {
 				enableQuestionBank={global.state.enableQuestionBank}
 				numAsk={global.state.numAsk}
 				questionCount={global.state.items.length}></CreatorBankModal>
-			<CreatorIncompleteAttemptModal
-				allowIncompleteAttempt={global.state.allowIncompleteAttempt}></CreatorIncompleteAttemptModal>
+			<CreatorSubmissionSettingsModal
+				requireAllQuestions={global.state.requireAllQuestions}></CreatorSubmissionSettingsModal>
 			<CreatorFakeoutModal
 				fakes={global.state.items[global.state.currentIndex].fakes}></CreatorFakeoutModal>
 
@@ -200,7 +200,7 @@ const CreatorApp = (props) => {
 				<input value={global.state.title} onChange={handleTitleUpdate} placeholder="Give Your Widget a Title"/>
 				<button className="toggleLegend" onClick={toggleLegend}>Legend</button>
 				<button className="toggleBank" onClick={toggleBank}>Question Bank</button>
-				<button className="toggleIncompleteAttempt" onClick={toggleIncompleteAttempt}>Incomplete Attempt</button>
+				<button className="toggleSubmissionSettings" onClick={toggleSubmissionSettings}>Submission Settings</button>
 			</header>
 			<QuestionSelect questions={global.state.items}></QuestionSelect>
 			<section className="content-container">
