@@ -74,7 +74,8 @@ div.startupTooltip {
 	}
 
 	.toggleLegend,
-	.toggleBank {
+	.toggleBank,
+	.toggleSubmissionSettings {
 		float: right;
 		padding: 8px 28px;
 		outline: none;
@@ -85,7 +86,7 @@ div.startupTooltip {
 		border: solid 1px $colorAccentHover;
 		font-weight: bold;
 
-		&.toggleBank {
+		&.toggleBank, &.toggleSubmissionSettings {
 			margin-right: 10px;
 		}
 

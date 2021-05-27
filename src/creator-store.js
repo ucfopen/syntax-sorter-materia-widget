@@ -10,6 +10,7 @@ const init = {
 	showHintModal: false,
 	showFakeoutModal: false,
 	showBankModal: false,
+	showSubmissionSettingsModal: false,
 	showErrorModal: false,
 	errors: [],
 	selectedTokenIndex: -1,
@@ -33,6 +34,7 @@ const init = {
 	],
 	numAsk: 1,
 	enableQuestionBank: false,
+	requireAllQuestions: false,
 	showLegend: false,
 	legendColorPickerTarget: -1,
 	onboarding: true,
@@ -63,7 +65,8 @@ const importFromQset = (qset) => {
 		items: items,
 		legend: qset.options.legend,
 		numAsk: qset.options.numAsk,
-		enableQuestionBank: qset.options.enableQuestionBank
+		enableQuestionBank: qset.options.enableQuestionBank,
+		requireAllQuestions: qset.options.requireAllQuestions ? qset.options.requireAllQuestions : false // this value will not exist for older qsets
 	}
 }
 
@@ -134,7 +137,7 @@ const questionItemReducer = (items, action) => {
 						...item,
 						attempts: parseInt(action.payload.pref)
 					}
-					
+
 				}
 				else return item
 			})
@@ -288,7 +291,7 @@ const StateProvider = ( { children } ) => {
 				return {...state, requireInit: false}
 			case 'init-existing':
 				let imported = importFromQset(action.payload.qset)
-				return {...state, title: action.payload.title, items: imported.items, legend: imported.legend, numAsk: imported.numAsk, enableQuestionBank: imported.enableQuestionBank, requireInit: false, onboarding: false, showTokenTutorial: false}
+				return {...state, title: action.payload.title, items: imported.items, legend: imported.legend, numAsk: imported.numAsk, enableQuestionBank: imported.enableQuestionBank, requireAllQuestions: imported.requireAllQuestions, requireInit: false, onboarding: false, showTokenTutorial: false}
 			case 'dismiss_tutorial':
 				return {...state, showTutorial: false}
 			case 'toggle_token_tutorial':
@@ -309,7 +312,7 @@ const StateProvider = ( { children } ) => {
 			case 'phrase_input_to_token':
 				return {...state, items: questionItemReducer(state.items, action), showTokenTutorial: false}
 			case 'phrase_token_to_input':
-				return {...state, items: questionItemReducer(state.items, action), selectedTokenIndex: action.payload.phraseIndex == state.selectedTokenIndex ? -1 : state.selectedTokenIndex }		
+				return {...state, items: questionItemReducer(state.items, action), selectedTokenIndex: action.payload.phraseIndex == state.selectedTokenIndex ? -1 : state.selectedTokenIndex }
 			case 'fakeout_token_to_input':
 				return {...state, items: questionItemReducer(state.items, action), selectedFakeoutIndex: action.payload.fakeoutIndex == state.selectedFakeoutIndex ? -1 : state.selectedFakeoutIndex }
 			case 'phrase_token_type_select':
@@ -341,12 +344,16 @@ const StateProvider = ( { children } ) => {
 				return {...state, showFakeoutModal: !state.showFakeoutModal}
 			case 'toggle_bank_modal':
 				return {...state, showBankModal: !state.showBankModal}
+			case 'toggle_submission_settings_modal':
+				return {...state, showSubmissionSettingsModal: !state.showSubmissionSettingsModal}
 			case 'toggle_error_modal':
 				return {...state, errors: action.payload.error, showErrorModal: !state.showErrorModal}
 			case 'update_num_ask':
 				return {...state, numAsk: action.payload}
 			case 'toggle_ask_limit':
 				return {...state, enableQuestionBank: action.payload}
+			case 'toggle_require_all_questions':
+				return {...state, requireAllQuestions: action.payload}
 			default:
 			  throw new Error('Base reducer: this action type was not defined')
 		  }
