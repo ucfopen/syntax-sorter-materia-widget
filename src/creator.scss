@@ -74,7 +74,8 @@ div.startupTooltip {
 	}
 
 	.toggleLegend,
-	.toggleBank {
+	.toggleBank,
+	.toggleSubmissionSettings {
 		float: right;
 		padding: 8px 28px;
 		outline: none;
@@ -85,7 +86,7 @@ div.startupTooltip {
 		border: solid 1px $colorAccentHover;
 		font-weight: bold;
 
-		&.toggleBank {
+		&.toggleBank, &.toggleSubmissionSettings {
 			margin-right: 10px;
 		}
 
@@ -655,19 +656,35 @@ section.fakeout-builder {
 
 	.legend-item-container {
 		max-height: calc(100% - 160px);
-		overflow: auto;
+		overflow-x: hidden;
+		overflow-y: auto;
 
 		.legend-item {
-			margin-bottom: 15px;
+			display: flex;
+			flex-direction: row;
+			width: 100%;
+			padding: 8px;
+			margin-bottom: 7px;
+
+			&.selected {
+				background-color: #5f5d5d;
+				margin-bottom: 7px;
+				padding: 8px;
+			}
+
+			&:not(:first-of-type) {
+				margin-top: -8px;
+			}
 
 			.item-color {
 				display: inline-block;
 				width: 25px;
 				height: 25px;
+				flex-basis: 25px;
 				border-style: solid;
 				border-radius: 2px;
 
-				margin-right: 10px;
+				margin-right: 5px;
 
 				vertical-align: middle;
 
@@ -712,8 +729,12 @@ section.fakeout-builder {
 		position: absolute;
 		top: 0px;
 		left: -45px;
-
+		box-shadow: 0 5px 6px 2px #a0a0a0;
 		background: #ffffff;
+
+		div.chrome-picker {
+			box-shadow: none !important;
+		}
 
 		button {
 			position: relative;

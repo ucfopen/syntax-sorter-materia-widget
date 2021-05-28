@@ -9,6 +9,7 @@ const init = {
 	showHintModal: false,
 	showFakeoutModal: false,
 	showBankModal: false,
+	showSubmissionSettingsModal: false,
 	showErrorModal: false,
 	errors: [],
 	selectedTokenIndex: -1,
@@ -32,6 +33,7 @@ const init = {
 	],
 	numAsk: 1,
 	enableQuestionBank: false,
+	requireAllQuestions: false,
 	showLegend: false,
 	legendColorPickerTarget: -1,
 	onboarding: true,
@@ -62,7 +64,8 @@ const importFromQset = (qset) => {
 		items: items,
 		legend: qset.options.legend,
 		numAsk: qset.options.numAsk,
-		enableQuestionBank: qset.options.enableQuestionBank
+		enableQuestionBank: qset.options.enableQuestionBank,
+		requireAllQuestions: qset.options.requireAllQuestions ? qset.options.requireAllQuestions : false // this value will not exist for older qsets
 	}
 }
 
@@ -305,7 +308,7 @@ const StateProvider = ({ children }) => {
 				return { ...state, requireInit: false }
 			case 'init-existing':
 				let imported = importFromQset(action.payload.qset)
-				return { ...state, title: action.payload.title, items: imported.items, legend: imported.legend, numAsk: imported.numAsk, enableQuestionBank: imported.enableQuestionBank, requireInit: false, onboarding: false, showTokenTutorial: false }
+				return {...state, title: action.payload.title, items: imported.items, legend: imported.legend, numAsk: imported.numAsk, enableQuestionBank: imported.enableQuestionBank, requireAllQuestions: imported.requireAllQuestions, requireInit: false, onboarding: false, showTokenTutorial: false}
 			case 'dismiss_tutorial':
 				return { ...state, showTutorial: false }
 			case 'toggle_token_tutorial':
@@ -365,6 +368,8 @@ const StateProvider = ({ children }) => {
 				return { ...state, numAsk: action.payload }
 			case 'toggle_ask_limit':
 				return { ...state, enableQuestionBank: action.payload }
+			case 'toggle_require_all_questions':
+				return { ...state, requireAllQuestions: action.payload }
 			default:
 				throw new Error('Base reducer: this action type was not defined')
 		}
