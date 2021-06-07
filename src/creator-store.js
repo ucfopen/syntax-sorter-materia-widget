@@ -119,7 +119,7 @@ const questionItemReducer = (items, action) => {
 				}
 				else return item
 			})
-		case 'delete_phrase':
+		case 'remove_token':
 			return items.map((item, index) => {
 				if (index == action.payload.questionIndex && action.payload.context == "fakeout") {
 					return {
@@ -182,7 +182,7 @@ const questionItemReducer = (items, action) => {
 const phraseReducer = (phrase, action) => {
 	switch (action.type) {
 		case 'phrase_token_to_input':
-		case 'delete_phrase':
+		case 'remove_token':
 			return [
 				...phrase.slice(0, action.payload.phraseIndex),
 				...phrase.slice(action.payload.phraseIndex + 1)
@@ -223,7 +223,7 @@ const phraseReducer = (phrase, action) => {
 const fakeoutReducer = (fakes, action) => {
 	switch (action.type) {
 		case 'fakeout_token_to_input':
-		case 'delete_phrase':
+		case 'remove_token':
 			return [
 				...fakes.slice(0, action.payload.fakeoutIndex),
 				...fakes.slice(action.payload.fakeoutIndex + 1)
@@ -335,7 +335,7 @@ const StateProvider = ({ children }) => {
 			case 'phrase_token_type_select':
 				return { ...state, items: questionItemReducer(state.items, action), selectedTokenIndex: -1 }
 			case 'fakeout_token_type_select':
-			case 'delete_phrase':
+			case 'remove_token':
 				return { ...state, items: questionItemReducer(state.items, action), selectedFakeoutIndex: -1, selectedTokenIndex: -1 }
 			case 'toggle_token_select':
 				return { ...state, selectedTokenIndex: action.payload != state.selectedTokenIndex ? action.payload : -1 }

@@ -39,7 +39,7 @@ const Token = (props) => {
 
 	const deleteToken = () => {
 		dispatch({
-			type: 'delete_phrase', payload: {
+			type: 'remove_token', payload: {
 				questionIndex: global.state.currentIndex,
 				phraseIndex: props.index,
 				fakeoutIndex: props.index,
