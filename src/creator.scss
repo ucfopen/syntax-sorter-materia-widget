@@ -207,6 +207,9 @@ div.startupTooltip {
 		}
 
 		.token-container {
+			display: flex;
+			flex-wrap: wrap;
+
 			.token-input-container {
 				display: inline-block;
 				position: relative;
@@ -450,6 +453,8 @@ section.fakeout-builder {
 	padding: 15px 0;
 
 	.token-container {
+		display: flex;
+		flex-wrap: wrap;
 		width: calc(100% - 20px);
 		padding: 10px 10px 36px 10px;
 
@@ -477,7 +482,7 @@ section.fakeout-builder {
 		margin: 0 10px 10px 0;
 
 		font-size: 1.5em;
-		color: #fff;
+		color: green;
 
 		border: solid 2px #fff;
 		border-radius: 3px;
@@ -491,6 +496,12 @@ section.fakeout-builder {
 
 		&.selected {
 			border: solid 2px #f1814b;
+		}
+	}
+
+	.token-mask {
+		.close-btn div {
+			top: -16%;
 		}
 	}
 
@@ -742,6 +753,40 @@ section.fakeout-builder {
 				color: #000000;
 				background: $colorAccentHover;
 			}
+		}
+	}
+}
+
+.token-mask {
+	position: relative;
+
+	.close-btn {
+		display: none;
+		position: absolute;
+		width: 17px;
+		height: 17px;
+		left: calc(100% - 20px);
+		top: -10px;
+		text-align: center;
+		justify-content: center;
+		align-items: center;
+		color: #fff;
+		background-color: #444444;
+		border-radius: 10px;
+		padding: 0;
+
+		div {
+			position: absolute;
+			top: -25%;
+		}
+
+		&:hover {
+			cursor: pointer;
+			background-color: #333333;
+		}
+
+		&.active {
+			display: flex;
 		}
 	}
 }

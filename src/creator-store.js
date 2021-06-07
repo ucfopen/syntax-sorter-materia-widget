@@ -1,4 +1,3 @@
-
 import React, { useReducer } from 'react'
 
 let legendIdIncrement = 1
@@ -94,7 +93,7 @@ const questionItemReducer = (items, action) => {
 		case 'remove_question':
 			return [
 				...items.slice(0, action.payload),
-				...items.slice(action.payload+1)
+				...items.slice(action.payload + 1)
 			]
 		case 'phrase_token_to_input':
 		case 'phrase_input_to_token':
@@ -116,6 +115,22 @@ const questionItemReducer = (items, action) => {
 					return {
 						...item,
 						fakes: fakeoutReducer(item.fakes, action)
+					}
+				}
+				else return item
+			})
+		case 'remove_token':
+			return items.map((item, index) => {
+				if (index == action.payload.questionIndex && action.payload.context == "fakeout") {
+					return {
+						...item,
+						fakes: fakeoutReducer(item.fakes, action)
+					}
+				}
+				else if (index == action.payload.questionIndex) {
+					return {
+						...item,
+						phrase: phraseReducer(item.phrase, action)
 					}
 				}
 				else return item
@@ -167,8 +182,9 @@ const questionItemReducer = (items, action) => {
 const phraseReducer = (phrase, action) => {
 	switch (action.type) {
 		case 'phrase_token_to_input':
+		case 'remove_token':
 			return [
-				...phrase.slice(0,action.payload.phraseIndex),
+				...phrase.slice(0, action.payload.phraseIndex),
 				...phrase.slice(action.payload.phraseIndex + 1)
 			]
 		case 'phrase_input_to_token':
@@ -207,8 +223,9 @@ const phraseReducer = (phrase, action) => {
 const fakeoutReducer = (fakes, action) => {
 	switch (action.type) {
 		case 'fakeout_token_to_input':
+		case 'remove_token':
 			return [
-				...fakes.slice(0,action.payload.fakeoutIndex),
+				...fakes.slice(0, action.payload.fakeoutIndex),
 				...fakes.slice(action.payload.fakeoutIndex + 1)
 			]
 		case 'fakeout_input_to_token':
@@ -284,82 +301,81 @@ const legendReducer = (legend, action) => {
 	}
 }
 
-const StateProvider = ( { children } ) => {
+const StateProvider = ({ children }) => {
 	const [state, dispatch] = useReducer((state, action) => {
 		switch (action.type) {
 			case 'init-new':
-				return {...state, requireInit: false}
+				return { ...state, requireInit: false }
 			case 'init-existing':
 				let imported = importFromQset(action.payload.qset)
 				return {...state, title: action.payload.title, items: imported.items, legend: imported.legend, numAsk: imported.numAsk, enableQuestionBank: imported.enableQuestionBank, requireAllQuestions: imported.requireAllQuestions, requireInit: false, onboarding: false, showTokenTutorial: false}
 			case 'dismiss_tutorial':
-				return {...state, showTutorial: false}
+				return { ...state, showTutorial: false }
 			case 'toggle_token_tutorial':
-				return {...state, showTokenTutorial: !state.showTokenTutorial}
+				return { ...state, showTokenTutorial: !state.showTokenTutorial }
 			case 'update_title':
-				return {...state, title: action.payload}
+				return { ...state, title: action.payload }
 			case 'remove_question':
 				if (state.items.length < 2) return state
-				else return {...state, items: questionItemReducer(state.items, action), currentIndex: state.currentIndex == 0 ? 0 : state.currentIndex - 1, selectedTokenIndex: -1}
+				else return { ...state, items: questionItemReducer(state.items, action), currentIndex: state.currentIndex == 0 ? 0 : state.currentIndex - 1, selectedTokenIndex: -1 }
 			case 'add_new_question':
-				return {...state, items: questionItemReducer(state.items, action), currentIndex: state.items.length, selectedTokenIndex: -1}
+				return { ...state, items: questionItemReducer(state.items, action), currentIndex: state.items.length, selectedTokenIndex: -1 }
 			case 'update_question_text':
 			case 'update_display_pref':
 			case 'update_attempts':
 			case 'update_hint':
 			case 'fakeout_input_to_token':
-				return {...state, items: questionItemReducer(state.items, action)}
+				return { ...state, items: questionItemReducer(state.items, action) }
 			case 'phrase_input_to_token':
-				return {...state, items: questionItemReducer(state.items, action), showTokenTutorial: false}
+				return { ...state, items: questionItemReducer(state.items, action), showTokenTutorial: false }
 			case 'phrase_token_to_input':
-				return {...state, items: questionItemReducer(state.items, action), selectedTokenIndex: action.payload.phraseIndex == state.selectedTokenIndex ? -1 : state.selectedTokenIndex }
+				return { ...state, items: questionItemReducer(state.items, action), selectedTokenIndex: action.payload.phraseIndex == state.selectedTokenIndex ? -1 : state.selectedTokenIndex }
 			case 'fakeout_token_to_input':
-				return {...state, items: questionItemReducer(state.items, action), selectedFakeoutIndex: action.payload.fakeoutIndex == state.selectedFakeoutIndex ? -1 : state.selectedFakeoutIndex }
+				return { ...state, items: questionItemReducer(state.items, action), selectedFakeoutIndex: action.payload.fakeoutIndex == state.selectedFakeoutIndex ? -1 : state.selectedFakeoutIndex }
 			case 'phrase_token_type_select':
-				return {...state, items: questionItemReducer(state.items, action), selectedTokenIndex: -1}
+				return { ...state, items: questionItemReducer(state.items, action), selectedTokenIndex: -1 }
 			case 'fakeout_token_type_select':
-				return {...state, items: questionItemReducer(state.items, action), selectedFakeoutIndex: -1}
+			case 'remove_token':
+				return { ...state, items: questionItemReducer(state.items, action), selectedFakeoutIndex: -1, selectedTokenIndex: -1 }
 			case 'toggle_token_select':
-				return {...state, selectedTokenIndex: action.payload != state.selectedTokenIndex ? action.payload : -1}
+				return { ...state, selectedTokenIndex: action.payload != state.selectedTokenIndex ? action.payload : -1 }
 			case 'toggle_fakeout_select':
-				return {...state, selectedFakeoutIndex: action.payload != state.selectedFakeoutIndex ? action.payload : -1}
+				return { ...state, selectedFakeoutIndex: action.payload != state.selectedFakeoutIndex ? action.payload : -1 }
 			case 'select_question':
-				return {...state, currentIndex: action.payload, selectedTokenIndex: -1}
+				return { ...state, currentIndex: action.payload, selectedTokenIndex: -1 }
 			case 'toggle_legend':
-				return {...state, showLegend: !state.showLegend, legendColorPickerTarget: -1, onboarding: false}
+				return { ...state, showLegend: !state.showLegend, legendColorPickerTarget: -1, onboarding: false }
 			case 'add_legend_item':
-				return {...state, legend: legendReducer(state.legend, action)}
+				return { ...state, legend: legendReducer(state.legend, action) }
 			case 'update_legend_item':
-				return {...state, legend: legendReducer(state.legend, action)}
+				return { ...state, legend: legendReducer(state.legend, action) }
 			case 'remove_legend_item':
-				return {...state, items: questionItemReducer(state.items, action), legend: legendReducer(state.legend, action)}
+				return { ...state, items: questionItemReducer(state.items, action), legend: legendReducer(state.legend, action) }
 			case 'legend_color_picker_toggle':
-				if (state.legendColorPickerTarget != action.payload.index) return {...state, legendColorPickerTarget: action.payload.index}
-				else return {...state, legendColorPickerTarget: -1}
+				if (state.legendColorPickerTarget != action.payload.index) return { ...state, legendColorPickerTarget: action.payload.index }
+				else return { ...state, legendColorPickerTarget: -1 }
 			case 'legend_color_picker_change':
-				return {...state, legend: legendReducer(state.legend, action)}
+				return { ...state, legend: legendReducer(state.legend, action) }
 			case 'toggle_hint_modal':
-				return {...state, showHintModal: !state.showHintModal}
+				return { ...state, showHintModal: !state.showHintModal }
 			case 'toggle_fakeout_modal':
-				return {...state, showFakeoutModal: !state.showFakeoutModal}
+				return { ...state, showFakeoutModal: !state.showFakeoutModal }
 			case 'toggle_bank_modal':
-				return {...state, showBankModal: !state.showBankModal}
-			case 'toggle_submission_settings_modal':
-				return {...state, showSubmissionSettingsModal: !state.showSubmissionSettingsModal}
+				return { ...state, showBankModal: !state.showBankModal }
 			case 'toggle_error_modal':
-				return {...state, errors: action.payload.error, showErrorModal: !state.showErrorModal}
+				return { ...state, errors: action.payload.error, showErrorModal: !state.showErrorModal }
 			case 'update_num_ask':
-				return {...state, numAsk: action.payload}
+				return { ...state, numAsk: action.payload }
 			case 'toggle_ask_limit':
-				return {...state, enableQuestionBank: action.payload}
+				return { ...state, enableQuestionBank: action.payload }
 			case 'toggle_require_all_questions':
-				return {...state, requireAllQuestions: action.payload}
+				return { ...state, requireAllQuestions: action.payload }
 			default:
-			  throw new Error('Base reducer: this action type was not defined')
-		  }
+				throw new Error('Base reducer: this action type was not defined')
+		}
 	}, init)
 
-	return <Provider value={{state, dispatch}}>{children}</Provider>
+	return <Provider value={{ state, dispatch }}>{children}</Provider>
 }
 
-export {store, StateProvider }
+export { store, StateProvider }
