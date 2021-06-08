@@ -74,7 +74,8 @@ div.startupTooltip {
 	}
 
 	.toggleLegend,
-	.toggleBank {
+	.toggleBank,
+	.toggleSubmissionSettings {
 		float: right;
 		padding: 8px 28px;
 		outline: none;
@@ -85,7 +86,7 @@ div.startupTooltip {
 		border: solid 1px $colorAccentHover;
 		font-weight: bold;
 
-		&.toggleBank {
+		&.toggleBank, &.toggleSubmissionSettings {
 			margin-right: 10px;
 		}
 
@@ -206,6 +207,9 @@ div.startupTooltip {
 		}
 
 		.token-container {
+			display: flex;
+			flex-wrap: wrap;
+
 			.token-input-container {
 				display: inline-block;
 				position: relative;
@@ -450,6 +454,8 @@ section.fakeout-builder {
 	max-height: 250px;
 
 	.token-container {
+		display: flex;
+		flex-wrap: wrap;
 		width: calc(100% - 20px);
 		padding: 10px 10px 36px 10px;
 		max-height: 200px;
@@ -483,7 +489,7 @@ section.fakeout-builder {
 		margin: 0 10px 10px 0;
 
 		font-size: 1.5em;
-		color: #fff;
+		color: green;
 
 		border: solid 2px #fff;
 		border-radius: 3px;
@@ -497,6 +503,12 @@ section.fakeout-builder {
 
 		&.selected {
 			border: solid 2px #f1814b;
+		}
+	}
+
+	.token-mask {
+		.close-btn div {
+			top: -16%;
 		}
 	}
 
@@ -656,19 +668,35 @@ section.fakeout-builder {
 
 	.legend-item-container {
 		max-height: calc(100% - 160px);
-		overflow: auto;
+		overflow-x: hidden;
+		overflow-y: auto;
 
 		.legend-item {
-			margin-bottom: 15px;
+			display: flex;
+			flex-direction: row;
+			width: 100%;
+			padding: 8px;
+			margin-bottom: 7px;
+
+			&.selected {
+				background-color: #5f5d5d;
+				margin-bottom: 7px;
+				padding: 8px;
+			}
+
+			&:not(:first-of-type) {
+				margin-top: -8px;
+			}
 
 			.item-color {
 				display: inline-block;
 				width: 25px;
 				height: 25px;
+				flex-basis: 25px;
 				border-style: solid;
 				border-radius: 2px;
 
-				margin-right: 10px;
+				margin-right: 5px;
 
 				vertical-align: middle;
 
@@ -713,8 +741,12 @@ section.fakeout-builder {
 		position: absolute;
 		top: 0px;
 		left: -45px;
-
+		box-shadow: 0 5px 6px 2px #a0a0a0;
 		background: #ffffff;
+
+		div.chrome-picker {
+			box-shadow: none !important;
+		}
 
 		button {
 			position: relative;
@@ -733,6 +765,40 @@ section.fakeout-builder {
 				color: #000000;
 				background: $colorAccentHover;
 			}
+		}
+	}
+}
+
+.token-mask {
+	position: relative;
+
+	.close-btn {
+		display: none;
+		position: absolute;
+		width: 17px;
+		height: 17px;
+		left: calc(100% - 20px);
+		top: -10px;
+		text-align: center;
+		justify-content: center;
+		align-items: center;
+		color: #fff;
+		background-color: #444444;
+		border-radius: 10px;
+		padding: 0;
+
+		div {
+			position: absolute;
+			top: -25%;
+		}
+
+		&:hover {
+			cursor: pointer;
+			background-color: #333333;
+		}
+
+		&.active {
+			display: flex;
 		}
 	}
 }

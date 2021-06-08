@@ -5,7 +5,7 @@ const QuestionSelect = (props) => {
 
 	const global = useContext(store)
 	const dispatch = global.dispatch
-	
+
 	const [state, setState] = useState({paginateMin: 0, paginateMax: 8, visibleQuestions: []})
 
 	const currentIndex = global.state.currentIndex
@@ -14,7 +14,7 @@ const QuestionSelect = (props) => {
 		let questionList = global.state.items.map((item, index) => {
 			return <button className={`select-btn ${currentIndex == index ? 'selected' : ''}`} key={index} onClick={() => {selectQuestion(index)}}>{index + 1}</button>
 		})
-		
+
 		// if the list of questions gets too long, we have to start computing the subset to display
 		if (questionList.length > 10) {
 			if (currentIndex < state.paginateMin) {
@@ -23,7 +23,7 @@ const QuestionSelect = (props) => {
 			else if (currentIndex > state.paginateMax) {
 				setState(state => ({...state, paginateMin: currentIndex - 8, paginateMax: currentIndex}))
 			}
-	
+
 			setState(state => ({...state, visibleQuestions: [
 				...questionList.slice(state.paginateMin, currentIndex),
 				...questionList.slice(currentIndex, state.paginateMax + 1)
@@ -37,7 +37,7 @@ const QuestionSelect = (props) => {
 	const selectQuestion = (index) => {
 		dispatch({type: 'select_question', payload: index})
 	}
-	
+
 	return (
 		<div className="question-select">
 			<button className={`select-btn paginate-up ${global.state.items.length > 10 ? 'show' : ''} ${currentIndex > 0 ? '': 'disabled'}`} onClick={() => {selectQuestion(currentIndex - 1)}} disabled={currentIndex <= 0}><span className="icon-arrow-up2"></span></button>
