@@ -362,6 +362,8 @@ const StateProvider = ({ children }) => {
 				return { ...state, showFakeoutModal: !state.showFakeoutModal }
 			case 'toggle_bank_modal':
 				return { ...state, showBankModal: !state.showBankModal }
+			case 'toggle_submission_settings_modal':
+				return { ...state, showSubmissionSettingsModal: !state.showSubmissionSettingsModal }
 			case 'toggle_error_modal':
 				return { ...state, errors: action.payload.error, showErrorModal: !state.showErrorModal }
 			case 'update_num_ask':
@@ -371,7 +373,7 @@ const StateProvider = ({ children }) => {
 			case 'toggle_require_all_questions':
 				return { ...state, requireAllQuestions: action.payload }
 			default:
-				throw new Error('Base reducer: this action type was not defined')
+				throw new Error(`Base reducer: this action type was not defined: ${action.type}`)
 		}
 	}, init)
 

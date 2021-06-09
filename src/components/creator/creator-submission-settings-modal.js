@@ -15,7 +15,7 @@ const CreatorSubmissionSettingsModal = (props) => {
 	}
 
 	return (
-		<div className='modal-wrapper' style={{display: global.state.showSubmissionSettingsModal ? 'block' : 'none'}}>
+		<div className='modal-wrapper' style={{display: global.state.showSubmissionSettingsModal ? 'flex' : 'none'}}>
 			<div className='modal creator'>
 				<h3>Submission Settings</h3>
 				<span className="select-wrapper">
