@@ -1,4 +1,4 @@
-import React, {useContext} from 'react'
+import React, { useContext } from 'react'
 import { store } from '../../creator-store'
 
 const CreatorHintsModal = (props) => {
@@ -7,35 +7,39 @@ const CreatorHintsModal = (props) => {
 	const dispatch = global.dispatch
 
 	const dismiss = () => {
-		dispatch({type: 'toggle_hint_modal'})
+		dispatch({ type: 'toggle_hint_modal' })
 	}
 
 	const handleAttempts = (event) => {
 		let pref = parseInt(event.target.value)
 		if (Number.isNaN(pref) || pref < 0 || pref > 9) pref = 1
-		
-		dispatch({type: 'update_attempts', payload: {
-			questionIndex: global.state.currentIndex,
-			pref: pref
-		}})
+
+		dispatch({
+			type: 'update_attempts', payload: {
+				questionIndex: global.state.currentIndex,
+				pref: pref
+			}
+		})
 	}
 
 	const handleHint = (event) => {
-		dispatch({type: 'update_hint', payload: {
-			questionIndex: global.state.currentIndex,
-			pref: event.target.value
-		}})
+		dispatch({
+			type: 'update_hint', payload: {
+				questionIndex: global.state.currentIndex,
+				pref: event.target.value
+			}
+		})
 	}
 
 	return (
-		<div className='modal-wrapper' style={{display: global.state.showHintModal ? 'block' : 'none'}}>
+		<div className='modal-wrapper' style={{ display: global.state.showHintModal ? 'flex' : 'none' }}>
 			<div className='modal creator'>
 				<h3>Attempts and Hint</h3>
 				<p>Edit the total number of attempts for this question. If a question allows more than one attempt, you can provide an optional hint should they respond incorrectly.</p>
 				<span className='select-wrapper'>
 					<span className="check-select">
 						<span className="strong">Number of attempts:</span>
-						<input type="number" name="check-val" onChange={handleAttempts} value={props.attempts} placeholder="1" min="1" max="9"/>
+						<input type="number" name="check-val" onChange={handleAttempts} value={props.attempts} placeholder="1" min="1" max="9" />
 					</span>
 				</span>
 				<span className={`select-wrapper ${props.attempts > 1 ? '' : 'disabled'}`} disabled={props.attempts > 1 == false}>

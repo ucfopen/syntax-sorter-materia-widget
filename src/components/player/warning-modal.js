@@ -1,4 +1,4 @@
-import React, {useContext} from 'react'
+import React, { useContext } from 'react'
 import { store } from '../../player-store'
 
 const WarningModal = (props) => {
@@ -6,11 +6,11 @@ const WarningModal = (props) => {
 	const dispatch = global.dispatch
 
 	const toggle = () => {
-		dispatch({type: 'toggle_warning'})
+		dispatch({ type: 'toggle_warning' })
 	}
 
-	return(
-		<div className='warning-wrapper' style={{display: global.state.showWarning ? 'block' : 'none'}}>
+	return (
+		<div className='warning-wrapper' style={{ display: global.state.showWarning ? 'flex' : 'none' }}>
 			<div className='warning'>
 				<span className='dev-warning'>You still have unfinished questions.</span>
 				{props.requireAllQuestions ?

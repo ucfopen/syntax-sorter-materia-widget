@@ -451,14 +451,21 @@ div.startupTooltip {
 section.fakeout-builder {
 	display: block;
 	padding: 15px 0;
+	max-height: 250px;
 
 	.token-container {
 		display: flex;
 		flex-wrap: wrap;
 		width: calc(100% - 20px);
 		padding: 10px 10px 36px 10px;
+		max-height: 200px;
+		overflow-y: scroll;
 
 		border: solid 1px $lightBG;
+
+		&.small {
+			max-height: calc(125px - 46px);
+		}
 
 		.token-input-container {
 			display: inline-block;
@@ -528,6 +535,11 @@ section.fakeout-builder {
 		header {
 			font-weight: 700;
 			margin-bottom: 1.2em;
+		}
+
+		#tokenTypeSelectionFake {
+			max-height: calc(125px - 2.1em - 30px);
+			overflow-y: scroll;
 		}
 
 		label {
