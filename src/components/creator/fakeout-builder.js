@@ -86,7 +86,7 @@ const FakeoutBuilder = (props) => {
 
 	return (
 		<section className="fakeout-builder">
-			<div className="token-container">
+			<div className={`token-container ${manager.state.selectedFakeoutIndex != -1 ? "small" : ""}`}>
 				{tokenList}
 				<div className="token-input-container">
 					<input className="token-input" onKeyDown={handleTokenInput} placeholder="..." ref={inputRef}></input>

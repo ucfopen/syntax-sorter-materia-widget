@@ -32,7 +32,7 @@ const CreatorHintsModal = (props) => {
 	}
 
 	return (
-		<div className='modal-wrapper' style={{ display: manager.state.showHintModal ? 'block' : 'none' }}>
+		<div className='modal-wrapper' style={{ display: manager.state.showHintModal ? 'flex' : 'none' }}>
 			<div className='modal creator'>
 				<h3>Attempts and Hint</h3>
 				<p>Edit the total number of attempts for this question. If a question allows more than one attempt, you can provide an optional hint should they respond incorrectly.</p>

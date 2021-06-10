@@ -12,8 +12,8 @@ const CreatorFakeoutModal = (props) => {
 	}
 
 	return (
-		<div className='modal-wrapper' style={{ display: manager.state.showFakeoutModal ? 'block' : 'none' }}>
-			<div className='modal creator wide'>
+		<div className='modal-wrapper' style={{ display: manager.state.showFakeoutModal ? 'flex' : 'none' }}>
+			<div className='modal creator wide centered'>
 				<h3>Add "Fake" Tokens</h3>
 				<p>Increase the difficulty of your question by adding additional tokens alongside the "real" ones. The student will be notified that these extra tokens exist, and that not all
 					tokens available may be part of the final phrase.</p>

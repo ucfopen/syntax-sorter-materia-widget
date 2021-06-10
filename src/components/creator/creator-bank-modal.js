@@ -21,7 +21,7 @@ const CreatorBankModal = (props) => {
 	}
 
 	return (
-		<div className='modal-wrapper' style={{ display: manager.state.showBankModal ? 'block' : 'none' }}>
+		<div className='modal-wrapper' style={{ display: manager.state.showBankModal ? 'flex' : 'none' }}>
 			<div className='modal creator'>
 				<h3>Question Bank Settings</h3>
 				<p>Optionally set a question limit that's lower than the total number of questions created for this widget. The questions will be randomly selected each time the widget is played.</p>

@@ -1,8 +1,8 @@
-import React, { useContext } from 'react'
+import React, { useContext, useState } from 'react'
 import { store } from '../../creator-store'
 
 const Token = (props) => {
-
+	const [hovering, setHovering] = useState(false)
 	const manager = useContext(store)
 	const dispatch = manager.dispatch
 
@@ -37,15 +37,36 @@ const Token = (props) => {
 		if (typeof r != "undefined") return ((r * 299) + (g * 587) + (b * 114)) / 1000;
 	}
 
+	const deleteToken = () => {
+		dispatch({
+			type: 'remove_token', payload: {
+				questionIndex: manager.state.currentIndex,
+				phraseIndex: props.index,
+				fakeoutIndex: props.index,
+				context: props.context
+			}
+		})
+	}
+
 	let tokenColor = getLegendColor(props.type)
 
 	return (
-		<span className={`token ${!props.type ? "unassigned" : ""} ${index == props.index ? "selected" : ""}`}
-			style={{
-				background: tokenColor,
-				color: contrastCalc(tokenColor) > 160 ? '#000000' : '#ffffff'
-			}}
-			onClick={toggleTokenSelection}>{decodeURIComponent(props.value)}</span>
+		<div className='token-mask'
+			onMouseEnter={() => { setHovering(true) }}
+			onMouseLeave={() => { setHovering(false) }}>
+			<span className={`token ${!props.type ? "unassigned" : ""} ${index == props.index ? "selected" : ""}`}
+				style={{
+					background: tokenColor,
+					color: contrastCalc(tokenColor) > 160 ? '#000000' : '#ffffff'
+				}}
+				onClick={toggleTokenSelection}>
+				{decodeURIComponent(props.value)}
+			</span>
+			<div className={`close-btn ${hovering ? 'active' : ''}`}
+				onClick={deleteToken}>
+				<div>x</div>
+			</div>
+		</div>
 	)
 }
 

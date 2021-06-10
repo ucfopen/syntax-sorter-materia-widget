@@ -11,7 +11,7 @@ const CreatorTutorial = (props) => {
 	}
 
 	return (
-		<div className='modal-wrapper' style={{ display: manager.state.showTutorial ? 'block' : 'none' }}>
+		<div className='modal-wrapper' style={{ display: manager.state.showTutorial ? 'flex' : 'none' }}>
 			<div className='modal tutorial creator'>
 				<h3>Build Effective Syntax Mastery Tools</h3>
 				<div className='tutorial-content'>

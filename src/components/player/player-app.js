@@ -42,12 +42,15 @@ const PlayerApp = (props) => {
 	const emptyQuestionCheck = () => {
 
 		let isEmpty = false
+		let i = 0;
 
 		for (let item of manager.state.items) {
 			if (item.sorted.length <= 0) {
+				dispatch({type: 'select_question', payload: i})
 				isEmpty = true
 				break
 			}
+			i++
 		}
 		return isEmpty
 	}
@@ -83,7 +86,9 @@ const PlayerApp = (props) => {
 
 	return (
 		<div className="player-container">
-			<WarningModal submitForScoring={submitForScoring}></WarningModal>
+			<WarningModal
+				submitForScoring={submitForScoring}
+				requireAllQuestions={props.qset.options.requireAllQuestions}></WarningModal>
 			<PlayerTutorial></PlayerTutorial>
 			<header className="player-header">
 				<span className="title">{manager.state.title}</span>

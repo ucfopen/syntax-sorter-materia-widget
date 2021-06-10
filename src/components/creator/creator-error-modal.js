@@ -23,11 +23,13 @@ const CreatorErrorModal = (props) => {
 	})
 
 	return (
-		<div className='modal-wrapper' style={{ display: manager.state.showErrorModal ? 'block' : 'none' }}>
+		<div className='modal-wrapper' style={{ display: manager.state.showErrorModal ? 'flex' : 'none' }}>
 			<div className='modal creator'>
 				<h3>Before You Can Save...</h3>
 				<p>The following validation checks failed. Fix each of them below to save your work.</p>
-				{validationErrors}
+				<div className='error-holder'>
+					{validationErrors}
+				</div>
 				<button onClick={dismiss}>Okay</button>
 			</div>
 			<div className='modal-bg'></div>

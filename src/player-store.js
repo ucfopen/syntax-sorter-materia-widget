@@ -9,7 +9,8 @@ const init = {
 	showTutorial: true,
 	showWarning: false,
 	numAsk: 1,
-	enableQuestionBank: "no",
+	enableQuestionBank: false,
+	requireAllQuestions: false,
 	questionsAsked: []
 }
 
@@ -44,7 +45,7 @@ const importFromQset = (qset) => {
 
 			let fakes = item.options.fakes.map((token) => { return {...token, status: 'unsorted', fakeout: true, id: createTokenKey()}})
 			let reals = item.answers[0].options.phrase.map((token) => { return {...token, status: 'unsorted', fakeout: false, id: createTokenKey()} })
-			
+
 			return {
 				question: item.questions[0].text,
 				answer: item.answers[0].text,
@@ -63,6 +64,7 @@ const importFromQset = (qset) => {
 		legend: qset.options.legend,
 		numAsk: qset.options.numAsk,
 		enableQuestionBank: qset.options.enableQuestionBank,
+		requireAllQuestions: qset.options.requireAllQuestions ? qset.options.requireAllQuestions : false,
 		questionsAsked: []
 	}
 }
@@ -84,9 +86,9 @@ const calcResponseState = (item) => {
 					state = 'pending'
 				}
 				else state = 'ready'
-			} 
+			}
 			break
-			
+
 		case 'pending':
 			if (item.fakeout.length == 0 && item.phrase.length == 0) {
 				state = 'ready'
@@ -136,13 +138,13 @@ const tokenSortedPhraseReducer = (list, action) => {
 				}
 				else return token
 			})
-		case 'sorted_right_click':
+		case 'sorted_token_unsort':
 		{
 			let sorted = [
 				...list.slice(0, action.payload.tokenIndex),
 				...list.slice(action.payload.tokenIndex + 1)
 			]
-			
+
 			return sorted.map((token) => ({
 				...token,
 					reqPositionUpdate: true
@@ -179,13 +181,13 @@ const tokenSortedPhraseReducer = (list, action) => {
 				},
 				...list.slice(action.payload.targetIndex)
 			]
-			
+
 			return sorted.map((token) => ({
 					...token,
 					reqPositionUpdate: true
 				})
 			)
-		} 
+		}
 		case 'response_token_rearrange':
 			let target = action.payload.targetIndex
 			if (action.payload.originIndex < target) target--
@@ -267,7 +269,7 @@ const tokenUnsortedPhraseReducer = (list, action) => {
 				...list.slice(0, action.payload.phraseIndex),
 				...list.slice(action.payload.phraseIndex + 1)
 			]
-		case 'sorted_right_click':
+		case 'sorted_token_unsort':
 			return [
 					...list,
 					{
@@ -307,7 +309,7 @@ const questionItemReducer = (items, action) => {
 				}
 				else return item
 			})
-		case 'sorted_right_click':
+		case 'sorted_token_unsort':
 			return items.map((item, index) => {
 				if (index == action.payload.questionIndex) {
 
@@ -369,7 +371,7 @@ const StateProvider = ( { children } ) => {
 				return {...state, currentIndex: forward}
 			case 'token_dragging':
 			case 'token_drag_complete':
-			case 'sorted_right_click':
+			case 'sorted_token_unsort':
 			case 'token_update_position':
 			case 'response_token_sort':
 			case 'response_token_rearrange':

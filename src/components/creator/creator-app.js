@@ -9,6 +9,7 @@ import CreatorTutorial from './creator-tutorial';
 import CreatorHintsModal from './creator-hints-modal';
 import CreatorFakeoutModal from './creator-fakeout-modal'
 import CreatorBankModal from './creator-bank-modal'
+import CreatorSubmissionSettingsModal from './creator-submission-settings-modal'
 import CreatorErrorModal from './creator-error-modal'
 
 const CreatorApp = (props) => {
@@ -126,6 +127,7 @@ const CreatorApp = (props) => {
 			options: {
 				legend: manager.state.legend,
 				enableQuestionBank: manager.state.enableQuestionBank,
+				requireAllQuestions: manager.state.requireAllQuestions,
 				numAsk: manager.state.numAsk
 			}
 		}
@@ -162,6 +164,10 @@ const CreatorApp = (props) => {
 		dispatch({ type: 'toggle_bank_modal', payload: {} })
 	}
 
+	const toggleSubmissionSettings = () => {
+		dispatch({type: 'toggle_submission_settings_modal', payload: {}})
+	}
+
 	const toggleHintModal = () => {
 		dispatch({ type: 'toggle_hint_modal' })
 	}
@@ -183,6 +189,8 @@ const CreatorApp = (props) => {
 				enableQuestionBank={manager.state.enableQuestionBank}
 				numAsk={manager.state.numAsk}
 				questionCount={manager.state.items.length}></CreatorBankModal>
+			<CreatorSubmissionSettingsModal
+				requireAllQuestions={manager.state.requireAllQuestions}></CreatorSubmissionSettingsModal>
 			<CreatorFakeoutModal
 				fakes={manager.state.items[manager.state.currentIndex].fakes}></CreatorFakeoutModal>
 
@@ -191,6 +199,7 @@ const CreatorApp = (props) => {
 				<input value={manager.state.title} onChange={handleTitleUpdate} placeholder="Give Your Widget a Title" />
 				<button className="toggleLegend" onClick={toggleLegend}>Legend</button>
 				<button className="toggleBank" onClick={toggleBank}>Question Bank</button>
+				<button className="toggleSubmissionSettings" onClick={toggleSubmissionSettings}>Submission Settings</button>
 			</header>
 			<QuestionSelect questions={manager.state.items}></QuestionSelect>
 			<section className="content-container">

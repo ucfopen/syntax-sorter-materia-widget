@@ -40,7 +40,7 @@ const LegendItem = (props) => {
 	}
 
 	return (
-		<div className="legend-item" ref={legendItemRef}>
+		<div className={`legend-item ${manager.state.legendColorPickerTarget == props.index ? 'selected' : ''}`} ref={legendItemRef}>
 			<button className={`item-color ${manager.state.legendColorPickerTarget == props.index ? 'selected' : ''}`} style={{ backgroundColor: currentColor }} onClick={handleColorPickerClick}></button>
 			<input value={props.name} onChange={onNameChange} placeholder='Legend Value' ref={inputRef} onKeyDown={handleKeyDown}></input>
 			<button className="remove-item" onClick={remove}>X</button>
