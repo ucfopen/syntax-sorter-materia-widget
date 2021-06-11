@@ -6,8 +6,6 @@ const QuestionSelect = (props) => {
 	const manager = useContext(store)
 	const dispatch = manager.dispatch
 
-	const [state, setState] = useState({paginateMin: 0, paginateMax: 8, visibleQuestions: []})
-
 	const [state, setState] = useState({ paginateMin: 0, paginateMax: 8, visibleQuestions: [] })
 
 	const currentIndex = manager.state.currentIndex
