@@ -3,8 +3,8 @@ import { store } from '../../creator-store'
 
 const CreatorSubmissionSettingsModal = (props) => {
 
-	const global = useContext(store)
-	const dispatch = global.dispatch
+	const manager = useContext(store)
+	const dispatch = manager.dispatch
 
 	const handleToggleSubmissionSettings = (event) => {
 		dispatch({type:'toggle_require_all_questions', payload: event.target.value == 'true' ? true : false})
@@ -15,7 +15,7 @@ const CreatorSubmissionSettingsModal = (props) => {
 	}
 
 	return (
-		<div className='modal-wrapper' style={{display: global.state.showSubmissionSettingsModal ? 'flex' : 'none'}}>
+		<div className='modal-wrapper' style={{display: manager.state.showSubmissionSettingsModal ? 'flex' : 'none'}}>
 			<div className='modal creator'>
 				<h3>Submission Settings</h3>
 				<span className="select-wrapper">

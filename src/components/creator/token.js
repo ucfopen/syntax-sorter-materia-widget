@@ -3,15 +3,15 @@ import { store } from '../../creator-store'
 
 const Token = (props) => {
 	const [hovering, setHovering] = useState(false)
-	const global = useContext(store)
-	const dispatch = global.dispatch
+	const manager = useContext(store)
+	const dispatch = manager.dispatch
 
-	let index = props.context == "fakeout" ? global.state?.selectedFakeoutIndex : global.state.selectedTokenIndex
+	let index = props.context == "fakeout" ? manager.state?.selectedFakeoutIndex : manager.state.selectedTokenIndex
 
 	const getLegendColor = (id) => {
 		if (!id) return '#ffffff'
 
-		for (const term of global.state.legend) {
+		for (const term of manager.state.legend) {
 			if (term.id == id) return term.color
 		}
 	}
@@ -40,7 +40,7 @@ const Token = (props) => {
 	const deleteToken = () => {
 		dispatch({
 			type: 'remove_token', payload: {
-				questionIndex: global.state.currentIndex,
+				questionIndex: manager.state.currentIndex,
 				phraseIndex: props.index,
 				fakeoutIndex: props.index,
 				context: props.context

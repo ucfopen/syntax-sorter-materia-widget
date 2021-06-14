@@ -1,4 +1,4 @@
-import React, {useContext} from 'react'
+import React, { useContext } from 'react'
 import ReactDOM from 'react-dom'
 import TokenDrawer from './token-drawer'
 import Token from './token'
@@ -6,8 +6,8 @@ import { store } from '../../player-store'
 
 const PhrasePlayer = (props) => {
 
-	const global = useContext(store)
-	const dispatch = global.dispatch
+	const manager = useContext(store)
+	const dispatch = manager.dispatch
 
 	const handleTokenDragOver = (event) => {
 
@@ -22,7 +22,7 @@ const PhrasePlayer = (props) => {
 		let leftToken = null
 		let rightToken = null
 
-		for (let i=0; i<props.sorted.length; i++) {
+		for (let i = 0; i < props.sorted.length; i++) {
 			let pos = props.sorted[i].position
 			let left = pos.x
 			let right = pos.x + pos.width
@@ -58,7 +58,7 @@ const PhrasePlayer = (props) => {
 
 		let index = 0
 
-		for (let i = 0; i<props.sorted.length; i++) {
+		for (let i = 0; i < props.sorted.length; i++) {
 
 			if (props.sorted[i].id == dropTokenId) continue
 
@@ -75,7 +75,7 @@ const PhrasePlayer = (props) => {
 				dispatch({
 					type: 'response_token_rearrange',
 					payload: {
-						questionIndex: global.state.currentIndex,
+						questionIndex: manager.state.currentIndex,
 						targetIndex: index,
 						id: dropTokenId,
 						legend: dropTokenType,
@@ -90,7 +90,7 @@ const PhrasePlayer = (props) => {
 				dispatch({
 					type: 'response_token_sort',
 					payload: {
-						questionIndex: global.state.currentIndex,
+						questionIndex: manager.state.currentIndex,
 						targetIndex: index,
 						id: dropTokenId,
 						legend: dropTokenType,
@@ -106,11 +106,13 @@ const PhrasePlayer = (props) => {
 	}
 
 	const manageAdjacentTokenDisplay = (left, right) => {
-		dispatch({type: 'adjacent_token_update', payload: {
-			questionIndex: global.state.currentIndex,
-			left: left?.id,
-			right: right?.id
-		}})
+		dispatch({
+			type: 'adjacent_token_update', payload: {
+				questionIndex: manager.state.currentIndex,
+				left: left?.id,
+				right: right?.id
+			}
+		})
 	}
 
 	const forceClearAdjacentTokens = () => {
@@ -135,7 +137,7 @@ const PhrasePlayer = (props) => {
 		</Token>
 	})
 
-	return(
+	return (
 		<section className={'card phrase-player ' +
 			`${props.responseState + ' '}` +
 			`${props.hasFakes ? 'fakeout ' : ''}`}>
@@ -156,7 +158,7 @@ const PhrasePlayer = (props) => {
 				attemptLimit={props.attemptLimit}
 				hasFakes={props.hasFakes}
 				responseState={props.responseState}
-				></TokenDrawer>
+			></TokenDrawer>
 		</section>
 	)
 }

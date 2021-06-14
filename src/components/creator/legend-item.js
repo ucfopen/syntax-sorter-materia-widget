@@ -4,11 +4,11 @@ import { store } from '../../creator-store'
 
 const LegendItem = (props) => {
 
-	const global = useContext(store)
-	const dispatch = global.dispatch
+	const manager = useContext(store)
+	const dispatch = manager.dispatch
 
 	const legendItemRef = useRef(null)
-	const currentColor = global.state.legend[props.index].color
+	const currentColor = manager.state.legend[props.index].color
 
 	const inputRef = useRef(null)
 
@@ -40,8 +40,8 @@ const LegendItem = (props) => {
 	}
 
 	return (
-		<div className={`legend-item ${global.state.legendColorPickerTarget == props.index ? 'selected' : ''}`} ref={legendItemRef}>
-			<button className={`item-color ${global.state.legendColorPickerTarget == props.index ? 'selected' : ''}`} style={{ backgroundColor: currentColor }} onClick={handleColorPickerClick}></button>
+		<div className={`legend-item ${manager.state.legendColorPickerTarget == props.index ? 'selected' : ''}`} ref={legendItemRef}>
+			<button className={`item-color ${manager.state.legendColorPickerTarget == props.index ? 'selected' : ''}`} style={{ backgroundColor: currentColor }} onClick={handleColorPickerClick}></button>
 			<input value={props.name} onChange={onNameChange} placeholder='Legend Value' ref={inputRef} onKeyDown={handleKeyDown}></input>
 			<button className="remove-item" onClick={remove}>X</button>
 		</div>

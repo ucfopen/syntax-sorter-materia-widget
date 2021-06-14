@@ -3,8 +3,8 @@ import { store } from '../../creator-store'
 
 const CreatorHintsModal = (props) => {
 
-	const global = useContext(store)
-	const dispatch = global.dispatch
+	const manager = useContext(store)
+	const dispatch = manager.dispatch
 
 	const dismiss = () => {
 		dispatch({ type: 'toggle_hint_modal' })
@@ -16,7 +16,7 @@ const CreatorHintsModal = (props) => {
 
 		dispatch({
 			type: 'update_attempts', payload: {
-				questionIndex: global.state.currentIndex,
+				questionIndex: manager.state.currentIndex,
 				pref: pref
 			}
 		})
@@ -25,14 +25,14 @@ const CreatorHintsModal = (props) => {
 	const handleHint = (event) => {
 		dispatch({
 			type: 'update_hint', payload: {
-				questionIndex: global.state.currentIndex,
+				questionIndex: manager.state.currentIndex,
 				pref: event.target.value
 			}
 		})
 	}
 
 	return (
-		<div className='modal-wrapper' style={{ display: global.state.showHintModal ? 'flex' : 'none' }}>
+		<div className='modal-wrapper' style={{ display: manager.state.showHintModal ? 'flex' : 'none' }}>
 			<div className='modal creator'>
 				<h3>Attempts and Hint</h3>
 				<p>Edit the total number of attempts for this question. If a question allows more than one attempt, you can provide an optional hint should they respond incorrectly.</p>

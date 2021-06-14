@@ -3,8 +3,8 @@ import { store } from '../../creator-store'
 
 const CreatorBankModal = (props) => {
 
-	const global = useContext(store)
-	const dispatch = global.dispatch
+	const manager = useContext(store)
+	const dispatch = manager.dispatch
 
 	const handleToggleQuestionBank = (event) => {
 		dispatch({ type: 'toggle_ask_limit', payload: event.target.value == 'true' ? true : false })
@@ -21,7 +21,7 @@ const CreatorBankModal = (props) => {
 	}
 
 	return (
-		<div className='modal-wrapper' style={{ display: global.state.showBankModal ? 'flex' : 'none' }}>
+		<div className='modal-wrapper' style={{ display: manager.state.showBankModal ? 'flex' : 'none' }}>
 			<div className='modal creator'>
 				<h3>Question Bank Settings</h3>
 				<p>Optionally set a question limit that's lower than the total number of questions created for this widget. The questions will be randomly selected each time the widget is played.</p>

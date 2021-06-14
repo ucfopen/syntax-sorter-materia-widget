@@ -3,15 +3,15 @@ import { store } from '../../player-store'
 
 const PlayerTutorial = (props) => {
 
-	const global = useContext(store)
-	const dispatch = global.dispatch
+	const manager = useContext(store)
+	const dispatch = manager.dispatch
 
 	const toggle = () => {
 		dispatch({ type: 'toggle_tutorial' })
 	}
 
 	return (
-		<div className='modal-wrapper' style={{ display: global.state.showTutorial ? 'flex' : 'none' }}>
+		<div className='modal-wrapper' style={{ display: manager.state.showTutorial ? 'flex' : 'none' }}>
 
 			<div className='modal tutorial player'>
 				<h3>Arrange Tokens in the Proper Order</h3>

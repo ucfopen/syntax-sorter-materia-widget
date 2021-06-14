@@ -14,13 +14,13 @@ import CreatorErrorModal from './creator-error-modal'
 
 const CreatorApp = (props) => {
 
-	const global = useContext(store)
-	const dispatch = global.dispatch
+	const manager = useContext(store)
+	const dispatch = manager.dispatch
 
 	const init = () => {
 
 		if (props.newWidget) {
-			dispatch({type: 'init-new'})
+			dispatch({ type: 'init-new' })
 		}
 		else {
 			dispatch({
@@ -35,7 +35,7 @@ const CreatorApp = (props) => {
 
 	// using this as equivalent to componentDidMount
 	useEffect(() => {
-		if (global.state.requireInit) {
+		if (manager.state.requireInit) {
 			init()
 		}
 	})
@@ -44,30 +44,30 @@ const CreatorApp = (props) => {
 	const validateData = () => {
 		let invalid = []
 
-		global.state.items.forEach((item, index) => {
+		manager.state.items.forEach((item, index) => {
 			// Test to make sure a phrase has atleast one token
-			if (item.phrase.length <= 0) invalid.push(`Question ${index+1} needs at least one phrase token.`)
+			if (item.phrase.length <= 0) invalid.push(`Question ${index + 1} needs at least one phrase token.`)
 
 			item.phrase.forEach((token) => {
-				if (token.legend == null) invalid.push(`Question ${index+1} phrase token "${token.value}" is missing a legend type selection.`)
+				if (token.legend == null) invalid.push(`Question ${index + 1} phrase token "${token.value}" is missing a legend type selection.`)
 			})
 
 			item.fakes.forEach((fake) => {
-				if (fake.legend == null) invalid.push(`Question ${index+1} has a fake token "${fake.value}" without a legend type selection.`)
+				if (fake.legend == null) invalid.push(`Question ${index + 1} has a fake token "${fake.value}" without a legend type selection.`)
 			})
 		})
 
 		var blankLegendCount = 0
 		var duplicates = []
 
-		global.state.legend.forEach((term, index) => {
+		manager.state.legend.forEach((term, index) => {
 			// make sure a legend value isn't blank
 			if (!term.name.length) {
 				blankLegendCount++
 			}
 			else {
 				// check for duplicate legend values
-				global.state.legend.forEach((otherTerm, otherIndex) => {
+				manager.state.legend.forEach((otherTerm, otherIndex) => {
 					if (term.name == otherTerm.name && index != otherIndex && !duplicates.includes(term.name)) {
 						duplicates.push(term.name)
 						invalid.push(`You have two or more legend items with the name "${term.name}". They must be unique!`)
@@ -88,8 +88,7 @@ const CreatorApp = (props) => {
 		let invalid = validateData()
 
 		// Make this only greater than after done testing
-		if (invalid.length > 0)
-		{
+		if (invalid.length > 0) {
 			dispatch({
 				type: 'toggle_error_modal',
 				payload: {
@@ -102,7 +101,7 @@ const CreatorApp = (props) => {
 
 		// convert store to qset
 		let qset = {
-			items: global.state.items.map((item) => {
+			items: manager.state.items.map((item) => {
 				return {
 					id: null,
 					materiaType: 'question',
@@ -126,23 +125,23 @@ const CreatorApp = (props) => {
 				}
 			}),
 			options: {
-				legend: global.state.legend,
-				enableQuestionBank: global.state.enableQuestionBank,
-				requireAllQuestions: global.state.requireAllQuestions,
-				numAsk: global.state.numAsk
+				legend: manager.state.legend,
+				enableQuestionBank: manager.state.enableQuestionBank,
+				requireAllQuestions: manager.state.requireAllQuestions,
+				numAsk: manager.state.numAsk
 			}
 		}
 
-		Materia.CreatorCore.save(global.state.title, qset, 1)
+		Materia.CreatorCore.save(manager.state.title, qset, 1)
 	}
 
 	// concats phrase into text string (for qset export)
 	const concatPhrase = (phrase) => {
 		let str = ''
-		for (let i=0; i<phrase.length; i++) {
+		for (let i = 0; i < phrase.length; i++) {
 			str += phrase[i].value + ','
 		}
-		return str.substring(0,str.length-1)
+		return str.substring(0, str.length - 1)
 	}
 
 	props.callbacks.onSaveComplete = () => {
@@ -150,19 +149,19 @@ const CreatorApp = (props) => {
 	}
 
 	const handleTitleUpdate = (event) => {
-		dispatch({type:'update_title', payload: event.target.value})
+		dispatch({ type: 'update_title', payload: event.target.value })
 	}
 
 	const handleDeleteQuestion = () => {
-		dispatch({type:'remove_question', payload: global.state.currentIndex})
+		dispatch({ type: 'remove_question', payload: manager.state.currentIndex })
 	}
 
 	const toggleLegend = () => {
-		dispatch({type: 'toggle_legend', payload: {}})
+		dispatch({ type: 'toggle_legend', payload: {} })
 	}
 
 	const toggleBank = () => {
-		dispatch({type: 'toggle_bank_modal', payload: {}})
+		dispatch({ type: 'toggle_bank_modal', payload: {} })
 	}
 
 	const toggleSubmissionSettings = () => {
@@ -170,70 +169,70 @@ const CreatorApp = (props) => {
 	}
 
 	const toggleHintModal = () => {
-		dispatch({type: 'toggle_hint_modal'})
+		dispatch({ type: 'toggle_hint_modal' })
 	}
 
 	const toggleFakeoutModal = () => {
-		dispatch({type: 'toggle_fakeout_modal'})
+		dispatch({ type: 'toggle_fakeout_modal' })
 	}
 
-	return(
+	return (
 		<div className="creator-container">
-			<div className={`startupTooltip ${global.state.onboarding ? 'show' : ''}`} onClick={toggleLegend}>
+			<div className={`startupTooltip ${manager.state.onboarding ? 'show' : ''}`} onClick={toggleLegend}>
 				Open the Legend to start defining individual labels for phrase tokens.
 			</div>
 			<CreatorTutorial></CreatorTutorial>
 			<CreatorHintsModal
-				attempts={global.state.items[global.state.currentIndex].attempts}
-				hint={global.state.items[global.state.currentIndex].hint}></CreatorHintsModal>
+				attempts={manager.state.items[manager.state.currentIndex].attempts}
+				hint={manager.state.items[manager.state.currentIndex].hint}></CreatorHintsModal>
 			<CreatorBankModal
-				enableQuestionBank={global.state.enableQuestionBank}
-				numAsk={global.state.numAsk}
-				questionCount={global.state.items.length}></CreatorBankModal>
+				enableQuestionBank={manager.state.enableQuestionBank}
+				numAsk={manager.state.numAsk}
+				questionCount={manager.state.items.length}></CreatorBankModal>
 			<CreatorSubmissionSettingsModal
-				requireAllQuestions={global.state.requireAllQuestions}></CreatorSubmissionSettingsModal>
+				requireAllQuestions={manager.state.requireAllQuestions}></CreatorSubmissionSettingsModal>
 			<CreatorFakeoutModal
-				fakes={global.state.items[global.state.currentIndex].fakes}></CreatorFakeoutModal>
+				fakes={manager.state.items[manager.state.currentIndex].fakes}></CreatorFakeoutModal>
 
 			<CreatorErrorModal></CreatorErrorModal>
 			<header className="creator-header">
-				<input value={global.state.title} onChange={handleTitleUpdate} placeholder="Give Your Widget a Title"/>
+				<input value={manager.state.title} onChange={handleTitleUpdate} placeholder="Give Your Widget a Title" />
 				<button className="toggleLegend" onClick={toggleLegend}>Legend</button>
 				<button className="toggleBank" onClick={toggleBank}>Question Bank</button>
 				<button className="toggleSubmissionSettings" onClick={toggleSubmissionSettings}>Submission Settings</button>
 			</header>
-			<QuestionSelect questions={global.state.items}></QuestionSelect>
+			<QuestionSelect questions={manager.state.items}></QuestionSelect>
 			<section className="content-container">
 				<Question></Question>
 				<PhraseBuilder
-					phrase={global.state.items[global.state.currentIndex].phrase}
-					legend={global.state.legend}
-					showTokenTutorial={global.state.showTokenTutorial}
+					phrase={manager.state.items[manager.state.currentIndex].phrase}
+					legend={manager.state.legend}
+					showTokenTutorial={manager.state.showTokenTutorial}
 					toggleLegend={toggleLegend}
 					format="phrase">
 				</PhraseBuilder>
 				<PrefSelect
-					displayPref={global.state.items[global.state.currentIndex].displayPref}
-					fakes={global.state.items[global.state.currentIndex].fakes}
-					attempts={global.state.items[global.state.currentIndex].attempts}
-					hint={global.state.items[global.state.currentIndex].hint}></PrefSelect>
+					displayPref={manager.state.items[manager.state.currentIndex].displayPref}
+					fakes={manager.state.items[manager.state.currentIndex].fakes}
+					attempts={manager.state.items[manager.state.currentIndex].attempts}
+					hint={manager.state.items[manager.state.currentIndex].hint}></PrefSelect>
 				<section className="options-container">
 					<button className="card options-button" onClick={toggleHintModal}>
 						<header>Edit Attempts and Hint</header>
-						<span className={`button-context ${global.state.items[global.state.currentIndex].attempts > 1 ? "show" : ""}`}>
-							Attempts: {global.state.items[global.state.currentIndex].attempts}, Hint: {global.state.items[global.state.currentIndex].hint?.length > 0 ? "Enabled" : "No Hint"}
+						<span className={`button-context ${manager.state.items[manager.state.currentIndex].attempts > 1 ? "show" : ""}`}>
+							Attempts: {manager.state.items[manager.state.currentIndex].attempts}, Hint: {manager.state.items[manager.state.currentIndex].hint?.length > 0 ? "Enabled" : "No Hint"}
 						</span>
 					</button>
 					<button className="card options-button" onClick={toggleFakeoutModal}>
 						<header>Edit "Fake" Tokens</header>
-						<span className={`button-context ${global.state.items[global.state.currentIndex].fakes.length > 0 ? "show" : ""}`}>
-							Fake Tokens: {global.state.items[global.state.currentIndex].fakes?.length}
+						<span className={`button-context ${manager.state.items[manager.state.currentIndex].fakes.length > 0 ? "show" : ""}`}>
+							Fake Tokens: {manager.state.items[manager.state.currentIndex].fakes?.length}
 						</span>
 					</button>
-					<button className="card delete-question" onClick={handleDeleteQuestion} disabled={global.state.items.length < 2}>Delete Question</button>
+					<button className="card delete-question" onClick={handleDeleteQuestion} disabled={manager.state.items.length < 2}>Delete Question</button>
 				</section>
 			</section>
-			<Legend show={global.state.showLegend ? global.state.showLegend : false} legend={global.state.legend} toggle={toggleLegend}></Legend>
+			<Legend show={manager.state.showLegend ? manager.state.showLegend : false} legend={manager.state.legend} toggle={toggleLegend}></Legend>
 		</div>
 	)
 }
