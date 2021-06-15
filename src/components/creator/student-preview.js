@@ -3,15 +3,15 @@ import { store } from '../../creator-store'
 
 const StudentPreview = (props) => {
 
-	const global = useContext(store)
-	const dispatch = global.dispatch
+	const manager = useContext(store)
+	const dispatch = manager.dispatch
 
-	const phrase = global.state.items[global.state.currentIndex].phrase
+	const phrase = manager.state.items[manager.state.currentIndex].phrase
 
 	const getLegendColor = (id) => {
 		if (!id) return '#ffffff'
 
-		for (const term of global.state.legend) {
+		for (const term of manager.state.legend) {
 			if (term.id == id) return term.color
 		}
 	}
@@ -19,7 +19,7 @@ const StudentPreview = (props) => {
 	const getLegendName = (id) => {
 		if (!id) return 'No Legend Selected'
 
-		for (const term of global.state.legend) {
+		for (const term of manager.state.legend) {
 			if (term.id == id) return term.name
 		}
 	}
@@ -33,18 +33,18 @@ const StudentPreview = (props) => {
 			g = parseInt(m[1], 16)
 			b = parseInt(m[2], 16)
 		}
-		if (typeof r != "undefined") return ((r*299)+(g*587)+(b*114))/1000;
+		if (typeof r != "undefined") return ((r * 299) + (g * 587) + (b * 114)) / 1000;
 	}
 
 	const mockTokenList = phrase.map((token, index) => {
 		let tokenColor = getLegendColor(token.legend)
-		return <div 
-				className="mock-token"
-				key={index}
-				style={{
-					background: tokenColor,
-					color: contrastCalc(tokenColor) > 160 ? '#000000' : '#ffffff'
-				}}>{props.displayPref == 'word' ? token.value : getLegendName(token.legend)}</div>
+		return <div
+			className="mock-token"
+			key={index}
+			style={{
+				background: tokenColor,
+				color: contrastCalc(tokenColor) > 160 ? '#000000' : '#ffffff'
+			}}>{props.displayPref == 'word' ? token.value : getLegendName(token.legend)}</div>
 	})
 
 	return (

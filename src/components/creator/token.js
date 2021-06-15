@@ -1,29 +1,27 @@
-import React, { useContext } from 'react'
+import React, { useContext, useState } from 'react'
 import { store } from '../../creator-store'
 
 const Token = (props) => {
+	const [hovering, setHovering] = useState(false)
+	const manager = useContext(store)
+	const dispatch = manager.dispatch
 
-	const global = useContext(store)
-	const dispatch = global.dispatch
-
-	let index = props.context == "fakeout" ? global.state?.selectedFakeoutIndex : global.state.selectedTokenIndex
+	let index = props.context == "fakeout" ? manager.state?.selectedFakeoutIndex : manager.state.selectedTokenIndex
 
 	const getLegendColor = (id) => {
 		if (!id) return '#ffffff'
 
-		for (const term of global.state.legend) {
+		for (const term of manager.state.legend) {
 			if (term.id == id) return term.color
 		}
 	}
 
 	const toggleTokenSelection = () => {
-		if (props.context == "fakeout")
-		{
-			dispatch({type: 'toggle_fakeout_select', payload: props.index})
+		if (props.context == "fakeout") {
+			dispatch({ type: 'toggle_fakeout_select', payload: props.index })
 		}
-		else
-		{
-			dispatch({type: 'toggle_token_select', payload: props.index})
+		else {
+			dispatch({ type: 'toggle_token_select', payload: props.index })
 		}
 	}
 
@@ -36,18 +34,39 @@ const Token = (props) => {
 			g = parseInt(m[1], 16)
 			b = parseInt(m[2], 16)
 		}
-		if (typeof r != "undefined") return ((r*299)+(g*587)+(b*114))/1000;
+		if (typeof r != "undefined") return ((r * 299) + (g * 587) + (b * 114)) / 1000;
+	}
+
+	const deleteToken = () => {
+		dispatch({
+			type: 'remove_token', payload: {
+				questionIndex: manager.state.currentIndex,
+				phraseIndex: props.index,
+				fakeoutIndex: props.index,
+				context: props.context
+			}
+		})
 	}
 
 	let tokenColor = getLegendColor(props.type)
 
 	return (
-		<span className={`token ${!props.type ? "unassigned" : ""} ${index == props.index ? "selected" : ""}`}
-			style={{
-				background: tokenColor,
-				color: contrastCalc(tokenColor) > 160 ? '#000000' : '#ffffff'
-			}}
-			onClick={toggleTokenSelection}>{decodeURIComponent(props.value)}</span>
+		<div className='token-mask'
+			onMouseEnter={() => { setHovering(true) }}
+			onMouseLeave={() => { setHovering(false) }}>
+			<span className={`token ${!props.type ? "unassigned" : ""} ${index == props.index ? "selected" : ""}`}
+				style={{
+					background: tokenColor,
+					color: contrastCalc(tokenColor) > 160 ? '#000000' : '#ffffff'
+				}}
+				onClick={toggleTokenSelection}>
+				{decodeURIComponent(props.value)}
+			</span>
+			<div className={`close-btn ${hovering ? 'active' : ''}`}
+				onClick={deleteToken}>
+				<div>x</div>
+			</div>
+		</div>
 	)
 }
 

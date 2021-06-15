@@ -1,17 +1,17 @@
-import React, {useContext} from 'react'
+import React, { useContext } from 'react'
 import { store } from '../../creator-store'
 
 const CreatorTutorial = (props) => {
 
-	const global = useContext(store)
-	const dispatch = global.dispatch
+	const manager = useContext(store)
+	const dispatch = manager.dispatch
 
 	const dismiss = () => {
-		dispatch({type: 'dismiss_tutorial'})
+		dispatch({ type: 'dismiss_tutorial' })
 	}
 
 	return (
-		<div className='modal-wrapper' style={{display: global.state.showTutorial ? 'block' : 'none'}}>
+		<div className='modal-wrapper' style={{ display: manager.state.showTutorial ? 'flex' : 'none' }}>
 			<div className='modal tutorial creator'>
 				<h3>Build Effective Syntax Mastery Tools</h3>
 				<div className='tutorial-content'>

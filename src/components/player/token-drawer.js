@@ -1,18 +1,49 @@
-import React, {useContext} from 'react'
+import React, { useContext } from 'react'
 import Token from './token'
 import { store } from '../../player-store'
 
 const TokenDrawer = (props) => {
 
-	const global = useContext(store)
-	const dispatch = global.dispatch
+	const manager = useContext(store)
+	const dispatch = manager.dispatch
 
 	const paginate = () => {
-		dispatch({type: 'paginate_question_forward'})
+		dispatch({ type: 'paginate_question_forward' })
+	}
+
+	const handleTokenDragOver = (event) => {
+		// Exits the function if the max number of guesses have been used
+		if (props.attemptLimit > 1 && (props.attemptsUsed >= props.attemptLimit)) return false
+
+		event.preventDefault()
+	}
+
+	const handleTokenDrop = (event) => {
+		event.preventDefault()
+
+		let dropTokenId = event.dataTransfer.getData("tokenId")
+		let dropTokenName = event.dataTransfer.getData("tokenName")
+		let dropTokenType = event.dataTransfer.getData("tokenType")
+		let dropTokenPhraseIndex = event.dataTransfer.getData("tokenPhraseIndex")
+		let dropTokenStatus = event.dataTransfer.getData("tokenStatus")
+		let dropTokenFakeout = (event.dataTransfer.getData("tokenFakeout") == "true") ? true : false
+
+		if (dropTokenStatus == "sorted")
+		{
+			dispatch({type: 'sorted_token_unsort', payload: {
+				origin: dropTokenStatus,
+				tokenIndex: parseInt(dropTokenPhraseIndex),
+				questionIndex: manager.state.currentIndex,
+				fakeout: dropTokenFakeout,
+				legend: dropTokenType,
+				value: dropTokenName,
+				id: dropTokenId
+			}})
+		}
 	}
 
 	const handleCheckAnswer = () => {
-		let item = global.state.items[global.state.currentIndex]
+		let item = manager.state.items[manager.state.currentIndex]
 
 		// attempt limit already reached, assume call is invalid
 		if (props.responseState == 'incorrect-no-attempts') return
@@ -32,14 +63,16 @@ const TokenDrawer = (props) => {
 			state = 'correct'
 		}
 
-		dispatch({type: 'attempt_submit', payload: {
-			questionIndex: global.state.currentIndex,
-			response: state
-		}})
+		dispatch({
+			type: 'attempt_submit', payload: {
+				questionIndex: manager.state.currentIndex,
+				response: state
+			}
+		})
 	}
 
 	const verify = (item) => {
-		
+
 		if (item.sorted.length != item.correctPhrase.length) {
 			return false
 		}
@@ -58,19 +91,19 @@ const TokenDrawer = (props) => {
 
 	let tokenList = props.phrase?.map((token, index) => {
 		return <Token
-					id={token.id}
-					key={index}
-					index={index}
-					type={token.legend}
-					value={token.value}
-					pref={props.displayPref}
-					status={token.status}
-					fakeout={token.fakeout}
-					dragEligible={!(props.attemptsUsed >= props.attemptLimit)}>
-				</Token>
+			id={token.id}
+			key={index}
+			index={index}
+			type={token.legend}
+			value={token.value}
+			pref={props.displayPref}
+			status={token.status}
+			fakeout={token.fakeout}
+			dragEligible={!(props.attemptsUsed >= props.attemptLimit)}>
+		</Token>
 	})
 
-	let isLastQuestion = global.state.currentIndex == global.state.items.length - 1
+	let isLastQuestion = manager.state.currentIndex == manager.state.items.length - 1
 
 	let currentResponseText = ''
 
@@ -78,7 +111,7 @@ const TokenDrawer = (props) => {
 
 	switch (props.responseState) {
 		case 'ready':
-			
+
 			if (isLastQuestion && remaining > 0) {
 				currentResponseText = <span className='controls-message'>You have <span className='strong'>{remaining}</span> attempt{remaining > 1 ? 's' : ''} remaining. Select <span className='strong'>Check Answer</span> to check your answer, or select <span className='strong'>Submit</span> at the top-right for scoring.</span>
 			}
@@ -107,8 +140,7 @@ const TokenDrawer = (props) => {
 			if (isLastQuestion) {
 				currentResponseText = <span className='controls-message'>Nice work! You aced it. When you're ready, select <span className='strong'>Submit</span> at the top-right for scoring or go back and review your answers.</span>
 			}
-			else
-			{
+			else {
 				currentResponseText = <span className='controls-message'>Nice work! You aced it. Select <span className='strong'>Next Question</span> to continue.</span>
 			}
 			break
@@ -118,11 +150,13 @@ const TokenDrawer = (props) => {
 			break
 	}
 
-	return(
+	return (
 		<section className={'token-drawer ' +
 			`${(props.phrase?.length == 0) ? 'empty ' : ''}` +
 			`${props.responseState} ` +
-			`${props.hasFakes ? 'has-fakes ' : ''}`}>
+			`${props.hasFakes ? 'has-fakes ' : ''}`}
+			onDragOver={handleTokenDragOver}
+			onDrop={handleTokenDrop}>
 			{tokenList}
 			<section className='response-controls'>
 				<div className='response-message-container'>
