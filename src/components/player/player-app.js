@@ -18,8 +18,17 @@ const PlayerApp = (props) => {
 					title: props.title
 				}
 			})
+
+			document.addEventListener("mouseup", mouseUpHandler)
 		}
 	}, [manager.state.requireInit])
+
+	// Used to prevent reads from being highlighted then dragged
+	const mouseUpHandler = () => {
+		if (window.getSelection().toString().length > 0) {
+			window.getSelection().removeAllRanges();
+		}
+	}
 
 	const convertSortedForLogging = (sorted) => {
 
