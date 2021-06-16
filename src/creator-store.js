@@ -350,7 +350,7 @@ const StateProvider = ({ children }) => {
 			case 'update_legend_item':
 				return { ...state, legend: legendReducer(state.legend, action) }
 			case 'remove_legend_item':
-				return { ...state, items: questionItemReducer(state.items, action), legend: legendReducer(state.legend, action) }
+				return { ...state, items: questionItemReducer(state.items, action), legend: legendReducer(state.legend, action), legendColorPickerTarget: -1 }
 			case 'legend_color_picker_toggle':
 				if (state.legendColorPickerTarget != action.payload.index) return { ...state, legendColorPickerTarget: action.payload.index }
 				else return { ...state, legendColorPickerTarget: -1 }

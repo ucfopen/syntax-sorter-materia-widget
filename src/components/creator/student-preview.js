@@ -20,7 +20,7 @@ const StudentPreview = (props) => {
 		if (!id) return 'No Legend Selected'
 
 		for (const term of manager.state.legend) {
-			if (term.id == id) return term.name
+			if (term.id == id) return term.name.length > 0 ? term.name : 'Untitled Legend Item'
 		}
 	}
 
