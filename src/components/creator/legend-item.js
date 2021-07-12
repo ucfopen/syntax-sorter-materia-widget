@@ -19,7 +19,7 @@ const LegendItem = (props) => {
 	}, [props.focus])
 
 	const handleColorPickerClick = (event) => {
-		let heightOffset = legendItemRef.current.getBoundingClientRect().y
+		let heightOffset = legendItemRef.current?.getBoundingClientRect().y
 		props.toggleColorPicker(props.index, heightOffset)
 	}
 

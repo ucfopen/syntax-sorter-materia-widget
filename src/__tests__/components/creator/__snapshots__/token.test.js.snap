@@ -1,0 +1,30 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Token Token component 1`] = `
+<div
+  className="token-mask"
+  onMouseEnter={[Function]}
+  onMouseLeave={[Function]}
+>
+  <span
+    className="token  "
+    onClick={[Function]}
+    style={
+      Object {
+        "background": "#FF0000",
+        "color": "#ffffff",
+      }
+    }
+  >
+    test token
+  </span>
+  <div
+    className="close-btn "
+    onClick={[Function]}
+  >
+    <div>
+      x
+    </div>
+  </div>
+</div>
+`;

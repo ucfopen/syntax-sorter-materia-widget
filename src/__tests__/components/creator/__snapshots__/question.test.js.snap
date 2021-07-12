@@ -1,0 +1,18 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Question Question component 1`] = `
+<section
+  className="card question-container"
+>
+  <header>
+    Question 
+    1
+     Text
+  </header>
+  <input
+    onChange={[Function]}
+    placeholder="Add some text here describing the phrase below or providing instructions."
+    value=""
+  />
+</section>
+`;

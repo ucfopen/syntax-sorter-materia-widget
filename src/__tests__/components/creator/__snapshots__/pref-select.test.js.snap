@@ -1,0 +1,71 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`PrefSelect modal Pref Select component 1`] = `
+<div
+  className="card split"
+>
+  <div
+    className="pref-options"
+  >
+    <header>
+      How should each token be displayed & scored?
+    </header>
+    <span
+      className="pref-select"
+    >
+      <input
+        checked={false}
+        name="token-display-select"
+        onChange={[Function]}
+        type="radio"
+        value="word"
+      />
+      <span
+        className="radio-overlay "
+      />
+      <span
+        className="strong"
+      >
+        By Word
+      </span>
+      : Both the word and the legend value must match.
+    </span>
+    <span
+      className="pref-select"
+    >
+      <input
+        checked={false}
+        name="token-display-select"
+        onChange={[Function]}
+        type="radio"
+        value="legend"
+      />
+      <span
+        className="radio-overlay "
+      />
+      <span
+        className="strong"
+      >
+        By Legend
+      </span>
+      : Only the legend value of a token matters. The word will not be shown.
+    </span>
+  </div>
+  <div
+    className="student-preview"
+  >
+    <header>
+      Student Preview
+    </header>
+    <div
+      className="preview-container"
+    >
+      <span
+        className="empty-message show"
+      >
+        No tokens to preview yet.
+      </span>
+    </div>
+  </div>
+</div>
+`;

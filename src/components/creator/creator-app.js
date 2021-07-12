@@ -201,21 +201,16 @@ const CreatorApp = (props) => {
 				<button className="toggleBank" onClick={toggleBank}>Question Bank</button>
 				<button className="toggleSubmissionSettings" onClick={toggleSubmissionSettings}>Submission Settings</button>
 			</header>
-			<QuestionSelect questions={manager.state.items}></QuestionSelect>
+			<QuestionSelect></QuestionSelect>
 			<section className="content-container">
 				<Question></Question>
 				<PhraseBuilder
-					phrase={manager.state.items[manager.state.currentIndex].phrase}
-					legend={manager.state.legend}
-					showTokenTutorial={manager.state.showTokenTutorial}
 					toggleLegend={toggleLegend}
 					format="phrase">
 				</PhraseBuilder>
 				<PrefSelect
 					displayPref={manager.state.items[manager.state.currentIndex].displayPref}
-					fakes={manager.state.items[manager.state.currentIndex].fakes}
-					attempts={manager.state.items[manager.state.currentIndex].attempts}
-					hint={manager.state.items[manager.state.currentIndex].hint}></PrefSelect>
+				></PrefSelect>
 				<section className="options-container">
 					<button className="card options-button" onClick={toggleHintModal}>
 						<header>Edit Attempts and Hint</header>
@@ -232,7 +227,7 @@ const CreatorApp = (props) => {
 					<button className="card delete-question" onClick={handleDeleteQuestion} disabled={manager.state.items.length < 2}>Delete Question</button>
 				</section>
 			</section>
-			<Legend show={manager.state.showLegend ? manager.state.showLegend : false} legend={manager.state.legend} toggle={toggleLegend}></Legend>
+			<Legend toggle={toggleLegend}></Legend>
 		</div>
 	)
 }

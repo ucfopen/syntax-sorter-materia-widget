@@ -1,0 +1,91 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Creator Bank Modal Creator Bank Modal component 1`] = `
+<div
+  className="modal-wrapper"
+  style={
+    Object {
+      "display": "none",
+    }
+  }
+>
+  <div
+    className="modal creator"
+  >
+    <h3>
+      Question Bank Settings
+    </h3>
+    <p>
+      Optionally set a question limit that's lower than the total number of questions created for this widget. The questions will be randomly selected each time the widget is played.
+    </p>
+    <span
+      className="select-wrapper"
+    >
+      <strong>
+        Enable Question Bank?
+      </strong>
+      <span
+        className="pref-select"
+      >
+        <input
+          checked={false}
+          name="question-bank-toggle"
+          onChange={[Function]}
+          type="radio"
+          value={true}
+        />
+        <span
+          className="radio-overlay "
+        />
+        Yes
+      </span>
+      <span
+        className="pref-select"
+      >
+        <input
+          checked={true}
+          name="question-bank-toggle"
+          onChange={[Function]}
+          type="radio"
+          value={false}
+        />
+        <span
+          className="radio-overlay left selected"
+        />
+        No
+      </span>
+    </span>
+    <span
+      className="check-select select-wrapper disabled"
+    >
+      <span
+        className="strong"
+      >
+        Number of questions to ask:
+      </span>
+      <input
+        className="num-ask"
+        disabled={true}
+        max={1}
+        min="1"
+        name="check-val"
+        onChange={[Function]}
+        type="number"
+        value={1}
+      />
+      <span>
+        out of 
+        1
+      </span>
+    </span>
+    <button
+      onClick={[Function]}
+    >
+      Okay
+    </button>
+  </div>
+  <div
+    className="modal-bg"
+  />
+</div>
+`;

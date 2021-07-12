@@ -11,13 +11,19 @@
 		"@babel/plugin-proposal-class-properties": "7.8.3",
 		"@babel/plugin-proposal-optional-chaining": "7.8.3",
 		"@babel/preset-react": "^7.0.0",
+		"@testing-library/react": "^12.0.0",
+		"@testing-library/react-hooks": "^7.0.0",
+		"@testing-library/user-event": "^13.1.9",
 		"eslint": "^6.5.1",
 		"eslint-plugin-react": "^7.16.0",
 		"jest": "^24.9",
+		"jest-canvas-mock": "^2.3.1",
+		"jest-environment-jsdom-sixteen": "^2.0.0",
 		"react": "16.9.0",
 		"react-color": "^2.18.0",
 		"react-dom": "^16.9.0",
-		"react-test-renderer": "^16.9.0",
+		"react-test-renderer": "^16.14.0",
+		"regenerator-runtime": "^0.13.7",
 		"sass": "^1.24.4"
 	},
 	"scripts": {
@@ -27,6 +33,9 @@
 		"build-dev": "webpack",
 		"test": "jest",
 		"test-ci": "TZ='America/New_York' CI=true jest --ci --useStderr --coverage --coverageReporters text-summary cobertura"
+	},
+	"jest": {
+		"testEnvironment": "jsdom-sixteen"
 	},
 	"author": "University of Central Florida, Center for Distributed Learning",
 	"description": "Syntax Sorter Materia Widget. A tool for arranging sentences or phrases based on the syntactic structure of individual tokens.",
