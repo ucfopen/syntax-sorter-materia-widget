@@ -1,0 +1,76 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Creator Hints Modal Creator Hints Modal component 1`] = `
+<div
+  className="modal-wrapper"
+  style={
+    Object {
+      "display": "none",
+    }
+  }
+>
+  <div
+    className="modal creator"
+  >
+    <h3>
+      Attempts and Hint
+    </h3>
+    <p>
+      Edit the total number of attempts for this question. If a question allows more than one attempt, you can provide an optional hint should they respond incorrectly.
+    </p>
+    <span
+      className="select-wrapper"
+    >
+      <span
+        className="check-select"
+      >
+        <span
+          className="strong"
+        >
+          Number of attempts:
+        </span>
+        <input
+          max="9"
+          min="1"
+          name="check-val"
+          onChange={[Function]}
+          placeholder="1"
+          type="number"
+          value={1}
+        />
+      </span>
+    </span>
+    <span
+      className="select-wrapper disabled"
+      disabled={true}
+    >
+      <span
+        className="check-select"
+      >
+        <span
+          className="strong"
+        >
+          Hint:
+        </span>
+        <input
+          className="hint-text"
+          disabled={true}
+          name="hint-val"
+          onChange={[Function]}
+          placeholder="Requires an attempt limit higher than 1."
+          type="text"
+          value=""
+        />
+      </span>
+    </span>
+    <button
+      onClick={[Function]}
+    >
+      Okay
+    </button>
+  </div>
+  <div
+    className="modal-bg"
+  />
+</div>
+`;

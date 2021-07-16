@@ -182,18 +182,14 @@ const CreatorApp = (props) => {
 				Open the Legend to start defining individual labels for phrase tokens.
 			</div>
 			<CreatorTutorial></CreatorTutorial>
-			<CreatorHintsModal
-				attempts={manager.state.items[manager.state.currentIndex].attempts}
-				hint={manager.state.items[manager.state.currentIndex].hint}></CreatorHintsModal>
+			<CreatorHintsModal></CreatorHintsModal>
 			<CreatorBankModal
 				enableQuestionBank={manager.state.enableQuestionBank}
 				numAsk={manager.state.numAsk}
 				questionCount={manager.state.items.length}></CreatorBankModal>
 			<CreatorSubmissionSettingsModal
 				requireAllQuestions={manager.state.requireAllQuestions}></CreatorSubmissionSettingsModal>
-			<CreatorFakeoutModal
-				fakes={manager.state.items[manager.state.currentIndex].fakes}></CreatorFakeoutModal>
-
+			<CreatorFakeoutModal></CreatorFakeoutModal>
 			<CreatorErrorModal></CreatorErrorModal>
 			<header className="creator-header">
 				<input value={manager.state.title} onChange={handleTitleUpdate} placeholder="Give Your Widget a Title" />

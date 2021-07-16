@@ -1,27 +1,26 @@
+import { act } from '@testing-library/react-hooks'
 import React from 'react'
 import renderer from 'react-test-renderer'
-import PhraseBuilder from '../../../components/creator/phrase-builder'
+import FakeoutBuilder from '../../../components/creator/fakeout-builder'
 import Token from '../../../components/creator/token'
 import { StateProvider } from '../../../creator-store'
-import { act } from '@testing-library/react-hooks'
 
-describe('Phrase Builder', () => {
-	
-	test('Phrase Builder component', () => {
+describe('Fakeout Builder', () => {
+
+	test('Fakeout Builder component', () => {
 		const component = renderer.create(
 			<StateProvider>
-				<PhraseBuilder />
+				<FakeoutBuilder></FakeoutBuilder>
 			</StateProvider>
 		)
 		const tree = component.toJSON()
-
 		expect(tree).toMatchSnapshot()
 	})
 
 	test('It inputs a token', () => {
 		const component = renderer.create(
 			<StateProvider>
-				<PhraseBuilder />
+				<FakeoutBuilder />
 			</StateProvider>
 		)
 
@@ -34,18 +33,19 @@ describe('Phrase Builder', () => {
 
 		const tokens = providerEl.findAllByType(Token)
 		expect(tokens[0].props.value).toBe('antidisestablishmentarianism')
+		
 	})
 
 	test('It selects a legend type for the token', () => {
 		const component = renderer.create(
 			<StateProvider>
-				<PhraseBuilder />
+				<FakeoutBuilder />
 			</StateProvider>
 		)
 
 		const providerEl = component.root
-		const tokenInput = providerEl.findByProps({ className: 'token-input' })
-			
+		const tokenInput = providerEl.findByProps({ className: 'token-input'})
+		
 		act(() => {
 			tokenInput.props.onKeyDown({which: 13, target: { value: 'antidisestablishmentarianism'}})
 		})
@@ -78,37 +78,25 @@ describe('Phrase Builder', () => {
 	test('It converts a token back into input', () => {
 		const component = renderer.create(
 			<StateProvider>
-				<PhraseBuilder />
+				<FakeoutBuilder />
 			</StateProvider>
 		)
 
 		const providerEl = component.root
-		const phraseBuilderEl = providerEl.findByType(PhraseBuilder)
-
-		let inputs = phraseBuilderEl.findAllByType('input')
-
-		inputs.forEach((input) => {
-
-			if (input.props.className && input.props.className == 'token-input'){
-				act(() => {
-					input.props.onKeyDown({which: 13, target: { value: 'antidisestablishmentarianism'}})
-				})
-			}
+		const tokenInput = providerEl.findByProps({ className: 'token-input' })
+		act(() => {
+			tokenInput.props.onKeyDown({which: 13, target: { value: 'antidisestablishmentarianism'}})
 		})
 
-		let tokens = phraseBuilderEl.findAllByType(Token)
+		let tokens = providerEl.findAllByType(Token)
 		expect(tokens.length).toBe(1)
 
-		inputs.forEach((input) => {
-
-			if (input.props.className && input.props.className == 'token-input'){
-				act(() => {
-					input.props.onKeyDown({which: 8, target: { value: ''}, preventDefault: jest.fn()})
-				})
-
-				tokens = phraseBuilderEl.findAllByType(Token)
-				expect(tokens.length).toBe(0)
-			}
+		act(() => {
+			tokenInput.props.onKeyDown({which: 8, target: { value: ''}, preventDefault: jest.fn()})
 		})
+
+		tokens = providerEl.findAllByType(Token)
+		expect(tokens.length).toBe(0)
 	})
+
 })

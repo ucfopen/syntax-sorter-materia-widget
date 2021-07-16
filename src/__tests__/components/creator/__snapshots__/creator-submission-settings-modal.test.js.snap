@@ -1,0 +1,72 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Creator Submission Settings Modal Creator Submission Settings component 1`] = `
+<div
+  className="modal-wrapper"
+  style={
+    Object {
+      "display": "none",
+    }
+  }
+>
+  <div
+    className="modal creator"
+  >
+    <h3>
+      Submission Settings
+    </h3>
+    <span
+      className="select-wrapper"
+    >
+      <span
+        className="strong"
+      >
+        Require all questions?
+      </span>
+      <span
+        className="pref-select"
+      >
+        <input
+          checked={false}
+          name="question-bank-toggle"
+          onChange={[Function]}
+          type="radio"
+          value={true}
+        />
+        <span
+          className="radio-overlay "
+        />
+        Yes
+      </span>
+      <span
+        className="pref-select"
+      >
+        <input
+          checked={false}
+          name="question-bank-toggle"
+          onChange={[Function]}
+          type="radio"
+          value={false}
+        />
+        <span
+          className="radio-overlay left "
+        />
+        No
+      </span>
+    </span>
+    <span
+      className="select-wrapper"
+    >
+      If enabled, students must respond to all questions before submission by sorting at least one token per question. Empty responses are not allowed.
+    </span>
+    <button
+      onClick={[Function]}
+    >
+      Okay
+    </button>
+  </div>
+  <div
+    className="modal-bg"
+  />
+</div>
+`;

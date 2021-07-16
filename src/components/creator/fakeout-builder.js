@@ -12,7 +12,7 @@ const FakeoutBuilder = (props) => {
 	const inputRef = useRef(null)
 
 	useEffect(() => {
-		if (manager.state.showFakeoutModal == false && inputRef.current.value.length > 0) {
+		if (manager.state.showFakeoutModal == false && inputRef.current?.value.length > 0) {
 			convertInputToToken(inputRef.current.value)
 			inputRef.current.value = ""
 		}
@@ -24,8 +24,8 @@ const FakeoutBuilder = (props) => {
 				// convert prior token back to input
 				if (event.target.value.length == 0) {
 					event.preventDefault()
-					if (props.fakes.length < 1) return
-					let text = convertTokenToInput(props.fakes.length - 1)
+					if (manager.state.items[manager.state.currentIndex].fakes.length < 1) return
+					let text = convertTokenToInput(manager.state.items[manager.state.currentIndex].fakes.length - 1)
 					event.target.value = decodeURIComponent(text)
 				}
 				break;
@@ -71,13 +71,11 @@ const FakeoutBuilder = (props) => {
 		})
 	}
 
-	let tokenList = props.fakes?.map((term, index) => {
+	let tokenList = manager.state.items[manager.state.currentIndex].fakes?.map((term, index) => {
 		return <Token key={index} index={index} type={term.legend} context="fakeout" value={term.value}></Token>
 	})
 
-
-
-	let legendSelection = props.legend.map((term, index) => {
+	let legendSelection = manager.state.legend.map((term, index) => {
 		return (<label key={index} className={`${manager.state.selectedFakeoutIndex != -1 && currentLegend == term.id ? 'selected' : ''}`}>
 			<input type="radio" name="token-type-selection" value={term.id} onChange={tokenTypeSelection} checked={manager.state.selectedFakeoutIndex != -1 && currentLegend == term.id} />
 			<span className="color-radio" style={{ background: term.color }}></span>{term.name.length > 0 ? term.name : 'Untitled Legend Item'}

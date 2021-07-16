@@ -1,0 +1,29 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Legend Item Legend Item component 1`] = `
+<div
+  className="legend-item "
+>
+  <button
+    className="item-color "
+    onClick={[Function]}
+    style={
+      Object {
+        "backgroundColor": "#FF0000",
+      }
+    }
+  />
+  <input
+    onChange={[Function]}
+    onKeyDown={[Function]}
+    placeholder="Legend Value"
+    value="Part of Speech"
+  />
+  <button
+    className="remove-item"
+    onClick={[Function]}
+  >
+    X
+  </button>
+</div>
+`;

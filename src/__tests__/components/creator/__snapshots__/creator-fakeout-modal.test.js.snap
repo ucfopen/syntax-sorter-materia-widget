@@ -1,0 +1,79 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Creator Fakeout Modal Creator Fakeout Modal component 1`] = `
+<div
+  className="modal-wrapper"
+  style={
+    Object {
+      "display": "none",
+    }
+  }
+>
+  <div
+    className="modal creator wide centered"
+  >
+    <h3>
+      Add "Fake" Tokens
+    </h3>
+    <p>
+      Increase the difficulty of your question by adding additional tokens alongside the "real" ones. The student will be notified that these extra tokens exist, and that not all tokens available may be part of the final phrase.
+    </p>
+    <section
+      className="fakeout-builder"
+    >
+      <div
+        className="token-container "
+      >
+        <div
+          className="token-input-container"
+        >
+          <input
+            className="token-input"
+            onKeyDown={[Function]}
+            placeholder="..."
+          />
+        </div>
+      </div>
+      <div
+        className="token-type-selector "
+      >
+        <header>
+          What type of word is this?
+        </header>
+        <form
+          id="tokenTypeSelectionFake"
+        >
+          <label
+            className=""
+          >
+            <input
+              checked={false}
+              name="token-type-selection"
+              onChange={[Function]}
+              type="radio"
+              value={1}
+            />
+            <span
+              className="color-radio"
+              style={
+                Object {
+                  "background": "#FF0000",
+                }
+              }
+            />
+            Part of Speech
+          </label>
+        </form>
+      </div>
+    </section>
+    <button
+      onClick={[Function]}
+    >
+      Okay
+    </button>
+  </div>
+  <div
+    className="modal-bg"
+  />
+</div>
+`;
