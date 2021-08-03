@@ -1,0 +1,48 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Warning Modal Warning Modal Component 1`] = `
+<span
+  className="test-component"
+>
+  <div
+    className="warning-wrapper"
+    style={
+      Object {
+        "display": "none",
+      }
+    }
+  >
+    <div
+      className="warning"
+    >
+      <span
+        className="dev-warning"
+      >
+        You still have unfinished questions.
+      </span>
+      <div>
+        <h3>
+          Are you sure you want to submit?
+        </h3>
+        <div
+          className="warning-submit-holder"
+        >
+          <button
+            onClick={[Function]}
+          >
+            No
+          </button>
+          <button
+            onClick={[MockFunction]}
+          >
+            Yes
+          </button>
+        </div>
+      </div>
+    </div>
+    <div
+      className="warning-bg"
+    />
+  </div>
+</span>
+`;

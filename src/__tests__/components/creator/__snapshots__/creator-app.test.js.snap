@@ -1,0 +1,1400 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Creator Application Creator App component 1`] = `
+<div
+  className="creator-container"
+>
+  <div
+    className="startupTooltip show"
+    onClick={[Function]}
+  >
+    Open the Legend to start defining individual labels for phrase tokens.
+  </div>
+  <div
+    className="modal-wrapper"
+    style={
+      Object {
+        "display": "flex",
+      }
+    }
+  >
+    <div
+      className="modal tutorial creator"
+    >
+      <h3>
+        Build Effective Syntax Mastery Tools
+      </h3>
+      <div
+        className="tutorial-content"
+      >
+        <p>
+          1. Identify syntax elements using the 
+          <span
+            className="strong"
+          >
+            Legend
+          </span>
+          . For example, if the phrase is another language, you might use the Legend to identify parts of speech.
+        </p>
+        <img
+          alt="Example screenshot of the token legend."
+          className="right"
+          src="assets/img/creator-tutorial-legend.png"
+        />
+      </div>
+      <div
+        className="tutorial-content"
+      >
+        <p>
+          2. Provide 
+          <span
+            className="strong"
+          >
+            instructions
+          </span>
+           or a 
+          <span
+            className="strong"
+          >
+            prompt
+          </span>
+           for each question.
+        </p>
+        <img
+          alt="Example screenshot of the question text."
+          className="right"
+          src="assets/img/creator-tutorial-question.png"
+        />
+      </div>
+      <div
+        className="tutorial-content"
+      >
+        <p>
+          3. Assemble a 
+          <span
+            className="strong"
+          >
+            sentence
+          </span>
+           or 
+          <span
+            className="strong"
+          >
+            phrase
+          </span>
+           by entering each word, phrase, or part of speech - then identify each token by their syntax from the 
+          <span
+            className="strong"
+          >
+            Legend.
+          </span>
+        </p>
+        <img
+          alt="Example screenshot of phrase assembly."
+          className="right"
+          src="assets/img/creator-tutorial-phrase.png"
+        />
+      </div>
+      <p>
+        4. You can optionally enable additional features, like allowing students 
+        <span
+          className="strong"
+        >
+          additional attempts
+        </span>
+         for specific questions, or create additional 
+        <span
+          className="strong"
+        >
+          "fake" tokens
+        </span>
+         that will appear alongside the real ones.
+      </p>
+      <button
+        onClick={[Function]}
+      >
+        Let's Go
+      </button>
+    </div>
+    <div
+      className="modal-bg"
+    />
+  </div>
+  <div
+    className="modal-wrapper"
+    style={
+      Object {
+        "display": "none",
+      }
+    }
+  >
+    <div
+      className="modal creator"
+    >
+      <h3>
+        Attempts and Hint
+      </h3>
+      <p>
+        Edit the total number of attempts for this question. If a question allows more than one attempt, you can provide an optional hint should they respond incorrectly.
+      </p>
+      <span
+        className="select-wrapper"
+      >
+        <span
+          className="check-select"
+        >
+          <span
+            className="strong"
+          >
+            Number of attempts:
+          </span>
+          <input
+            max="9"
+            min="1"
+            name="check-val"
+            onChange={[Function]}
+            placeholder="1"
+            type="number"
+            value={1}
+          />
+        </span>
+      </span>
+      <span
+        className="select-wrapper disabled"
+        disabled={true}
+      >
+        <span
+          className="check-select"
+        >
+          <span
+            className="strong"
+          >
+            Hint:
+          </span>
+          <input
+            className="hint-text"
+            disabled={true}
+            name="hint-val"
+            onChange={[Function]}
+            placeholder="Requires an attempt limit higher than 1."
+            type="text"
+            value=""
+          />
+        </span>
+      </span>
+      <button
+        onClick={[Function]}
+      >
+        Okay
+      </button>
+    </div>
+    <div
+      className="modal-bg"
+    />
+  </div>
+  <div
+    className="modal-wrapper"
+    style={
+      Object {
+        "display": "none",
+      }
+    }
+  >
+    <div
+      className="modal creator"
+    >
+      <h3>
+        Question Bank Settings
+      </h3>
+      <p>
+        Optionally set a question limit that's lower than the total number of questions created for this widget. The questions will be randomly selected each time the widget is played.
+      </p>
+      <span
+        className="select-wrapper"
+      >
+        <strong>
+          Enable Question Bank?
+        </strong>
+        <span
+          className="pref-select"
+        >
+          <input
+            checked={false}
+            name="question-bank-toggle"
+            onChange={[Function]}
+            type="radio"
+            value={true}
+          />
+          <span
+            className="radio-overlay "
+          />
+          Yes
+        </span>
+        <span
+          className="pref-select"
+        >
+          <input
+            checked={true}
+            name="question-bank-toggle"
+            onChange={[Function]}
+            type="radio"
+            value={false}
+          />
+          <span
+            className="radio-overlay left selected"
+          />
+          No
+        </span>
+      </span>
+      <span
+        className="check-select select-wrapper disabled"
+      >
+        <span
+          className="strong"
+        >
+          Number of questions to ask:
+        </span>
+        <input
+          className="num-ask"
+          disabled={true}
+          max={1}
+          min="1"
+          name="check-val"
+          onChange={[Function]}
+          type="number"
+          value={1}
+        />
+        <span>
+          out of 
+          1
+        </span>
+      </span>
+      <button
+        onClick={[Function]}
+      >
+        Okay
+      </button>
+    </div>
+    <div
+      className="modal-bg"
+    />
+  </div>
+  <div
+    className="modal-wrapper"
+    style={
+      Object {
+        "display": "none",
+      }
+    }
+  >
+    <div
+      className="modal creator"
+    >
+      <h3>
+        Submission Settings
+      </h3>
+      <span
+        className="select-wrapper"
+      >
+        <span
+          className="strong"
+        >
+          Require all questions?
+        </span>
+        <span
+          className="pref-select"
+        >
+          <input
+            checked={false}
+            name="question-bank-toggle"
+            onChange={[Function]}
+            type="radio"
+            value={true}
+          />
+          <span
+            className="radio-overlay "
+          />
+          Yes
+        </span>
+        <span
+          className="pref-select"
+        >
+          <input
+            checked={true}
+            name="question-bank-toggle"
+            onChange={[Function]}
+            type="radio"
+            value={false}
+          />
+          <span
+            className="radio-overlay left selected"
+          />
+          No
+        </span>
+      </span>
+      <span
+        className="select-wrapper"
+      >
+        If enabled, students must respond to all questions before submission by sorting at least one token per question. Empty responses are not allowed.
+      </span>
+      <button
+        onClick={[Function]}
+      >
+        Okay
+      </button>
+    </div>
+    <div
+      className="modal-bg"
+    />
+  </div>
+  <div
+    className="modal-wrapper"
+    style={
+      Object {
+        "display": "none",
+      }
+    }
+  >
+    <div
+      className="modal creator wide centered"
+    >
+      <h3>
+        Add "Fake" Tokens
+      </h3>
+      <p>
+        Increase the difficulty of your question by adding additional tokens alongside the "real" ones. The student will be notified that these extra tokens exist, and that not all tokens available may be part of the final phrase.
+      </p>
+      <section
+        className="fakeout-builder"
+      >
+        <div
+          className="token-container "
+        >
+          <div
+            className="token-input-container"
+          >
+            <input
+              className="token-input"
+              onKeyDown={[Function]}
+              placeholder="..."
+            />
+          </div>
+        </div>
+        <div
+          className="token-type-selector "
+        >
+          <header>
+            What type of word is this?
+          </header>
+          <form
+            id="tokenTypeSelectionFake"
+          >
+            <label
+              className=""
+            >
+              <input
+                checked={false}
+                name="token-type-selection"
+                onChange={[Function]}
+                type="radio"
+                value={1}
+              />
+              <span
+                className="color-radio"
+                style={
+                  Object {
+                    "background": "#FF0000",
+                  }
+                }
+              />
+              Part of Speech
+            </label>
+          </form>
+        </div>
+      </section>
+      <button
+        onClick={[Function]}
+      >
+        Okay
+      </button>
+    </div>
+    <div
+      className="modal-bg"
+    />
+  </div>
+  <div
+    className="modal-wrapper"
+    style={
+      Object {
+        "display": "none",
+      }
+    }
+  >
+    <div
+      className="modal creator"
+    >
+      <h3>
+        Before You Can Save...
+      </h3>
+      <p>
+        The following validation checks failed. Fix each of them below to save your work.
+      </p>
+      <div
+        className="error-holder"
+      />
+      <button
+        onClick={[Function]}
+      >
+        Okay
+      </button>
+    </div>
+    <div
+      className="modal-bg"
+    />
+  </div>
+  <header
+    className="creator-header"
+  >
+    <input
+      onChange={[Function]}
+      placeholder="Give Your Widget a Title"
+      value="New Syntax Sorter Widget"
+    />
+    <button
+      className="toggleLegend"
+      onClick={[Function]}
+    >
+      Legend
+    </button>
+    <button
+      className="toggleBank"
+      onClick={[Function]}
+    >
+      Question Bank
+    </button>
+    <button
+      className="toggleSubmissionSettings"
+      onClick={[Function]}
+    >
+      Submission Settings
+    </button>
+  </header>
+  <div
+    className="question-select"
+  >
+    <button
+      className="select-btn paginate-up  disabled"
+      disabled={true}
+      onClick={[Function]}
+    >
+      <span
+        className="icon-arrow-up2"
+      />
+    </button>
+    <button
+      className="select-btn add-new "
+      disabled={false}
+      onClick={[Function]}
+    >
+      +
+    </button>
+    <button
+      className="select-btn paginate-down  disabled"
+      disabled={true}
+      onClick={[Function]}
+    >
+      <span
+        className="icon-arrow-down2"
+      />
+    </button>
+  </div>
+  <section
+    className="content-container"
+  >
+    <section
+      className="card question-container"
+    >
+      <header>
+        Question 
+        1
+         Text
+      </header>
+      <input
+        onChange={[Function]}
+        placeholder="Add some text here describing the phrase below or providing instructions."
+        value=""
+      />
+    </section>
+    <section
+      className="card phrase-builder"
+    >
+      <header>
+        Phrase to Complete
+      </header>
+      <div
+        className="token-tutorial show"
+        onClick={[Function]}
+      >
+        <p>
+          <span
+            className="icon-notification"
+          />
+          Use the input to the left to create the individual 
+          <span
+            className="strong"
+          >
+            tokens
+          </span>
+           that will make up your phrase. Tokens can be a word, multiple words, a part of speech, grammar symbol, or any combination. The tokens will be randomly ordered when a student plays the widget.
+        </p>
+      </div>
+      <div
+        className="token-container"
+      >
+        <div
+          className="token-input-container"
+        >
+          <input
+            className="token-input"
+            maxLength={200}
+            onKeyDown={[Function]}
+            placeholder="..."
+          />
+        </div>
+      </div>
+      <div
+        className="token-type-selector "
+      >
+        <header>
+          Select the corresponding legend item for this token:
+        </header>
+        <form
+          id="tokenTypeSelection"
+        >
+          <label
+            className=""
+          >
+            <input
+              checked={false}
+              name="token-type-selection"
+              onChange={[Function]}
+              type="radio"
+              value={1}
+            />
+            <span
+              className="color-radio"
+              style={
+                Object {
+                  "background": "#FF0000",
+                }
+              }
+            />
+            Part of Speech
+          </label>
+          <span
+            className="legend-reminder"
+          >
+            Open the 
+            <a
+              href="#"
+              onClick={[Function]}
+            >
+              Legend
+            </a>
+             to create additional token categories.
+          </span>
+        </form>
+      </div>
+    </section>
+    <div
+      className="card split"
+    >
+      <div
+        className="pref-options"
+      >
+        <header>
+          How should each token be displayed & scored?
+        </header>
+        <span
+          className="pref-select"
+        >
+          <input
+            checked={true}
+            name="token-display-select"
+            onChange={[Function]}
+            type="radio"
+            value="word"
+          />
+          <span
+            className="radio-overlay selected"
+          />
+          <span
+            className="strong"
+          >
+            By Word
+          </span>
+          : Both the word and the legend value must match.
+        </span>
+        <span
+          className="pref-select"
+        >
+          <input
+            checked={false}
+            name="token-display-select"
+            onChange={[Function]}
+            type="radio"
+            value="legend"
+          />
+          <span
+            className="radio-overlay "
+          />
+          <span
+            className="strong"
+          >
+            By Legend
+          </span>
+          : Only the legend value of a token matters. The word will not be shown.
+        </span>
+      </div>
+      <div
+        className="student-preview"
+      >
+        <header>
+          Student Preview
+        </header>
+        <div
+          className="preview-container"
+        >
+          <span
+            className="empty-message show"
+          >
+            No tokens to preview yet.
+          </span>
+        </div>
+      </div>
+    </div>
+    <section
+      className="options-container"
+    >
+      <button
+        className="card options-button"
+        onClick={[Function]}
+      >
+        <header>
+          Edit Attempts and Hint
+        </header>
+        <span
+          className="button-context "
+        >
+          Attempts: 
+          1
+          , Hint: 
+          No Hint
+        </span>
+      </button>
+      <button
+        className="card options-button"
+        onClick={[Function]}
+      >
+        <header>
+          Edit "Fake" Tokens
+        </header>
+        <span
+          className="button-context "
+        >
+          Fake Tokens: 
+          0
+        </span>
+      </button>
+      <button
+        className="card delete-question"
+        disabled={true}
+        onClick={[Function]}
+      >
+        Delete Question
+      </button>
+    </section>
+  </section>
+  <section
+    className="legend "
+  >
+    <header>
+      Legend
+    </header>
+    <p>
+      <span
+        className="icon-notification"
+      />
+      Use the Legend to easily identify the syntax of individual tokens you create. For example, if you're creating a phrase in another language, you might use the Legend to identify individual parts of speech.
+    </p>
+    <div
+      className="legend-item-container"
+    >
+      <div
+        className="legend-item "
+      >
+        <button
+          className="item-color "
+          onClick={[Function]}
+          style={
+            Object {
+              "backgroundColor": "#FF0000",
+            }
+          }
+        />
+        <input
+          onChange={[Function]}
+          onKeyDown={[Function]}
+          placeholder="Legend Value"
+          value="Part of Speech"
+        />
+        <button
+          className="remove-item"
+          onClick={[Function]}
+        >
+          X
+        </button>
+      </div>
+      <button
+        className="addNew"
+        onClick={[Function]}
+      >
+        + Add Another
+      </button>
+    </div>
+    <button
+      className="doneBtn"
+      onClick={[Function]}
+    >
+      Done
+    </button>
+    <div
+      className="legend-color-picker-wrapper"
+      style={
+        Object {
+          "display": "none",
+          "left": "-230px",
+          "top": "0px",
+        }
+      }
+    >
+      <div
+        className="chrome-picker "
+        style={
+          Object {
+            "MozBorderRadius": "2px",
+            "MozBoxShadow": "0 0 2px rgba(0,0,0,.3), 0 4px 8px rgba(0,0,0,.3)",
+            "OBorderRadius": "2px",
+            "OBoxShadow": "0 0 2px rgba(0,0,0,.3), 0 4px 8px rgba(0,0,0,.3)",
+            "WebkitBorderRadius": "2px",
+            "WebkitBoxShadow": "0 0 2px rgba(0,0,0,.3), 0 4px 8px rgba(0,0,0,.3)",
+            "background": "#fff",
+            "borderRadius": "2px",
+            "boxShadow": "0 0 2px rgba(0,0,0,.3), 0 4px 8px rgba(0,0,0,.3)",
+            "boxSizing": "initial",
+            "fontFamily": "Menlo",
+            "msBorderRadius": "2px",
+            "msBoxShadow": "0 0 2px rgba(0,0,0,.3), 0 4px 8px rgba(0,0,0,.3)",
+            "width": 225,
+          }
+        }
+      >
+        <div
+          style={
+            Object {
+              "MozBorderRadius": "2px 2px 0 0",
+              "OBorderRadius": "2px 2px 0 0",
+              "WebkitBorderRadius": "2px 2px 0 0",
+              "borderRadius": "2px 2px 0 0",
+              "msBorderRadius": "2px 2px 0 0",
+              "overflow": "hidden",
+              "paddingBottom": "55%",
+              "position": "relative",
+              "width": "100%",
+            }
+          }
+        >
+          <div
+            onMouseDown={[Function]}
+            onTouchMove={[Function]}
+            onTouchStart={[Function]}
+            style={
+              Object {
+                "MozBorderRadius": undefined,
+                "OBorderRadius": undefined,
+                "WebkitBorderRadius": undefined,
+                "background": "hsl(0,100%, 50%)",
+                "borderRadius": undefined,
+                "bottom": "0px",
+                "left": "0px",
+                "msBorderRadius": undefined,
+                "position": "absolute",
+                "right": "0px",
+                "top": "0px",
+              }
+            }
+          >
+            <style>
+              
+          .saturation-white {
+            background: -webkit-linear-gradient(to right, #fff, rgba(255,255,255,0));
+            background: linear-gradient(to right, #fff, rgba(255,255,255,0));
+          }
+          .saturation-black {
+            background: -webkit-linear-gradient(to top, #000, rgba(0,0,0,0));
+            background: linear-gradient(to top, #000, rgba(0,0,0,0));
+          }
+        
+            </style>
+            <div
+              className="saturation-white"
+              style={
+                Object {
+                  "MozBorderRadius": undefined,
+                  "OBorderRadius": undefined,
+                  "WebkitBorderRadius": undefined,
+                  "borderRadius": undefined,
+                  "bottom": "0px",
+                  "left": "0px",
+                  "msBorderRadius": undefined,
+                  "position": "absolute",
+                  "right": "0px",
+                  "top": "0px",
+                }
+              }
+            >
+              <div
+                className="saturation-black"
+                style={
+                  Object {
+                    "MozBorderRadius": undefined,
+                    "MozBoxShadow": undefined,
+                    "OBorderRadius": undefined,
+                    "OBoxShadow": undefined,
+                    "WebkitBorderRadius": undefined,
+                    "WebkitBoxShadow": undefined,
+                    "borderRadius": undefined,
+                    "bottom": "0px",
+                    "boxShadow": undefined,
+                    "left": "0px",
+                    "msBorderRadius": undefined,
+                    "msBoxShadow": undefined,
+                    "position": "absolute",
+                    "right": "0px",
+                    "top": "0px",
+                  }
+                }
+              />
+              <div
+                style={
+                  Object {
+                    "cursor": "default",
+                    "left": "100%",
+                    "position": "absolute",
+                    "top": "0%",
+                  }
+                }
+              >
+                <div
+                  style={
+                    Object {
+                      "MozBorderRadius": "6px",
+                      "MozBoxShadow": "inset 0 0 0 1px #fff",
+                      "MozTransform": "translate(-6px, -6px)",
+                      "OBorderRadius": "6px",
+                      "OBoxShadow": "inset 0 0 0 1px #fff",
+                      "OTransform": "translate(-6px, -6px)",
+                      "WebkitBorderRadius": "6px",
+                      "WebkitBoxShadow": "inset 0 0 0 1px #fff",
+                      "WebkitTransform": "translate(-6px, -6px)",
+                      "borderRadius": "6px",
+                      "boxShadow": "inset 0 0 0 1px #fff",
+                      "height": "12px",
+                      "msBorderRadius": "6px",
+                      "msBoxShadow": "inset 0 0 0 1px #fff",
+                      "msTransform": "translate(-6px, -6px)",
+                      "transform": "translate(-6px, -6px)",
+                      "width": "12px",
+                    }
+                  }
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          style={
+            Object {
+              "padding": "16px 16px 12px",
+            }
+          }
+        >
+          <div
+            className="flexbox-fix"
+            style={
+              Object {
+                "display": "flex",
+              }
+            }
+          >
+            <div
+              style={
+                Object {
+                  "width": "22px",
+                }
+              }
+            >
+              <div
+                style={
+                  Object {
+                    "MozBorderRadius": "8px",
+                    "OBorderRadius": "8px",
+                    "WebkitBorderRadius": "8px",
+                    "borderRadius": "8px",
+                    "height": "10px",
+                    "marginTop": "0px",
+                    "msBorderRadius": "8px",
+                    "overflow": "hidden",
+                    "position": "relative",
+                    "width": "10px",
+                  }
+                }
+              >
+                <div
+                  style={
+                    Object {
+                      "MozBorderRadius": "8px",
+                      "MozBoxShadow": "inset 0 0 0 1px rgba(0,0,0,.1)",
+                      "OBorderRadius": "8px",
+                      "OBoxShadow": "inset 0 0 0 1px rgba(0,0,0,.1)",
+                      "WebkitBorderRadius": "8px",
+                      "WebkitBoxShadow": "inset 0 0 0 1px rgba(0,0,0,.1)",
+                      "background": "rgba(255, 0, 0, 1)",
+                      "borderRadius": "8px",
+                      "bottom": "0px",
+                      "boxShadow": "inset 0 0 0 1px rgba(0,0,0,.1)",
+                      "left": "0px",
+                      "msBorderRadius": "8px",
+                      "msBoxShadow": "inset 0 0 0 1px rgba(0,0,0,.1)",
+                      "position": "absolute",
+                      "right": "0px",
+                      "top": "0px",
+                      "zIndex": "2",
+                    }
+                  }
+                />
+                <div
+                  style={
+                    Object {
+                      "MozBorderRadius": undefined,
+                      "MozBoxShadow": undefined,
+                      "OBorderRadius": undefined,
+                      "OBoxShadow": undefined,
+                      "WebkitBorderRadius": undefined,
+                      "WebkitBoxShadow": undefined,
+                      "background": "url(data:image/png;base64,00) center left",
+                      "borderRadius": undefined,
+                      "bottom": "0px",
+                      "boxShadow": undefined,
+                      "left": "0px",
+                      "msBorderRadius": undefined,
+                      "msBoxShadow": undefined,
+                      "position": "absolute",
+                      "right": "0px",
+                      "top": "0px",
+                    }
+                  }
+                />
+              </div>
+            </div>
+            <div
+              style={
+                Object {
+                  "MozBoxFlex": "1",
+                  "WebkitBoxFlex": "1",
+                  "WebkitFlex": "1",
+                  "flex": "1",
+                  "msFlex": "1",
+                }
+              }
+            >
+              <div
+                style={
+                  Object {
+                    "height": "10px",
+                    "marginBottom": "0px",
+                    "position": "relative",
+                  }
+                }
+              >
+                <div
+                  style={
+                    Object {
+                      "MozBorderRadius": undefined,
+                      "MozBoxShadow": undefined,
+                      "OBorderRadius": undefined,
+                      "OBoxShadow": undefined,
+                      "WebkitBorderRadius": undefined,
+                      "WebkitBoxShadow": undefined,
+                      "borderRadius": undefined,
+                      "bottom": "0px",
+                      "boxShadow": undefined,
+                      "left": "0px",
+                      "msBorderRadius": undefined,
+                      "msBoxShadow": undefined,
+                      "position": "absolute",
+                      "right": "0px",
+                      "top": "0px",
+                    }
+                  }
+                >
+                  <div
+                    className="hue-horizontal"
+                    onMouseDown={[Function]}
+                    onTouchMove={[Function]}
+                    onTouchStart={[Function]}
+                    style={
+                      Object {
+                        "MozBorderRadius": undefined,
+                        "OBorderRadius": undefined,
+                        "WebkitBorderRadius": undefined,
+                        "borderRadius": undefined,
+                        "height": "100%",
+                        "msBorderRadius": undefined,
+                        "padding": "0 2px",
+                        "position": "relative",
+                      }
+                    }
+                  >
+                    <style>
+                      
+            .hue-horizontal {
+              background: linear-gradient(to right, #f00 0%, #ff0 17%, #0f0
+                33%, #0ff 50%, #00f 67%, #f0f 83%, #f00 100%);
+              background: -webkit-linear-gradient(to right, #f00 0%, #ff0
+                17%, #0f0 33%, #0ff 50%, #00f 67%, #f0f 83%, #f00 100%);
+            }
+
+            .hue-vertical {
+              background: linear-gradient(to top, #f00 0%, #ff0 17%, #0f0 33%,
+                #0ff 50%, #00f 67%, #f0f 83%, #f00 100%);
+              background: -webkit-linear-gradient(to top, #f00 0%, #ff0 17%,
+                #0f0 33%, #0ff 50%, #00f 67%, #f0f 83%, #f00 100%);
+            }
+          
+                    </style>
+                    <div
+                      style={
+                        Object {
+                          "left": "0%",
+                          "position": "absolute",
+                        }
+                      }
+                    >
+                      <div
+                        style={
+                          Object {
+                            "MozBorderRadius": "6px",
+                            "MozBoxShadow": "0 1px 4px 0 rgba(0, 0, 0, 0.37)",
+                            "MozTransform": "translate(-6px, -1px)",
+                            "OBorderRadius": "6px",
+                            "OBoxShadow": "0 1px 4px 0 rgba(0, 0, 0, 0.37)",
+                            "OTransform": "translate(-6px, -1px)",
+                            "WebkitBorderRadius": "6px",
+                            "WebkitBoxShadow": "0 1px 4px 0 rgba(0, 0, 0, 0.37)",
+                            "WebkitTransform": "translate(-6px, -1px)",
+                            "backgroundColor": "rgb(248, 248, 248)",
+                            "borderRadius": "6px",
+                            "boxShadow": "0 1px 4px 0 rgba(0, 0, 0, 0.37)",
+                            "height": "12px",
+                            "msBorderRadius": "6px",
+                            "msBoxShadow": "0 1px 4px 0 rgba(0, 0, 0, 0.37)",
+                            "msTransform": "translate(-6px, -1px)",
+                            "transform": "translate(-6px, -1px)",
+                            "width": "12px",
+                          }
+                        }
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div
+                style={
+                  Object {
+                    "display": "none",
+                    "height": "10px",
+                    "position": "relative",
+                  }
+                }
+              >
+                <div
+                  style={
+                    Object {
+                      "MozBorderRadius": undefined,
+                      "OBorderRadius": undefined,
+                      "WebkitBorderRadius": undefined,
+                      "borderRadius": undefined,
+                      "bottom": "0px",
+                      "left": "0px",
+                      "msBorderRadius": undefined,
+                      "position": "absolute",
+                      "right": "0px",
+                      "top": "0px",
+                    }
+                  }
+                >
+                  <div
+                    style={
+                      Object {
+                        "MozBorderRadius": undefined,
+                        "OBorderRadius": undefined,
+                        "WebkitBorderRadius": undefined,
+                        "borderRadius": undefined,
+                        "bottom": "0px",
+                        "left": "0px",
+                        "msBorderRadius": undefined,
+                        "overflow": "hidden",
+                        "position": "absolute",
+                        "right": "0px",
+                        "top": "0px",
+                      }
+                    }
+                  >
+                    <div
+                      style={
+                        Object {
+                          "MozBorderRadius": undefined,
+                          "MozBoxShadow": undefined,
+                          "OBorderRadius": undefined,
+                          "OBoxShadow": undefined,
+                          "WebkitBorderRadius": undefined,
+                          "WebkitBoxShadow": undefined,
+                          "background": "url(data:image/png;base64,00) center left",
+                          "borderRadius": undefined,
+                          "bottom": "0px",
+                          "boxShadow": undefined,
+                          "left": "0px",
+                          "msBorderRadius": undefined,
+                          "msBoxShadow": undefined,
+                          "position": "absolute",
+                          "right": "0px",
+                          "top": "0px",
+                        }
+                      }
+                    />
+                  </div>
+                  <div
+                    style={
+                      Object {
+                        "MozBorderRadius": undefined,
+                        "MozBoxShadow": undefined,
+                        "OBorderRadius": undefined,
+                        "OBoxShadow": undefined,
+                        "WebkitBorderRadius": undefined,
+                        "WebkitBoxShadow": undefined,
+                        "background": "linear-gradient(to right, rgba(255,0,0, 0) 0%,
+           rgba(255,0,0, 1) 100%)",
+                        "borderRadius": undefined,
+                        "bottom": "0px",
+                        "boxShadow": undefined,
+                        "left": "0px",
+                        "msBorderRadius": undefined,
+                        "msBoxShadow": undefined,
+                        "position": "absolute",
+                        "right": "0px",
+                        "top": "0px",
+                      }
+                    }
+                  />
+                  <div
+                    onMouseDown={[Function]}
+                    onTouchMove={[Function]}
+                    onTouchStart={[Function]}
+                    style={
+                      Object {
+                        "height": "100%",
+                        "margin": "0 3px",
+                        "position": "relative",
+                      }
+                    }
+                  >
+                    <div
+                      style={
+                        Object {
+                          "left": "100%",
+                          "position": "absolute",
+                        }
+                      }
+                    >
+                      <div
+                        style={
+                          Object {
+                            "MozBorderRadius": "6px",
+                            "MozBoxShadow": "0 1px 4px 0 rgba(0, 0, 0, 0.37)",
+                            "MozTransform": "translate(-6px, -1px)",
+                            "OBorderRadius": "6px",
+                            "OBoxShadow": "0 1px 4px 0 rgba(0, 0, 0, 0.37)",
+                            "OTransform": "translate(-6px, -1px)",
+                            "WebkitBorderRadius": "6px",
+                            "WebkitBoxShadow": "0 1px 4px 0 rgba(0, 0, 0, 0.37)",
+                            "WebkitTransform": "translate(-6px, -1px)",
+                            "backgroundColor": "rgb(248, 248, 248)",
+                            "borderRadius": "6px",
+                            "boxShadow": "0 1px 4px 0 rgba(0, 0, 0, 0.37)",
+                            "height": "12px",
+                            "msBorderRadius": "6px",
+                            "msBoxShadow": "0 1px 4px 0 rgba(0, 0, 0, 0.37)",
+                            "msTransform": "translate(-6px, -1px)",
+                            "transform": "translate(-6px, -1px)",
+                            "width": "12px",
+                          }
+                        }
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            className="flexbox-fix"
+            style={
+              Object {
+                "display": "flex",
+                "paddingTop": "16px",
+              }
+            }
+          >
+            <div
+              className="flexbox-fix"
+              style={
+                Object {
+                  "MozBoxFlex": "1",
+                  "WebkitBoxFlex": "1",
+                  "WebkitFlex": "1",
+                  "display": "flex",
+                  "flex": "1",
+                  "marginLeft": "-6px",
+                  "msFlex": "1",
+                }
+              }
+            >
+              <div
+                style={
+                  Object {
+                    "paddingLeft": "6px",
+                    "width": "100%",
+                  }
+                }
+              >
+                <div
+                  style={
+                    Object {
+                      "position": "relative",
+                    }
+                  }
+                >
+                  <input
+                    onBlur={[Function]}
+                    onChange={[Function]}
+                    onKeyDown={[Function]}
+                    spellCheck="false"
+                    style={
+                      Object {
+                        "MozBorderRadius": "2px",
+                        "MozBoxShadow": "inset 0 0 0 1px #dadada",
+                        "OBorderRadius": "2px",
+                        "OBoxShadow": "inset 0 0 0 1px #dadada",
+                        "WebkitBorderRadius": "2px",
+                        "WebkitBoxShadow": "inset 0 0 0 1px #dadada",
+                        "border": "none",
+                        "borderRadius": "2px",
+                        "boxShadow": "inset 0 0 0 1px #dadada",
+                        "color": "#333",
+                        "fontSize": "11px",
+                        "height": "21px",
+                        "msBorderRadius": "2px",
+                        "msBoxShadow": "inset 0 0 0 1px #dadada",
+                        "textAlign": "center",
+                        "width": "100%",
+                      }
+                    }
+                    value="#FF0000"
+                  />
+                  <span
+                    onMouseDown={[Function]}
+                    style={
+                      Object {
+                        "color": "#969696",
+                        "display": "block",
+                        "fontSize": "11px",
+                        "lineHeight": "11px",
+                        "marginTop": "12px",
+                        "textAlign": "center",
+                        "textTransform": "uppercase",
+                      }
+                    }
+                  >
+                    hex
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div
+              style={
+                Object {
+                  "position": "relative",
+                  "textAlign": "right",
+                  "width": "32px",
+                }
+              }
+            >
+              <div
+                onClick={[Function]}
+                style={
+                  Object {
+                    "cursor": "pointer",
+                    "marginRight": "-4px",
+                    "marginTop": "12px",
+                    "position": "relative",
+                  }
+                }
+              >
+                <svg
+                  onMouseEnter={[Function]}
+                  onMouseOut={[Function]}
+                  onMouseOver={[Function]}
+                  style={
+                    Object {
+                      "MozBorderRadius": "5px",
+                      "OBorderRadius": "5px",
+                      "WebkitBorderRadius": "5px",
+                      "border": "1px transparent solid",
+                      "borderRadius": "5px",
+                      "fill": "#333",
+                      "height": "24px",
+                      "msBorderRadius": "5px",
+                      "width": "24px",
+                    }
+                  }
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    d="M12,18.17L8.83,15L7.42,16.41L12,21L16.59,16.41L15.17,15M12,5.83L15.17,9L16.58,7.59L12,3L7.41,7.59L8.83,9L12,5.83Z"
+                  />
+                </svg>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <button
+        onClick={[Function]}
+      >
+        Close
+      </button>
+    </div>
+  </section>
+</div>
+`;

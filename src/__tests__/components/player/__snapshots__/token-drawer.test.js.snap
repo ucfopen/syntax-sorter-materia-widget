@@ -1,0 +1,109 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Token Drawer Token Drawer component 1`] = `
+<span
+  className="test-component"
+>
+  <section
+    className="token-drawer none "
+    onDragOver={[Function]}
+    onDrop={[Function]}
+  >
+    <div
+      className="token   "
+      draggable={true}
+      onContextMenu={[Function]}
+      onDrag={[Function]}
+      onDragEnd={[Function]}
+      onDragStart={[Function]}
+      style={
+        Object {
+          "background": "#ffffff",
+          "color": "#000000",
+          "display": "inline-block",
+        }
+      }
+    >
+      This
+    </div>
+    <div
+      className="token   "
+      draggable={true}
+      onContextMenu={[Function]}
+      onDrag={[Function]}
+      onDragEnd={[Function]}
+      onDragStart={[Function]}
+      style={
+        Object {
+          "background": "#ffffff",
+          "color": "#000000",
+          "display": "inline-block",
+        }
+      }
+    >
+      is
+    </div>
+    <div
+      className="token   "
+      draggable={true}
+      onContextMenu={[Function]}
+      onDrag={[Function]}
+      onDragEnd={[Function]}
+      onDragStart={[Function]}
+      style={
+        Object {
+          "background": "#ffffff",
+          "color": "#000000",
+          "display": "inline-block",
+        }
+      }
+    >
+      a
+    </div>
+    <div
+      className="token   "
+      draggable={true}
+      onContextMenu={[Function]}
+      onDrag={[Function]}
+      onDragEnd={[Function]}
+      onDragStart={[Function]}
+      style={
+        Object {
+          "background": "#ffffff",
+          "color": "#000000",
+          "display": "inline-block",
+        }
+      }
+    >
+      test
+    </div>
+    <section
+      className="response-controls"
+    >
+      <div
+        className="response-message-container"
+      >
+        <span>
+          NONE
+        </span>
+      </div>
+      <div
+        className="button-container"
+      >
+        <button
+          className="verify show"
+          onClick={[Function]}
+        >
+          Check Answer
+        </button>
+        <button
+          className="paginate show"
+          onClick={[Function]}
+        >
+          Next Question
+        </button>
+      </div>
+    </section>
+  </section>
+</span>
+`;

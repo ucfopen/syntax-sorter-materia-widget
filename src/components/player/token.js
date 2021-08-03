@@ -64,6 +64,7 @@ const Token = (props) => {
 		for (const term of manager.state.legend) {
 			if (type == term.id) return term.color
 		}
+		return '#ffffff'
 	}
 
 	const getLegendName = (type) => {
