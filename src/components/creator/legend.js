@@ -34,12 +34,12 @@ const Legend = (props) => {
 		dispatch({ type: 'legend_color_picker_toggle', payload: { index: manager.state.legendColorPickerTarget } })
 	}
 
-	let legendItems = props.legend.map((item, index) => {
-		return <LegendItem key={index} name={item.name} id={item.id} index={index} toggleColorPicker={toggleColorPicker} focus={item.focus} addLegendItem={addLegendItem}></LegendItem>
+	let legendItems = manager.state.legend.map((item, index) => {
+		return <LegendItem key={index} index={index} toggleColorPicker={toggleColorPicker} focus={item.focus} addLegendItem={addLegendItem}></LegendItem>
 	})
 
 	return (
-		<section className={`legend ${props.show ? "show" : ""}`}>
+		<section className={`legend ${manager.state.showLegend ? "show" : ""}`}>
 			<header>Legend</header>
 			<p><span className="icon-notification"></span>Use the Legend to easily identify the syntax of individual tokens you create. For example, if you're
 				creating a phrase in another language, you might use the Legend to identify individual parts of speech.

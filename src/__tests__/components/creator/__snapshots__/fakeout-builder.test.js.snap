@@ -1,0 +1,52 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Fakeout Builder Fakeout Builder component 1`] = `
+<section
+  className="fakeout-builder"
+>
+  <div
+    className="token-container "
+  >
+    <div
+      className="token-input-container"
+    >
+      <input
+        className="token-input"
+        onKeyDown={[Function]}
+        placeholder="..."
+      />
+    </div>
+  </div>
+  <div
+    className="token-type-selector "
+  >
+    <header>
+      What type of word is this?
+    </header>
+    <form
+      id="tokenTypeSelectionFake"
+    >
+      <label
+        className=""
+      >
+        <input
+          checked={false}
+          name="token-type-selection"
+          onChange={[Function]}
+          type="radio"
+          value={1}
+        />
+        <span
+          className="color-radio"
+          style={
+            Object {
+              "background": "#FF0000",
+            }
+          }
+        />
+        Part of Speech
+      </label>
+    </form>
+  </div>
+</section>
+`;

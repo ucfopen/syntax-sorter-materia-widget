@@ -9,6 +9,8 @@ const LegendItem = (props) => {
 
 	const legendItemRef = useRef(null)
 	const currentColor = manager.state.legend[props.index].color
+	const currentName = manager.state.legend[props.index].name
+	const currentId = manager.state.legend[props.index].id
 
 	const inputRef = useRef(null)
 
@@ -19,7 +21,7 @@ const LegendItem = (props) => {
 	}, [props.focus])
 
 	const handleColorPickerClick = (event) => {
-		let heightOffset = legendItemRef.current.getBoundingClientRect().y
+		let heightOffset = legendItemRef.current?.getBoundingClientRect().y
 		props.toggleColorPicker(props.index, heightOffset)
 	}
 
@@ -36,13 +38,13 @@ const LegendItem = (props) => {
 	}
 
 	const remove = () => {
-		dispatch({ type: 'remove_legend_item', payload: { index: props.index, id: props.id } })
+		dispatch({ type: 'remove_legend_item', payload: { index: props.index, id: currentId } })
 	}
 
 	return (
 		<div className={`legend-item ${manager.state.legendColorPickerTarget == props.index ? 'selected' : ''}`} ref={legendItemRef}>
 			<button className={`item-color ${manager.state.legendColorPickerTarget == props.index ? 'selected' : ''}`} style={{ backgroundColor: currentColor }} onClick={handleColorPickerClick}></button>
-			<input value={props.name} onChange={onNameChange} placeholder='Legend Value' ref={inputRef} onKeyDown={handleKeyDown}></input>
+			<input value={currentName} onChange={onNameChange} placeholder='Legend Value' ref={inputRef} onKeyDown={handleKeyDown}></input>
 			<button className="remove-item" onClick={remove}>X</button>
 		</div>
 	)

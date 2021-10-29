@@ -7,6 +7,7 @@ const PhraseBuilder = (props) => {
 	const manager = useContext(store)
 	const dispatch = manager.dispatch
 	const currentLegend = manager.state.items[manager.state.currentIndex].phrase[manager.state.selectedTokenIndex] ? manager.state.items[manager.state.currentIndex].phrase[manager.state.selectedTokenIndex].legend : -1
+	const phrase = manager.state.items[manager.state.currentIndex].phrase
 
 	const MAX_TOKENS = 500
 	const MAX_TOKEN_CHARS = 200
@@ -17,8 +18,8 @@ const PhraseBuilder = (props) => {
 				// convert prior token back to input
 				if (event.target.value.length == 0) {
 					event.preventDefault()
-					if (props.phrase.length < 1) return
-					let text = convertTokenToInput(props.phrase.length - 1)
+					if (phrase.length < 1) return
+					let text = convertTokenToInput(phrase.length - 1)
 					event.target.value = decodeURIComponent(text)
 				}
 				break;
@@ -46,7 +47,7 @@ const PhraseBuilder = (props) => {
 	}
 
 	const convertInputToToken = (input) => {
-		if (props.phrase.length >= MAX_TOKENS) return
+		if (phrase.length >= MAX_TOKENS) return
 		dispatch({
 			type: 'phrase_input_to_token', payload: {
 				questionIndex: manager.state.currentIndex,
@@ -69,16 +70,16 @@ const PhraseBuilder = (props) => {
 	const toggleTokenTutorial = (event) => {
 		dispatch({
 			type: 'toggle_token_tutorial', payload: {
-				toggle: !props.showTokenTutorial
+				toggle: !manager.state.showTokenTutorial
 			}
 		})
 	}
 
-	let tokenList = props.phrase.map((term, index) => {
+	let tokenList = phrase.map((term, index) => {
 		return <Token key={index} index={index} type={term.legend} value={term.value} context="phrase"></Token>
 	})
 
-	let legendSelection = props.legend.map((term, index) => {
+	let legendSelection = manager.state.legend.map((term, index) => {
 		return (<label key={index} className={`${manager.state.selectedTokenIndex != -1 && currentLegend == term.id ? 'selected' : ''}`}>
 			<input type="radio" name="token-type-selection" value={term.id} onChange={tokenTypeSelection} checked={manager.state.selectedTokenIndex != -1 && currentLegend == term.id} />
 			<span className="color-radio" style={{ background: term.color }}></span>{term.name.length > 0 ? term.name : 'Untitled Legend Item'}
@@ -88,7 +89,7 @@ const PhraseBuilder = (props) => {
 	return (
 		<section className="card phrase-builder">
 			<header>Phrase to Complete</header>
-			<div className={`token-tutorial ${props.showTokenTutorial ? 'show' : 'minimized'}`} onClick={toggleTokenTutorial}>
+			<div className={`token-tutorial ${manager.state.showTokenTutorial ? 'show' : 'minimized'}`} onClick={toggleTokenTutorial}>
 				<p><span className="icon-notification"></span>Use the input to the left to create the individual <span className="strong">tokens</span> that will make up your phrase. Tokens can be a word, multiple words, a part of speech, grammar symbol, or any combination.
 					The tokens will be randomly ordered when a student plays the widget.</p>
 			</div>

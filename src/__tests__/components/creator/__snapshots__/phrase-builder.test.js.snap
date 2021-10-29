@@ -1,0 +1,85 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Phrase Builder Phrase Builder component 1`] = `
+<section
+  className="card phrase-builder"
+>
+  <header>
+    Phrase to Complete
+  </header>
+  <div
+    className="token-tutorial show"
+    onClick={[Function]}
+  >
+    <p>
+      <span
+        className="icon-notification"
+      />
+      Use the input to the left to create the individual 
+      <span
+        className="strong"
+      >
+        tokens
+      </span>
+       that will make up your phrase. Tokens can be a word, multiple words, a part of speech, grammar symbol, or any combination. The tokens will be randomly ordered when a student plays the widget.
+    </p>
+  </div>
+  <div
+    className="token-container"
+  >
+    <div
+      className="token-input-container"
+    >
+      <input
+        className="token-input"
+        maxLength={200}
+        onKeyDown={[Function]}
+        placeholder="..."
+      />
+    </div>
+  </div>
+  <div
+    className="token-type-selector "
+  >
+    <header>
+      Select the corresponding legend item for this token:
+    </header>
+    <form
+      id="tokenTypeSelection"
+    >
+      <label
+        className=""
+      >
+        <input
+          checked={false}
+          name="token-type-selection"
+          onChange={[Function]}
+          type="radio"
+          value={1}
+        />
+        <span
+          className="color-radio"
+          style={
+            Object {
+              "background": "#FF0000",
+            }
+          }
+        />
+        Part of Speech
+      </label>
+      <span
+        className="legend-reminder"
+      >
+        Open the 
+        <a
+          href="#"
+          onClick={[Function]}
+        >
+          Legend
+        </a>
+         to create additional token categories.
+      </span>
+    </form>
+  </div>
+</section>
+`;

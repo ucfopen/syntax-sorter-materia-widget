@@ -97,7 +97,7 @@ const PlayerApp = (props) => {
 		<div className="player-container">
 			<WarningModal
 				submitForScoring={submitForScoring}
-				requireAllQuestions={props.qset.options.requireAllQuestions}></WarningModal>
+				requireAllQuestions={manager.state.requireAllQuestions}></WarningModal>
 			<PlayerTutorial></PlayerTutorial>
 			<header className="player-header">
 				<span className="title">{manager.state.title}</span>

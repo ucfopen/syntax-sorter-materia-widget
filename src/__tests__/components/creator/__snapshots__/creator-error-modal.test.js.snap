@@ -1,0 +1,34 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Creator Error Modal Creator Error Modal component 1`] = `
+<div
+  className="modal-wrapper"
+  style={
+    Object {
+      "display": "none",
+    }
+  }
+>
+  <div
+    className="modal creator"
+  >
+    <h3>
+      Before You Can Save...
+    </h3>
+    <p>
+      The following validation checks failed. Fix each of them below to save your work.
+    </p>
+    <div
+      className="error-holder"
+    />
+    <button
+      onClick={[Function]}
+    >
+      Okay
+    </button>
+  </div>
+  <div
+    className="modal-bg"
+  />
+</div>
+`;

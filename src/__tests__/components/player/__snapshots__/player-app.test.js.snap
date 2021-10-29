@@ -1,0 +1,253 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Player Application Player App component 1`] = `
+<div
+  className="player-container"
+>
+  <div
+    className="warning-wrapper"
+    style={
+      Object {
+        "display": "none",
+      }
+    }
+  >
+    <div
+      className="warning"
+    >
+      <span
+        className="dev-warning"
+      >
+        You still have unfinished questions.
+      </span>
+      <div>
+        <h3>
+          Are you sure you want to submit?
+        </h3>
+        <div
+          className="warning-submit-holder"
+        >
+          <button
+            onClick={[Function]}
+          >
+            No
+          </button>
+          <button
+            onClick={[Function]}
+          >
+            Yes
+          </button>
+        </div>
+      </div>
+    </div>
+    <div
+      className="warning-bg"
+    />
+  </div>
+  <div
+    className="modal-wrapper"
+    style={
+      Object {
+        "display": "flex",
+      }
+    }
+  >
+    <div
+      className="modal tutorial player"
+    >
+      <h3>
+        Arrange Tokens in the Proper Order
+      </h3>
+      <div
+        className="tutorial-content"
+      >
+        <p>
+          Read each question prompt and arrange the tokens based on the instructions provided. Tokens may be a word, part of a word, or a part of speech. 
+          <span
+            className="strong"
+          >
+            Right-click
+          </span>
+           or 
+          <span
+            className="strong"
+          >
+            drag
+          </span>
+           a token back to the drawer to unsort it.
+        </p>
+        <img
+          alt="Player tutorial image demonstrating dragging and dropping tokens"
+          className="right"
+          src="assets/img/player-tutorial-1.png"
+        />
+      </div>
+      <div
+        className="tutorial-content"
+      >
+        <img
+          alt="Player tutorial image demonstrating using the color legend."
+          className="left"
+          src="assets/img/player-tutorial-2.png"
+        />
+        <p>
+          Tokens are color-coded based on their syntax. Use the Legend at the bottom to associate each color with its corresponding syntax.
+        </p>
+      </div>
+      <div
+        className="tutorial-content"
+      >
+        <p>
+          Some questions may allow you to check your answer multiple times before submitting for a score. Use the 
+          <span
+            className="strong"
+          >
+            Check Answer
+          </span>
+           button to see how you did!
+        </p>
+        <img
+          alt="Player tutorial image demonstrating using the Check Answer feature."
+          className="right"
+          src="assets/img/player-tutorial-3.png"
+        />
+      </div>
+      <button
+        onClick={[Function]}
+      >
+        I'm Ready
+      </button>
+    </div>
+    <div
+      className="modal-bg"
+    />
+  </div>
+  <header
+    className="player-header"
+  >
+    <span
+      className="title"
+    >
+      New Syntax Sorter Widget
+    </span>
+    <button
+      className="headerBtn"
+      onClick={[Function]}
+    >
+      Submit
+    </button>
+    <button
+      className="headerBtn"
+      onClick={[Function]}
+    >
+      Tutorial
+    </button>
+  </header>
+  <div
+    className="question-select"
+  >
+    <button
+      className="select-btn paginate-up  disabled"
+      disabled={true}
+      onClick={[Function]}
+    >
+      <span
+        className="icon-arrow-up2"
+      />
+    </button>
+    <button
+      className="select-btn paginate-down  disabled"
+      disabled={true}
+      onClick={[Function]}
+    >
+      <span
+        className="icon-arrow-down2"
+      />
+    </button>
+  </div>
+  <section
+    className="content-container"
+  >
+    <section
+      className="card question-container"
+    >
+      <p>
+        Drag and drop to arrange the items below in the correct order.
+      </p>
+      <div
+        className="hint-text "
+      >
+        <span
+          className="strong"
+        >
+          Hint: 
+        </span>
+        <span />
+      </div>
+    </section>
+    <section
+      className="card phrase-player undefined "
+    >
+      <div
+        className="token-container "
+      >
+        <div
+          className="token-target"
+          onDragOver={[Function]}
+          onDrop={[Function]}
+        >
+          Drag and drop the words below to arrange them.
+        </div>
+        <span
+          className="fakeout-tip "
+        >
+          <span
+            className="icon-notification"
+          />
+          Not all of the items below may be part of the correct phrase.
+        </span>
+      </div>
+      <section
+        className="token-drawer undefined "
+        onDragOver={[Function]}
+        onDrop={[Function]}
+      >
+        <section
+          className="response-controls"
+        >
+          <div
+            className="response-message-container"
+          >
+            <span>
+              NONE
+            </span>
+          </div>
+          <div
+            className="button-container"
+          >
+            <button
+              className="verify "
+              onClick={[Function]}
+            >
+              Check Answer
+            </button>
+            <button
+              className="paginate show"
+              onClick={[Function]}
+            >
+              Next Question
+            </button>
+          </div>
+        </section>
+      </section>
+    </section>
+    <section
+      className="card legend"
+    >
+      <header>
+        Color Legend
+      </header>
+    </section>
+  </section>
+</div>
+`;

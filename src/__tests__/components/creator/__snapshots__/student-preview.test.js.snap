@@ -1,0 +1,20 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Student Preview Student Preview component 1`] = `
+<div
+  className="student-preview"
+>
+  <header>
+    Student Preview
+  </header>
+  <div
+    className="preview-container"
+  >
+    <span
+      className="empty-message show"
+    >
+      No tokens to preview yet.
+    </span>
+  </div>
+</div>
+`;

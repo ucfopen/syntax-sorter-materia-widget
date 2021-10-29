@@ -359,7 +359,7 @@ const StateProvider = ( { children } ) => {
 				items.forEach((item) => {
 					item.tokenOrder = randTokenOrder(item.phrase,item.fakeout)
 				})
-				return {...state, title: action.payload.title, items: items, legend: qset.legend, questionsAsked: items.questionsAsked, requireInit: false}
+				return {...state, title: action.payload.title, items: items, legend: qset.legend, questionsAsked: items.questionsAsked, requireInit: false, requireAllQuestions: qset.requireAllQuestions}
 			case 'toggle_tutorial':
 				return {...state, showTutorial: !state.showTutorial}
 			case 'toggle_warning':

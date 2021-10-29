@@ -1,0 +1,33 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`QuestionSelect modal Question Select component 1`] = `
+<div
+  className="question-select"
+>
+  <button
+    className="select-btn paginate-up  disabled"
+    disabled={true}
+    onClick={[Function]}
+  >
+    <span
+      className="icon-arrow-up2"
+    />
+  </button>
+  <button
+    className="select-btn add-new "
+    disabled={false}
+    onClick={[Function]}
+  >
+    +
+  </button>
+  <button
+    className="select-btn paginate-down  disabled"
+    disabled={true}
+    onClick={[Function]}
+  >
+    <span
+      className="icon-arrow-down2"
+    />
+  </button>
+</div>
+`;

@@ -1,0 +1,25 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Token Token Component 1`] = `
+<span
+  className="test-component"
+>
+  <div
+    className="token   "
+    draggable={true}
+    onContextMenu={[Function]}
+    onDrag={[Function]}
+    onDragEnd={[Function]}
+    onDragStart={[Function]}
+    style={
+      Object {
+        "background": "#ffffff",
+        "color": "#000000",
+        "display": "inline-block",
+      }
+    }
+  >
+    Test
+  </div>
+</span>
+`;
