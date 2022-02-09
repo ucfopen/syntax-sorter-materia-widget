@@ -1,14 +1,18 @@
-import React, { useContext, useEffect } from 'react'
+import React, { useContext, useEffect, useState, useRef } from 'react'
 import QuestionSelect from './question-select'
 import PhrasePlayer from './phrase-player'
 import PlayerTutorial from './player-tutorial'
 import WarningModal from './warning-modal'
 import { store } from '../../player-store'
+import usePrevious from '../keyboard/previous'
 
 const PlayerApp = (props) => {
 
 	const manager = useContext(store)
 	const dispatch = manager.dispatch
+
+	const focusDomTutorial = useRef(null)
+	const focusDomSubmit = useRef(null)
 
 	useEffect(() => {
 		if (manager.state.requireInit) {
@@ -22,6 +26,60 @@ const PlayerApp = (props) => {
 			document.addEventListener("mouseup", mouseUpHandler)
 		}
 	}, [manager.state.requireInit])
+
+	// keyboard controls effects
+	useEffect(() => {
+		document.addEventListener('keydown', keyboardCtrlsBtns)
+		document.addEventListener('click', mouseClick)
+
+		return () => { // cleaned up function
+			document.removeEventListener('keydown', keyboardCtrlsBtns)
+			document.removeEventListener('click', mouseClick)
+		}
+	}, [])
+
+	// Btns key controls using W and S
+	function keyboardCtrlsBtns(e) {
+
+		if (e.ctrlKey && e.shiftKey && e.key == 'S') {
+			focusDomSubmit.current.focus() // focus on submit btn
+			focusDomSubmit.current.style.background = 'yellow'
+			focusDomTutorial.current.style.background = 'white'
+		}
+
+		if (e.ctrlKey && e.shiftKey && e.key == 'W') {
+			focusDomTutorial.current.focus()
+			focusDomTutorial.current.style.background = 'yellow'
+			focusDomSubmit.current.style.background = 'white'
+		}
+	}
+
+	// Question key controls using Arrow up and down
+	function keyboardCtrlsQuestions(e) {
+		if (e.ctrlKey && e.shiftKey && e.key == 'ArrowUp') {
+			if (manager.state.currentIndex >= 1) {
+				dispatch({
+					type: 'select_question',
+					payload: manager.state.currentIndex - 1
+				})
+			}
+		}
+
+		if (e.ctrlKey && e.shiftKey && e.key == 'ArrowDown') {
+			if (manager.state.currentIndex < manager.state.items.length - 1) {
+				dispatch({
+					type: 'select_question',
+					payload: manager.state.currentIndex + 1
+				})
+			}
+		}
+	}
+
+	// Remove highlight ones mouse is used
+	function mouseClick(e) {
+		focusDomTutorial.current.style.background = 'white'
+		focusDomSubmit.current.style.background = 'white'
+	}
 
 	// Used to prevent reads from being highlighted then dragged
 	const mouseUpHandler = () => {
@@ -55,7 +113,7 @@ const PlayerApp = (props) => {
 
 		for (let item of manager.state.items) {
 			if (item.sorted.length <= 0) {
-				dispatch({type: 'select_question', payload: i})
+				dispatch({ type: 'select_question', payload: i })
 				isEmpty = true
 				break
 			}
@@ -90,7 +148,12 @@ const PlayerApp = (props) => {
 	const questionText = manager.state.items[manager.state.currentIndex]?.question.length > 0 ? manager.state.items[manager.state.currentIndex].question : "Drag and drop to arrange the items below in the correct order."
 
 	const legendList = manager.state.legend.map((term, index) => {
-		return <span key={index} className='legend-item'><span className='legend-color' style={{ background: term.color }}></span>{term.name}</span>
+		return (
+			<span key={index} className='legend-item'>
+				<span className='legend-color' style={{ background: term.color }}></span>
+				{term.name}
+			</span>
+		)
 	})
 
 	return (
@@ -101,21 +164,24 @@ const PlayerApp = (props) => {
 			<PlayerTutorial></PlayerTutorial>
 			<header className="player-header">
 				<span className="title">{manager.state.title}</span>
-				<button className="headerBtn" onClick={handleSubmit}>Submit</button>
-				<button className="headerBtn" onClick={toggleTutorial}>Tutorial</button>
+				<button className="headerBtn" onClick={handleSubmit} ref={focusDomSubmit}>Submit</button>
+				<button className="headerBtn" onClick={toggleTutorial} tabIndex='-1' ref={focusDomTutorial}>Tutorial</button>
 			</header>
-			<QuestionSelect></QuestionSelect>
+			<QuestionSelect keyboardCtrlsQuestions={keyboardCtrlsQuestions}></QuestionSelect>
 			<section className="content-container">
 				<section className="card question-container">
 					<p>{questionText}</p>
 					<div className={'hint-text ' +
 						`${(
-							manager.state.items[manager.state.currentIndex]?.attemptsUsed > 0 &&
-							manager.state.items[manager.state.currentIndex]?.attemptsUsed < manager.state.items[manager.state.currentIndex]?.attempts &&
-							manager.state.items[manager.state.currentIndex]?.responseState != 'correct' &&
-							manager.state.items[manager.state.currentIndex]?.responseState != 'incorrect-no-attempts' &&
-							manager.state.items[manager.state.currentIndex]?.hint.length > 0) ? 'show' : ''}`}>
-						<span className="strong">Hint: </span><span>{manager.state.items[manager.state.currentIndex]?.hint}</span>
+							manager.state.items[manager.state.currentIndex]?.attemptsUsed > 0
+							&& manager.state.items[manager.state.currentIndex]?.attemptsUsed < manager.state.items[manager.state.currentIndex]?.attempts
+							&& manager.state.items[manager.state.currentIndex]?.responseState != 'correct'
+							&& manager.state.items[manager.state.currentIndex]?.responseState != 'incorrect-no-attempts'
+							&& manager.state.items[manager.state.currentIndex]?.hint.length > 0)
+							? 'show' : ''}`
+					}>
+						<span className="strong">Hint: </span>
+						<span>{manager.state.items[manager.state.currentIndex]?.hint}</span>
 					</div>
 				</section>
 				<PhrasePlayer
@@ -125,7 +191,8 @@ const PlayerApp = (props) => {
 					attemptsUsed={manager.state.items[manager.state.currentIndex]?.attemptsUsed}
 					attemptLimit={manager.state.items[manager.state.currentIndex]?.attempts}
 					hasFakes={manager.state.items[manager.state.currentIndex]?.fakeout.length}
-					responseState={manager.state.items[manager.state.currentIndex]?.responseState}></PhrasePlayer>
+					responseState={manager.state.items[manager.state.currentIndex]?.responseState}>
+				</PhrasePlayer>
 				<section className="card legend">
 					<header>Color Legend</header>
 					{legendList}

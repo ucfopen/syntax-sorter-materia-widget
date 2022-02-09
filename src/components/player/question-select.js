@@ -1,5 +1,6 @@
-import React, { useContext, useState, useEffect } from 'react'
+import React, { useContext, useState, useEffect, useRef } from 'react'
 import { store } from '../../player-store'
+import usePrevious from '../keyboard/previous'
 
 const QuestionSelect = (props) => {
 
@@ -7,7 +8,6 @@ const QuestionSelect = (props) => {
 	const dispatch = manager.dispatch
 
 	const [state, setState] = useState({ paginateMin: 0, paginateMax: 8, visibleQuestions: [] })
-
 	const currentIndex = manager.state.currentIndex
 
 	useEffect(() => {
@@ -24,10 +24,12 @@ const QuestionSelect = (props) => {
 				setState(state => ({ ...state, paginateMin: currentIndex - 8, paginateMax: currentIndex }))
 			}
 
-			setState(state => ({...state, visibleQuestions: [
-				...questionList.slice(state.paginateMin, currentIndex),
-				...questionList.slice(currentIndex, state.paginateMax + 1)
-			]}))
+			setState(state => ({
+				...state, visibleQuestions: [
+					...questionList.slice(state.paginateMin, currentIndex),
+					...questionList.slice(currentIndex, state.paginateMax + 1)
+				]
+			}))
 		}
 		else {
 			setState(state => ({ ...state, visibleQuestions: questionList }))
@@ -37,6 +39,15 @@ const QuestionSelect = (props) => {
 	const selectQuestion = (index) => {
 		dispatch({ type: 'select_question', payload: index })
 	}
+
+	// keyboard controls effects
+	useEffect(() => {
+		window.addEventListener('keydown', props.keyboardCtrlsQuestions)
+
+		return () => { // cleaned up function
+			window.removeEventListener('keydown', props.keyboardCtrlsQuestions)
+		}
+	}, [manager.state.currentIndex, manager.state.items])
 
 	return (
 		<div className="question-select">

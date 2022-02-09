@@ -105,23 +105,24 @@ const Token = (props) => {
 
 		// Gets the right click
 		if (event.nativeEvent.which === 3) {
-	  	event.preventDefault();
+			event.preventDefault();
 
-	  	if (!props.dragEligible) return
+			if (!props.dragEligible) return
 
-	  	if (props.status == "sorted")
-	  	{
-	  		dispatch({type: 'sorted_token_unsort', payload: {
-					origin: state.origin,
-					tokenIndex: props.index,
-					questionIndex: manager.state.currentIndex,
-					fakeout: props.fakeout,
-					legend: props.type,
-					value: props.value,
-					id: props.id
-				}})
-	  	}
-	  }
+			if (props.status == "sorted") {
+				dispatch({
+					type: 'sorted_token_unsort', payload: {
+						origin: state.origin,
+						tokenIndex: props.index,
+						questionIndex: manager.state.currentIndex,
+						fakeout: props.fakeout,
+						legend: props.type,
+						value: props.value,
+						id: props.id
+					}
+				})
+			}
+		}
 	}
 
 	const handleDragEnd = (event) => {
