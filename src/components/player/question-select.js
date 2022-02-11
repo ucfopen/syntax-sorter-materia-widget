@@ -9,10 +9,18 @@ const QuestionSelect = (props) => {
 
 	const [state, setState] = useState({ paginateMin: 0, paginateMax: 8, visibleQuestions: [] })
 	const currentIndex = manager.state.currentIndex
+	const focusQuestions = useRef([])
 
 	useEffect(() => {
+
 		let questionList = manager.state.items.map((item, index) => {
-			return <button className={`select-btn ${currentIndex == index ? 'selected' : ''}`} key={index} onClick={() => { selectQuestion(index) }}>{index + 1}</button>
+			return <button
+				className={`select-btn ${currentIndex == index ? 'selected' : ''}`}
+				key={index}
+				onClick={() => { selectQuestion(index); }}
+				ref={(el) => focusQuestions.current[index] = el}>
+				{index + 1}
+			</button>
 		})
 
 		// if the list of questions gets too long, we have to start computing the subset to display
@@ -38,16 +46,37 @@ const QuestionSelect = (props) => {
 
 	const selectQuestion = (index) => {
 		dispatch({ type: 'select_question', payload: index })
+		manager.state.previousIndex = index
 	}
 
-	// keyboard controls effects
+	const moveFocusToQuestion = (e) => {
+		// Focus doesn't work when moving to a button that is not render.
+		if (e.key == 'ArrowDown' || e.key == 'ArrowUp') {
+			focusQuestions.current[manager.state.focusQuestionIndex]?.focus()
+		} else {
+			focusQuestions.current[manager.state.focusQuestionIndex]?.blur()
+		}
+
+	}
+
+	// keyboard controls effects that changes from a selected question to another
 	useEffect(() => {
-		window.addEventListener('keydown', props.keyboardCtrlsQuestions)
+		window.addEventListener('keyup', props.keyboardCtrlsQuestions)
 
 		return () => { // cleaned up function
-			window.removeEventListener('keydown', props.keyboardCtrlsQuestions)
+			window.removeEventListener('keyup', props.keyboardCtrlsQuestions)
 		}
 	}, [manager.state.currentIndex, manager.state.items])
+
+	// Effect to trigger Voiceover when focus move to a new question
+	useEffect(() => {
+		window.addEventListener('keyup', moveFocusToQuestion)
+
+		return () => { // cleaned up function
+			window.removeEventListener('keyup', moveFocusToQuestion)
+		}
+	}, [manager.state.previousIndex, manager.state.currentIndex])
+
 
 	return (
 		<div className="question-select">

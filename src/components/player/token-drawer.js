@@ -28,17 +28,18 @@ const TokenDrawer = (props) => {
 		let dropTokenStatus = event.dataTransfer.getData("tokenStatus")
 		let dropTokenFakeout = (event.dataTransfer.getData("tokenFakeout") == "true") ? true : false
 
-		if (dropTokenStatus == "sorted")
-		{
-			dispatch({type: 'sorted_token_unsort', payload: {
-				origin: dropTokenStatus,
-				tokenIndex: parseInt(dropTokenPhraseIndex),
-				questionIndex: manager.state.currentIndex,
-				fakeout: dropTokenFakeout,
-				legend: dropTokenType,
-				value: dropTokenName,
-				id: dropTokenId
-			}})
+		if (dropTokenStatus == "sorted") {
+			dispatch({
+				type: 'sorted_token_unsort', payload: {
+					origin: dropTokenStatus,
+					tokenIndex: parseInt(dropTokenPhraseIndex),
+					questionIndex: manager.state.currentIndex,
+					fakeout: dropTokenFakeout,
+					legend: dropTokenType,
+					value: dropTokenName,
+					id: dropTokenId
+				}
+			})
 		}
 	}
 
@@ -99,7 +100,8 @@ const TokenDrawer = (props) => {
 			pref={props.displayPref}
 			status={token.status}
 			fakeout={token.fakeout}
-			dragEligible={!(props.attemptsUsed >= props.attemptLimit)}>
+			dragEligible={!(props.attemptsUsed >= props.attemptLimit)}
+			tokenRefApp={props.tokenRefApp}>
 		</Token>
 	})
 

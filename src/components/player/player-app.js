@@ -13,6 +13,7 @@ const PlayerApp = (props) => {
 
 	const focusDomTutorial = useRef(null)
 	const focusDomSubmit = useRef(null)
+	const tokenRefApp = useRef(null)
 
 	useEffect(() => {
 		if (manager.state.requireInit) {
@@ -40,39 +41,48 @@ const PlayerApp = (props) => {
 
 	// Btns key controls using W and S
 	function keyboardCtrlsBtns(e) {
+		if (e.ctrlKey && e.shiftKey) {
+			if (e.key == 'S') {
+				focusDomSubmit.current.focus() // focus on submit btn
+				focusDomSubmit.current.style.background = 'yellow'
+				focusDomTutorial.current.style.background = 'white'
+			}
 
-		if (e.ctrlKey && e.shiftKey && e.key == 'S') {
-			focusDomSubmit.current.focus() // focus on submit btn
-			focusDomSubmit.current.style.background = 'yellow'
-			focusDomTutorial.current.style.background = 'white'
-		}
-
-		if (e.ctrlKey && e.shiftKey && e.key == 'W') {
-			focusDomTutorial.current.focus()
-			focusDomTutorial.current.style.background = 'yellow'
-			focusDomSubmit.current.style.background = 'white'
+			if (e.key == 'W') {
+				focusDomTutorial.current.focus()
+				focusDomTutorial.current.style.background = 'yellow'
+				focusDomSubmit.current.style.background = 'white'
+			}
 		}
 	}
 
 	// Question key controls using Arrow up and down
 	function keyboardCtrlsQuestions(e) {
-		if (e.ctrlKey && e.shiftKey && e.key == 'ArrowUp') {
-			if (manager.state.currentIndex >= 1) {
-				dispatch({
-					type: 'select_question',
-					payload: manager.state.currentIndex - 1
-				})
+		// question index start at 0, but the question label starts at 1
+		manager.state.focusQuestionIndex = manager.state.currentIndex
+
+		if (e.ctrlKey && e.shiftKey) {
+			if (e.key == 'ArrowUp') {
+				if (manager.state.currentIndex >= 1) {
+					dispatch({
+						type: 'select_question',
+						payload: manager.state.currentIndex - 1
+					})
+					manager.state.focusQuestionIndex = manager.state.currentIndex - 1
+				}
+			}
+
+			if (e.key == 'ArrowDown') {
+				if (manager.state.currentIndex < manager.state.items.length - 1) {
+					dispatch({
+						type: 'select_question',
+						payload: manager.state.currentIndex + 1
+					})
+					manager.state.focusQuestionIndex = manager.state.currentIndex + 1
+				}
 			}
 		}
 
-		if (e.ctrlKey && e.shiftKey && e.key == 'ArrowDown') {
-			if (manager.state.currentIndex < manager.state.items.length - 1) {
-				dispatch({
-					type: 'select_question',
-					payload: manager.state.currentIndex + 1
-				})
-			}
-		}
 	}
 
 	// Remove highlight ones mouse is used
@@ -167,7 +177,9 @@ const PlayerApp = (props) => {
 				<button className="headerBtn" onClick={handleSubmit} ref={focusDomSubmit}>Submit</button>
 				<button className="headerBtn" onClick={toggleTutorial} tabIndex='-1' ref={focusDomTutorial}>Tutorial</button>
 			</header>
-			<QuestionSelect keyboardCtrlsQuestions={keyboardCtrlsQuestions}></QuestionSelect>
+			<QuestionSelect
+				keyboardCtrlsQuestions={keyboardCtrlsQuestions}>
+			</QuestionSelect>
 			<section className="content-container">
 				<section className="card question-container">
 					<p>{questionText}</p>
@@ -191,7 +203,8 @@ const PlayerApp = (props) => {
 					attemptsUsed={manager.state.items[manager.state.currentIndex]?.attemptsUsed}
 					attemptLimit={manager.state.items[manager.state.currentIndex]?.attempts}
 					hasFakes={manager.state.items[manager.state.currentIndex]?.fakeout.length}
-					responseState={manager.state.items[manager.state.currentIndex]?.responseState}>
+					responseState={manager.state.items[manager.state.currentIndex]?.responseState}
+					tokenRefApp={tokenRefApp}>
 				</PhrasePlayer>
 				<section className="card legend">
 					<header>Color Legend</header>

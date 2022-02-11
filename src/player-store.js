@@ -5,6 +5,7 @@ const init = {
 	items: [],
 	legend: [],
 	currentIndex: 0,
+	focusQuestionIndex: 0,
 	requireInit: true,
 	showTutorial: true,
 	showWarning: false,
@@ -43,8 +44,8 @@ const importFromQset = (qset) => {
 	return {
 		items: qset.items.map((item) => {
 
-			let fakes = item.options.fakes.map((token) => { return {...token, status: 'unsorted', fakeout: true, id: createTokenKey()}})
-			let reals = item.answers[0].options.phrase.map((token) => { return {...token, status: 'unsorted', fakeout: false, id: createTokenKey()} })
+			let fakes = item.options.fakes.map((token) => { return { ...token, status: 'unsorted', fakeout: true, id: createTokenKey() } })
+			let reals = item.answers[0].options.phrase.map((token) => { return { ...token, status: 'unsorted', fakeout: false, id: createTokenKey() } })
 
 			return {
 				question: item.questions[0].text,
@@ -71,15 +72,14 @@ const importFromQset = (qset) => {
 
 const prepareQuestionBank = (imported) => {
 	let items = imported.items
-	return shuffle(items).slice(0,imported.numAsk)
+	return shuffle(items).slice(0, imported.numAsk)
 }
 
 // responseState may change based on tokens being sorted or unsorted
 const calcResponseState = (item) => {
 
 	var state = item.responseState
-	switch (item.responseState)
-	{
+	switch (item.responseState) {
 		case 'none':
 			if (item.sorted.length > 0) {
 				if (item.fakeout.length == 0 && item.phrase.length > 0) {
@@ -139,18 +139,18 @@ const tokenSortedPhraseReducer = (list, action) => {
 				else return token
 			})
 		case 'sorted_token_unsort':
-		{
-			let sorted = [
-				...list.slice(0, action.payload.tokenIndex),
-				...list.slice(action.payload.tokenIndex + 1)
-			]
+			{
+				let sorted = [
+					...list.slice(0, action.payload.tokenIndex),
+					...list.slice(action.payload.tokenIndex + 1)
+				]
 
-			return sorted.map((token) => ({
-				...token,
+				return sorted.map((token) => ({
+					...token,
 					reqPositionUpdate: true
 				})
-			)
-		}
+				)
+			}
 		case 'token_update_position':
 			return list.map((token, index) => {
 				if (action.payload.tokenIndex == index) {
@@ -167,27 +167,27 @@ const tokenSortedPhraseReducer = (list, action) => {
 				else return token
 			})
 		case 'response_token_sort':
-		{
-			let sorted = [
-				...list.slice(0, action.payload.targetIndex),
-				{
-					id: action.payload.id,
-					legend: action.payload.legend,
-					value: action.payload.value,
-					status: 'sorted',
-					fakeout: action.payload.fakeout,
-					position: {},
-					arrangement: null
-				},
-				...list.slice(action.payload.targetIndex)
-			]
+			{
+				let sorted = [
+					...list.slice(0, action.payload.targetIndex),
+					{
+						id: action.payload.id,
+						legend: action.payload.legend,
+						value: action.payload.value,
+						status: 'sorted',
+						fakeout: action.payload.fakeout,
+						position: {},
+						arrangement: null
+					},
+					...list.slice(action.payload.targetIndex)
+				]
 
-			return sorted.map((token) => ({
+				return sorted.map((token) => ({
 					...token,
 					reqPositionUpdate: true
 				})
-			)
-		}
+				)
+			}
 		case 'response_token_rearrange':
 			let target = action.payload.targetIndex
 			if (action.payload.originIndex < target) target--
@@ -271,15 +271,15 @@ const tokenUnsortedPhraseReducer = (list, action) => {
 			]
 		case 'sorted_token_unsort':
 			return [
-					...list,
-					{
-						id: action.payload.id,
-						legend: action.payload.legend,
-						value: action.payload.value,
-						status: 'unsorted',
-						fakeout: action.payload.fakeout
-					}
-				]
+				...list,
+				{
+					id: action.payload.id,
+					legend: action.payload.legend,
+					value: action.payload.value,
+					status: 'unsorted',
+					fakeout: action.payload.fakeout
+				}
+			]
 		default:
 			throw new Error(`Token phrase reducer: action type: ${action.type} not found.`)
 	}
@@ -290,22 +290,20 @@ const questionItemReducer = (items, action) => {
 		case 'token_dragging':
 			return items.map((item, index) => {
 				if (index == action.payload.questionIndex) {
-					if (action.payload.status == 'unsorted')
-					{
+					if (action.payload.status == 'unsorted') {
 						return { ...item, phrase: tokenUnsortedPhraseReducer(item.phrase, action) }
 					}
-					else if (action.payload.status == 'sorted') return {...item, sorted: tokenSortedPhraseReducer(item.sorted, action)}
+					else if (action.payload.status == 'sorted') return { ...item, sorted: tokenSortedPhraseReducer(item.sorted, action) }
 				}
 				else return item
 			})
 		case 'token_drag_complete':
 			return items.map((item, index) => {
 				if (index == action.payload.questionIndex) {
-					if (action.payload.origin == 'unsorted')
-					{
+					if (action.payload.origin == 'unsorted') {
 						return { ...item, phrase: tokenUnsortedPhraseReducer(item.phrase, action) }
 					}
-					else if (action.payload.origin == 'sorted') return {...item, sorted: tokenSortedPhraseReducer(item.sorted, action)}
+					else if (action.payload.origin == 'sorted') return { ...item, sorted: tokenSortedPhraseReducer(item.sorted, action) }
 				}
 				else return item
 			})
@@ -320,7 +318,7 @@ const questionItemReducer = (items, action) => {
 		case 'response_token_sort':
 			return items.map((item, index) => {
 				if (index == action.payload.questionIndex) {
-					return calcResponseState({...item, sorted: tokenSortedPhraseReducer(item.sorted, action), phrase: tokenUnsortedPhraseReducer(item.phrase, action)})
+					return calcResponseState({ ...item, sorted: tokenSortedPhraseReducer(item.sorted, action), phrase: tokenUnsortedPhraseReducer(item.phrase, action) })
 				}
 				else return item
 			})
@@ -329,14 +327,14 @@ const questionItemReducer = (items, action) => {
 		case 'adjacent_token_update':
 			return items.map((item, index) => {
 				if (index == action.payload.questionIndex) {
-					return {...item, sorted: tokenSortedPhraseReducer(item.sorted, action)}
+					return { ...item, sorted: tokenSortedPhraseReducer(item.sorted, action) }
 				}
 				else return item
 			})
 		case 'attempt_submit':
 			return items.map((item, index) => {
 				if (index == action.payload.questionIndex) {
-					return {...item, responseState: action.payload.response, attemptsUsed: item.attemptsUsed + 1}
+					return { ...item, responseState: action.payload.response, attemptsUsed: item.attemptsUsed + 1 }
 				}
 				else return item
 			})
@@ -345,7 +343,7 @@ const questionItemReducer = (items, action) => {
 	}
 }
 
-const StateProvider = ( { children } ) => {
+const StateProvider = ({ children }) => {
 	const [state, dispatch] = useReducer((state, action) => {
 		switch (action.type) {
 			case 'init':
@@ -357,18 +355,18 @@ const StateProvider = ( { children } ) => {
 				}
 
 				items.forEach((item) => {
-					item.tokenOrder = randTokenOrder(item.phrase,item.fakeout)
+					item.tokenOrder = randTokenOrder(item.phrase, item.fakeout)
 				})
-				return {...state, title: action.payload.title, items: items, legend: qset.legend, questionsAsked: items.questionsAsked, requireInit: false, requireAllQuestions: qset.requireAllQuestions}
+				return { ...state, title: action.payload.title, items: items, legend: qset.legend, questionsAsked: items.questionsAsked, requireInit: false, requireAllQuestions: qset.requireAllQuestions }
 			case 'toggle_tutorial':
-				return {...state, showTutorial: !state.showTutorial}
+				return { ...state, showTutorial: !state.showTutorial }
 			case 'toggle_warning':
-				return {...state, showWarning: !state.showWarning}
+				return { ...state, showWarning: !state.showWarning }
 			case 'select_question':
-				return {...state, currentIndex: action.payload}
+				return { ...state, currentIndex: action.payload }
 			case 'paginate_question_forward':
-				let forward = state.currentIndex < state.items.length -1 ? state.currentIndex + 1: state.currentIndex
-				return {...state, currentIndex: forward}
+				let forward = state.currentIndex < state.items.length - 1 ? state.currentIndex + 1 : state.currentIndex
+				return { ...state, currentIndex: forward }
 			case 'token_dragging':
 			case 'token_drag_complete':
 			case 'sorted_token_unsort':
@@ -377,13 +375,13 @@ const StateProvider = ( { children } ) => {
 			case 'response_token_rearrange':
 			case 'adjacent_token_update':
 			case 'attempt_submit':
-				return {...state, items: questionItemReducer(state.items, action)}
+				return { ...state, items: questionItemReducer(state.items, action) }
 			default:
 				throw new Error(`Base reducer: action type: ${action.type} not found.`)
 		}
 	}, init)
 
-	return <Provider value={{state, dispatch}}>{children}</Provider>
+	return <Provider value={{ state, dispatch }}>{children}</Provider>
 }
 
-export {store, StateProvider }
+export { store, StateProvider }
