@@ -12,7 +12,8 @@ const init = {
 	numAsk: 1,
 	enableQuestionBank: false,
 	requireAllQuestions: false,
-	questionsAsked: []
+	questionsAsked: [],
+	currentRefToken: []
 }
 
 const store = React.createContext(init)

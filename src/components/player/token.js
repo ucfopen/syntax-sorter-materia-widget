@@ -157,22 +157,27 @@ const Token = (props) => {
 
 	let tokenColor = getLegendColor(props.type)
 
-	return (
-		<div className={`token ${state.dragging ? 'dragging' : ''} ${props.arrangement == 'left' ? 'is-left' : ''} ${props.arrangement == 'right' ? 'is-right' : ''}`}
-			style={{
-				background: tokenColor,
-				color: contrastCalc(tokenColor) > 160 ? '#000000' : '#ffffff',
-				display: props.status == "relocated" ? "none" : "inline-block"
-			}}
-			ref={tokenRef}
-			draggable={props.dragEligible}
-			onDragStart={handleDragStart}
-			onDrag={handleDrag}
-			onDragEnd={handleDragEnd}
-			onContextMenu={handleClick}>
-			{props.pref == 'word' ? props.value : getLegendName(props.type)}
-		</div>
-	)
+	let temp = <div
+		className={`token ${state.dragging ? 'dragging' : ''} ${props.arrangement == 'left' ? 'is-left' : ''} ${props.arrangement == 'right' ? 'is-right' : ''}`}
+		style={{
+			background: tokenColor,
+			color: contrastCalc(tokenColor) > 160 ? '#000000' : '#ffffff',
+			display: props.status == "relocated" ? "none" : "inline-block"
+		}}
+		ref={tokenRef}
+		draggable={props.dragEligible}
+		onDragStart={handleDragStart}
+		onDrag={handleDrag}
+		onDragEnd={handleDragEnd}
+		onContextMenu={handleClick}>
+		{props.pref == 'word' ? props.value : getLegendName(props.type)}
+	</div>
+
+	if (tokenRef.current != null) {
+		manager.state.currentRefToken.push(tokenRef.current)
+	}
+
+	return temp
 }
 
 export default Token

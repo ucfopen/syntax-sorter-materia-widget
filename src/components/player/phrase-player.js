@@ -133,8 +133,7 @@ const PhrasePlayer = (props) => {
 			reqPositionUpdate={token.reqPositionUpdate}
 			fakeout={token.fakeout}
 			dragEligible={!(props.attemptsUsed >= props.attemptLimit || props.responseState == 'correct')}
-			forceClearAdjacentTokens={forceClearAdjacentTokens}
-			tokenRefApp={props.tokenRefApp}>
+			forceClearAdjacentTokens={forceClearAdjacentTokens}>
 		</Token>
 	})
 
@@ -159,7 +158,7 @@ const PhrasePlayer = (props) => {
 				attemptLimit={props.attemptLimit}
 				hasFakes={props.hasFakes}
 				responseState={props.responseState}
-				tokenRefApp={props.tokenRefApp}>
+				keyboardCtrlsTokens={props.keyboardCtrlsTokens}>
 			</TokenDrawer>
 		</section>
 	)

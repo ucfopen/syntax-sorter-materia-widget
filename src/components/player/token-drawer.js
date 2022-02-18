@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect } from 'react'
 import Token from './token'
 import { store } from '../../player-store'
 
@@ -100,8 +100,7 @@ const TokenDrawer = (props) => {
 			pref={props.displayPref}
 			status={token.status}
 			fakeout={token.fakeout}
-			dragEligible={!(props.attemptsUsed >= props.attemptLimit)}
-			tokenRefApp={props.tokenRefApp}>
+			dragEligible={!(props.attemptsUsed >= props.attemptLimit)}>
 		</Token>
 	})
 
@@ -113,7 +112,6 @@ const TokenDrawer = (props) => {
 
 	switch (props.responseState) {
 		case 'ready':
-
 			if (isLastQuestion && remaining > 0) {
 				currentResponseText = <span className='controls-message'>You have <span className='strong'>{remaining}</span> attempt{remaining > 1 ? 's' : ''} remaining. Select <span className='strong'>Check Answer</span> to check your answer, or select <span className='strong'>Submit</span> at the top-right for scoring.</span>
 			}
@@ -124,12 +122,15 @@ const TokenDrawer = (props) => {
 				currentResponseText = <span className='controls-message'>You have <span className='strong'>{remaining}</span> attempt{remaining > 1 ? 's' : ''} remaining. Select <span className='strong'>Check Answer</span> to check your answer, or select <span className='strong'>Next Question</span> to continue.</span>
 			}
 			break
+
 		case 'pending':
 			currentResponseText = <span>PENDING</span>
 			break
+
 		case 'incorrect-attempts-remaining':
 			currentResponseText = <span className='controls-message'>That's not quite right. You have <span className='strong'>{remaining}</span> attempt{remaining > 1 ? 's' : ''} remaining.</span>
 			break
+
 		case 'incorrect-no-attempts':
 			if (isLastQuestion) {
 				currentResponseText = <span className='controls-message'>That's not quite right. You've exhausted your attempts for this question. When you're ready, select <span className='strong'>Submit</span> at the top-right for scoring or go back and review your answers.</span>
@@ -138,6 +139,7 @@ const TokenDrawer = (props) => {
 				currentResponseText = <span className='controls-message'>That's not quite right. You've exhausted your attempts for this question. Select <span className='strong'>Next Question</span> to continue.</span>
 			}
 			break
+
 		case 'correct':
 			if (isLastQuestion) {
 				currentResponseText = <span className='controls-message'>Nice work! You aced it. When you're ready, select <span className='strong'>Submit</span> at the top-right for scoring or go back and review your answers.</span>
@@ -146,11 +148,21 @@ const TokenDrawer = (props) => {
 				currentResponseText = <span className='controls-message'>Nice work! You aced it. Select <span className='strong'>Next Question</span> to continue.</span>
 			}
 			break
+
 		case 'none':
 		default:
 			currentResponseText = <span>NONE</span>
 			break
 	}
+
+	// keyboard controls effects for moving from one token to another
+	useEffect(() => {
+		document.addEventListener('keyup', props.keyboardCtrlsTokens)
+
+		return () => { // cleaned up function
+			document.removeEventListener('keyup', props.keyboardCtrlsTokens)
+		}
+	}, [manager.state.currentRefToken, manager.state.currentIndex])
 
 	return (
 		<section className={'token-drawer ' +

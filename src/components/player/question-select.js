@@ -12,7 +12,6 @@ const QuestionSelect = (props) => {
 	const focusQuestions = useRef([])
 
 	useEffect(() => {
-
 		let questionList = manager.state.items.map((item, index) => {
 			return <button
 				className={`select-btn ${currentIndex == index ? 'selected' : ''}`}
@@ -56,7 +55,6 @@ const QuestionSelect = (props) => {
 		} else {
 			focusQuestions.current[manager.state.focusQuestionIndex]?.blur()
 		}
-
 	}
 
 	// keyboard controls effects that changes from a selected question to another

@@ -13,7 +13,6 @@ const PlayerApp = (props) => {
 
 	const focusDomTutorial = useRef(null)
 	const focusDomSubmit = useRef(null)
-	const tokenRefApp = useRef(null)
 
 	useEffect(() => {
 		if (manager.state.requireInit) {
@@ -62,27 +61,63 @@ const PlayerApp = (props) => {
 		manager.state.focusQuestionIndex = manager.state.currentIndex
 
 		if (e.ctrlKey && e.shiftKey) {
+
 			if (e.key == 'ArrowUp') {
 				if (manager.state.currentIndex >= 1) {
+
+					while (manager.state.currentRefToken.length > 0) {
+						manager.state.currentRefToken.pop()
+					}
+
 					dispatch({
 						type: 'select_question',
 						payload: manager.state.currentIndex - 1
 					})
+
 					manager.state.focusQuestionIndex = manager.state.currentIndex - 1
 				}
 			}
 
 			if (e.key == 'ArrowDown') {
 				if (manager.state.currentIndex < manager.state.items.length - 1) {
+
+					while (manager.state.currentRefToken.length > 0) {
+						manager.state.currentRefToken.pop()
+					}
+
 					dispatch({
 						type: 'select_question',
 						payload: manager.state.currentIndex + 1
 					})
+
 					manager.state.focusQuestionIndex = manager.state.currentIndex + 1
 				}
 			}
 		}
+	}
 
+	const printFunc = () => {
+		console.log('manager.currentRefToken:', manager.state.currentRefToken)
+		manager.state.currentRefToken?.forEach((element, index) => {
+			console.log(`index: ${index} | element:`, element)
+		});
+	}
+
+	function keyboardCtrlsTokens(e) {
+		// question index start at 0, but the question label starts at 1
+		manager.state.focusQuestionIndex = manager.state.currentIndex
+
+		if (e.ctrlKey && e.shiftKey) {
+			if (e.key == 'ArrowLeft') {
+				console.log('ArrowLeft')
+				printFunc()
+			}
+
+			if (e.key == 'ArrowRight') {
+				console.log('ArrowRight')
+				printFunc()
+			}
+		}
 	}
 
 	// Remove highlight ones mouse is used
@@ -204,7 +239,7 @@ const PlayerApp = (props) => {
 					attemptLimit={manager.state.items[manager.state.currentIndex]?.attempts}
 					hasFakes={manager.state.items[manager.state.currentIndex]?.fakeout.length}
 					responseState={manager.state.items[manager.state.currentIndex]?.responseState}
-					tokenRefApp={tokenRefApp}>
+					keyboardCtrlsTokens={keyboardCtrlsTokens}>
 				</PhrasePlayer>
 				<section className="card legend">
 					<header>Color Legend</header>
