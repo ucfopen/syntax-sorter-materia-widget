@@ -1,5 +1,4 @@
-import React, { useContext } from 'react'
-import ReactDOM from 'react-dom'
+import React, { useContext, useEffect } from 'react'
 import TokenDrawer from './token-drawer'
 import Token from './token'
 import { store } from '../../player-store'
@@ -23,7 +22,7 @@ const PhrasePlayer = (props) => {
 		let rightToken = null
 
 		for (let i = 0; i < props.sorted.length; i++) {
-			let pos = props.sorted[i].position
+			let pos = props.sorted[i].position // tokens inside sortedTokens
 			let left = pos.x
 			let right = pos.x + pos.width
 			let height = pos.y
@@ -47,6 +46,7 @@ const PhrasePlayer = (props) => {
 		manageAdjacentTokenDisplay(leftToken, rightToken)
 	}
 
+	// Token data is obtain from the event
 	const handleTokenDrop = (event) => {
 		event.preventDefault()
 		let dropTokenId = event.dataTransfer.getData("tokenId")
@@ -109,8 +109,8 @@ const PhrasePlayer = (props) => {
 		dispatch({
 			type: 'adjacent_token_update', payload: {
 				questionIndex: manager.state.currentIndex,
-				left: left?.id,
-				right: right?.id
+				left: left?.id, // id of token on the left side
+				right: right?.id // id of token on the right side
 			}
 		})
 	}
@@ -119,9 +119,10 @@ const PhrasePlayer = (props) => {
 		manageAdjacentTokenDisplay(null, null)
 	}
 
+	// Grab all the tokens data from sorted and Drawer
 	let sortedTokens = props.sorted?.map((token, index) => {
 		return <Token
-			id={token.id}
+			id={token.id} // after pressing key, the tokens become UNDEFINED
 			key={index}
 			index={index}
 			type={token.legend}
@@ -158,8 +159,7 @@ const PhrasePlayer = (props) => {
 				attemptLimit={props.attemptLimit}
 				hasFakes={props.hasFakes}
 				responseState={props.responseState}
-				keyboardCtrlsTokens={props.keyboardCtrlsTokens}>
-			</TokenDrawer>
+			/>
 		</section>
 	)
 }

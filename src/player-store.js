@@ -4,8 +4,7 @@ const init = {
 	title: 'New Syntax Sorter Widget',
 	items: [],
 	legend: [],
-	currentIndex: 0,
-	focusQuestionIndex: 0,
+	currentIndex: 0, // question being display
 	requireInit: true,
 	showTutorial: true,
 	showWarning: false,
@@ -13,7 +12,14 @@ const init = {
 	enableQuestionBank: false,
 	requireAllQuestions: false,
 	questionsAsked: [],
-	currentRefToken: []
+
+	// Questions | keyboard control variables
+	questionsRef: [], // Contains an arr of ref objects for each question, in other words DOM elements
+	focusQuestionIndex: 0, // used to remove focus from last question focus on
+
+	// Tokens | keyboard control variables
+	currentTokenIndex: 0, // token that is highlighted
+	tokenPosition: 0, // referring to the token in the drawer
 }
 
 const store = React.createContext(init)
@@ -36,7 +42,6 @@ const createTokenKey = () => {
 }
 
 const randTokenOrder = (reals, fakes) => {
-
 	let merged = reals.concat(fakes)
 	return shuffle(merged)
 }
@@ -45,8 +50,23 @@ const importFromQset = (qset) => {
 	return {
 		items: qset.items.map((item) => {
 
-			let fakes = item.options.fakes.map((token) => { return { ...token, status: 'unsorted', fakeout: true, id: createTokenKey() } })
-			let reals = item.answers[0].options.phrase.map((token) => { return { ...token, status: 'unsorted', fakeout: false, id: createTokenKey() } })
+			let fakes = item.options.fakes.map((token) => {
+				return {
+					...token,
+					status: 'unsorted',
+					fakeout: true,
+					id: createTokenKey()
+				}
+			})
+
+			let reals = item.answers[0].options.phrase.map((token) => {
+				return {
+					...token,
+					status: 'unsorted',
+					fakeout: false,
+					id: createTokenKey()
+				}
+			})
 
 			return {
 				question: item.questions[0].text,
@@ -80,6 +100,7 @@ const prepareQuestionBank = (imported) => {
 const calcResponseState = (item) => {
 
 	var state = item.responseState
+
 	switch (item.responseState) {
 		case 'none':
 			if (item.sorted.length > 0) {
@@ -118,6 +139,7 @@ const calcResponseState = (item) => {
 }
 
 const tokenSortedPhraseReducer = (list, action) => {
+
 	switch (action.type) {
 		case 'token_dragging':
 			return list.map((token, index) => {
@@ -129,6 +151,7 @@ const tokenSortedPhraseReducer = (list, action) => {
 				}
 				else return token
 			})
+
 		case 'token_drag_complete':
 			return list.map((token, index) => {
 				if (action.payload.tokenIndex == index) {
@@ -139,6 +162,7 @@ const tokenSortedPhraseReducer = (list, action) => {
 				}
 				else return token
 			})
+
 		case 'sorted_token_unsort':
 			{
 				let sorted = [
@@ -152,6 +176,7 @@ const tokenSortedPhraseReducer = (list, action) => {
 				})
 				)
 			}
+
 		case 'token_update_position':
 			return list.map((token, index) => {
 				if (action.payload.tokenIndex == index) {
@@ -167,6 +192,7 @@ const tokenSortedPhraseReducer = (list, action) => {
 				}
 				else return token
 			})
+
 		case 'response_token_sort':
 			{
 				let sorted = [
@@ -189,6 +215,7 @@ const tokenSortedPhraseReducer = (list, action) => {
 				})
 				)
 			}
+
 		case 'response_token_rearrange':
 			let target = action.payload.targetIndex
 			if (action.payload.originIndex < target) target--
@@ -218,6 +245,7 @@ const tokenSortedPhraseReducer = (list, action) => {
 					reqPositionUpdate: true
 				}
 			})
+
 		case 'adjacent_token_update':
 			return list.map((token) => {
 
@@ -238,12 +266,14 @@ const tokenSortedPhraseReducer = (list, action) => {
 					arrangement: null
 				}
 			})
+
 		default:
 			throw new Error(`Sorted Token phrase reducer: action type: ${action.type} not found.`)
 	}
 }
 
 const tokenUnsortedPhraseReducer = (list, action) => {
+
 	switch (action.type) {
 		case 'token_dragging':
 			return list.map((token, index) => {
@@ -255,8 +285,10 @@ const tokenUnsortedPhraseReducer = (list, action) => {
 				}
 				else return token
 			})
+
 		case 'token_drag_complete':
 			return list.map((token, index) => {
+
 				if (action.payload.tokenIndex == index) {
 					return {
 						...token,
@@ -265,11 +297,13 @@ const tokenUnsortedPhraseReducer = (list, action) => {
 				}
 				else return token
 			})
+
 		case 'response_token_sort':
 			return [
 				...list.slice(0, action.payload.phraseIndex),
 				...list.slice(action.payload.phraseIndex + 1)
 			]
+
 		case 'sorted_token_unsort':
 			return [
 				...list,
@@ -281,12 +315,14 @@ const tokenUnsortedPhraseReducer = (list, action) => {
 					fakeout: action.payload.fakeout
 				}
 			]
+
 		default:
 			throw new Error(`Token phrase reducer: action type: ${action.type} not found.`)
 	}
 }
 
 const questionItemReducer = (items, action) => {
+
 	switch (action.type) {
 		case 'token_dragging':
 			return items.map((item, index) => {
@@ -294,10 +330,13 @@ const questionItemReducer = (items, action) => {
 					if (action.payload.status == 'unsorted') {
 						return { ...item, phrase: tokenUnsortedPhraseReducer(item.phrase, action) }
 					}
-					else if (action.payload.status == 'sorted') return { ...item, sorted: tokenSortedPhraseReducer(item.sorted, action) }
+					else if (action.payload.status == 'sorted') {
+						return { ...item, sorted: tokenSortedPhraseReducer(item.sorted, action) }
+					}
 				}
 				else return item
 			})
+
 		case 'token_drag_complete':
 			return items.map((item, index) => {
 				if (index == action.payload.questionIndex) {
@@ -308,21 +347,33 @@ const questionItemReducer = (items, action) => {
 				}
 				else return item
 			})
+
 		case 'sorted_token_unsort':
 			return items.map((item, index) => {
 				if (index == action.payload.questionIndex) {
-
-					return calcResponseState({ ...item, sorted: tokenSortedPhraseReducer(item.sorted, action), phrase: tokenUnsortedPhraseReducer(item.phrase, action) })
+					return calcResponseState({
+						...item,
+						sorted: tokenSortedPhraseReducer(item.sorted, action),
+						phrase: tokenUnsortedPhraseReducer(item.phrase, action)
+					})
 				}
 				else return item
 			})
+
 		case 'response_token_sort':
+			console.log({ action })
 			return items.map((item, index) => {
 				if (index == action.payload.questionIndex) {
-					return calcResponseState({ ...item, sorted: tokenSortedPhraseReducer(item.sorted, action), phrase: tokenUnsortedPhraseReducer(item.phrase, action) })
+					console.log({ item })
+					return calcResponseState({
+						...item,
+						sorted: tokenSortedPhraseReducer(item.sorted, action),
+						phrase: tokenUnsortedPhraseReducer(item.phrase, action)
+					})
 				}
 				else return item
 			})
+
 		case 'response_token_rearrange':
 		case 'token_update_position':
 		case 'adjacent_token_update':
@@ -332,6 +383,7 @@ const questionItemReducer = (items, action) => {
 				}
 				else return item
 			})
+
 		case 'attempt_submit':
 			return items.map((item, index) => {
 				if (index == action.payload.questionIndex) {
@@ -339,14 +391,65 @@ const questionItemReducer = (items, action) => {
 				}
 				else return item
 			})
+
 		default:
 			throw new Error(`Question item reducer: action type: ${action.type} not found.`)
 	}
 }
 
+// An item always has to be return, if not page breaks.
+// Second level of funnel
+const manageKeyboardCommand = (items, action) => {
+	// items contains an array of questions objects
+
+	switch (action.type) {
+
+		case 'keyboard_confirm_token':
+			console.log(items)
+			return items.map((item, index) => {
+				if (index == action.payload.questionIndex) {// Filtering by question
+					// Filtering by the questions tokens based on sorted or unsorted
+					return calcResponseState({
+						...item,
+						sorted: tokenSortedPhraseReducer(item.sorted, action),
+						phrase: tokenUnsortedPhraseReducer(item.phrase, action)
+					})
+				}
+				else return item
+			})
+
+
+		default:
+			throw new Error(`Keyboard command reducer: action type: ${action.type} not found.`)
+	}
+}
+
+// Try to change the arr[tokenIndex].status to sorted so it renders on the "token-target"
+const keyboardUnsortedToken = (list, action) => {
+	let sorted = [
+		...list.slice(0, action.payload.tokenIndex),
+		{
+			id: action.payload.id,
+			legend: action.payload.legend,
+			value: action.payload.value,
+			status: 'sorted',
+			fakeout: action.payload.fakeout,
+			position: {},
+			arrangement: null
+		},
+		...list.slice(action.payload.tokenIndex)
+	]
+
+	return sorted.map((token) => ({
+		...token, reqPositionUpdate: true
+	}))
+}
+
 const StateProvider = ({ children }) => {
 	const [state, dispatch] = useReducer((state, action) => {
+
 		switch (action.type) {
+
 			case 'init':
 				let qset = importFromQset(action.payload.qset)
 				var items = qset.items
@@ -359,15 +462,26 @@ const StateProvider = ({ children }) => {
 					item.tokenOrder = randTokenOrder(item.phrase, item.fakeout)
 				})
 				return { ...state, title: action.payload.title, items: items, legend: qset.legend, questionsAsked: items.questionsAsked, requireInit: false, requireAllQuestions: qset.requireAllQuestions }
+			// use the SPREAD syntax ...state to return each item in the array.
 			case 'toggle_tutorial':
 				return { ...state, showTutorial: !state.showTutorial }
+
 			case 'toggle_warning':
 				return { ...state, showWarning: !state.showWarning }
+
 			case 'select_question':
 				return { ...state, currentIndex: action.payload }
+
 			case 'paginate_question_forward':
 				let forward = state.currentIndex < state.items.length - 1 ? state.currentIndex + 1 : state.currentIndex
 				return { ...state, currentIndex: forward }
+
+			case 'current_token_index':
+				return { ...state, currentTokenIndex: action.payload }
+
+			case 'update_questions_ref':
+				return { ...state, questionsRef: action.payload }
+
 			case 'token_dragging':
 			case 'token_drag_complete':
 			case 'sorted_token_unsort':
@@ -377,6 +491,13 @@ const StateProvider = ({ children }) => {
 			case 'adjacent_token_update':
 			case 'attempt_submit':
 				return { ...state, items: questionItemReducer(state.items, action) }
+
+			case 'keyboard_confirm_token':
+			case 'keyboard_put_back_token':
+			case 'keyboard_move_token_left':
+			case 'keyboard_move_token_right':
+				return { ...state, items: manageKeyboardCommand(state.items, action) } // goes into the second level funnel
+
 			default:
 				throw new Error(`Base reducer: action type: ${action.type} not found.`)
 		}

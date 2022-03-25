@@ -1,6 +1,5 @@
-import React, { useContext, useState, useEffect, useRef } from 'react'
+import React, { useContext, useState, useEffect } from 'react'
 import { store } from '../../player-store'
-import usePrevious from '../keyboard/previous'
 
 const QuestionSelect = (props) => {
 
@@ -9,18 +8,21 @@ const QuestionSelect = (props) => {
 
 	const [state, setState] = useState({ paginateMin: 0, paginateMax: 8, visibleQuestions: [] })
 	const currentIndex = manager.state.currentIndex
-	const focusQuestions = useRef([])
 
 	useEffect(() => {
+
 		let questionList = manager.state.items.map((item, index) => {
 			return <button
 				className={`select-btn ${currentIndex == index ? 'selected' : ''}`}
 				key={index}
 				onClick={() => { selectQuestion(index); }}
-				ref={(el) => focusQuestions.current[index] = el}>
+				ref={(el) => manager.state.questionsRef[index] = el}>
 				{index + 1}
 			</button>
 		})
+
+		// stores local version to the scope version.
+		dispatch({ type: 'update_questions_ref', payload: manager.state.questionsRef })
 
 		// if the list of questions gets too long, we have to start computing the subset to display
 		if (questionList.length > 10) {
@@ -47,34 +49,6 @@ const QuestionSelect = (props) => {
 		dispatch({ type: 'select_question', payload: index })
 		manager.state.previousIndex = index
 	}
-
-	const moveFocusToQuestion = (e) => {
-		// Focus doesn't work when moving to a button that is not render.
-		if (e.key == 'ArrowDown' || e.key == 'ArrowUp') {
-			focusQuestions.current[manager.state.focusQuestionIndex]?.focus()
-		} else {
-			focusQuestions.current[manager.state.focusQuestionIndex]?.blur()
-		}
-	}
-
-	// keyboard controls effects that changes from a selected question to another
-	useEffect(() => {
-		window.addEventListener('keyup', props.keyboardCtrlsQuestions)
-
-		return () => { // cleaned up function
-			window.removeEventListener('keyup', props.keyboardCtrlsQuestions)
-		}
-	}, [manager.state.currentIndex, manager.state.items])
-
-	// Effect to trigger Voiceover when focus move to a new question
-	useEffect(() => {
-		window.addEventListener('keyup', moveFocusToQuestion)
-
-		return () => { // cleaned up function
-			window.removeEventListener('keyup', moveFocusToQuestion)
-		}
-	}, [manager.state.previousIndex, manager.state.currentIndex])
-
 
 	return (
 		<div className="question-select">

@@ -126,7 +126,6 @@ const Token = (props) => {
 	}
 
 	const handleDragEnd = (event) => {
-
 		dispatch({
 			type: 'token_drag_complete', payload: {
 				origin: state.origin,
@@ -156,8 +155,7 @@ const Token = (props) => {
 	}
 
 	let tokenColor = getLegendColor(props.type)
-
-	let temp = <div
+	return <div
 		className={`token ${state.dragging ? 'dragging' : ''} ${props.arrangement == 'left' ? 'is-left' : ''} ${props.arrangement == 'right' ? 'is-right' : ''}`}
 		style={{
 			background: tokenColor,
@@ -172,12 +170,6 @@ const Token = (props) => {
 		onContextMenu={handleClick}>
 		{props.pref == 'word' ? props.value : getLegendName(props.type)}
 	</div>
-
-	if (tokenRef.current != null) {
-		manager.state.currentRefToken.push(tokenRef.current)
-	}
-
-	return temp
 }
 
 export default Token

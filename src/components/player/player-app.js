@@ -4,7 +4,6 @@ import PhrasePlayer from './phrase-player'
 import PlayerTutorial from './player-tutorial'
 import WarningModal from './warning-modal'
 import { store } from '../../player-store'
-import usePrevious from '../keyboard/previous'
 
 const PlayerApp = (props) => {
 
@@ -30,16 +29,59 @@ const PlayerApp = (props) => {
 	// keyboard controls effects
 	useEffect(() => {
 		document.addEventListener('keydown', keyboardCtrlsBtns)
+		document.addEventListener('keydown', keyboardCtrls)
 		document.addEventListener('click', mouseClick)
 
 		return () => { // cleaned up function
 			document.removeEventListener('keydown', keyboardCtrlsBtns)
+			document.removeEventListener('keydown', keyboardCtrls)
 			document.removeEventListener('click', mouseClick)
 		}
-	}, [])
+	}, [manager.state.items, manager.state.currentIndex, manager.state.currentTokenIndex])
+
+	// Question key controls using Arrow up and down
+	const keyboardCtrls = (e) => {
+
+		// question index start at 0, but the question label starts at 1
+		manager.state.questionsRef[manager.state.currentIndex]?.blur()
+
+		if (e.ctrlKey && e.shiftKey) {
+
+			if (e.key == 'ArrowUp') {
+				if (manager.state.currentIndex >= 1) {
+					questionShiftKey(manager.state.currentIndex - 1)
+				}
+			}
+
+			if (e.key == 'ArrowDown') {
+				if (manager.state.currentIndex < manager.state.items.length - 1) {
+					questionShiftKey(manager.state.currentIndex + 1)
+				}
+			}
+
+			if (e.key == 'ArrowLeft') {
+				let tokenIndex = manager.state.currentTokenIndex
+
+				if (tokenIndex != 0) {
+					return dispatch({ type: 'current_token_index', payload: tokenIndex - 1 })
+				}
+			}
+
+			if (e.key == 'ArrowRight') {
+				let tokenIndex = manager.state.currentTokenIndex
+
+				if (tokenIndex < manager.state.items[manager.state.currentIndex].phrase?.length - 1) {
+					return dispatch({ type: 'current_token_index', payload: tokenIndex + 1 })
+				}
+			}
+
+			if (e.key == 'Enter') keyboardConfirmToken()
+
+		}
+	}
 
 	// Btns key controls using W and S
-	function keyboardCtrlsBtns(e) {
+	const keyboardCtrlsBtns = (e) => {
 		if (e.ctrlKey && e.shiftKey) {
 			if (e.key == 'S') {
 				focusDomSubmit.current.focus() // focus on submit btn
@@ -55,75 +97,47 @@ const PlayerApp = (props) => {
 		}
 	}
 
-	// Question key controls using Arrow up and down
-	function keyboardCtrlsQuestions(e) {
-		// question index start at 0, but the question label starts at 1
-		manager.state.focusQuestionIndex = manager.state.currentIndex
+	const questionShiftKey = (shiftDirection) => {
 
-		if (e.ctrlKey && e.shiftKey) {
+		dispatch({ type: 'select_question', payload: shiftDirection })
+		manager.state.questionsRef[shiftDirection]?.focus()
+	}
 
-			if (e.key == 'ArrowUp') {
-				if (manager.state.currentIndex >= 1) {
+	// The case in player-store.js has to return a item.
+	const keyboardConfirmToken = () => {
+		let tokenIndex = manager.state.currentTokenIndex
+		let phrasesList = manager.state.items[manager.state.currentIndex].phrase
 
-					while (manager.state.currentRefToken.length > 0) {
-						manager.state.currentRefToken.pop()
-					}
-
-					dispatch({
-						type: 'select_question',
-						payload: manager.state.currentIndex - 1
-					})
-
-					manager.state.focusQuestionIndex = manager.state.currentIndex - 1
-				}
+		dispatch({
+			type: 'response_token_sort',
+			payload: {
+				questionIndex: manager.state.currentIndex,
+				phraseIndex: tokenIndex,
+				id: phrasesList[tokenIndex].id,
+				legend: phrasesList[tokenIndex].legend,
+				value: phrasesList[tokenIndex].value,
+				fakeout: phrasesList[tokenIndex].fakeout,
+				// if I can find the tokens position, I can extrapolate it's ID
 			}
+		})
 
-			if (e.key == 'ArrowDown') {
-				if (manager.state.currentIndex < manager.state.items.length - 1) {
-
-					while (manager.state.currentRefToken.length > 0) {
-						manager.state.currentRefToken.pop()
-					}
-
-					dispatch({
-						type: 'select_question',
-						payload: manager.state.currentIndex + 1
-					})
-
-					manager.state.focusQuestionIndex = manager.state.currentIndex + 1
-				}
-			}
+		// use to avoid going over the arr length
+		if (tokenIndex === phrasesList.length - 1) {
+			dispatch({ type: 'current_token_index', payload: manager.state.currentTokenIndex - 1 })
 		}
+	}
+
+	// Remove focus once a mouse click occurs.
+	const mouseClick = () => {
+		focusDomTutorial.current.style.background = 'white'
+		focusDomSubmit.current.style.background = 'white'
+		manager.state.questionsRef[manager.state.currentIndex]?.blur()
 	}
 
 	const printFunc = () => {
-		console.log('manager.currentRefToken:', manager.state.currentRefToken)
-		manager.state.currentRefToken?.forEach((element, index) => {
-			console.log(`index: ${index} | element:`, element)
-		});
-	}
-
-	function keyboardCtrlsTokens(e) {
-		// question index start at 0, but the question label starts at 1
-		manager.state.focusQuestionIndex = manager.state.currentIndex
-
-		if (e.ctrlKey && e.shiftKey) {
-			if (e.key == 'ArrowLeft') {
-				console.log('ArrowLeft')
-				printFunc()
-			}
-
-			if (e.key == 'ArrowRight') {
-				console.log('ArrowRight')
-				printFunc()
-			}
-		}
-	}
-
-	// Remove highlight ones mouse is used
-	function mouseClick(e) {
-		focusDomTutorial.current.style.background = 'white'
-		focusDomSubmit.current.style.background = 'white'
+		console.log(' ')
+		console.log(manager.state.questionsRef)
+		console.log(`questionsRef[${manager.state.currentRefTokenIndex}]:`, manager.state.questionsRef[manager.state.currentRefTokenIndex]?.innerHTML)
 	}
 
 	// Used to prevent reads from being highlighted then dragged
@@ -212,9 +226,7 @@ const PlayerApp = (props) => {
 				<button className="headerBtn" onClick={handleSubmit} ref={focusDomSubmit}>Submit</button>
 				<button className="headerBtn" onClick={toggleTutorial} tabIndex='-1' ref={focusDomTutorial}>Tutorial</button>
 			</header>
-			<QuestionSelect
-				keyboardCtrlsQuestions={keyboardCtrlsQuestions}>
-			</QuestionSelect>
+			<QuestionSelect></QuestionSelect>
 			<section className="content-container">
 				<section className="card question-container">
 					<p>{questionText}</p>
@@ -238,8 +250,7 @@ const PlayerApp = (props) => {
 					attemptsUsed={manager.state.items[manager.state.currentIndex]?.attemptsUsed}
 					attemptLimit={manager.state.items[manager.state.currentIndex]?.attempts}
 					hasFakes={manager.state.items[manager.state.currentIndex]?.fakeout.length}
-					responseState={manager.state.items[manager.state.currentIndex]?.responseState}
-					keyboardCtrlsTokens={keyboardCtrlsTokens}>
+					responseState={manager.state.items[manager.state.currentIndex]?.responseState}>
 				</PhrasePlayer>
 				<section className="card legend">
 					<header>Color Legend</header>

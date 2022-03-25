@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react'
+import React, { useContext, useEffect, useRef, useState } from 'react'
 import Token from './token'
 import { store } from '../../player-store'
 
@@ -154,15 +154,6 @@ const TokenDrawer = (props) => {
 			currentResponseText = <span>NONE</span>
 			break
 	}
-
-	// keyboard controls effects for moving from one token to another
-	useEffect(() => {
-		document.addEventListener('keyup', props.keyboardCtrlsTokens)
-
-		return () => { // cleaned up function
-			document.removeEventListener('keyup', props.keyboardCtrlsTokens)
-		}
-	}, [manager.state.currentRefToken, manager.state.currentIndex])
 
 	return (
 		<section className={'token-drawer ' +
