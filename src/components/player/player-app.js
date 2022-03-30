@@ -101,23 +101,27 @@ const PlayerApp = (props) => {
 
 		dispatch({ type: 'select_question', payload: shiftDirection })
 		manager.state.questionsRef[shiftDirection]?.focus()
+		dispatch({ type: 'current_token_index', payload: 0 })
 	}
 
 	// The case in player-store.js has to return a item.
 	const keyboardConfirmToken = () => {
 		let tokenIndex = manager.state.currentTokenIndex
 		let phrasesList = manager.state.items[manager.state.currentIndex].phrase
+		let phraseUpdate = phrasesList[tokenIndex]
 
+		if (phrasesList.length === 0) return
+
+		// moves the selected token from the drawer to the target
 		dispatch({
-			type: 'response_token_sort',
-			payload: {
+			type: 'response_token_sort', payload: {
 				questionIndex: manager.state.currentIndex,
+				targetIndex: manager.state.items[manager.state.currentIndex].sorted.length, // set to this so it places the token right end of the token.
 				phraseIndex: tokenIndex,
-				id: phrasesList[tokenIndex].id,
-				legend: phrasesList[tokenIndex].legend,
-				value: phrasesList[tokenIndex].value,
-				fakeout: phrasesList[tokenIndex].fakeout,
-				// if I can find the tokens position, I can extrapolate it's ID
+				id: phraseUpdate.id,
+				legend: phraseUpdate.legend,
+				value: phraseUpdate.value,
+				fakeout: phraseUpdate.fakeout,
 			}
 		})
 
@@ -132,12 +136,6 @@ const PlayerApp = (props) => {
 		focusDomTutorial.current.style.background = 'white'
 		focusDomSubmit.current.style.background = 'white'
 		manager.state.questionsRef[manager.state.currentIndex]?.blur()
-	}
-
-	const printFunc = () => {
-		console.log(' ')
-		console.log(manager.state.questionsRef)
-		console.log(`questionsRef[${manager.state.currentRefTokenIndex}]:`, manager.state.questionsRef[manager.state.currentRefTokenIndex]?.innerHTML)
 	}
 
 	// Used to prevent reads from being highlighted then dragged

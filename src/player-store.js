@@ -13,13 +13,8 @@ const init = {
 	requireAllQuestions: false,
 	questionsAsked: [],
 
-	// Questions | keyboard control variables
-	questionsRef: [], // Contains an arr of ref objects for each question, in other words DOM elements
-	focusQuestionIndex: 0, // used to remove focus from last question focus on
-
-	// Tokens | keyboard control variables
-	currentTokenIndex: 0, // token that is highlighted
-	tokenPosition: 0, // referring to the token in the drawer
+	questionsRef: [], // Questions keyboard control variable contains an arr of ref objects for each question, in other words DOM elements, for switching between questions.
+	currentTokenIndex: 0, // Token keyboard control variable that tracks the position of the token
 }
 
 const store = React.createContext(init)
@@ -169,7 +164,6 @@ const tokenSortedPhraseReducer = (list, action) => {
 					...list.slice(0, action.payload.tokenIndex),
 					...list.slice(action.payload.tokenIndex + 1)
 				]
-
 				return sorted.map((token) => ({
 					...token,
 					reqPositionUpdate: true
@@ -195,6 +189,8 @@ const tokenSortedPhraseReducer = (list, action) => {
 
 		case 'response_token_sort':
 			{
+				console.log({ action })
+				console.log({ list })
 				let sorted = [
 					...list.slice(0, action.payload.targetIndex),
 					{
@@ -208,7 +204,7 @@ const tokenSortedPhraseReducer = (list, action) => {
 					},
 					...list.slice(action.payload.targetIndex)
 				]
-
+				console.log({ sorted })
 				return sorted.map((token) => ({
 					...token,
 					reqPositionUpdate: true
@@ -361,10 +357,8 @@ const questionItemReducer = (items, action) => {
 			})
 
 		case 'response_token_sort':
-			console.log({ action })
 			return items.map((item, index) => {
 				if (index == action.payload.questionIndex) {
-					console.log({ item })
 					return calcResponseState({
 						...item,
 						sorted: tokenSortedPhraseReducer(item.sorted, action),
@@ -395,54 +389,6 @@ const questionItemReducer = (items, action) => {
 		default:
 			throw new Error(`Question item reducer: action type: ${action.type} not found.`)
 	}
-}
-
-// An item always has to be return, if not page breaks.
-// Second level of funnel
-const manageKeyboardCommand = (items, action) => {
-	// items contains an array of questions objects
-
-	switch (action.type) {
-
-		case 'keyboard_confirm_token':
-			console.log(items)
-			return items.map((item, index) => {
-				if (index == action.payload.questionIndex) {// Filtering by question
-					// Filtering by the questions tokens based on sorted or unsorted
-					return calcResponseState({
-						...item,
-						sorted: tokenSortedPhraseReducer(item.sorted, action),
-						phrase: tokenUnsortedPhraseReducer(item.phrase, action)
-					})
-				}
-				else return item
-			})
-
-
-		default:
-			throw new Error(`Keyboard command reducer: action type: ${action.type} not found.`)
-	}
-}
-
-// Try to change the arr[tokenIndex].status to sorted so it renders on the "token-target"
-const keyboardUnsortedToken = (list, action) => {
-	let sorted = [
-		...list.slice(0, action.payload.tokenIndex),
-		{
-			id: action.payload.id,
-			legend: action.payload.legend,
-			value: action.payload.value,
-			status: 'sorted',
-			fakeout: action.payload.fakeout,
-			position: {},
-			arrangement: null
-		},
-		...list.slice(action.payload.tokenIndex)
-	]
-
-	return sorted.map((token) => ({
-		...token, reqPositionUpdate: true
-	}))
 }
 
 const StateProvider = ({ children }) => {
@@ -491,12 +437,6 @@ const StateProvider = ({ children }) => {
 			case 'adjacent_token_update':
 			case 'attempt_submit':
 				return { ...state, items: questionItemReducer(state.items, action) }
-
-			case 'keyboard_confirm_token':
-			case 'keyboard_put_back_token':
-			case 'keyboard_move_token_left':
-			case 'keyboard_move_token_right':
-				return { ...state, items: manageKeyboardCommand(state.items, action) } // goes into the second level funnel
 
 			default:
 				throw new Error(`Base reducer: action type: ${action.type} not found.`)

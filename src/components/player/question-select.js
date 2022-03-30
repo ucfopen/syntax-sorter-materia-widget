@@ -47,7 +47,6 @@ const QuestionSelect = (props) => {
 
 	const selectQuestion = (index) => {
 		dispatch({ type: 'select_question', payload: index })
-		manager.state.previousIndex = index
 	}
 
 	return (
