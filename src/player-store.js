@@ -189,8 +189,6 @@ const tokenSortedPhraseReducer = (list, action) => {
 
 		case 'response_token_sort':
 			{
-				console.log({ action })
-				console.log({ list })
 				let sorted = [
 					...list.slice(0, action.payload.targetIndex),
 					{
@@ -204,7 +202,6 @@ const tokenSortedPhraseReducer = (list, action) => {
 					},
 					...list.slice(action.payload.targetIndex)
 				]
-				console.log({ sorted })
 				return sorted.map((token) => ({
 					...token,
 					reqPositionUpdate: true

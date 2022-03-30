@@ -28,12 +28,10 @@ const PlayerApp = (props) => {
 
 	// keyboard controls effects
 	useEffect(() => {
-		document.addEventListener('keydown', keyboardCtrlsBtns)
 		document.addEventListener('keydown', keyboardCtrls)
 		document.addEventListener('click', mouseClick)
 
 		return () => { // cleaned up function
-			document.removeEventListener('keydown', keyboardCtrlsBtns)
 			document.removeEventListener('keydown', keyboardCtrls)
 			document.removeEventListener('click', mouseClick)
 		}
@@ -42,58 +40,51 @@ const PlayerApp = (props) => {
 	// Question key controls using Arrow up and down
 	const keyboardCtrls = (e) => {
 
-		// question index start at 0, but the question label starts at 1
+		// Question index start at 0, but the question label starts at 1
 		manager.state.questionsRef[manager.state.currentIndex]?.blur()
+		let tokenIndex = manager.state.currentTokenIndex
 
 		if (e.ctrlKey && e.shiftKey) {
+			switch (e.key) {
 
-			if (e.key == 'ArrowUp') {
-				if (manager.state.currentIndex >= 1) {
-					questionShiftKey(manager.state.currentIndex - 1)
-				}
+				case 'ArrowUp':
+					return manager.state.currentIndex >= 1
+						? questionShiftKey(manager.state.currentIndex - 1) : null
+
+				case 'ArrowDown':
+					return manager.state.currentIndex < manager.state.items.length - 1
+						? questionShiftKey(manager.state.currentIndex + 1) : null
+
+				case 'ArrowLeft':
+					return tokenIndex != 0
+						? dispatch({ type: 'current_token_index', payload: tokenIndex - 1 }) : null
+
+				case 'ArrowRight':
+					return tokenIndex < manager.state.items[manager.state.currentIndex].phrase?.length - 1
+						? dispatch({ type: 'current_token_index', payload: tokenIndex + 1 }) : null
+
+				case 'Enter':
+					return keyboardConfirmToken()
+
+				case 'Backspace':
+					return keyboardRemoveToken()
+
+				case 'W':
+					focusDomTutorial.current.focus()
+					focusDomTutorial.current.style.background = 'yellow'
+					focusDomSubmit.current.style.background = 'white'
+					break;
+
+				case 'S':
+					focusDomSubmit.current.focus() // focus on submit btn
+					focusDomSubmit.current.style.background = 'yellow'
+					focusDomTutorial.current.style.background = 'white'
+					break;
+
+				default: console.log(`Key pressed was '${e.key}' Use a correct key.`)
+					break;
 			}
 
-			if (e.key == 'ArrowDown') {
-				if (manager.state.currentIndex < manager.state.items.length - 1) {
-					questionShiftKey(manager.state.currentIndex + 1)
-				}
-			}
-
-			if (e.key == 'ArrowLeft') {
-				let tokenIndex = manager.state.currentTokenIndex
-
-				if (tokenIndex != 0) {
-					return dispatch({ type: 'current_token_index', payload: tokenIndex - 1 })
-				}
-			}
-
-			if (e.key == 'ArrowRight') {
-				let tokenIndex = manager.state.currentTokenIndex
-
-				if (tokenIndex < manager.state.items[manager.state.currentIndex].phrase?.length - 1) {
-					return dispatch({ type: 'current_token_index', payload: tokenIndex + 1 })
-				}
-			}
-
-			if (e.key == 'Enter') keyboardConfirmToken()
-
-		}
-	}
-
-	// Btns key controls using W and S
-	const keyboardCtrlsBtns = (e) => {
-		if (e.ctrlKey && e.shiftKey) {
-			if (e.key == 'S') {
-				focusDomSubmit.current.focus() // focus on submit btn
-				focusDomSubmit.current.style.background = 'yellow'
-				focusDomTutorial.current.style.background = 'white'
-			}
-
-			if (e.key == 'W') {
-				focusDomTutorial.current.focus()
-				focusDomTutorial.current.style.background = 'yellow'
-				focusDomSubmit.current.style.background = 'white'
-			}
 		}
 	}
 
@@ -104,7 +95,6 @@ const PlayerApp = (props) => {
 		dispatch({ type: 'current_token_index', payload: 0 })
 	}
 
-	// The case in player-store.js has to return a item.
 	const keyboardConfirmToken = () => {
 		let tokenIndex = manager.state.currentTokenIndex
 		let phrasesList = manager.state.items[manager.state.currentIndex].phrase
@@ -129,6 +119,25 @@ const PlayerApp = (props) => {
 		if (tokenIndex === phrasesList.length - 1) {
 			dispatch({ type: 'current_token_index', payload: manager.state.currentTokenIndex - 1 })
 		}
+	}
+
+	const keyboardRemoveToken = () => {
+		let sortedList = manager.state.items[manager.state.currentIndex].sorted
+		let sortedRemoving = sortedList[sortedList.length - 1]
+
+		if (sortedList.length === 0) return
+
+		dispatch({
+			type: 'sorted_token_unsort', payload: {
+				origin: 'sorted',
+				tokenIndex: sortedList.length - 1, // pops the most recent token inserted into the target
+				questionIndex: manager.state.currentIndex,
+				fakeout: sortedRemoving.fakeout,
+				legend: sortedRemoving.legend,
+				value: sortedRemoving.value,
+				id: sortedRemoving.id
+			}
+		})
 	}
 
 	// Remove focus once a mouse click occurs.
