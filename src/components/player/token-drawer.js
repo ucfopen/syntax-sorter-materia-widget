@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useRef, useState } from 'react'
+import React, { useContext, useEffect, useRef } from 'react'
 import Token from './token'
 import { store } from '../../player-store'
 
@@ -6,6 +6,44 @@ const TokenDrawer = (props) => {
 
 	const manager = useContext(store)
 	const dispatch = manager.dispatch
+
+	const focusDomAnswer = useRef(null)
+	const focusDomQuestion = useRef(null)
+
+	useEffect(() => {
+		document.addEventListener('keydown', keyboardCtrls)
+		document.addEventListener('click', mouseClick)
+
+		return () => { // cleaned up function
+			document.removeEventListener('keydown', keyboardCtrls)
+			document.removeEventListener('click', mouseClick)
+		}
+
+	}, [manager.state.items, manager.state.currentIndex, manager.state.currentTokenIndex])
+
+	const keyboardCtrls = (e) => {
+		if (e.ctrlKey && e.shiftKey) {
+			switch (e.key) {
+				case 'Z':
+					focusDomAnswer.current.focus()
+					focusDomAnswer.current.style.background = 'yellow'
+					focusDomQuestion.current.style.background = 'white'
+					break
+
+				case 'X':
+					focusDomQuestion.current.focus()
+					focusDomQuestion.current.style.background = 'yellow'
+					focusDomAnswer.current.style.background = 'white'
+					break
+			}
+		}
+	}
+
+	// Remove focus once a mouse click occurs.
+	const mouseClick = () => {
+		focusDomAnswer.current.style.background = 'white'
+		focusDomQuestion.current.style.background = 'white'
+	}
 
 	const paginate = () => {
 		dispatch({ type: 'paginate_question_forward' })
@@ -168,8 +206,8 @@ const TokenDrawer = (props) => {
 					{currentResponseText}
 				</div>
 				<div className='button-container'>
-					<button className={`verify ${props.attemptLimit > props.attemptsUsed && props.responseState != 'correct' ? 'show' : ''}`} onClick={handleCheckAnswer}>Check Answer</button>
-					<button className={`paginate ${!isLastQuestion ? 'show' : ''}`} onClick={paginate}>Next Question</button>
+					<button className={`verify ${props.attemptLimit > props.attemptsUsed && props.responseState != 'correct' ? 'show' : ''}`} onClick={handleCheckAnswer} ref={focusDomAnswer}>Check Answer</button>
+					<button className={`paginate ${!isLastQuestion ? 'show' : ''}`} onClick={paginate} ref={focusDomQuestion}>Next Question</button>
 				</div>
 			</section>
 		</section>

@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState, useRef } from 'react'
+import React, { useContext, useEffect, useRef } from 'react'
 import QuestionSelect from './question-select'
 import PhrasePlayer from './phrase-player'
 import PlayerTutorial from './player-tutorial'
@@ -69,17 +69,19 @@ const PlayerApp = (props) => {
 				case 'Backspace':
 					return keyboardRemoveToken()
 
-				case 'W':
+				case 'A':
 					focusDomTutorial.current.focus()
 					focusDomTutorial.current.style.background = 'yellow'
 					focusDomSubmit.current.style.background = 'white'
-					break;
+					break
 
 				case 'S':
 					focusDomSubmit.current.focus() // focus on submit btn
 					focusDomSubmit.current.style.background = 'yellow'
 					focusDomTutorial.current.style.background = 'white'
-					break;
+					break
+
+				// controls for the buttons for the next question or answer.
 
 				default: console.log(`Key pressed was '${e.key}' Use a correct key.`)
 					break;
