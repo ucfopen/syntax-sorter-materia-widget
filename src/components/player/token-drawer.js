@@ -24,12 +24,14 @@ const TokenDrawer = (props) => {
 	const keyboardCtrls = (e) => {
 		if (e.ctrlKey && e.shiftKey) {
 			switch (e.key) {
+				// Check Answer
 				case 'Z':
 					focusDomAnswer.current.focus()
 					focusDomAnswer.current.style.background = 'yellow'
 					focusDomQuestion.current.style.background = 'white'
 					break
 
+				// Next Question
 				case 'X':
 					focusDomQuestion.current.focus()
 					focusDomQuestion.current.style.background = 'yellow'

@@ -46,7 +46,7 @@ const PlayerApp = (props) => {
 
 		if (e.ctrlKey && e.shiftKey) {
 			switch (e.key) {
-
+				// shift between questions
 				case 'ArrowUp':
 					return manager.state.currentIndex >= 1
 						? questionShiftKey(manager.state.currentIndex - 1) : null
@@ -55,6 +55,7 @@ const PlayerApp = (props) => {
 					return manager.state.currentIndex < manager.state.items.length - 1
 						? questionShiftKey(manager.state.currentIndex + 1) : null
 
+				// shift between tokens
 				case 'ArrowLeft':
 					return tokenIndex != 0
 						? dispatch({ type: 'current_token_index', payload: tokenIndex - 1 }) : null
@@ -63,25 +64,30 @@ const PlayerApp = (props) => {
 					return tokenIndex < manager.state.items[manager.state.currentIndex].phrase?.length - 1
 						? dispatch({ type: 'current_token_index', payload: tokenIndex + 1 }) : null
 
+				// Add token to the token-target
 				case 'Enter':
 					return keyboardConfirmToken()
 
+				// Remove token from token-target
 				case 'Backspace':
 					return keyboardRemoveToken()
 
+				// Tutorial button
 				case 'A':
 					focusDomTutorial.current.focus()
 					focusDomTutorial.current.style.background = 'yellow'
 					focusDomSubmit.current.style.background = 'white'
 					break
 
+				// Submit button
 				case 'S':
 					focusDomSubmit.current.focus() // focus on submit btn
 					focusDomSubmit.current.style.background = 'yellow'
 					focusDomTutorial.current.style.background = 'white'
 					break
 
-				// controls for the buttons for the next question or answer.
+				// controls for the buttons for the next question ( X ) and
+				// check answer ( Z ) are in the token-drawer.js
 
 				default: console.log(`Key pressed was '${e.key}' Use a correct key.`)
 					break;
