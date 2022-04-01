@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useRef } from 'react'
+import React, { useContext, useState, useEffect, useRef } from 'react'
 import QuestionSelect from './question-select'
 import PhrasePlayer from './phrase-player'
 import PlayerTutorial from './player-tutorial'
@@ -10,6 +10,7 @@ const PlayerApp = (props) => {
 	const manager = useContext(store)
 	const dispatch = manager.dispatch
 
+	const [focusCnt, setFocusCnt] = useState(0)
 	const focusDomTutorial = useRef(null)
 	const focusDomSubmit = useRef(null)
 
@@ -35,65 +36,97 @@ const PlayerApp = (props) => {
 			document.removeEventListener('keydown', keyboardCtrls)
 			document.removeEventListener('click', mouseClick)
 		}
-	}, [manager.state.items, manager.state.currentIndex, manager.state.currentTokenIndex])
+	}, [manager.state.items, manager.state.currentIndex, manager.state.currentTokenIndex,
+	manager.state.tabbingCnt, manager.state.toggleTabCtrl])
 
 	// Question key controls using Arrow up and down
 	const keyboardCtrls = (e) => {
-
+		e.preventDefault()
 		// Question index start at 0, but the question label starts at 1
 		manager.state.questionsRef[manager.state.currentIndex]?.blur()
 		let tokenIndex = manager.state.currentTokenIndex
 
-		if (e.ctrlKey && e.shiftKey) {
-			switch (e.key) {
-				// shift between questions
-				case 'ArrowUp':
-					return manager.state.currentIndex >= 1
-						? questionShiftKey(manager.state.currentIndex - 1) : null
+		// if (e.ctrlKey && e.shiftKey) {
+		switch (e.key) {
+			// shift between questions
+			case 'ArrowUp':
+				return manager.state.currentIndex >= 1
+					? questionShiftKey(manager.state.currentIndex - 1) : null
 
-				case 'ArrowDown':
-					return manager.state.currentIndex < manager.state.items.length - 1
-						? questionShiftKey(manager.state.currentIndex + 1) : null
+			case 'ArrowDown':
+				return manager.state.currentIndex < manager.state.items.length - 1
+					? questionShiftKey(manager.state.currentIndex + 1) : null
 
-				// shift between tokens
-				case 'ArrowLeft':
-					return tokenIndex != 0
-						? dispatch({ type: 'current_token_index', payload: tokenIndex - 1 }) : null
+			// shift between tokens
+			case 'ArrowLeft':
+				return tokenIndex != 0
+					? dispatch({ type: 'current_token_index', payload: tokenIndex - 1 }) : null
 
-				case 'ArrowRight':
-					return tokenIndex < manager.state.items[manager.state.currentIndex].phrase?.length - 1
-						? dispatch({ type: 'current_token_index', payload: tokenIndex + 1 }) : null
+			case 'ArrowRight':
+				return tokenIndex < manager.state.items[manager.state.currentIndex].phrase?.length - 1
+					? dispatch({ type: 'current_token_index', payload: tokenIndex + 1 }) : null
 
-				// Add token to the token-target
-				case 'Enter':
-					return keyboardConfirmToken()
+			// Add token to the token-target
+			case 'Enter':
+				return keyboardConfirmToken()
 
-				// Remove token from token-target
-				case 'Backspace':
-					return keyboardRemoveToken()
+			// Remove token from token-target
+			case 'Backspace':
+				return keyboardRemoveToken()
 
-				// Tutorial button
-				case 'A':
-					focusDomTutorial.current.focus()
-					focusDomTutorial.current.style.background = 'yellow'
-					focusDomSubmit.current.style.background = 'white'
-					break
+			// Tutorial button
+			case 'A':
+				focusDomTutorial.current.focus()
+				focusDomTutorial.current.style.background = 'yellow'
+				focusDomSubmit.current.style.background = 'white'
+				break
 
-				// Submit button
-				case 'S':
-					focusDomSubmit.current.focus() // focus on submit btn
-					focusDomSubmit.current.style.background = 'yellow'
-					focusDomTutorial.current.style.background = 'white'
-					break
+			// Submit button
+			case 'S':
+				focusDomSubmit.current.focus() // focus on submit btn
+				focusDomSubmit.current.style.background = 'yellow'
+				focusDomTutorial.current.style.background = 'white'
+				break
 
-				// controls for the buttons for the next question ( X ) and
-				// check answer ( Z ) are in the token-drawer.js
+			case 'Tab':
+				focusDomTutorial.current.blur()
+				focusDomSubmit.current.blur()
+				focusDomSubmit.current.style.background = 'white'
 
-				default: console.log(`Key pressed was '${e.key}' Use a correct key.`)
-					break;
-			}
+				if (manager.state.toggleTabCtrl == false) {
 
+					switch (manager.state.tabbingCnt) {
+						case 0:
+							focusDomTutorial.current.focus()
+							focusDomTutorial.current.style.background = 'yellow'
+							focusDomSubmit.current.style.background = 'white'
+							dispatch({ type: 'update_tabbing_counter', payload: manager.state.tabbingCnt + 1 })
+							break
+
+						case 1:
+							focusDomSubmit.current.focus() // focus on submit btn
+							focusDomSubmit.current.style.background = 'yellow'
+							focusDomTutorial.current.style.background = 'white'
+
+							dispatch({ type: 'update_tabbing_counter', payload: manager.state.tabbingCnt + 1 })
+
+							if (manager.state.items[manager.state.currentIndex].phrase.length === 0) {
+								dispatch({ type: 'update_tabbing_control', payload: true })
+							}
+							break
+
+						default:
+							dispatch({ type: 'update_tabbing_counter', payload: 0 })
+							break
+					}
+				}
+
+
+			default: console.log(`Key pressed was '${e.key}' Use a correct key.`)
+				break
 		}
+
+		// }
 	}
 
 	const questionShiftKey = (shiftDirection) => {
@@ -124,13 +157,17 @@ const PlayerApp = (props) => {
 		})
 
 		// use to avoid going over the arr length
-		if (tokenIndex === phrasesList.length - 1) {
+		if ((tokenIndex === phrasesList.length - 1) && (tokenIndex !== 0)) {
 			dispatch({ type: 'current_token_index', payload: manager.state.currentTokenIndex - 1 })
 		}
 	}
 
 	const keyboardRemoveToken = () => {
-		let sortedList = manager.state.items[manager.state.currentIndex].sorted
+		let question = manager.state.items[manager.state.currentIndex]
+
+		if (question?.attempts >= 1 && (question?.attemptsUsed >= question?.attempts)) return false
+
+		let sortedList = question.sorted
 		let sortedRemoving = sortedList[sortedList.length - 1]
 
 		if (sortedList.length === 0) return
@@ -153,6 +190,9 @@ const PlayerApp = (props) => {
 		focusDomTutorial.current.style.background = 'white'
 		focusDomSubmit.current.style.background = 'white'
 		manager.state.questionsRef[manager.state.currentIndex]?.blur()
+
+		dispatch({ type: 'update_tabbing_counter', payload: 0 })
+		dispatch({ type: 'update_tabbing_control', payload: false })
 	}
 
 	// Used to prevent reads from being highlighted then dragged

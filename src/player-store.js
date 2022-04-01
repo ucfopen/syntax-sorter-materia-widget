@@ -12,9 +12,10 @@ const init = {
 	enableQuestionBank: false,
 	requireAllQuestions: false,
 	questionsAsked: [],
-
 	questionsRef: [], // Questions keyboard control variable contains an arr of ref objects for each question, in other words DOM elements, for switching between questions.
 	currentTokenIndex: 0, // Token keyboard control variable that tracks the position of the token
+	tabbingCnt: 0,
+	toggleTabCtrl: false,
 }
 
 const store = React.createContext(init)
@@ -424,6 +425,12 @@ const StateProvider = ({ children }) => {
 
 			case 'update_questions_ref':
 				return { ...state, questionsRef: action.payload }
+
+			case 'update_tabbing_counter':
+				return { ...state, tabbingCnt: action.payload }
+
+			case 'update_tabbing_control':
+				return { ...state, toggleTabCtrl: action.payload }
 
 			case 'token_dragging':
 			case 'token_drag_complete':

@@ -19,28 +19,40 @@ const TokenDrawer = (props) => {
 			document.removeEventListener('click', mouseClick)
 		}
 
-	}, [manager.state.items, manager.state.currentIndex, manager.state.currentTokenIndex])
+	}, [manager.state.items, manager.state.currentIndex, manager.state.currentTokenIndex,
+	manager.state.tabbingCnt, manager.state.toggleTabCtrl])
 
 	const keyboardCtrls = (e) => {
-		if (e.ctrlKey && e.shiftKey) {
-			switch (e.key) {
-				// Check Answer
-				case 'Z':
-					focusDomAnswer.current.focus()
-					focusDomAnswer.current.style.background = 'yellow'
-					focusDomQuestion.current.style.background = 'white'
-					break
 
-				// Next Question
-				case 'X':
-					focusDomQuestion.current.focus()
-					focusDomQuestion.current.style.background = 'yellow'
-					focusDomAnswer.current.style.background = 'white'
-					break
-			}
+		switch (e.key) {
+			case 'Tab':
+				e.preventDefault()
+				focusDomQuestion.current.style.background = 'white'
+				focusDomAnswer.current.blur()
+				focusDomQuestion.current.blur()
+
+				if (manager.state.toggleTabCtrl == true) {
+					switch (manager.state.tabbingCnt) {
+						case 2:
+							focusDomAnswer.current.focus()
+							focusDomAnswer.current.style.background = 'yellow'
+							focusDomQuestion.current.style.background = 'white'
+
+							dispatch({ type: 'update_tabbing_counter', payload: manager.state.tabbingCnt + 1 })
+							break
+
+						case 3:
+							focusDomQuestion.current.focus() // focus on submit btn
+							focusDomQuestion.current.style.background = 'yellow'
+							focusDomAnswer.current.style.background = 'white'
+
+							dispatch({ type: 'update_tabbing_counter', payload: 0 })
+							dispatch({ type: 'update_tabbing_control', payload: false })
+							break
+					}
+				}
 		}
 	}
-
 	// Remove focus once a mouse click occurs.
 	const mouseClick = () => {
 		focusDomAnswer.current.style.background = 'white'
