@@ -1,7 +1,7 @@
 import React, { useContext, useEffect } from 'react'
+import { store } from '../../player-store'
 import TokenDrawer from './token-drawer'
 import Token from './token'
-import { store } from '../../player-store'
 
 const PhrasePlayer = (props) => {
 
@@ -139,17 +139,18 @@ const PhrasePlayer = (props) => {
 	})
 
 	return (
-		<section className={'card phrase-player ' +
-			`${props.responseState + ' '}` +
-			`${props.hasFakes ? 'fakeout ' : ''}`}>
+		<section className={'card phrase-player ' + `${props.responseState + ' '}` + `${props.hasFakes ? 'fakeout ' : ''}`} >
 			<div className={`token-container ${props.hasFakes ? "fakeout" : ''}`}>
-				<div className="token-target" onDragOver={handleTokenDragOver} onDrop={handleTokenDrop}>
+				<div className="token-target" onDragOver={handleTokenDragOver} onDrop={handleTokenDrop} role={'tablist'} aria-label={`for sorted tokens`}>
 					{props.sorted?.length ? '' : 'Drag and drop the words below to arrange them.'}
 					{sortedTokens}
 				</div>
-				<span className={`fakeout-tip ${props.hasFakes ? "show" : ''}`}>
-					<span className='icon-notification'></span>Not all of the items below may be part of the correct phrase.
-				</span>
+				{
+					// add tabIndex when display.
+					<span className={`fakeout-tip ${props.hasFakes ? "show" : ''}`}>
+						<span className='icon-notification'></span>Not all of the items below may be part of the correct phrase.
+					</span>
+				}
 			</div>
 			<TokenDrawer
 				phrase={props.phrase}

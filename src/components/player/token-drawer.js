@@ -10,23 +10,21 @@ const TokenDrawer = (props) => {
 	const focusDomAnswer = useRef(null)
 	const focusDomQuestion = useRef(null)
 
-	useEffect(() => {
-		document.addEventListener('keydown', keyboardCtrls)
-		document.addEventListener('click', mouseClick)
+	// useEffect(() => {
+	// 	// document.addEventListener('keydown', keyboardCtrls)
+	// 	document.addEventListener('click', mouseClick)
 
-		return () => { // cleaned up function
-			document.removeEventListener('keydown', keyboardCtrls)
-			document.removeEventListener('click', mouseClick)
-		}
+	// 	return () => { // cleaned up function
+	// 		// document.removeEventListener('keydown', keyboardCtrls)
+	// 		document.removeEventListener('click', mouseClick)
+	// 	}
 
-	}, [manager.state.items, manager.state.currentIndex, manager.state.currentTokenIndex,
-	manager.state.tabbingCnt, manager.state.toggleTabCtrl])
+	// }, [manager.state.items, manager.state.currentIndex, manager.state.tabbingCnt, manager.state.toggleTabCtrl])
 
 	const keyboardCtrls = (e) => {
 
 		switch (e.key) {
 			case 'Tab':
-				e.preventDefault()
 				focusDomQuestion.current.style.background = 'white'
 				focusDomAnswer.current.blur()
 				focusDomQuestion.current.blur()
@@ -213,7 +211,10 @@ const TokenDrawer = (props) => {
 			`${props.responseState} ` +
 			`${props.hasFakes ? 'has-fakes ' : ''}`}
 			onDragOver={handleTokenDragOver}
-			onDrop={handleTokenDrop}>
+			onDrop={handleTokenDrop}
+			role={'tablist'}
+			aria-label={`for unsorted token`}
+		>
 			{tokenList}
 			<section className='response-controls'>
 				<div className='response-message-container'>

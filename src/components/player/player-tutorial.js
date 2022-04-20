@@ -27,7 +27,7 @@ const PlayerTutorial = (props) => {
 					<p>Some questions may allow you to check your answer multiple times before submitting for a score. Use the <span className='strong'>Check Answer</span> button to see how you did!</p>
 					<img className='right' src="assets/img/player-tutorial-3.png" alt="Player tutorial image demonstrating using the Check Answer feature." />
 				</div>
-				<button onClick={toggle}>I'm Ready</button>
+				<button tabIndex={1} onClick={toggle}>I'm Ready</button>
 			</div>
 
 			<div className='modal-bg'>

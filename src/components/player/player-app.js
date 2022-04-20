@@ -1,18 +1,19 @@
 import React, { useContext, useState, useEffect, useRef } from 'react'
+import { store } from '../../player-store'
 import QuestionSelect from './question-select'
 import PhrasePlayer from './phrase-player'
 import PlayerTutorial from './player-tutorial'
 import WarningModal from './warning-modal'
-import { store } from '../../player-store'
 
 const PlayerApp = (props) => {
 
 	const manager = useContext(store)
 	const dispatch = manager.dispatch
 
-	const [focusCnt, setFocusCnt] = useState(0)
-	const focusDomTutorial = useRef(null)
+	const isMounted = useRef(false)
 	const focusDomSubmit = useRef(null)
+	const focusDomTutorial = useRef(null)
+	const [showHint, setShowHint] = useState(false)
 
 	useEffect(() => {
 		if (manager.state.requireInit) {
@@ -27,33 +28,39 @@ const PlayerApp = (props) => {
 		}
 	}, [manager.state.requireInit])
 
-	// keyboard controls effects
 	useEffect(() => {
-		document.addEventListener('keydown', keyboardCtrls)
-		document.addEventListener('click', mouseClick)
-
-		return () => { // cleaned up function
-			document.removeEventListener('keydown', keyboardCtrls)
-			document.removeEventListener('click', mouseClick)
-		}
-	}, [manager.state.items, manager.state.currentIndex, manager.state.currentTokenIndex,
-	manager.state.tabbingCnt, manager.state.toggleTabCtrl])
+		setShowHint(() => {
+			return (
+				manager.state.items[manager.state.currentIndex]?.attemptsUsed > 0
+				&& manager.state.items[manager.state.currentIndex]?.attemptsUsed < manager.state.items[manager.state.currentIndex]?.attempts
+				&& manager.state.items[manager.state.currentIndex]?.responseState != 'correct'
+				&& manager.state.items[manager.state.currentIndex]?.responseState != 'incorrect-no-attempts'
+				&& manager.state.items[manager.state.currentIndex]?.hint.length > 0
+			) ? 'show' : ''
+		})
+	}, [manager.state.items, manager.state.currentIndex])
 
 	// Question key controls using Arrow up and down
-	const keyboardCtrls = (e) => {
-		e.preventDefault()
+	/*const keyboardCtrls = (e) => {
+		// e.preventDefault()
+
 		// Question index start at 0, but the question label starts at 1
-		manager.state.questionsRef[manager.state.currentIndex]?.blur()
+		// manager.state.questionsRef[manager.state.currentIndex]?.blur()
 		let tokenIndex = manager.state.currentTokenIndex
 
-		// if (e.ctrlKey && e.shiftKey) {
-		switch (e.key) {
+		// console.log(document.querySelectorAll('.phrase-player')[0].activeElement)
+		console.log(e.code)
+
+		switch (e.code) {
 			// shift between questions
+
 			case 'ArrowUp':
+				dispatch({ type: 'current_token_index', payload: 0 })
 				return manager.state.currentIndex >= 1
 					? questionShiftKey(manager.state.currentIndex - 1) : null
 
 			case 'ArrowDown':
+				dispatch({ type: 'current_token_index', payload: 0 })
 				return manager.state.currentIndex < manager.state.items.length - 1
 					? questionShiftKey(manager.state.currentIndex + 1) : null
 
@@ -67,7 +74,7 @@ const PlayerApp = (props) => {
 					? dispatch({ type: 'current_token_index', payload: tokenIndex + 1 }) : null
 
 			// Add token to the token-target
-			case 'Enter':
+			case 'Space':
 				return keyboardConfirmToken()
 
 			// Remove token from token-target
@@ -75,18 +82,19 @@ const PlayerApp = (props) => {
 				return keyboardRemoveToken()
 
 			// Tutorial button
-			case 'A':
+			case 'KeyA':
 				focusDomTutorial.current.focus()
 				focusDomTutorial.current.style.background = 'yellow'
 				focusDomSubmit.current.style.background = 'white'
 				break
 
 			// Submit button
-			case 'S':
+			case 'KeyS':
 				focusDomSubmit.current.focus() // focus on submit btn
 				focusDomSubmit.current.style.background = 'yellow'
 				focusDomTutorial.current.style.background = 'white'
 				break
+
 
 			case 'Tab':
 				focusDomTutorial.current.blur()
@@ -120,35 +128,65 @@ const PlayerApp = (props) => {
 							break
 					}
 				}
-
-
-			default: console.log(`Key pressed was '${e.key}' Use a correct key.`)
 				break
+
 		}
 
-		// }
-	}
-
 	const questionShiftKey = (shiftDirection) => {
-
 		dispatch({ type: 'select_question', payload: shiftDirection })
 		manager.state.questionsRef[shiftDirection]?.focus()
 		dispatch({ type: 'current_token_index', payload: 0 })
 	}
+	*/
+
+	/*
+		useEffect(() => {
+			console.log(`in player-app isMounted: ${isMounted.current}`)
+			if (isMounted.current) {
+				console.log(`Made it to player-app`)
+				switch (manager.state.isTokenDrawer) {
+					case true:
+						keyboardConfirmToken()
+						break
+
+					case false:
+						keyboardRemoveToken()
+						break
+				}
+			}
+		}, [manager.state.currentTokenIndex])
+		*/
+
+	useEffect(() => {
+		if (isMounted.current) {
+			// setTimeout(() => {
+			// 	dispatch({ type: 'current_token_index', payload: null })
+			// }, 5000)
+
+		}
+	}, [manager.state.items[manager.state.currentIndex]?.sorted])
+
+	useEffect(() => {
+		// when it takes effect for the first render the value has to be negative
+		// until the effect of [ manager.state.currentTokenIndex ] finish rendering
+		isMounted.current = true
+
+		return () => {
+			isMounted.current = false
+		}
+	}, [])
 
 	const keyboardConfirmToken = () => {
-		let tokenIndex = manager.state.currentTokenIndex
-		let phrasesList = manager.state.items[manager.state.currentIndex].phrase
-		let phraseUpdate = phrasesList[tokenIndex]
+		let currentTokenIndex = manager.state.currentTokenIndex
+		console.log(currentTokenIndex)
+		let phraseUpdate = manager.state.items[manager.state.currentIndex].phrase[currentTokenIndex]
+		// console.log(phraseUpdate)
 
-		if (phrasesList.length === 0) return
-
-		// moves the selected token from the drawer to the target
 		dispatch({
 			type: 'response_token_sort', payload: {
 				questionIndex: manager.state.currentIndex,
 				targetIndex: manager.state.items[manager.state.currentIndex].sorted.length, // set to this so it places the token right end of the token.
-				phraseIndex: tokenIndex,
+				phraseIndex: currentTokenIndex,
 				id: phraseUpdate.id,
 				legend: phraseUpdate.legend,
 				value: phraseUpdate.value,
@@ -156,26 +194,21 @@ const PlayerApp = (props) => {
 			}
 		})
 
-		// use to avoid going over the arr length
-		if ((tokenIndex === phrasesList.length - 1) && (tokenIndex !== 0)) {
-			dispatch({ type: 'current_token_index', payload: manager.state.currentTokenIndex - 1 })
-		}
-	}
+	} // End of keyboardConfirmToken()
 
 	const keyboardRemoveToken = () => {
-		let question = manager.state.items[manager.state.currentIndex]
+		const currentIndex = manager.state.currentIndex
+		let question = manager.state.items[currentIndex]
+		if (question?.attempts >= 1 && (question?.attemptsUsed >= question?.attempts)) { return false }
+		if (question.sorted.length === 0) { return }
 
-		if (question?.attempts >= 1 && (question?.attemptsUsed >= question?.attempts)) return false
-
-		let sortedList = question.sorted
-		let sortedRemoving = sortedList[sortedList.length - 1]
-
-		if (sortedList.length === 0) return
+		const currentTokenIndex = manager.state.currentTokenIndex
+		const sortedRemoving = question.sorted[currentTokenIndex]
 
 		dispatch({
 			type: 'sorted_token_unsort', payload: {
 				origin: 'sorted',
-				tokenIndex: sortedList.length - 1, // pops the most recent token inserted into the target
+				tokenIndex: currentTokenIndex,
 				questionIndex: manager.state.currentIndex,
 				fakeout: sortedRemoving.fakeout,
 				legend: sortedRemoving.legend,
@@ -262,6 +295,7 @@ const PlayerApp = (props) => {
 	const questionText = manager.state.items[manager.state.currentIndex]?.question.length > 0 ? manager.state.items[manager.state.currentIndex].question : "Drag and drop to arrange the items below in the correct order."
 
 	const legendList = manager.state.legend.map((term, index) => {
+		// write code that translate the hex value to a color str value.
 		return (
 			<span key={index} className='legend-item'>
 				<span className='legend-color' style={{ background: term.color }}></span>
@@ -271,7 +305,8 @@ const PlayerApp = (props) => {
 	})
 
 	return (
-		<div className="player-container">
+		<div className="player-container"
+			role={'tabpanel'}>
 			<WarningModal
 				submitForScoring={submitForScoring}
 				requireAllQuestions={manager.state.requireAllQuestions}></WarningModal>
@@ -279,24 +314,22 @@ const PlayerApp = (props) => {
 			<header className="player-header">
 				<span className="title">{manager.state.title}</span>
 				<button className="headerBtn" onClick={handleSubmit} ref={focusDomSubmit}>Submit</button>
-				<button className="headerBtn" onClick={toggleTutorial} tabIndex='-1' ref={focusDomTutorial}>Tutorial</button>
+				<button className="headerBtn" onClick={toggleTutorial} ref={focusDomTutorial}>Tutorial</button>
 			</header>
 			<QuestionSelect></QuestionSelect>
 			<section className="content-container">
 				<section className="card question-container">
 					<p>{questionText}</p>
-					<div className={'hint-text ' +
-						`${(
-							manager.state.items[manager.state.currentIndex]?.attemptsUsed > 0
-							&& manager.state.items[manager.state.currentIndex]?.attemptsUsed < manager.state.items[manager.state.currentIndex]?.attempts
-							&& manager.state.items[manager.state.currentIndex]?.responseState != 'correct'
-							&& manager.state.items[manager.state.currentIndex]?.responseState != 'incorrect-no-attempts'
-							&& manager.state.items[manager.state.currentIndex]?.hint.length > 0)
-							? 'show' : ''}`
-					}>
-						<span className="strong">Hint: </span>
-						<span>{manager.state.items[manager.state.currentIndex]?.hint}</span>
-					</div>
+					{
+						showHint === 'show'
+							? <div className={'hint-text ' + `${showHint}`}>
+								<span className="strong">Hint: </span>
+								<span>{manager.state.items[manager.state.currentIndex]?.hint}</span>
+							</div>
+
+							: <div className={'hint-text ' + `${showHint}`} aria-hidden>
+							</div> 	// div added to not distort the CSS layout when hiding the HINT div
+					}
 				</section>
 				<PhrasePlayer
 					phrase={manager.state.items[manager.state.currentIndex]?.phrase}
@@ -307,7 +340,7 @@ const PlayerApp = (props) => {
 					hasFakes={manager.state.items[manager.state.currentIndex]?.fakeout.length}
 					responseState={manager.state.items[manager.state.currentIndex]?.responseState}>
 				</PhrasePlayer>
-				<section className="card legend">
+				<section className="card legend" aria-hidden>
 					<header>Color Legend</header>
 					{legendList}
 				</section>

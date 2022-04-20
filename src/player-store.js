@@ -13,7 +13,8 @@ const init = {
 	requireAllQuestions: false,
 	questionsAsked: [],
 	questionsRef: [], // Questions keyboard control variable contains an arr of ref objects for each question, in other words DOM elements, for switching between questions.
-	currentTokenIndex: 0, // Token keyboard control variable that tracks the position of the token
+	currentTokenIndex: null, // Token keyboard control variable that tracks the position of the token
+	isTokenDrawer: true,
 	tabbingCnt: 0,
 	toggleTabCtrl: false,
 }
@@ -421,7 +422,12 @@ const StateProvider = ({ children }) => {
 				return { ...state, currentIndex: forward }
 
 			case 'current_token_index':
+				console.log(`dispatch currentTokenIndex: ${action.payload}`)
+				console.log(`dispatch isTokenDrawer: ${state.isTokenDrawer}`)
 				return { ...state, currentTokenIndex: action.payload }
+
+			case 'update_is_token_drawer':
+				return { ...state, isTokenDrawer: action.payload }
 
 			case 'update_questions_ref':
 				return { ...state, questionsRef: action.payload }
@@ -429,8 +435,6 @@ const StateProvider = ({ children }) => {
 			case 'update_tabbing_counter':
 				return { ...state, tabbingCnt: action.payload }
 
-			case 'update_tabbing_control':
-				return { ...state, toggleTabCtrl: action.payload }
 
 			case 'token_dragging':
 			case 'token_drag_complete':

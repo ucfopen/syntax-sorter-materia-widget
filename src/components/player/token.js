@@ -7,9 +7,37 @@ const Token = (props) => {
 	const dispatch = manager.dispatch
 
 	const tokenRef = useRef(null)
+	const isMounted = useRef(false)
 	const coords = tokenRef.current?.getBoundingClientRect()
 
+	const [isSubmit, setSubmit] = useState(false)
+	const [isTokenDrawer, setTokenDrawer] = useState(true)
 	const [state, setState] = useState({ dragging: false, origin: null })
+
+	useEffect(() => {
+		console.log(`\nToken index: ${props.index}`)
+		if (isMounted.current) {
+			switch (isTokenDrawer) {
+				case true:
+					keyboardConfirmToken()
+					break
+
+				case false:
+					keyboardRemoveToken()
+					break
+			}
+		}
+	}, [isSubmit])
+
+	useEffect(() => {
+		/* when it takes effect for the first render the value has to be negative
+		until the effect of [ isSubmit ] finish rendering */
+		isMounted.current = true
+
+		return () => {
+			isMounted.current = false
+		}
+	}, [])
 
 	// update token position when element's x value changes
 	useEffect(() => {
@@ -26,21 +54,23 @@ const Token = (props) => {
 		}
 	}, [coords?.x])
 
-	// the above hook works MOST of the time, but certain events (token rearrange) clear this token's position information in the store, and the hook doesn't fire
-	// manually update the position in cases where the position value does not get updated after being cleared
-	// useEffect( () => {
-	// 	if (props.status == 'sorted' && !props.position.x && coords) {
-	// 		dispatch({type:'token_update_position',payload: {
-	// 			questionIndex: manager.state.currentIndex,
-	// 			tokenIndex: props.index,
-	// 			x: coords.x,
-	// 			y: coords.y + coords.height/2,
-	// 			width: coords.width
-	// 		}})
+	/*
+		// the above hook works MOST of the time, but certain events (token rearrange) clear this token's position information in the store, and the hook doesn't fire
+		// manually update the position in cases where the position value does not get updated after being cleared
+		useEffect( () => {
+			if (props.status == 'sorted' && !props.position.x && coords) {
+				dispatch({type:'token_update_position',payload: {
+					questionIndex: manager.state.currentIndex,
+					tokenIndex: props.index,
+					x: coords.x,
+					y: coords.y + coords.height/2,
+					width: coords.width
+				}})
 
-	// 		props.forceClearAdjacentTokens()
-	// 	}
-	// }, [props.position])
+				props.forceClearAdjacentTokens()
+			}
+		}, [props.position])
+	*/
 
 	// a token was sorted or rearranged, prompting the reqPositionUpdate flag to update for all sorted tokens. This forces them to update their position information
 	// in scenarios where it wouldn't otherwise get updated
@@ -59,6 +89,48 @@ const Token = (props) => {
 			props.forceClearAdjacentTokens()
 		}
 	}, [props?.reqPositionUpdate])
+
+	const keyboardConfirmToken = () => {
+		let currentTokenIndex = props.index
+		console.log(currentTokenIndex)
+		let phraseUpdate = manager.state.items[manager.state.currentIndex].phrase[currentTokenIndex]
+		// console.log(phraseUpdate)
+
+		dispatch({
+			type: 'response_token_sort', payload: {
+				questionIndex: manager.state.currentIndex,
+				targetIndex: manager.state.items[manager.state.currentIndex].sorted.length, // set to this so it places the token right end of the token.
+				phraseIndex: currentTokenIndex,
+				id: phraseUpdate.id,
+				legend: phraseUpdate.legend,
+				value: phraseUpdate.value,
+				fakeout: phraseUpdate.fakeout,
+			}
+		})
+
+	} // End of keyboardConfirmToken()
+
+	const keyboardRemoveToken = () => {
+		const currentIndex = manager.state.currentIndex
+		let question = manager.state.items[currentIndex]
+		if (question?.attempts >= 1 && (question?.attemptsUsed >= question?.attempts)) { return false }
+		if (question.sorted.length === 0) { return }
+
+		const currentTokenIndex = props.index
+		const sortedRemoving = question.sorted[currentTokenIndex]
+
+		dispatch({
+			type: 'sorted_token_unsort', payload: {
+				origin: 'sorted',
+				tokenIndex: currentTokenIndex,
+				questionIndex: manager.state.currentIndex,
+				fakeout: sortedRemoving.fakeout,
+				legend: sortedRemoving.legend,
+				value: sortedRemoving.value,
+				id: sortedRemoving.id
+			}
+		})
+	}
 
 	const getLegendColor = (type) => {
 		for (const term of manager.state.legend) {
@@ -154,9 +226,20 @@ const Token = (props) => {
 		if (typeof r != "undefined") return ((r * 299) + (g * 587) + (b * 114)) / 1000;
 	}
 
+	const onClickTokenCtrl = (element) => {
+
+	}
+
 	let tokenColor = getLegendColor(props.type)
+	let tokenTextDisplay = props.pref == 'word' ? props.value : getLegendName(props.type)
+	let tokenLegendText = manager.state.legend[props.type]?.name
+
 	return <div
-		className={`token ${state.dragging ? 'dragging' : ''} ${props.arrangement == 'left' ? 'is-left' : ''} ${props.arrangement == 'right' ? 'is-right' : ''}`}
+		className={
+			`token ${state.dragging ? 'dragging' : ''}
+			${props.arrangement == 'left' ? 'is-left' : ''}
+			${props.arrangement == 'right' ? 'is-right' : ''}`
+		}
 		style={{
 			background: tokenColor,
 			color: contrastCalc(tokenColor) > 160 ? '#000000' : '#ffffff',
@@ -167,8 +250,22 @@ const Token = (props) => {
 		onDragStart={handleDragStart}
 		onDrag={handleDrag}
 		onDragEnd={handleDragEnd}
-		onContextMenu={handleClick}>
-		{props.pref == 'word' ? props.value : getLegendName(props.type)}
+		onContextMenu={handleClick}
+		role={'tab'}
+
+		aria-label={`Token ${tokenTextDisplay} and it is a ${tokenLegendText}`}
+		onClick={(element) => {
+			if (isMounted.current) {
+				// dispatch({ // returns class name of token container [ token-drawer | token-target ]
+				// 	type: 'update_is_token_drawer',
+				// 	payload: element.currentTarget.parentNode.className.includes('token-drawer')
+				// })
+				setTokenDrawer(element.currentTarget.parentNode.className.includes('token-drawer'))
+				setSubmit(!isSubmit)
+			}
+		}}
+	>
+		{tokenTextDisplay}
 	</div>
 }
 
