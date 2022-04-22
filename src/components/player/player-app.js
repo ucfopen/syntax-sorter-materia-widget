@@ -14,6 +14,15 @@ const PlayerApp = (props) => {
 	const focusDomSubmit = useRef(null)
 	const focusDomTutorial = useRef(null)
 	const [showHint, setShowHint] = useState(false)
+	const [isSelectedTab, setSelectedTab] = useState(1)
+
+	const tabValues = {
+		1: { title: 'tutorial', ref: useRef(null) },
+		2: { title: 'header', ref: useRef(null) },
+		3: { title: 'questionList', ref: useRef(null) },
+		4: { title: 'question', ref: useRef(null) },
+		5: { title: 'phrasePlayer', ref: useRef(null) },
+	}
 
 	useEffect(() => {
 		if (manager.state.requireInit) {
@@ -305,21 +314,45 @@ const PlayerApp = (props) => {
 	})
 
 	return (
-		<div className="player-container"
-			role={'tabpanel'}>
-			<WarningModal
-				submitForScoring={submitForScoring}
-				requireAllQuestions={manager.state.requireAllQuestions}></WarningModal>
-			<PlayerTutorial></PlayerTutorial>
-			<header className="player-header">
-				<span className="title">{manager.state.title}</span>
-				<button className="headerBtn" onClick={handleSubmit} ref={focusDomSubmit}>Submit</button>
-				<button className="headerBtn" onClick={toggleTutorial} ref={focusDomTutorial}>Tutorial</button>
+		<div className="player-container" role={'tabpanel'}		>
+			<WarningModal submitForScoring={submitForScoring} requireAllQuestions={manager.state.requireAllQuestions} />
+			<PlayerTutorial />
+			<header className="player-header" tabIndex={0}>
+				<span className="title" tabIndex={0}>{manager.state.title}</span>
+				<button
+					className="headerBtn"
+					ref={focusDomSubmit}
+					tabIndex={0}
+					onClick={handleSubmit}
+					onKeyDown={event => {
+						if (event.key === 'Enter') { handleSubmit }
+					}}
+				>
+					Submit
+				</button>
+				<button
+					className="headerBtn"
+					ref={focusDomTutorial}
+					tabIndex={0}
+					onClick={toggleTutorial}
+					onKeyDown={event => {
+						if (event.key === 'Enter') { toggleTutorial }
+					}}
+				>
+					Tutorial
+				</button>
 			</header>
-			<QuestionSelect></QuestionSelect>
+
+			<QuestionSelect />
+
 			<section className="content-container">
-				<section className="card question-container">
-					<p>{questionText}</p>
+
+				<section
+					className="card question-container"
+					role={'tablist'}
+					tabIndex={0}
+				>
+					<p role={'tab'}>{questionText}</p>
 					{
 						showHint === 'show'
 							? <div className={'hint-text ' + `${showHint}`}>
@@ -327,10 +360,11 @@ const PlayerApp = (props) => {
 								<span>{manager.state.items[manager.state.currentIndex]?.hint}</span>
 							</div>
 
-							: <div className={'hint-text ' + `${showHint}`} aria-hidden>
-							</div> 	// div added to not distort the CSS layout when hiding the HINT div
+							: <div className={'hint-text ' + `${showHint}`} aria-hidden />
+						// div added to not distort the CSS layout when hiding the HINT div
 					}
 				</section>
+
 				<PhrasePlayer
 					phrase={manager.state.items[manager.state.currentIndex]?.phrase}
 					sorted={manager.state.items[manager.state.currentIndex]?.sorted}
@@ -338,12 +372,15 @@ const PlayerApp = (props) => {
 					attemptsUsed={manager.state.items[manager.state.currentIndex]?.attemptsUsed}
 					attemptLimit={manager.state.items[manager.state.currentIndex]?.attempts}
 					hasFakes={manager.state.items[manager.state.currentIndex]?.fakeout.length}
-					responseState={manager.state.items[manager.state.currentIndex]?.responseState}>
-				</PhrasePlayer>
+					responseState={manager.state.items[manager.state.currentIndex]?.responseState}
+				// tabRef={tabValues[5].ref}
+				/> {/* <section> */}
+
 				<section className="card legend" aria-hidden>
 					<header>Color Legend</header>
 					{legendList}
 				</section>
+
 			</section>
 		</div>
 	)

@@ -206,23 +206,43 @@ const TokenDrawer = (props) => {
 	}
 
 	return (
-		<section className={'token-drawer ' +
-			`${(props.phrase?.length == 0) ? 'empty ' : ''}` +
-			`${props.responseState} ` +
-			`${props.hasFakes ? 'has-fakes ' : ''}`}
+		<section
+			className={'token-drawer ' +
+				`${(props.phrase?.length == 0) ? 'empty ' : ''}` +
+				`${props.responseState} ` +
+				`${props.hasFakes ? 'has-fakes ' : ''}`}
 			onDragOver={handleTokenDragOver}
 			onDrop={handleTokenDrop}
 			role={'tablist'}
-			aria-label={`for unsorted token`}
+			tabIndex={0}
+			aria-label={`List of unsorted token`}
 		>
 			{tokenList}
 			<section className='response-controls'>
-				<div className='response-message-container'>
+				<div
+					className='response-message-container'
+					role={'tab'}
+					tabIndex={0}
+				>
 					{currentResponseText}
 				</div>
 				<div className='button-container'>
-					<button className={`verify ${props.attemptLimit > props.attemptsUsed && props.responseState != 'correct' ? 'show' : ''}`} onClick={handleCheckAnswer} ref={focusDomAnswer}>Check Answer</button>
-					<button className={`paginate ${!isLastQuestion ? 'show' : ''}`} onClick={paginate} ref={focusDomQuestion}>Next Question</button>
+					<button
+						className={`verify ${props.attemptLimit > props.attemptsUsed && props.responseState != 'correct' ? 'show' : ''}`}
+						role={'tab'}
+						tabIndex={0}
+						onClick={handleCheckAnswer}
+					>
+						Check Answer
+					</button>
+					<button
+						className={`paginate ${!isLastQuestion ? 'show' : ''}`}
+						role={'tab'}
+						tabIndex={0}
+						onClick={paginate}
+					>
+						Next Question
+					</button>
 				</div>
 			</section>
 		</section>

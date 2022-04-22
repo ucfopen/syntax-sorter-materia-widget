@@ -139,9 +139,21 @@ const PhrasePlayer = (props) => {
 	})
 
 	return (
-		<section className={'card phrase-player ' + `${props.responseState + ' '}` + `${props.hasFakes ? 'fakeout ' : ''}`} >
-			<div className={`token-container ${props.hasFakes ? "fakeout" : ''}`}>
-				<div className="token-target" onDragOver={handleTokenDragOver} onDrop={handleTokenDrop} role={'tablist'} aria-label={`for sorted tokens`}>
+		<section
+			className={'card phrase-player '
+				+ `${props.responseState + ' '}`
+				+ `${props.hasFakes ? 'fakeout ' : ''}`}
+		// ref={props.tabRef}
+		>
+
+			<div className={`token-container ${props.hasFakes ? "fakeout" : ''}`}			>
+				<div
+					className="token-target"
+					onDragOver={handleTokenDragOver}
+					onDrop={handleTokenDrop} role={'tablist'}
+					tabIndex={0}
+					aria-label={`for sorted tokens`}
+				>
 					{props.sorted?.length ? '' : 'Drag and drop the words below to arrange them.'}
 					{sortedTokens}
 				</div>
@@ -152,6 +164,7 @@ const PhrasePlayer = (props) => {
 					</span>
 				}
 			</div>
+
 			<TokenDrawer
 				phrase={props.phrase}
 				empty={props.sorted?.length == 0}
@@ -161,6 +174,7 @@ const PhrasePlayer = (props) => {
 				hasFakes={props.hasFakes}
 				responseState={props.responseState}
 			/>
+
 		</section>
 	)
 }

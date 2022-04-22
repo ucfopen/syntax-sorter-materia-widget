@@ -12,14 +12,15 @@ const QuestionSelect = (props) => {
 	useEffect(() => {
 
 		let questionList = manager.state.items.map((item, index) => {
-			let questionTabIndex = index == manager.state.currentIndex ? 0 : -1
 			return <button
 				className={`select-btn ${currentIndex == index ? 'selected' : ''}`}
 				key={index}
-				role={'tab'}
-				// tabIndex={questionTabIndex}
 				onClick={() => { selectQuestion(index) }}
 				ref={(el) => manager.state.questionsRef[index] = el}
+				role={'tab'}
+				tabIndex={0}
+				aria-selected={index == manager.state.currentIndex}
+				aria-controls={`question ${index}`}
 			>
 				{index + 1}
 			</button>
@@ -54,30 +55,40 @@ const QuestionSelect = (props) => {
 	}
 
 	return (
-		<div className="question-select"
+		<section className="question-select"
 			role={'tablist'}
+			// ref={props.tabRef}
+			tabIndex={0}
 			aria-label={`of question buttons containing`}
 		>
-			<button className={`select-btn paginate-up ${manager.state.items.length > 10 ? 'show' : ''} ${currentIndex > 0 ? '' : 'disabled'}`}
-				onClick={() => { selectQuestion(currentIndex - 1) }}
+			<button
+				className={`select-btn paginate-up ${manager.state.items.length > 10 ? 'show' : ''} ${currentIndex > 0 ? '' : 'disabled'}`}
 				disabled={currentIndex <= 0}
 				role={'tab'}
 				aria-label={'move to previous question button'}
+				onClick={() => { selectQuestion(currentIndex - 1) }}
+				onKeyDown={event => {
+					if (event.key === 'Enter') { selectQuestion(currentIndex - 1) }
+				}}
 			>
 				<span className="icon-arrow-up2"></span>
 			</button>
 
 			{state.visibleQuestions}
 
-			<button className={`select-btn paginate-down ${manager.state.items.length > 10 ? 'show' : ''} ${currentIndex < manager.state.items.length - 1 ? '' : 'disabled'}`}
-				onClick={() => { selectQuestion(currentIndex + 1) }}
+			<button
+				className={`select-btn paginate-down ${manager.state.items.length > 10 ? 'show' : ''} ${currentIndex < manager.state.items.length - 1 ? '' : 'disabled'}`}
 				disabled={currentIndex >= manager.state.items.length - 1}
 				role={'tab'}
 				aria-label={'move to next question button'}
+				onClick={() => { selectQuestion(currentIndex + 1) }}
+				onKeyDown={event => {
+					if (event.key === 'Enter') { selectQuestion(currentIndex + 1) }
+				}}
 			>
 				<span className="icon-arrow-down2"></span>
 			</button>
-		</div>
+		</section>
 	)
 }
 

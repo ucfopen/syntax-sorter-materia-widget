@@ -15,7 +15,6 @@ const Token = (props) => {
 	const [state, setState] = useState({ dragging: false, origin: null })
 
 	useEffect(() => {
-		console.log(`\nToken index: ${props.index}`)
 		if (isMounted.current) {
 			switch (isTokenDrawer) {
 				case true:
@@ -92,9 +91,7 @@ const Token = (props) => {
 
 	const keyboardConfirmToken = () => {
 		let currentTokenIndex = props.index
-		console.log(currentTokenIndex)
 		let phraseUpdate = manager.state.items[manager.state.currentIndex].phrase[currentTokenIndex]
-		// console.log(phraseUpdate)
 
 		dispatch({
 			type: 'response_token_sort', payload: {
@@ -226,8 +223,13 @@ const Token = (props) => {
 		if (typeof r != "undefined") return ((r * 299) + (g * 587) + (b * 114)) / 1000;
 	}
 
-	const onClickTokenCtrl = (element) => {
-
+	const handleKeyDown = (event) => {
+		if (event.key === 'Enter') {
+			if (isMounted.current) {
+				setTokenDrawer(event.currentTarget.parentNode.className.includes('token-drawer'))
+				setSubmit(!isSubmit)
+			}
+		}
 	}
 
 	let tokenColor = getLegendColor(props.type)
@@ -251,19 +253,10 @@ const Token = (props) => {
 		onDrag={handleDrag}
 		onDragEnd={handleDragEnd}
 		onContextMenu={handleClick}
+		onKeyDown={handleKeyDown}
 		role={'tab'}
-
+		tabIndex={0}
 		aria-label={`Token ${tokenTextDisplay} and it is a ${tokenLegendText}`}
-		onClick={(element) => {
-			if (isMounted.current) {
-				// dispatch({ // returns class name of token container [ token-drawer | token-target ]
-				// 	type: 'update_is_token_drawer',
-				// 	payload: element.currentTarget.parentNode.className.includes('token-drawer')
-				// })
-				setTokenDrawer(element.currentTarget.parentNode.className.includes('token-drawer'))
-				setSubmit(!isSubmit)
-			}
-		}}
 	>
 		{tokenTextDisplay}
 	</div>
