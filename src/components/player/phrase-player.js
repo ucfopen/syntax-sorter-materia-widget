@@ -138,12 +138,11 @@ const PhrasePlayer = (props) => {
 		</Token>
 	})
 
-	return (
+	const phrasePlayerBody = (
 		<section
 			className={'card phrase-player '
 				+ `${props.responseState + ' '}`
 				+ `${props.hasFakes ? 'fakeout ' : ''}`}
-		// ref={props.tabRef}
 		>
 
 			<div className={`token-container ${props.hasFakes ? "fakeout" : ''}`}			>
@@ -177,6 +176,8 @@ const PhrasePlayer = (props) => {
 
 		</section>
 	)
+
+	return phrasePlayerBody
 }
 
 export default PhrasePlayer

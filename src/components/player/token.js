@@ -32,9 +32,21 @@ const Token = (props) => {
 		/* when it takes effect for the first render the value has to be negative
 		until the effect of [ isSubmit ] finish rendering */
 		isMounted.current = true
+		if (isMounted.current) {
+			dispatch({
+				type: 'add_token_to_list_ref', payload: {
+					tokenRef: tokenRef.current,
+				}
+			})
+		}
 
 		return () => {
 			isMounted.current = false
+			dispatch({
+				type: 'remove_token_to_list_ref', payload: {
+					tokenRef: tokenRef.current,
+				}
+			})
 		}
 	}, [])
 
@@ -237,11 +249,7 @@ const Token = (props) => {
 	let tokenLegendText = manager.state.legend[props.type]?.name
 
 	return <div
-		className={
-			`token ${state.dragging ? 'dragging' : ''}
-			${props.arrangement == 'left' ? 'is-left' : ''}
-			${props.arrangement == 'right' ? 'is-right' : ''}`
-		}
+		className={`token ${state.dragging ? 'dragging' : ''}${props.arrangement == 'left' ? 'is-left' : ''}${props.arrangement == 'right' ? 'is-right' : ''}`}
 		style={{
 			background: tokenColor,
 			color: contrastCalc(tokenColor) > 160 ? '#000000' : '#ffffff',

@@ -13,15 +13,27 @@ const PlayerApp = (props) => {
 	const isMounted = useRef(false)
 	const focusDomSubmit = useRef(null)
 	const focusDomTutorial = useRef(null)
+	const targetItem = useRef(null)
 	const [showHint, setShowHint] = useState(false)
-	const [isSelectedTab, setSelectedTab] = useState(1)
 
-	const tabValues = {
-		1: { title: 'tutorial', ref: useRef(null) },
-		2: { title: 'header', ref: useRef(null) },
-		3: { title: 'questionList', ref: useRef(null) },
-		4: { title: 'question', ref: useRef(null) },
-		5: { title: 'phrasePlayer', ref: useRef(null) },
+	useEffect(() => {
+		document.addEventListener('keydown', getFocusItem)
+
+		return () => {
+			document.removeEventListener('keydown', getFocusItem)
+		}
+
+	}, [])
+
+	const getFocusItem = (event) => {
+
+		if (targetItem.current != null) {
+			targetItem.current.classList.remove('simple-highlight') // set it to another thing
+		}
+
+		targetItem.current = event.target
+		targetItem.current.classList.add('simple-highlight')
+		targetItem.current.focus()
 	}
 
 	useEffect(() => {
@@ -148,33 +160,6 @@ const PlayerApp = (props) => {
 	}
 	*/
 
-	/*
-		useEffect(() => {
-			console.log(`in player-app isMounted: ${isMounted.current}`)
-			if (isMounted.current) {
-				console.log(`Made it to player-app`)
-				switch (manager.state.isTokenDrawer) {
-					case true:
-						keyboardConfirmToken()
-						break
-
-					case false:
-						keyboardRemoveToken()
-						break
-				}
-			}
-		}, [manager.state.currentTokenIndex])
-		*/
-
-	useEffect(() => {
-		if (isMounted.current) {
-			// setTimeout(() => {
-			// 	dispatch({ type: 'current_token_index', payload: null })
-			// }, 5000)
-
-		}
-	}, [manager.state.items[manager.state.currentIndex]?.sorted])
-
 	useEffect(() => {
 		// when it takes effect for the first render the value has to be negative
 		// until the effect of [ manager.state.currentTokenIndex ] finish rendering
@@ -184,48 +169,6 @@ const PlayerApp = (props) => {
 			isMounted.current = false
 		}
 	}, [])
-
-	const keyboardConfirmToken = () => {
-		let currentTokenIndex = manager.state.currentTokenIndex
-		console.log(currentTokenIndex)
-		let phraseUpdate = manager.state.items[manager.state.currentIndex].phrase[currentTokenIndex]
-		// console.log(phraseUpdate)
-
-		dispatch({
-			type: 'response_token_sort', payload: {
-				questionIndex: manager.state.currentIndex,
-				targetIndex: manager.state.items[manager.state.currentIndex].sorted.length, // set to this so it places the token right end of the token.
-				phraseIndex: currentTokenIndex,
-				id: phraseUpdate.id,
-				legend: phraseUpdate.legend,
-				value: phraseUpdate.value,
-				fakeout: phraseUpdate.fakeout,
-			}
-		})
-
-	} // End of keyboardConfirmToken()
-
-	const keyboardRemoveToken = () => {
-		const currentIndex = manager.state.currentIndex
-		let question = manager.state.items[currentIndex]
-		if (question?.attempts >= 1 && (question?.attemptsUsed >= question?.attempts)) { return false }
-		if (question.sorted.length === 0) { return }
-
-		const currentTokenIndex = manager.state.currentTokenIndex
-		const sortedRemoving = question.sorted[currentTokenIndex]
-
-		dispatch({
-			type: 'sorted_token_unsort', payload: {
-				origin: 'sorted',
-				tokenIndex: currentTokenIndex,
-				questionIndex: manager.state.currentIndex,
-				fakeout: sortedRemoving.fakeout,
-				legend: sortedRemoving.legend,
-				value: sortedRemoving.value,
-				id: sortedRemoving.id
-			}
-		})
-	}
 
 	// Remove focus once a mouse click occurs.
 	const mouseClick = () => {
@@ -317,7 +260,7 @@ const PlayerApp = (props) => {
 		<div className="player-container" role={'tabpanel'}		>
 			<WarningModal submitForScoring={submitForScoring} requireAllQuestions={manager.state.requireAllQuestions} />
 			<PlayerTutorial />
-			<header className="player-header" tabIndex={0}>
+			<header className="player-header">
 				<span className="title" tabIndex={0}>{manager.state.title}</span>
 				<button
 					className="headerBtn"

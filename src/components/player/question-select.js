@@ -18,7 +18,7 @@ const QuestionSelect = (props) => {
 				onClick={() => { selectQuestion(index) }}
 				ref={(el) => manager.state.questionsRef[index] = el}
 				role={'tab'}
-				tabIndex={0}
+				tabIndex={0} // If change to any other number only the fist question is chosen.
 				aria-selected={index == manager.state.currentIndex}
 				aria-controls={`question ${index}`}
 			>
@@ -57,8 +57,6 @@ const QuestionSelect = (props) => {
 	return (
 		<section className="question-select"
 			role={'tablist'}
-			// ref={props.tabRef}
-			tabIndex={0}
 			aria-label={`of question buttons containing`}
 		>
 			<button

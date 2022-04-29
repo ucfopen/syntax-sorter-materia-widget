@@ -17,6 +17,7 @@ const init = {
 	isTokenDrawer: true,
 	tabbingCnt: 0,
 	toggleTabCtrl: false,
+	tokenRefList: [],
 }
 
 const store = React.createContext(init)
@@ -207,8 +208,7 @@ const tokenSortedPhraseReducer = (list, action) => {
 				return sorted.map((token) => ({
 					...token,
 					reqPositionUpdate: true
-				})
-				)
+				}))
 			}
 
 		case 'response_token_rearrange':
@@ -390,6 +390,23 @@ const questionItemReducer = (items, action) => {
 	}
 }
 
+const tokenRefListControl = (list, action) => {
+
+	switch (action.type) {
+		case 'add_token_to_list_ref':
+			list.push(action.payload.tokenRef)
+			return list
+
+		case 'remove_token_to_list_ref':
+			let index = list.indexOf(action.payload.tokenRef)
+			list.splice(index, 1)
+			return list
+
+		default:
+			break;
+	}
+}
+
 const StateProvider = ({ children }) => {
 	const [state, dispatch] = useReducer((state, action) => {
 
@@ -421,6 +438,9 @@ const StateProvider = ({ children }) => {
 				let forward = state.currentIndex < state.items.length - 1 ? state.currentIndex + 1 : state.currentIndex
 				return { ...state, currentIndex: forward }
 
+			case 'update_tabbing_counter':
+				return { ...state, tabbingCnt: action.payload }
+
 			case 'current_token_index':
 				console.log(`dispatch currentTokenIndex: ${action.payload}`)
 				console.log(`dispatch isTokenDrawer: ${state.isTokenDrawer}`)
@@ -432,8 +452,15 @@ const StateProvider = ({ children }) => {
 			case 'update_questions_ref':
 				return { ...state, questionsRef: action.payload }
 
-			case 'update_tabbing_counter':
-				return { ...state, tabbingCnt: action.payload }
+			case 'update_token_list_ref':
+				return { ...state, tokenRefList: action.payload }
+
+			case 'add_token_to_list_ref':
+			case 'remove_token_to_list_ref':
+				return {
+					...state, tokenRefList: tokenRefListControl(state.tokenRefList, action)
+				}
+
 
 
 			case 'token_dragging':
