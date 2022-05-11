@@ -10,24 +10,19 @@ const QuestionSelect = (props) => {
 	const currentIndex = manager.state.currentIndex
 
 	useEffect(() => {
-
 		let questionList = manager.state.items.map((item, index) => {
 			return <button
 				className={`select-btn ${currentIndex == index ? 'selected' : ''}`}
 				key={index}
 				onClick={() => { selectQuestion(index) }}
-				ref={(el) => manager.state.questionsRef[index] = el}
 				role={'tab'}
-				tabIndex={0} // If change to any other number only the fist question is chosen.
+				tabIndex={(manager.state.showTutorial === false && manager.state.showWarning === false) ? 0 : -1}
 				aria-selected={index == manager.state.currentIndex}
 				aria-controls={`question ${index}`}
 			>
 				{index + 1}
 			</button>
 		})
-
-		// stores local version to the scope version.
-		dispatch({ type: 'update_questions_ref', payload: manager.state.questionsRef })
 
 		// if the list of questions gets too long, we have to start computing the subset to display
 		if (questionList.length > 10) {
@@ -48,7 +43,7 @@ const QuestionSelect = (props) => {
 		else {
 			setState(state => ({ ...state, visibleQuestions: questionList }))
 		}
-	}, [manager.state.currentIndex, manager.state.items])
+	}, [manager.state.currentIndex, manager.state.items, manager.state.showTutorial])
 
 	const selectQuestion = (index) => {
 		dispatch({ type: 'select_question', payload: index })
@@ -68,6 +63,7 @@ const QuestionSelect = (props) => {
 				onKeyDown={event => {
 					if (event.key === 'Enter') { selectQuestion(currentIndex - 1) }
 				}}
+				tabIndex={(manager.state.showTutorial === false && manager.state.showWarning === false) ? 0 : -1}
 			>
 				<span className="icon-arrow-up2"></span>
 			</button>
@@ -83,6 +79,7 @@ const QuestionSelect = (props) => {
 				onKeyDown={event => {
 					if (event.key === 'Enter') { selectQuestion(currentIndex + 1) }
 				}}
+				tabIndex={(manager.state.showTutorial === false && manager.state.showWarning === false) ? 0 : -1}
 			>
 				<span className="icon-arrow-down2"></span>
 			</button>

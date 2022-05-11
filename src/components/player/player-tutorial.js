@@ -12,7 +12,6 @@ const PlayerTutorial = (props) => {
 
 	return (
 		<div className='modal-wrapper' style={{ display: manager.state.showTutorial ? 'flex' : 'none' }}>
-
 			<div className='modal tutorial player'>
 				<h3>Arrange Tokens in the Proper Order</h3>
 				<div className='tutorial-content'>
@@ -27,7 +26,9 @@ const PlayerTutorial = (props) => {
 					<p>Some questions may allow you to check your answer multiple times before submitting for a score. Use the <span className='strong'>Check Answer</span> button to see how you did!</p>
 					<img className='right' src="assets/img/player-tutorial-3.png" alt="Player tutorial image demonstrating using the Check Answer feature." />
 				</div>
-				<button tabIndex={1} onClick={toggle}>I'm Ready</button>
+				<button onClick={toggle} tabIndex={manager.state.showTutorial ? 0 : -1}>
+					I'm Ready
+				</button>
 			</div>
 
 			<div className='modal-bg'>

@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useRef } from 'react'
+import React, { useContext } from 'react'
 import Token from './token'
 import { store } from '../../player-store'
 
@@ -6,56 +6,6 @@ const TokenDrawer = (props) => {
 
 	const manager = useContext(store)
 	const dispatch = manager.dispatch
-
-	const focusDomAnswer = useRef(null)
-	const focusDomQuestion = useRef(null)
-
-	// useEffect(() => {
-	// 	// document.addEventListener('keydown', keyboardCtrls)
-	// 	document.addEventListener('click', mouseClick)
-
-	// 	return () => { // cleaned up function
-	// 		// document.removeEventListener('keydown', keyboardCtrls)
-	// 		document.removeEventListener('click', mouseClick)
-	// 	}
-
-	// }, [manager.state.items, manager.state.currentIndex, manager.state.tabbingCnt, manager.state.toggleTabCtrl])
-
-	const keyboardCtrls = (e) => {
-
-		switch (e.key) {
-			case 'Tab':
-				focusDomQuestion.current.style.background = 'white'
-				focusDomAnswer.current.blur()
-				focusDomQuestion.current.blur()
-
-				if (manager.state.toggleTabCtrl == true) {
-					switch (manager.state.tabbingCnt) {
-						case 2:
-							focusDomAnswer.current.focus()
-							focusDomAnswer.current.style.background = 'yellow'
-							focusDomQuestion.current.style.background = 'white'
-
-							dispatch({ type: 'update_tabbing_counter', payload: manager.state.tabbingCnt + 1 })
-							break
-
-						case 3:
-							focusDomQuestion.current.focus() // focus on submit btn
-							focusDomQuestion.current.style.background = 'yellow'
-							focusDomAnswer.current.style.background = 'white'
-
-							dispatch({ type: 'update_tabbing_counter', payload: 0 })
-							dispatch({ type: 'update_tabbing_control', payload: false })
-							break
-					}
-				}
-		}
-	}
-	// Remove focus once a mouse click occurs.
-	const mouseClick = () => {
-		focusDomAnswer.current.style.background = 'white'
-		focusDomQuestion.current.style.background = 'white'
-	}
 
 	const paginate = () => {
 		dispatch({ type: 'paginate_question_forward' })
@@ -207,14 +157,10 @@ const TokenDrawer = (props) => {
 
 	return (
 		<section
-			className={'token-drawer ' +
-				`${(props.phrase?.length == 0) ? 'empty ' : ''}` +
-				`${props.responseState} ` +
-				`${props.hasFakes ? 'has-fakes ' : ''}`}
+			className={'token-drawer ' + `${(props.phrase?.length == 0) ? 'empty ' : ''}` + `${props.responseState} ` + `${props.hasFakes ? 'has-fakes ' : ''}`}
 			onDragOver={handleTokenDragOver}
 			onDrop={handleTokenDrop}
 			role={'tablist'}
-			tabIndex={0}
 			aria-label={`List of unsorted token`}
 		>
 			{tokenList}
@@ -222,7 +168,6 @@ const TokenDrawer = (props) => {
 				<div
 					className='response-message-container'
 					role={'tab'}
-					tabIndex={0}
 				>
 					{currentResponseText}
 				</div>
@@ -230,7 +175,7 @@ const TokenDrawer = (props) => {
 					<button
 						className={`verify ${props.attemptLimit > props.attemptsUsed && props.responseState != 'correct' ? 'show' : ''}`}
 						role={'tab'}
-						tabIndex={0}
+						tabIndex={(manager.state.showTutorial === false && manager.state.showWarning === false) ? 0 : -1}
 						onClick={handleCheckAnswer}
 					>
 						Check Answer
@@ -238,7 +183,7 @@ const TokenDrawer = (props) => {
 					<button
 						className={`paginate ${!isLastQuestion ? 'show' : ''}`}
 						role={'tab'}
-						tabIndex={0}
+						tabIndex={(manager.state.showTutorial === false && manager.state.showWarning === false) ? 0 : -1}
 						onClick={paginate}
 					>
 						Next Question

@@ -18,11 +18,11 @@ const Token = (props) => {
 		if (isMounted.current) {
 			switch (isTokenDrawer) {
 				case true:
-					keyboardConfirmToken()
+					keyboardAddTokenToSorted()
 					break
 
 				case false:
-					keyboardRemoveToken()
+					keyboardRemoveTokenFromSorted()
 					break
 			}
 		}
@@ -32,21 +32,9 @@ const Token = (props) => {
 		/* when it takes effect for the first render the value has to be negative
 		until the effect of [ isSubmit ] finish rendering */
 		isMounted.current = true
-		if (isMounted.current) {
-			dispatch({
-				type: 'add_token_to_list_ref', payload: {
-					tokenRef: tokenRef.current,
-				}
-			})
-		}
 
 		return () => {
 			isMounted.current = false
-			dispatch({
-				type: 'remove_token_to_list_ref', payload: {
-					tokenRef: tokenRef.current,
-				}
-			})
 		}
 	}, [])
 
@@ -101,7 +89,7 @@ const Token = (props) => {
 		}
 	}, [props?.reqPositionUpdate])
 
-	const keyboardConfirmToken = () => {
+	const keyboardAddTokenToSorted = () => {
 		let currentTokenIndex = props.index
 		let phraseUpdate = manager.state.items[manager.state.currentIndex].phrase[currentTokenIndex]
 
@@ -119,7 +107,7 @@ const Token = (props) => {
 
 	} // End of keyboardConfirmToken()
 
-	const keyboardRemoveToken = () => {
+	const keyboardRemoveTokenFromSorted = () => {
 		const currentIndex = manager.state.currentIndex
 		let question = manager.state.items[currentIndex]
 		if (question?.attempts >= 1 && (question?.attemptsUsed >= question?.attempts)) { return false }
@@ -223,6 +211,15 @@ const Token = (props) => {
 		})
 	}
 
+	const handleKeyDown = (event) => {
+		if (event.key === 'Enter') {
+			if (isMounted.current) {
+				setTokenDrawer(event.currentTarget.parentNode.className.includes('token-drawer'))
+				setSubmit(!isSubmit)
+			}
+		}
+	}
+
 	// function that returns a value 0-255 based on the "lightness" of a given hex value
 	const contrastCalc = (color) => {
 		var r, g, b
@@ -233,15 +230,6 @@ const Token = (props) => {
 			b = parseInt(m[2], 16)
 		}
 		if (typeof r != "undefined") return ((r * 299) + (g * 587) + (b * 114)) / 1000;
-	}
-
-	const handleKeyDown = (event) => {
-		if (event.key === 'Enter') {
-			if (isMounted.current) {
-				setTokenDrawer(event.currentTarget.parentNode.className.includes('token-drawer'))
-				setSubmit(!isSubmit)
-			}
-		}
 	}
 
 	let tokenColor = getLegendColor(props.type)
@@ -263,7 +251,7 @@ const Token = (props) => {
 		onContextMenu={handleClick}
 		onKeyDown={handleKeyDown}
 		role={'tab'}
-		tabIndex={0}
+		tabIndex={(manager.state.showTutorial === false && manager.state.showWarning === false) ? 0 : -1}
 		aria-label={`Token ${tokenTextDisplay} and it is a ${tokenLegendText}`}
 	>
 		{tokenTextDisplay}

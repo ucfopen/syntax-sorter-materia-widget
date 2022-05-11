@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react'
+import React, { useContext } from 'react'
 import { store } from '../../player-store'
 import TokenDrawer from './token-drawer'
 import Token from './token'
@@ -138,32 +138,29 @@ const PhrasePlayer = (props) => {
 		</Token>
 	})
 
-	const phrasePlayerBody = (
+	return (
 		<section
 			className={'card phrase-player '
 				+ `${props.responseState + ' '}`
 				+ `${props.hasFakes ? 'fakeout ' : ''}`}
 		>
-
-			<div className={`token-container ${props.hasFakes ? "fakeout" : ''}`}			>
+			<div className={`token-container ${props.hasFakes ? "fakeout" : ''}`}>
 				<div
 					className="token-target"
 					onDragOver={handleTokenDragOver}
-					onDrop={handleTokenDrop} role={'tablist'}
-					tabIndex={0}
+					onDrop={handleTokenDrop}
+					role={'tablist'}
 					aria-label={`for sorted tokens`}
 				>
 					{props.sorted?.length ? '' : 'Drag and drop the words below to arrange them.'}
 					{sortedTokens}
 				</div>
 				{
-					// add tabIndex when display.
 					<span className={`fakeout-tip ${props.hasFakes ? "show" : ''}`}>
 						<span className='icon-notification'></span>Not all of the items below may be part of the correct phrase.
 					</span>
 				}
 			</div>
-
 			<TokenDrawer
 				phrase={props.phrase}
 				empty={props.sorted?.length == 0}
@@ -173,11 +170,8 @@ const PhrasePlayer = (props) => {
 				hasFakes={props.hasFakes}
 				responseState={props.responseState}
 			/>
-
 		</section>
 	)
-
-	return phrasePlayerBody
 }
 
 export default PhrasePlayer

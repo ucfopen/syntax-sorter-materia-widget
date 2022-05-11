@@ -12,12 +12,6 @@ const init = {
 	enableQuestionBank: false,
 	requireAllQuestions: false,
 	questionsAsked: [],
-	questionsRef: [], // Questions keyboard control variable contains an arr of ref objects for each question, in other words DOM elements, for switching between questions.
-	currentTokenIndex: null, // Token keyboard control variable that tracks the position of the token
-	isTokenDrawer: true,
-	tabbingCnt: 0,
-	toggleTabCtrl: false,
-	tokenRefList: [],
 }
 
 const store = React.createContext(init)
@@ -390,20 +384,20 @@ const questionItemReducer = (items, action) => {
 	}
 }
 
-const tokenRefListControl = (list, action) => {
+const onClickTokenPlacement = (list, action) => {
 
 	switch (action.type) {
-		case 'add_token_to_list_ref':
+		case 'click_add_token_to_sorted':
 			list.push(action.payload.tokenRef)
 			return list
 
-		case 'remove_token_to_list_ref':
+		case 'click_remove_token_from_sorted':
 			let index = list.indexOf(action.payload.tokenRef)
 			list.splice(index, 1)
 			return list
 
 		default:
-			break;
+			throw new Error(`Base reducer: action type: ${action.type} not found.`)
 	}
 }
 
@@ -437,31 +431,6 @@ const StateProvider = ({ children }) => {
 			case 'paginate_question_forward':
 				let forward = state.currentIndex < state.items.length - 1 ? state.currentIndex + 1 : state.currentIndex
 				return { ...state, currentIndex: forward }
-
-			case 'update_tabbing_counter':
-				return { ...state, tabbingCnt: action.payload }
-
-			case 'current_token_index':
-				console.log(`dispatch currentTokenIndex: ${action.payload}`)
-				console.log(`dispatch isTokenDrawer: ${state.isTokenDrawer}`)
-				return { ...state, currentTokenIndex: action.payload }
-
-			case 'update_is_token_drawer':
-				return { ...state, isTokenDrawer: action.payload }
-
-			case 'update_questions_ref':
-				return { ...state, questionsRef: action.payload }
-
-			case 'update_token_list_ref':
-				return { ...state, tokenRefList: action.payload }
-
-			case 'add_token_to_list_ref':
-			case 'remove_token_to_list_ref':
-				return {
-					...state, tokenRefList: tokenRefListControl(state.tokenRefList, action)
-				}
-
-
 
 			case 'token_dragging':
 			case 'token_drag_complete':

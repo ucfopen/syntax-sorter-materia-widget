@@ -11,9 +11,8 @@ const PlayerApp = (props) => {
 	const dispatch = manager.dispatch
 
 	const isMounted = useRef(false)
-	const focusDomSubmit = useRef(null)
-	const focusDomTutorial = useRef(null)
 	const targetItem = useRef(null)
+
 	const [showHint, setShowHint] = useState(false)
 
 	useEffect(() => {
@@ -26,10 +25,11 @@ const PlayerApp = (props) => {
 	}, [])
 
 	const getFocusItem = (event) => {
-
 		if (targetItem.current != null) {
-			targetItem.current.classList.remove('simple-highlight') // set it to another thing
+			targetItem.current.classList.remove('simple-highlight')
 		}
+
+		if (event.target.tagName == 'BODY') { return }
 
 		targetItem.current = event.target
 		targetItem.current.classList.add('simple-highlight')
@@ -61,124 +61,14 @@ const PlayerApp = (props) => {
 		})
 	}, [manager.state.items, manager.state.currentIndex])
 
-	// Question key controls using Arrow up and down
-	/*const keyboardCtrls = (e) => {
-		// e.preventDefault()
-
-		// Question index start at 0, but the question label starts at 1
-		// manager.state.questionsRef[manager.state.currentIndex]?.blur()
-		let tokenIndex = manager.state.currentTokenIndex
-
-		// console.log(document.querySelectorAll('.phrase-player')[0].activeElement)
-		console.log(e.code)
-
-		switch (e.code) {
-			// shift between questions
-
-			case 'ArrowUp':
-				dispatch({ type: 'current_token_index', payload: 0 })
-				return manager.state.currentIndex >= 1
-					? questionShiftKey(manager.state.currentIndex - 1) : null
-
-			case 'ArrowDown':
-				dispatch({ type: 'current_token_index', payload: 0 })
-				return manager.state.currentIndex < manager.state.items.length - 1
-					? questionShiftKey(manager.state.currentIndex + 1) : null
-
-			// shift between tokens
-			case 'ArrowLeft':
-				return tokenIndex != 0
-					? dispatch({ type: 'current_token_index', payload: tokenIndex - 1 }) : null
-
-			case 'ArrowRight':
-				return tokenIndex < manager.state.items[manager.state.currentIndex].phrase?.length - 1
-					? dispatch({ type: 'current_token_index', payload: tokenIndex + 1 }) : null
-
-			// Add token to the token-target
-			case 'Space':
-				return keyboardConfirmToken()
-
-			// Remove token from token-target
-			case 'Backspace':
-				return keyboardRemoveToken()
-
-			// Tutorial button
-			case 'KeyA':
-				focusDomTutorial.current.focus()
-				focusDomTutorial.current.style.background = 'yellow'
-				focusDomSubmit.current.style.background = 'white'
-				break
-
-			// Submit button
-			case 'KeyS':
-				focusDomSubmit.current.focus() // focus on submit btn
-				focusDomSubmit.current.style.background = 'yellow'
-				focusDomTutorial.current.style.background = 'white'
-				break
-
-
-			case 'Tab':
-				focusDomTutorial.current.blur()
-				focusDomSubmit.current.blur()
-				focusDomSubmit.current.style.background = 'white'
-
-				if (manager.state.toggleTabCtrl == false) {
-
-					switch (manager.state.tabbingCnt) {
-						case 0:
-							focusDomTutorial.current.focus()
-							focusDomTutorial.current.style.background = 'yellow'
-							focusDomSubmit.current.style.background = 'white'
-							dispatch({ type: 'update_tabbing_counter', payload: manager.state.tabbingCnt + 1 })
-							break
-
-						case 1:
-							focusDomSubmit.current.focus() // focus on submit btn
-							focusDomSubmit.current.style.background = 'yellow'
-							focusDomTutorial.current.style.background = 'white'
-
-							dispatch({ type: 'update_tabbing_counter', payload: manager.state.tabbingCnt + 1 })
-
-							if (manager.state.items[manager.state.currentIndex].phrase.length === 0) {
-								dispatch({ type: 'update_tabbing_control', payload: true })
-							}
-							break
-
-						default:
-							dispatch({ type: 'update_tabbing_counter', payload: 0 })
-							break
-					}
-				}
-				break
-
-		}
-
-	const questionShiftKey = (shiftDirection) => {
-		dispatch({ type: 'select_question', payload: shiftDirection })
-		manager.state.questionsRef[shiftDirection]?.focus()
-		dispatch({ type: 'current_token_index', payload: 0 })
-	}
-	*/
-
+	/* A way to check if the component is mounted. */
 	useEffect(() => {
-		// when it takes effect for the first render the value has to be negative
-		// until the effect of [ manager.state.currentTokenIndex ] finish rendering
 		isMounted.current = true
 
 		return () => {
 			isMounted.current = false
 		}
 	}, [])
-
-	// Remove focus once a mouse click occurs.
-	const mouseClick = () => {
-		focusDomTutorial.current.style.background = 'white'
-		focusDomSubmit.current.style.background = 'white'
-		manager.state.questionsRef[manager.state.currentIndex]?.blur()
-
-		dispatch({ type: 'update_tabbing_counter', payload: 0 })
-		dispatch({ type: 'update_tabbing_control', payload: false })
-	}
 
 	// Used to prevent reads from being highlighted then dragged
 	const mouseUpHandler = () => {
@@ -257,15 +147,14 @@ const PlayerApp = (props) => {
 	})
 
 	return (
-		<div className="player-container" role={'tabpanel'}		>
+		<div className="player-container" role={'tabpanel'}>
 			<WarningModal submitForScoring={submitForScoring} requireAllQuestions={manager.state.requireAllQuestions} />
 			<PlayerTutorial />
 			<header className="player-header">
-				<span className="title" tabIndex={0}>{manager.state.title}</span>
+				<span className="title">{manager.state.title}</span>
 				<button
 					className="headerBtn"
-					ref={focusDomSubmit}
-					tabIndex={0}
+					tabIndex={(manager.state.showTutorial === false && manager.state.showWarning === false) ? 0 : -1}
 					onClick={handleSubmit}
 					onKeyDown={event => {
 						if (event.key === 'Enter') { handleSubmit }
@@ -275,8 +164,7 @@ const PlayerApp = (props) => {
 				</button>
 				<button
 					className="headerBtn"
-					ref={focusDomTutorial}
-					tabIndex={0}
+					tabIndex={(manager.state.showTutorial === false && manager.state.showWarning === false) ? 0 : -1}
 					onClick={toggleTutorial}
 					onKeyDown={event => {
 						if (event.key === 'Enter') { toggleTutorial }
@@ -289,22 +177,15 @@ const PlayerApp = (props) => {
 			<QuestionSelect />
 
 			<section className="content-container">
-
-				<section
-					className="card question-container"
-					role={'tablist'}
-					tabIndex={0}
-				>
-					<p role={'tab'}>{questionText}</p>
+				<section className="card question-container" role={'tablist'}>
+					<p>{questionText}</p>
 					{
 						showHint === 'show'
 							? <div className={'hint-text ' + `${showHint}`}>
 								<span className="strong">Hint: </span>
 								<span>{manager.state.items[manager.state.currentIndex]?.hint}</span>
 							</div>
-
-							: <div className={'hint-text ' + `${showHint}`} aria-hidden />
-						// div added to not distort the CSS layout when hiding the HINT div
+							: <div className={'hint-text ' + `${showHint}`} aria-hidden={'true'} />
 					}
 				</section>
 
@@ -316,8 +197,7 @@ const PlayerApp = (props) => {
 					attemptLimit={manager.state.items[manager.state.currentIndex]?.attempts}
 					hasFakes={manager.state.items[manager.state.currentIndex]?.fakeout.length}
 					responseState={manager.state.items[manager.state.currentIndex]?.responseState}
-				// tabRef={tabValues[5].ref}
-				/> {/* <section> */}
+				/>
 
 				<section className="card legend" aria-hidden>
 					<header>Color Legend</header>
@@ -325,7 +205,7 @@ const PlayerApp = (props) => {
 				</section>
 
 			</section>
-		</div>
+		</div >
 	)
 }
 
