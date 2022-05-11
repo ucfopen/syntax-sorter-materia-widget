@@ -52,7 +52,7 @@ const QuestionSelect = (props) => {
 	return (
 		<section className="question-select"
 			role={'tablist'}
-			aria-label={`of question buttons containing`}
+			aria-label={`List of question buttons`}
 		>
 			<button
 				className={`select-btn paginate-up ${manager.state.items.length > 10 ? 'show' : ''} ${currentIndex > 0 ? '' : 'disabled'}`}
