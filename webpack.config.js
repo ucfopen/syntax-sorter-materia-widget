@@ -18,29 +18,14 @@ const copy = [
 ]
 
 const entries = {
-	'common.css': [
-		path.join(srcPath, 'common.scss')
-	],
-	'player.css': [
-		path.join(srcPath, 'player.html'),
-		path.join(srcPath, 'player.scss'),
-	],
-	'creator.css': [
-		path.join(srcPath, 'creator.html'),
-		path.join(srcPath, 'creator.scss')
-	],
-	'player.js': [
+	'player': [
 		path.join(srcPath, 'player.js')
 	],
-	'creator.js': [
-		path.join(srcPath, 'creator.js')
+	'creator': [
+		path.join(srcPath, 'creator.js'),
 	],
-	'scoreScreen.js': [
+	'scoreScreen': [
 		path.join(srcPath, 'scoreScreen.js')
-	],
-	'scoreScreen.css': [
-		path.join(srcPath, 'scoreScreen.html'),
-		path.join(srcPath, 'scoreScreen.scss')
 	],
 	'guides/player.temp.html': [
 		path.join(srcPath, '_guides/player.md')
@@ -60,7 +45,7 @@ const customReactLoader = {
 
 const customRules = [
 	rules.loadHTMLAndReplaceMateriaScripts,
-	rules.loadAndPrefixCSS,
+	// rules.loadAndPrefixCSS,
 	rules.loadAndPrefixSASS,
 	rules.loadAndCompileMarkdown,
 	rules.copyImages,
