@@ -27,6 +27,7 @@ const TokenDrawer = (props) => {
 		let dropTokenPhraseIndex = event.dataTransfer.getData("tokenPhraseIndex")
 		let dropTokenStatus = event.dataTransfer.getData("tokenStatus")
 		let dropTokenFakeout = (event.dataTransfer.getData("tokenFakeout") == "true") ? true : false
+		let dropTokenFocus = event.dataTransfer.getData("tokenFocus")
 
 		if (dropTokenStatus == "sorted")
 		{
@@ -37,7 +38,8 @@ const TokenDrawer = (props) => {
 				fakeout: dropTokenFakeout,
 				legend: dropTokenType,
 				value: dropTokenName,
-				id: dropTokenId
+				id: dropTokenId,
+				focus: dropTokenFocus
 			}})
 		}
 	}
@@ -99,7 +101,8 @@ const TokenDrawer = (props) => {
 			pref={props.displayPref}
 			status={token.status}
 			fakeout={token.fakeout}
-			dragEligible={!(props.attemptsUsed >= props.attemptLimit)}>
+			dragEligible={!(props.attemptsUsed >= props.attemptLimit)}
+			focus={token.focus}>
 		</Token>
 	})
 

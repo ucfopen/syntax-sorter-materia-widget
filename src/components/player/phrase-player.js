@@ -55,6 +55,7 @@ const PhrasePlayer = (props) => {
 		let dropTokenPhraseIndex = event.dataTransfer.getData("tokenPhraseIndex")
 		let dropTokenStatus = event.dataTransfer.getData("tokenStatus")
 		let dropTokenFakeout = (event.dataTransfer.getData("tokenFakeout") == "true") ? true : false
+		let dropTokenFocus = event.dataTransfer.getData("tokenFocus")
 
 		let index = 0
 
@@ -81,7 +82,8 @@ const PhrasePlayer = (props) => {
 						legend: dropTokenType,
 						value: dropTokenName,
 						originIndex: parseInt(dropTokenPhraseIndex),
-						fakeout: dropTokenFakeout
+						fakeout: dropTokenFakeout,
+						focus: dropTokenFocus
 					}
 				})
 				break
@@ -96,7 +98,8 @@ const PhrasePlayer = (props) => {
 						legend: dropTokenType,
 						value: dropTokenName,
 						phraseIndex: parseInt(dropTokenPhraseIndex),
-						fakeout: dropTokenFakeout
+						fakeout: dropTokenFakeout,
+						focus: dropTokenFocus
 					}
 				})
 
@@ -133,7 +136,8 @@ const PhrasePlayer = (props) => {
 			reqPositionUpdate={token.reqPositionUpdate}
 			fakeout={token.fakeout}
 			dragEligible={!(props.attemptsUsed >= props.attemptLimit || props.responseState == 'correct')}
-			forceClearAdjacentTokens={forceClearAdjacentTokens}>
+			forceClearAdjacentTokens={forceClearAdjacentTokens}
+			focus={token.focus}>
 		</Token>
 	})
 
@@ -143,7 +147,7 @@ const PhrasePlayer = (props) => {
 			`${props.hasFakes ? 'fakeout ' : ''}`}>
 			<div className={`token-container ${props.hasFakes ? "fakeout" : ''}`}>
 				<div className="token-target" onDragOver={handleTokenDragOver} onDrop={handleTokenDrop}>
-					{props.sorted?.length ? '' : 'Drag and drop the words below to arrange them.'}
+					{props.sorted?.length ? '' : 'Drag and drop the words below to arrange them. If using a screenreader, select and hit enter to move the words into the box.'}
 					{sortedTokens}
 				</div>
 				<span className={`fakeout-tip ${props.hasFakes ? "show" : ''}`}>

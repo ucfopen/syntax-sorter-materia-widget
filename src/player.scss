@@ -1,6 +1,9 @@
 @import "common";
 
 .player-container {
+	*:focus {
+		outline: solid 2px #0093e7;
+	}
 	header {
 		span.title {
 			display: inline-block;
@@ -40,8 +43,7 @@
 			}
 
 			.hint-text {
-				display: block;
-				opacity: 0;
+				display: none;
 				height: 0px;
 				overflow: hidden;
 				margin: 0;
@@ -51,7 +53,7 @@
 				transition: background-color 2s;
 
 				&.show {
-					opacity: 1;
+					display: block;
 					height: auto;
 					margin: 10px 0 0 0;
 					padding: 10px 0;
@@ -193,7 +195,6 @@
 						background: #fff;
 						border: solid 1px $colorBGTertiary;
 						padding: 10px 20px;
-						outline: none;
 
 						font-weight: 700;
 
@@ -255,7 +256,13 @@
 .player-header {
 	position: fixed;
 	top: 0;
-	//padding-bottom: 15px;
+
+	h1 {
+		display: inline-block;
+		margin: 0;
+		padding: 0;
+		font-size: 1em;
+	}
 }
 
 .warning-wrapper {

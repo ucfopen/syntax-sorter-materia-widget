@@ -100,12 +100,12 @@ const PlayerApp = (props) => {
 				requireAllQuestions={manager.state.requireAllQuestions}></WarningModal>
 			<PlayerTutorial></PlayerTutorial>
 			<header className="player-header">
-				<span className="title">{manager.state.title}</span>
+				<h1 className="title">{manager.state.title}</h1>
 				<button className="headerBtn" onClick={handleSubmit}>Submit</button>
 				<button className="headerBtn" onClick={toggleTutorial}>Tutorial</button>
 			</header>
 			<QuestionSelect></QuestionSelect>
-			<section className="content-container">
+			<main className="content-container">
 				<section className="card question-container">
 					<p>{questionText}</p>
 					<div className={'hint-text ' +
@@ -130,7 +130,7 @@ const PlayerApp = (props) => {
 					<header>Color Legend</header>
 					{legendList}
 				</section>
-			</section>
+			</main>
 		</div>
 	)
 }

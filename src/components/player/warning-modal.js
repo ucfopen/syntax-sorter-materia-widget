@@ -18,7 +18,7 @@ const WarningModal = (props) => {
 					<div>
 						<h3>Please answer all questions before submitting.</h3>
 						<div className='warning-submit-holder'>
-							<button onClick={toggle}>Ok</button>
+							<button id="warning-submit-button" onClick={toggle}>Ok</button>
 						</div>
 					</div>
 					:
