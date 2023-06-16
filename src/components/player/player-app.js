@@ -90,7 +90,10 @@ const PlayerApp = (props) => {
 	const questionText = manager.state.items[manager.state.currentIndex]?.question.length > 0 ? manager.state.items[manager.state.currentIndex].question : "Drag and drop to arrange the items below in the correct order."
 
 	const legendList = manager.state.legend.map((term, index) => {
-		return <span key={index} className='legend-item'><span className='legend-color' style={{ background: term.color }}></span>{term.name}</span>
+		return <>
+			<dt className='legend-color' style={{ background: term.color }}></dt>
+			<dd>{term.name}</dd>
+		</>
 	})
 
 	return (
@@ -101,13 +104,15 @@ const PlayerApp = (props) => {
 			<PlayerTutorial></PlayerTutorial>
 			<header className="player-header">
 				<h1 className="title">{manager.state.title}</h1>
-				<button className="headerBtn" onClick={handleSubmit}>Submit</button>
-				<button className="headerBtn" onClick={toggleTutorial}>Tutorial</button>
+				<div className="player-header-btns">
+					<button className="headerBtn" onClick={toggleTutorial}>Tutorial</button>
+					<button className="headerBtn" onClick={handleSubmit}>Submit</button>
+				</div>
 			</header>
 			<QuestionSelect></QuestionSelect>
 			<main className="content-container">
 				<section className="card question-container">
-					<p>{questionText}</p>
+					<h2>{questionText}</h2>
 					<div className={'hint-text ' +
 						`${(
 							manager.state.items[manager.state.currentIndex]?.attemptsUsed > 0 &&
@@ -115,7 +120,8 @@ const PlayerApp = (props) => {
 							manager.state.items[manager.state.currentIndex]?.responseState != 'correct' &&
 							manager.state.items[manager.state.currentIndex]?.responseState != 'incorrect-no-attempts' &&
 							manager.state.items[manager.state.currentIndex]?.hint.length > 0) ? 'show' : ''}`}>
-						<span className="strong">Hint: </span><span>{manager.state.items[manager.state.currentIndex]?.hint}</span>
+						<p><span className="strong">Hint: </span>
+						<span>{manager.state.items[manager.state.currentIndex]?.hint}</span></p>
 					</div>
 				</section>
 				<PhrasePlayer
@@ -128,7 +134,9 @@ const PlayerApp = (props) => {
 					responseState={manager.state.items[manager.state.currentIndex]?.responseState}></PhrasePlayer>
 				<section className="card legend">
 					<header>Color Legend</header>
-					{legendList}
+					<dl>
+						{legendList}
+					</dl>
 				</section>
 			</main>
 		</div>

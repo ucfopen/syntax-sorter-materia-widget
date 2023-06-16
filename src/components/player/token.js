@@ -336,7 +336,7 @@ const Token = (props) => {
 			onContextMenu={handleClick}
 			onKeyDown={handleKeyDown}
 			onFocus={handleFocus}
-			ariaDescription={props.sorted ? 'Sorted' : 'Unsorted'}
+			aria-label={props.status == 'sorted' ? `${props.value}, ${getLegendName(props.type)}, sorted` : `${props.value}, ${getLegendName(props.type)}, unsorted`}
 			>
 			{props.pref == 'word' ? props.value : getLegendName(props.type)}
 		</button>
