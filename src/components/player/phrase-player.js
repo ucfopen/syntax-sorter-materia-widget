@@ -147,7 +147,7 @@ const PhrasePlayer = (props) => {
 			`${props.hasFakes ? 'fakeout ' : ''}`}>
 			<div className={`token-container ${props.hasFakes ? "fakeout" : ''}`}>
 				<div className="token-target" onDragOver={handleTokenDragOver} onDrop={handleTokenDrop}>
-					{props.sorted?.length ? '' : 'Drag and drop the words below to arrange them. If using a screenreader, select and hit enter to move the words into the box.'}
+					{props.sorted?.length ? '' : 'Drag and drop the words below to arrange them. If using a keyboard, select a token in the drawer and press Space or Enter to sort it. To rearrange a token in the sorting area, press Q to move it left and E to move it right.'}
 					{sortedTokens}
 				</div>
 				<span className={`fakeout-tip ${props.hasFakes ? "show" : ''}`}>

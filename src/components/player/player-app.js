@@ -90,10 +90,10 @@ const PlayerApp = (props) => {
 	const questionText = manager.state.items[manager.state.currentIndex]?.question.length > 0 ? manager.state.items[manager.state.currentIndex].question : "Drag and drop to arrange the items below in the correct order."
 
 	const legendList = manager.state.legend.map((term, index) => {
-		return <>
+		return <div>
 			<dt className='legend-color' style={{ background: term.color }} aria-label="Color"></dt>
 			<dd>{term.name}</dd>
-		</>
+		</div>
 	})
 
 	return (
@@ -133,8 +133,8 @@ const PlayerApp = (props) => {
 					hasFakes={manager.state.items[manager.state.currentIndex]?.fakeout.length}
 					responseState={manager.state.items[manager.state.currentIndex]?.responseState}></PhrasePlayer>
 				<section className="card legend">
-					<header>Color Legend</header>
-					<dl>
+					<header id="color-legend-header">Color Legend</header>
+					<dl aria-labelledby="color-legend-header">
 						{legendList}
 					</dl>
 				</section>

@@ -115,6 +115,10 @@
 
 			background: #cacaca;
 
+			#token-drawer-desc {
+				display: none;
+			}
+
 			&.show {
 				display: block;
 			}
