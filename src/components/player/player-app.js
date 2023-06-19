@@ -91,7 +91,7 @@ const PlayerApp = (props) => {
 
 	const legendList = manager.state.legend.map((term, index) => {
 		return <>
-			<dt className='legend-color' style={{ background: term.color }}></dt>
+			<dt className='legend-color' style={{ background: term.color }} aria-label="Color"></dt>
 			<dd>{term.name}</dd>
 		</>
 	})

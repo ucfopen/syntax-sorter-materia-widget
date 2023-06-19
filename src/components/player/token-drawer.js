@@ -160,7 +160,9 @@ const TokenDrawer = (props) => {
 			`${props.hasFakes ? 'has-fakes ' : ''}`}
 			onDragOver={handleTokenDragOver}
 			onDrop={handleTokenDrop}>
-			{tokenList}
+				<div role="group">
+					{tokenList}
+				</div>
 			<section className='response-controls'>
 				<div className='response-message-container'>
 					{currentResponseText}

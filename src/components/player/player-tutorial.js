@@ -11,10 +11,16 @@ const PlayerTutorial = (props) => {
 	}
 
 	return (
-		<div className='modal-wrapper' style={{ display: manager.state.showTutorial ? 'flex' : 'none' }}>
+		<div
+		aria-modal="true"
+		role="dialog"
+		aria-labelledby="dialog-title"
+		aria-describedby="dialog-desc"
+		className='modal-wrapper'
+		style={{ display: manager.state.showTutorial ? 'flex' : 'none' }}>
 
-			<div className='modal tutorial player'>
-				<h3>Arrange Tokens in the Proper Order</h3>
+			<div id="dialog-desc" className='modal tutorial player'>
+				<h3 id="dialog-title">Arrange Tokens in the Proper Order</h3>
 				<div className='tutorial-content'>
 					<p>Read each question prompt and arrange the tokens based on the instructions provided. Tokens may be a word, part of a word, or a part of speech. <span className='strong'>Right-click</span> or <span className='strong'>drag</span> a token back to the drawer to unsort it.</p>
 					<img className='right' src="assets/img/player-tutorial-1.png" alt="Player tutorial image demonstrating dragging and dropping tokens" />
