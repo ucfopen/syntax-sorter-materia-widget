@@ -12,7 +12,7 @@ const QuestionSelect = (props) => {
 
 	useEffect(() => {
 		let questionList = manager.state.items.map((item, index) => {
-			return <button className={`select-btn ${currentIndex == index ? 'selected' : ''}`} key={index} onClick={() => { selectQuestion(index) }} aria-label={`Question ${index + 1}`}>{index + 1}</button>
+			return <button id={`question-${index + 1}-btn`} className={`select-btn ${currentIndex == index ? 'selected' : ''}`} key={index} onClick={() => { selectQuestion(index) }} aria-label={`Question ${index + 1}`}>{index + 1}</button>
 		})
 
 		// if the list of questions gets too long, we have to start computing the subset to display
@@ -36,6 +36,7 @@ const QuestionSelect = (props) => {
 
 	const selectQuestion = (index) => {
 		dispatch({ type: 'select_question', payload: index })
+		try { document.getElementById("question-text").focus(); } catch(err) { throw err };
 	}
 
 	return (

@@ -189,7 +189,6 @@ const tokenSortedPhraseReducer = (list, action) => {
 			)
 		}
 		case 'response_token_rearrange':
-			console.log(action)
 			let target = action.payload.targetIndex
 			if (action.payload.originIndex < target) target--
 
@@ -300,7 +299,6 @@ const tokenUnsortedPhraseReducer = (list, action) => {
 		case 'toggle_token_select':
 			return list.map((token, index) => {
 				if (action.payload.tokenIndex == index) {
-					console.log('Focus on ' + token.id)
 					return {
 						...token,
 						focus: true

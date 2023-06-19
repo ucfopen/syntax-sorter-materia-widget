@@ -45,7 +45,6 @@ const Token = (props) => {
 				id: props.id
 			}
 		})
-		console.log(props)
 	}
 
 	// the above hook works MOST of the time, but certain events (token rearrange) clear this token's position information in the store, and the hook doesn't fire
@@ -167,7 +166,7 @@ const Token = (props) => {
 	const handleKeyDown = (event) => {
 		// Listen for space or enter key
 		// to move token in and out of token drawer
-		if (event.keyCode == 13 || event.keyCode == 32) {
+		if (event.type == "keydown" && (event.keyCode == 13 || event.keyCode == 32) || event.type == "click") {
 			event.preventDefault();
 
 			let sorted = manager.state.items[manager.state.currentIndex]?.sorted;
@@ -180,12 +179,8 @@ const Token = (props) => {
 
 			let index = sorted ? sorted.length : 0;
 
-			console.log(props.status)
-
-
 			if (props.status == 'unsorted')
 			{
-				console.log(phraseLengthPrior)
 				// Move token to end of box
 				dispatch({
 					type: 'response_token_sort',
@@ -295,7 +290,6 @@ const Token = (props) => {
 			})
 
 			let focusIndex = event.keyCode == 81 ? props.index - 1 : props.index + 1;
-			console.log(props.phrase)
 			dispatch({
 				type: 'toggle_token_select', payload: {
 					questionIndex: manager.state.currentIndex,
@@ -321,6 +315,9 @@ const Token = (props) => {
 
 	let tokenColor = getLegendColor(props.type)
 
+	// Word value (optional), legend name, position, sorted or unsorted
+	let ariaLabel = (props.pref == 'word' ? `${props.value}, ${getLegendName(props.type)}` : getLegendName(props.type)) + (props.status == "sorted" ? `, position ${props.index + 1}, ` : ', ') + props.status;
+
 	return (
 		<button className={`token ${state.dragging ? 'dragging' : ''} ${props.arrangement == 'left' ? 'is-left' : ''} ${props.arrangement == 'right' ? 'is-right' : ''}`}
 			style={{
@@ -336,7 +333,8 @@ const Token = (props) => {
 			onContextMenu={handleClick}
 			onKeyDown={handleKeyDown}
 			onFocus={handleFocus}
-			aria-label={props.status == 'sorted' ? `${props.value}, ${getLegendName(props.type)}, position ${props.index + 1}` : `${props.value}, ${getLegendName(props.type)}, unsorted`}
+			onClick={handleKeyDown}
+			aria-label={ariaLabel}
 			>
 			{props.pref == 'word' ? props.value : getLegendName(props.type)}
 		</button>

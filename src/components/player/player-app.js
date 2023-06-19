@@ -112,7 +112,7 @@ const PlayerApp = (props) => {
 			<QuestionSelect></QuestionSelect>
 			<main className="content-container">
 				<section className="card question-container">
-					<h2>{questionText}</h2>
+					<h2 id="question-text" tabindex="0">{questionText}</h2>
 					<div className={'hint-text ' +
 						`${(
 							manager.state.items[manager.state.currentIndex]?.attemptsUsed > 0 &&

@@ -9,6 +9,15 @@ const TokenDrawer = (props) => {
 
 	const paginate = () => {
 		dispatch({ type: 'paginate_question_forward' })
+		try
+		{
+			// document.getElementById(`question-${manager.state.currentIndex + 2}-btn`).focus();
+			document.getElementById("question-text").focus();
+		}
+		catch (error)
+		{
+			throw error;
+		}
 	}
 
 	const handleTokenDragOver = (event) => {
@@ -71,6 +80,20 @@ const TokenDrawer = (props) => {
 				response: state
 			}
 		})
+
+		// Redirect focus
+		if (props.attemptLimit > props.attemptsUsed && props.responseState != 'correct' && !isLastQuestion)
+		{
+			document.getElementById("response-dialog-desc").focus();
+		}
+		else if (props.attemptLimit <= props.attemptsUsed)
+		{
+			document.getElementById("check-question-btn").focus();
+		}
+		else
+		{
+			document.getElementById("response-dialog-desc").focus();
+		}
 	}
 
 	const verify = (item) => {
@@ -166,11 +189,11 @@ const TokenDrawer = (props) => {
 				</div>
 			<section className='response-controls'>
 				<div className='response-message-container'>
-					<div id="response-dialog-desc">{currentResponseText}</div>
+					<div id="response-dialog-desc" tabindex="0">{currentResponseText}</div>
 				</div>
 				<div className='button-container'>
-					<button className={`verify ${props.attemptLimit > props.attemptsUsed && props.responseState != 'correct' ? 'show' : ''}`} onClick={handleCheckAnswer} aria-describedby="response-dialog-desc">Check Answer</button>
-					<button className={`paginate ${!isLastQuestion ? 'show' : ''}`} onClick={paginate} aria-describedby="response-dialog-desc">Next Question</button>
+					<button id='check-question-btn' className={`verify ${props.attemptLimit > props.attemptsUsed && props.responseState != 'correct' ? 'show' : ''}`} onClick={handleCheckAnswer} aria-describedby="response-dialog-desc">Check Answer</button>
+					<button id="next-question-btn" className={`paginate ${!isLastQuestion ? 'show' : ''}`} onClick={paginate} aria-describedby="response-dialog-desc">Next Question</button>
 				</div>
 			</section>
 		</section>
