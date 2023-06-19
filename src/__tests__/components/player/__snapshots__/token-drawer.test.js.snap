@@ -10,72 +10,98 @@ exports[`Token Drawer Token Drawer component 1`] = `
     onDrop={[Function]}
   >
     <div
-      className="token   "
-      draggable={true}
-      onContextMenu={[Function]}
-      onDrag={[Function]}
-      onDragEnd={[Function]}
-      onDragStart={[Function]}
-      style={
-        Object {
-          "background": "#ffffff",
-          "color": "#000000",
-          "display": "inline-block",
-        }
-      }
+      aria-describedby="token-drawer-desc"
+      role="group"
     >
-      This
-    </div>
-    <div
-      className="token   "
-      draggable={true}
-      onContextMenu={[Function]}
-      onDrag={[Function]}
-      onDragEnd={[Function]}
-      onDragStart={[Function]}
-      style={
-        Object {
-          "background": "#ffffff",
-          "color": "#000000",
-          "display": "inline-block",
+      <p
+        id="token-drawer-desc"
+      >
+        Token Drawer
+      </p>
+      <button
+        aria-label="This, undefined, unsorted"
+        className="token   "
+        draggable={true}
+        onClick={[Function]}
+        onContextMenu={[Function]}
+        onDrag={[Function]}
+        onDragEnd={[Function]}
+        onDragStart={[Function]}
+        onFocus={[Function]}
+        onKeyDown={[Function]}
+        style={
+          Object {
+            "background": "#ffffff",
+            "color": "#000000",
+            "display": "inline-block",
+          }
         }
-      }
-    >
-      is
-    </div>
-    <div
-      className="token   "
-      draggable={true}
-      onContextMenu={[Function]}
-      onDrag={[Function]}
-      onDragEnd={[Function]}
-      onDragStart={[Function]}
-      style={
-        Object {
-          "background": "#ffffff",
-          "color": "#000000",
-          "display": "inline-block",
+      >
+        This
+      </button>
+      <button
+        aria-label="is, undefined, unsorted"
+        className="token   "
+        draggable={true}
+        onClick={[Function]}
+        onContextMenu={[Function]}
+        onDrag={[Function]}
+        onDragEnd={[Function]}
+        onDragStart={[Function]}
+        onFocus={[Function]}
+        onKeyDown={[Function]}
+        style={
+          Object {
+            "background": "#ffffff",
+            "color": "#000000",
+            "display": "inline-block",
+          }
         }
-      }
-    >
-      a
-    </div>
-    <div
-      className="token   "
-      draggable={true}
-      onContextMenu={[Function]}
-      onDrag={[Function]}
-      onDragEnd={[Function]}
-      onDragStart={[Function]}
-      style={
-        Object {
-          "background": "#ffffff",
-          "color": "#000000",
-          "display": "inline-block",
+      >
+        is
+      </button>
+      <button
+        aria-label="a, undefined, unsorted"
+        className="token   "
+        draggable={true}
+        onClick={[Function]}
+        onContextMenu={[Function]}
+        onDrag={[Function]}
+        onDragEnd={[Function]}
+        onDragStart={[Function]}
+        onFocus={[Function]}
+        onKeyDown={[Function]}
+        style={
+          Object {
+            "background": "#ffffff",
+            "color": "#000000",
+            "display": "inline-block",
+          }
         }
-      }
-    >
-      test
+      >
+        a
+      </button>
+      <button
+        aria-label="test, undefined, unsorted"
+        className="token   "
+        draggable={true}
+        onClick={[Function]}
+        onContextMenu={[Function]}
+        onDrag={[Function]}
+        onDragEnd={[Function]}
+        onDragStart={[Function]}
+        onFocus={[Function]}
+        onKeyDown={[Function]}
+        style={
+          Object {
+            "background": "#ffffff",
+            "color": "#000000",
+            "display": "inline-block",
+          }
+        }
+      >
+        test
+      </button>
     </div>
     <section
       className="response-controls"
@@ -83,21 +109,30 @@ exports[`Token Drawer Token Drawer component 1`] = `
       <div
         className="response-message-container"
       >
-        <span>
-          NONE
-        </span>
+        <div
+          id="response-dialog-desc"
+          tabindex="0"
+        >
+          <span>
+            NONE
+          </span>
+        </div>
       </div>
       <div
         className="button-container"
       >
         <button
+          aria-describedby="response-dialog-desc"
           className="verify show"
+          id="check-question-btn"
           onClick={[Function]}
         >
           Check Answer
         </button>
         <button
+          aria-describedby="response-dialog-desc"
           className="paginate show"
+          id="next-question-btn"
           onClick={[Function]}
         >
           Next Question

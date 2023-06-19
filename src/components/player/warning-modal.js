@@ -15,7 +15,7 @@ const WarningModal = (props) => {
 	useEffect(() => {
 		if (manager.state.showWarning)
 		{
-			submitButtonRef.current.focus();
+			if (submitButtonRef.current != null) submitButtonRef.current.focus();
 		}
 	}, [manager.state.showWarning])
 

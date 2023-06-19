@@ -4,13 +4,17 @@ exports[`Token Token Component 1`] = `
 <span
   className="test-component"
 >
-  <div
+  <button
+    aria-label="Test, undefined, unsorted"
     className="token   "
     draggable={true}
+    onClick={[Function]}
     onContextMenu={[Function]}
     onDrag={[Function]}
     onDragEnd={[Function]}
     onDragStart={[Function]}
+    onFocus={[Function]}
+    onKeyDown={[Function]}
     style={
       Object {
         "background": "#ffffff",
@@ -20,6 +24,6 @@ exports[`Token Token Component 1`] = `
     }
   >
     Test
-  </div>
+  </button>
 </span>
 `;
