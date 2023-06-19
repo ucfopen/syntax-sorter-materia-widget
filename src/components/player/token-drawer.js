@@ -165,11 +165,11 @@ const TokenDrawer = (props) => {
 				</div>
 			<section className='response-controls'>
 				<div className='response-message-container'>
-					{currentResponseText}
+					<div id="response-dialog-desc">{currentResponseText}</div>
 				</div>
 				<div className='button-container'>
-					<button className={`verify ${props.attemptLimit > props.attemptsUsed && props.responseState != 'correct' ? 'show' : ''}`} onClick={handleCheckAnswer}>Check Answer</button>
-					<button className={`paginate ${!isLastQuestion ? 'show' : ''}`} onClick={paginate}>Next Question</button>
+					<button className={`verify ${props.attemptLimit > props.attemptsUsed && props.responseState != 'correct' ? 'show' : ''}`} onClick={handleCheckAnswer} aria-describedby="response-dialog-desc">Check Answer</button>
+					<button className={`paginate ${!isLastQuestion ? 'show' : ''}`} onClick={paginate} aria-describedby="response-dialog-desc">Next Question</button>
 				</div>
 			</section>
 		</section>
