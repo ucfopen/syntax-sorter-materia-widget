@@ -166,7 +166,7 @@ const Token = (props) => {
 	const handleKeyDown = (event) => {
 		// Listen for space or enter key
 		// to move token in and out of token drawer
-		if (event.type == "keydown" && (event.keyCode == 13 || event.keyCode == 32) || event.type == "click") {
+		if (event.type == "keydown" && (event.key == " " || event.key == "Enter") || event.type == "click") {
 			event.preventDefault();
 
 			let sorted = manager.state.items[manager.state.currentIndex]?.sorted;
@@ -260,7 +260,7 @@ const Token = (props) => {
 			}
 		}
 		// Listen to "Q" and "E"
-		else if (event.keyCode == 81 || event.keyCode == 69)
+		else if (event.key == "q" || event.key == "e")
 		{
 			event.preventDefault();
 			// First check to make sure it's in box
@@ -268,7 +268,7 @@ const Token = (props) => {
 				return;
 
 			// Determine the direction to move
-			let targetIndex = event.keyCode == 81 ? props.index - 1 : props.index + 2;
+			let targetIndex = event.key == "q" ? props.index - 1 : props.index + 2;
 
 			let sorted = manager.state.items[manager.state.currentIndex]?.sorted;
 
@@ -289,7 +289,7 @@ const Token = (props) => {
 				}
 			})
 
-			let focusIndex = event.keyCode == 81 ? props.index - 1 : props.index + 1;
+			let focusIndex = event.key == "q" ? props.index - 1 : props.index + 1;
 			dispatch({
 				type: 'toggle_token_select', payload: {
 					questionIndex: manager.state.currentIndex,
