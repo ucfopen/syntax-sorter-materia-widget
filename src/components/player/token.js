@@ -205,6 +205,9 @@ const Token = (props) => {
 							id: props.id
 						}
 					})
+					// dispatch({
+					// 	type: 'set_live_region', payload: `All tokens have been sorted`
+					// })
 				}
 				else
 				{
@@ -217,7 +220,11 @@ const Token = (props) => {
 							origin: props.status,
 							id: props.id
 						}
-				}	)
+					})
+
+					// dispatch({
+					// 	type: 'set_live_region', payload: `${manager.state.items[manager.state.currentIndex].sorted.length + 1} of ${manager.state.items[manager.state.currentIndex].correctPhrase.length} tokens sorted.`
+					// })
 				}
 			}
 			else if (props.status == 'sorted')
@@ -243,6 +250,9 @@ const Token = (props) => {
 							id: props.id
 						}
 					})
+					// dispatch({
+					// 	type: 'set_live_region', payload: `All tokens have been unsorted`
+					// })
 				}
 				else
 				{
@@ -255,12 +265,12 @@ const Token = (props) => {
 							origin: props.status,
 							id: props.id
 						}
-				}	)
+					})
 				}
 			}
 		}
 		// Listen to "Q" and "E"
-		else if (event.key == "q" || event.key == "e")
+		else if (event.key == "q" || event.key == "e" || event.key == "Q" || event.key == "E")
 		{
 			event.preventDefault();
 			// First check to make sure it's in box
@@ -268,7 +278,7 @@ const Token = (props) => {
 				return;
 
 			// Determine the direction to move
-			let targetIndex = event.key == "q" ? props.index - 1 : props.index + 2;
+			let targetIndex = event.key == "q" || event.key == "Q" ? props.index - 1 : props.index + 2;
 
 			let sorted = manager.state.items[manager.state.currentIndex]?.sorted;
 
@@ -289,7 +299,7 @@ const Token = (props) => {
 				}
 			})
 
-			let focusIndex = event.key == "q" ? props.index - 1 : props.index + 1;
+			let focusIndex = event.key == "q" || event.key == "Q" ? props.index - 1 : props.index + 1;
 			dispatch({
 				type: 'toggle_token_select', payload: {
 					questionIndex: manager.state.currentIndex,

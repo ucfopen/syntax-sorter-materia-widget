@@ -93,6 +93,36 @@
 			background: $colorISecondary;
 		}
 
+		.token-container {
+			position: relative;
+
+			#play-audio-btn {
+				width: 2.2em;
+				height: 2.2em;
+				padding: 0;
+
+				img {
+					display: inline-block;
+					width: 2em;
+					height: 2em;
+					stroke-width: 0;
+					stroke: rgb(0,0,0);
+					fill: rgb(0,0,0);
+				}
+				position: absolute;
+				bottom: 10px;
+				right: -5px;
+				background-color: transparent;
+				border: none;
+
+				&:hover, &:focus {
+					img {
+						fill: rgb(65, 65, 65);
+					}
+				}
+			}
+		}
+
 		.token-target {
 			width: calc(100% - 20px);
 			min-height: 20px;
@@ -351,4 +381,10 @@
 
 		background: rgba(0, 0, 0, 0.5);
 	}
+}
+
+#aria-live-region {
+	position:absolute;
+	opacity: 0;
+	z-index: -100;
 }

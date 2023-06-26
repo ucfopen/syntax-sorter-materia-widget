@@ -12,7 +12,39 @@ const QuestionSelect = (props) => {
 
 	useEffect(() => {
 		let questionList = manager.state.items.map((item, index) => {
-			return <button id={`question-${index + 1}-btn`} className={`select-btn ${currentIndex == index ? 'selected' : ''}`} key={index} onClick={() => { selectQuestion(index) }} aria-label={`Question ${index + 1}`}>{index + 1}</button>
+			let questionStatus = ''
+			switch (item.responseState)
+			{
+				case 'none':
+					questionStatus = "Incomplete"
+					break;
+				case 'pending':
+					questionStatus = "Incomplete"
+					break;
+				case 'ready':
+					questionStatus = "Sorted but not submitted"
+					break;
+				case 'incorrect-no-attempts':
+					questionStatus = "Incorrect: no attempts remaining"
+					break;
+				case 'incorrect-attempts-remaining':
+					questionStatus = `Incorrect: ${item.attempts - item.attemptsUsed} attempt${item.attempts - item.attemptsUsed > 1 ? 's' : ''} remaining`
+					break;
+				case 'correct':
+					questionStatus = "Correct"
+					break;
+				default:
+					questionStatus = "Incomplete"
+					break;
+			}
+			console.log(questionStatus)
+			return <button
+				id={`question-${index + 1}-btn`}
+				className={`select-btn ${currentIndex == index ? 'selected' : ''}`}
+				key={index}
+				onClick={() => { selectQuestion(index) }}
+				aria-label={`Question ${index + 1}: ${questionStatus}`}>{index + 1}
+			</button>
 		})
 
 		// if the list of questions gets too long, we have to start computing the subset to display

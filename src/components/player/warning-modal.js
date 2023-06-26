@@ -28,7 +28,7 @@ const WarningModal = (props) => {
 			role="alertdialog"
 			aria-labelledby="dev-warning"
 			aria-describedby="warning-desc"
-			aria-model="true">
+			aria-modal="true">
 				<p id='dev-warning'>You still have unfinished questions.</p>
 				{props.requireAllQuestions ?
 					<div>

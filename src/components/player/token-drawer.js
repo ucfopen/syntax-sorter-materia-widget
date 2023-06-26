@@ -11,8 +11,7 @@ const TokenDrawer = (props) => {
 		dispatch({ type: 'paginate_question_forward' })
 		try
 		{
-			// document.getElementById(`question-${manager.state.currentIndex + 2}-btn`).focus();
-			document.getElementById("question-text").focus();
+			document.getElementById(`question-${manager.state.currentIndex + 2}-btn`).focus();
 		}
 		catch (error)
 		{
@@ -65,9 +64,15 @@ const TokenDrawer = (props) => {
 		if (!response) {
 			if ((props.attemptLimit - 1) > props.attemptsUsed) {
 				state = 'incorrect-attempts-remaining'
+				// dispatch({
+				// 	type: 'set_live_region', payload: `Your answer was not quite right. You have ${remaining} attempt${remaining > 1 ? 's' : ''} remaining.`
+				// })
 			}
 			else {
 				state = 'incorrect-no-attempts'
+				// dispatch({
+				// 	type: 'set_live_region', payload: "Your answer was not quite right. You've exhausted your attempts for this question."
+				// })
 			}
 		}
 		else {
@@ -82,17 +87,13 @@ const TokenDrawer = (props) => {
 		})
 
 		// Redirect focus
-		if (props.attemptLimit > props.attemptsUsed && props.responseState != 'correct' && !isLastQuestion)
-		{
-			document.getElementById("response-dialog-desc").focus();
-		}
-		else if (props.attemptLimit <= props.attemptsUsed)
+		if (props.attemptLimit - 1 > props.attemptsUsed && props.responseState != 'correct')
 		{
 			document.getElementById("check-question-btn").focus();
 		}
 		else
 		{
-			document.getElementById("response-dialog-desc").focus();
+			document.getElementById("next-question-btn").focus();
 		}
 	}
 
@@ -152,14 +153,14 @@ const TokenDrawer = (props) => {
 			currentResponseText = <span>PENDING</span>
 			break
 		case 'incorrect-attempts-remaining':
-			currentResponseText = <span className='controls-message'>That's not quite right. You have <span className='strong'>{remaining}</span> attempt{remaining > 1 ? 's' : ''} remaining.</span>
+			currentResponseText = <span className='controls-message'>Your answer was not quite right. You have <span className='strong'>{remaining}</span> attempt{remaining > 1 ? 's' : ''} remaining.</span>
 			break
 		case 'incorrect-no-attempts':
 			if (isLastQuestion) {
-				currentResponseText = <span className='controls-message'>That's not quite right. You've exhausted your attempts for this question. When you're ready, select <span className='strong'>Submit</span> at the top-right for scoring or go back and review your answers.</span>
+				currentResponseText = <span className='controls-message'>Your answer was not quite right. You've exhausted your attempts for this question. When you're ready, select <span className='strong'>Submit</span> at the top-right for scoring or go back and review your answers.</span>
 			}
 			else {
-				currentResponseText = <span className='controls-message'>That's not quite right. You've exhausted your attempts for this question. Select <span className='strong'>Next Question</span> to continue.</span>
+				currentResponseText = <span className='controls-message'>Your answer was not quite right. You've exhausted your attempts for this question. Select <span className='strong'>Next Question</span> to continue.</span>
 			}
 			break
 		case 'correct':
@@ -189,7 +190,7 @@ const TokenDrawer = (props) => {
 				</div>
 			<section className='response-controls'>
 				<div className='response-message-container'>
-					<div id="response-dialog-desc" tabindex="0">{currentResponseText}</div>
+					<div id="response-dialog-desc">{currentResponseText}</div>
 				</div>
 				<div className='button-container'>
 					<button id='check-question-btn' className={`verify ${props.attemptLimit > props.attemptsUsed && props.responseState != 'correct' ? 'show' : ''}`} onClick={handleCheckAnswer} aria-describedby="response-dialog-desc">Check Answer</button>

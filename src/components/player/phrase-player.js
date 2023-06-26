@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useState } from 'react'
 import ReactDOM from 'react-dom'
 import TokenDrawer from './token-drawer'
 import Token from './token'
@@ -8,6 +8,8 @@ const PhrasePlayer = (props) => {
 
 	const manager = useContext(store)
 	const dispatch = manager.dispatch
+
+	const [audioImg, setAudioImg] = useState("./assets/img/volume-medium.svg");
 
 	const handleTokenDragOver = (event) => {
 
@@ -122,6 +124,37 @@ const PhrasePlayer = (props) => {
 		manageAdjacentTokenDisplay(null, null)
 	}
 
+	const getLegendName = (type) => {
+		for (const term of manager.state.legend) {
+			if (type == term.id) return term.name
+		}
+	}
+
+	const handleOnKeyDown = (event) => {
+		if (event.key == "R" || event.key == "r")
+		{
+			readCurrentPhrase();
+		}
+	}
+
+	const readCurrentPhrase = () => {
+		var msg = new SpeechSynthesisUtterance();
+
+		if (props.sorted.length < 1)
+		{
+			msg.text = "Empty."
+		}
+		else
+		{
+			let sortedPhrase = props.sorted.map((token) => {
+				return (props.displayPref == 'word' ? token.value : getLegendName(token.legend))
+			}).join(" ");
+
+			msg.text = sortedPhrase;
+		}
+		window.speechSynthesis.speak(msg);
+	}
+
 	let sortedTokens = props.sorted?.map((token, index) => {
 		return <Token
 			id={token.id}
@@ -144,12 +177,19 @@ const PhrasePlayer = (props) => {
 	return (
 		<section className={'card phrase-player ' +
 			`${props.responseState + ' '}` +
-			`${props.hasFakes ? 'fakeout ' : ''}`}>
+			`${props.hasFakes ? 'fakeout ' : ''}`}
+			onKeyDown={handleOnKeyDown}>
 			<div className={`token-container ${props.hasFakes ? "fakeout" : ''}`}>
 				<div className="token-target" onDragOver={handleTokenDragOver} onDrop={handleTokenDrop}>
 					{props.sorted?.length ? '' : 'Drag and drop the words below to arrange them. If using a keyboard, select a token in the drawer and press Space or Enter to sort it. To rearrange a token in the sorting area, press Q to move it left and E to move it right.'}
 					{sortedTokens}
 				</div>
+				<button id="play-audio-btn" title="Read Sorted Phrase" aria-label="Read Sorted Phrase"
+				onMouseOver={() => setAudioImg("./assets/img/volume-high.svg")}
+				onMouseOut={() => setAudioImg("./assets/img/volume-medium.svg")}
+				onClick={readCurrentPhrase}>
+					<img src={audioImg} aria-hidden="true"/>
+				</button>
 				<span className={`fakeout-tip ${props.hasFakes ? "show" : ''}`}>
 					<span className='icon-notification'></span>Not all of the items below may be part of the correct phrase.
 				</span>

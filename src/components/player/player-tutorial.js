@@ -29,6 +29,9 @@ const PlayerTutorial = (props) => {
 					<p>If using a keyboard, select a token in the drawer and press <span className='strong'>Space</span> or <span className='strong'>Enter</span> to sort it. To rearrange a token in the sorting area, press <span className='strong'>Q</span> to move it left and <span className='strong'>E</span> to move it right.</p>
 				</div>
 				<div className='tutorial-content'>
+					<p>To read out the tokens you have sorted, press <span className='strong'>R</span> or click the <span className='strong'>Speaker</span> on the bottom right of the sorting area.</p>
+				</div>
+				<div className='tutorial-content'>
 					<img className='left' src="assets/img/player-tutorial-2.png" alt="Player tutorial image demonstrating using the color legend." />
 					<p>Tokens are color-coded based on their syntax. Use the Legend at the bottom to associate each color with its corresponding syntax.</p>
 				</div>

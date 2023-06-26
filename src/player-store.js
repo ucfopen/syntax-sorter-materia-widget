@@ -11,7 +11,8 @@ const init = {
 	numAsk: 1,
 	enableQuestionBank: false,
 	requireAllQuestions: false,
-	questionsAsked: []
+	questionsAsked: [],
+	liveRegion: ''
 }
 
 const store = React.createContext(init)
@@ -422,6 +423,8 @@ const StateProvider = ( { children } ) => {
 			case 'adjacent_token_update':
 			case 'attempt_submit':
 				return {...state, items: questionItemReducer(state.items, action)}
+			case 'set_live_region':
+				return {...state, liveRegion: action.payload}
 			default:
 				throw new Error(`Base reducer: action type: ${action.type} not found.`)
 		}

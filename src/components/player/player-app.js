@@ -3,6 +3,7 @@ import QuestionSelect from './question-select'
 import PhrasePlayer from './phrase-player'
 import PlayerTutorial from './player-tutorial'
 import WarningModal from './warning-modal'
+import AriaLive from './aria-live'
 import { store } from '../../player-store'
 
 const PlayerApp = (props) => {
@@ -90,14 +91,15 @@ const PlayerApp = (props) => {
 	const questionText = manager.state.items[manager.state.currentIndex]?.question.length > 0 ? manager.state.items[manager.state.currentIndex].question : "Drag and drop to arrange the items below in the correct order."
 
 	const legendList = manager.state.legend.map((term, index) => {
-		return <div>
-			<dt className='legend-color' style={{ background: term.color }} aria-label="Color"></dt>
-			<dd>{term.name}</dd>
+		return <div key={index} aria-label={term.name}>
+			<dt className='legend-color' style={{ background: term.color }} aria-label="Color" aria-hidden="true"></dt>
+			<dd aria-hidden="true">{term.name}</dd>
 		</div>
 	})
 
 	return (
 		<div className="player-container">
+			{/* <AriaLive></AriaLive> */}
 			<WarningModal
 				submitForScoring={submitForScoring}
 				requireAllQuestions={manager.state.requireAllQuestions}></WarningModal>
@@ -112,7 +114,7 @@ const PlayerApp = (props) => {
 			<QuestionSelect></QuestionSelect>
 			<main className="content-container">
 				<section className="card question-container">
-					<h2 id="question-text" tabindex="0">{questionText}</h2>
+					<h2 id="question-text" aria-label={"Question: " + questionText}>{questionText}</h2>
 					<div className={'hint-text ' +
 						`${(
 							manager.state.items[manager.state.currentIndex]?.attemptsUsed > 0 &&
