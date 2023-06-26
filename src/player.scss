@@ -363,6 +363,10 @@
 				margin-right: auto;
 			}
 		}
+		#remaining-questions {
+			max-height: 200px;
+			overflow-y: auto;
+		}
 
 		#dev-warning {
 			color: #990000;

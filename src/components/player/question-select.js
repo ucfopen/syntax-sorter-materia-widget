@@ -37,7 +37,6 @@ const QuestionSelect = (props) => {
 					questionStatus = "Incomplete"
 					break;
 			}
-			console.log(questionStatus)
 			return <button
 				id={`question-${index + 1}-btn`}
 				className={`select-btn ${currentIndex == index ? 'selected' : ''}`}

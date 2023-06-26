@@ -19,6 +19,21 @@ const WarningModal = (props) => {
 		}
 	}, [manager.state.showWarning])
 
+	let remainingQuestions = manager.state.items.map((question, index) => {
+		switch (question.responseState)
+		{
+			case 'none':
+			case 'pending':
+			case 'ready':
+			case 'incorrect-attempts-remaining':
+				return <p key={index}>Question {index + 1}</p>
+			case 'incorrect-no-attempts':
+			case 'correct':
+			default:
+				return;
+		}
+	})
+
 	return (
 		<div
 		className='warning-wrapper'
@@ -26,10 +41,16 @@ const WarningModal = (props) => {
 		>
 			<div className='warning'
 			role="alertdialog"
-			aria-labelledby="dev-warning"
+			aria-labelledby="alert-label"
 			aria-describedby="warning-desc"
 			aria-modal="true">
-				<p id='dev-warning'>You still have unfinished questions.</p>
+				<div id='alert-label'>
+					<p id='dev-warning'> You still have unfinished questions.</p>
+					<h3>Remaining Questions: </h3>
+					<div id="remaining-questions">
+						{remainingQuestions}
+					</div>
+				</div>
 				{props.requireAllQuestions ?
 					<div>
 						<h3 id="warning-desc">Please answer all questions before submitting.</h3>
