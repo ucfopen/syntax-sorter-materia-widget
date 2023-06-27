@@ -15,7 +15,7 @@ const AriaLive = (props) => {
 	return (
 		<div
         id='aria-live-region'
-        aria-live="polite"
+        aria-live="assertive"
         role="region">
 			<p>{text}</p>
 		</div>

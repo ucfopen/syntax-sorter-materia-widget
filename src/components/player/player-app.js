@@ -99,7 +99,7 @@ const PlayerApp = (props) => {
 
 	return (
 		<div className="player-container">
-			{/* <AriaLive></AriaLive> */}
+			<AriaLive></AriaLive>
 			<WarningModal
 				submitForScoring={submitForScoring}
 				requireAllQuestions={manager.state.requireAllQuestions}></WarningModal>

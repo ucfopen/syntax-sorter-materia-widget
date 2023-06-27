@@ -205,9 +205,9 @@ const Token = (props) => {
 							id: props.id
 						}
 					})
-					// dispatch({
-					// 	type: 'set_live_region', payload: `All tokens have been sorted`
-					// })
+					dispatch({
+						type: 'set_live_region', payload: `All tokens have been sorted`
+					})
 				}
 				else
 				{
@@ -239,20 +239,20 @@ const Token = (props) => {
 					value: props.value,
 					id: props.id
 				}})
-				if (sortedLengthPrior < 1)
+				if (sortedLengthPrior < 2)
 				{
 					// Switch focus to phrase
 					dispatch({
 						type: 'toggle_token_select', payload: {
 							questionIndex: manager.state.currentIndex,
-							tokenIndex: index,
+							tokenIndex: 0,
 							origin: 'unsorted',
 							id: props.id
 						}
 					})
-					// dispatch({
-					// 	type: 'set_live_region', payload: `All tokens have been unsorted`
-					// })
+					dispatch({
+						type: 'set_live_region', payload: `All tokens have been unsorted`
+					})
 				}
 				else
 				{
@@ -326,7 +326,7 @@ const Token = (props) => {
 	let tokenColor = getLegendColor(props.type)
 
 	// Word value (optional), legend name, position, sorted or unsorted
-	let ariaLabel = (props.pref == 'word' ? `${props.value}, ${getLegendName(props.type)}` : getLegendName(props.type)) + (props.status == "sorted" ? `, position ${props.index + 1}, ` : ', ') + props.status;
+	let ariaLabel = (props.pref == 'word' ? `${props.value}, type: ${getLegendName(props.type)}, ` : getLegendName(props.type) + ', ') + (props.status == "sorted" ? `sorted in position ${props.index + 1} ` : props.status);
 
 	return (
 		<button className={`token ${state.dragging ? 'dragging' : ''} ${props.arrangement == 'left' ? 'is-left' : ''} ${props.arrangement == 'right' ? 'is-right' : ''}`}
