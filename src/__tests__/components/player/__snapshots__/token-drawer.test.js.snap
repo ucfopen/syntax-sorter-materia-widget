@@ -19,7 +19,7 @@ exports[`Token Drawer Token Drawer component 1`] = `
         Token Drawer
       </p>
       <button
-        aria-label="This, undefined, unsorted"
+        aria-label="This, type: undefined, unsorted"
         className="token   "
         draggable={true}
         onClick={[Function]}
@@ -40,7 +40,7 @@ exports[`Token Drawer Token Drawer component 1`] = `
         This
       </button>
       <button
-        aria-label="is, undefined, unsorted"
+        aria-label="is, type: undefined, unsorted"
         className="token   "
         draggable={true}
         onClick={[Function]}
@@ -61,7 +61,7 @@ exports[`Token Drawer Token Drawer component 1`] = `
         is
       </button>
       <button
-        aria-label="a, undefined, unsorted"
+        aria-label="a, type: undefined, unsorted"
         className="token   "
         draggable={true}
         onClick={[Function]}
@@ -82,7 +82,7 @@ exports[`Token Drawer Token Drawer component 1`] = `
         a
       </button>
       <button
-        aria-label="test, undefined, unsorted"
+        aria-label="test, type: undefined, unsorted"
         className="token   "
         draggable={true}
         onClick={[Function]}
@@ -111,7 +111,6 @@ exports[`Token Drawer Token Drawer component 1`] = `
       >
         <div
           id="response-dialog-desc"
-          tabindex="0"
         >
           <span>
             NONE

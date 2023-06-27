@@ -17,6 +17,18 @@ exports[`Phrase Player Phrase Player component 1`] = `
       >
         Drag and drop the words below to arrange them. If using a keyboard, select a token in the drawer and press Space or Enter to sort it. To rearrange a token in the sorting area, press Q to move it left and E to move it right.
       </div>
+      <button
+        aria-label="Read Sorted Phrase"
+        id="play-audio-btn"
+        onMouseOut={[Function]}
+        onMouseOver={[Function]}
+        title="Read Sorted Phrase"
+      >
+        <img
+          aria-hidden="true"
+          src="./assets/img/volume-medium.svg"
+        />
+      </button>
       <span
         className="fakeout-tip "
       >
@@ -41,7 +53,7 @@ exports[`Phrase Player Phrase Player component 1`] = `
           Token Drawer
         </p>
         <button
-          aria-label="This, undefined, unsorted"
+          aria-label="This, type: undefined, unsorted"
           className="token   "
           draggable={true}
           onClick={[Function]}
@@ -62,7 +74,7 @@ exports[`Phrase Player Phrase Player component 1`] = `
           This
         </button>
         <button
-          aria-label="is, undefined, unsorted"
+          aria-label="is, type: undefined, unsorted"
           className="token   "
           draggable={true}
           onClick={[Function]}
@@ -83,7 +95,7 @@ exports[`Phrase Player Phrase Player component 1`] = `
           is
         </button>
         <button
-          aria-label="a, undefined, unsorted"
+          aria-label="a, type: undefined, unsorted"
           className="token   "
           draggable={true}
           onClick={[Function]}
@@ -104,7 +116,7 @@ exports[`Phrase Player Phrase Player component 1`] = `
           a
         </button>
         <button
-          aria-label="test, undefined, unsorted"
+          aria-label="test, type: undefined, unsorted"
           className="token   "
           draggable={true}
           onClick={[Function]}
@@ -133,7 +145,6 @@ exports[`Phrase Player Phrase Player component 1`] = `
         >
           <div
             id="response-dialog-desc"
-            tabindex="0"
           >
             <span>
               NONE

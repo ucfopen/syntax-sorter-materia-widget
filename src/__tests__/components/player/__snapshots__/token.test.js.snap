@@ -5,7 +5,7 @@ exports[`Token Token Component 1`] = `
   className="test-component"
 >
   <button
-    aria-label="Test, undefined, unsorted"
+    aria-label="Test, type: undefined, unsorted"
     className="token   "
     draggable={true}
     onClick={[Function]}

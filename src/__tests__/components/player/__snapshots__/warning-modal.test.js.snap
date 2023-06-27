@@ -14,16 +14,26 @@ exports[`Warning Modal Warning Modal Component 1`] = `
   >
     <div
       aria-describedby="warning-desc"
-      aria-labelledby="dev-warning"
-      aria-model="true"
+      aria-labelledby="alert-label"
+      aria-modal="true"
       className="warning"
       role="alertdialog"
     >
-      <p
-        id="dev-warning"
+      <div
+        id="alert-label"
       >
-        You still have unfinished questions.
-      </p>
+        <p
+          id="dev-warning"
+        >
+           You still have unfinished questions.
+        </p>
+        <h3>
+          Remaining Questions: 
+        </h3>
+        <div
+          id="remaining-questions"
+        />
+      </div>
       <div>
         <h3>
           Are you sure you want to submit?
