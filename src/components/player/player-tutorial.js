@@ -39,6 +39,9 @@ const PlayerTutorial = (props) => {
 					<p>Some questions may allow you to check your answer multiple times before submitting for a score. Use the <span className='strong'>Check Answer</span> button to see how you did!</p>
 					<img className='right' src="assets/img/player-tutorial-3.png" alt="Player tutorial image demonstrating using the Check Answer feature." />
 				</div>
+				<div className='tutorial-content'>
+					<p>Some questions may have hints. Press <span className='strong'>H</span> to play the hint if it's available.</p>
+				</div>
 				<button onClick={toggle}>I'm Ready</button>
 			</div>
 

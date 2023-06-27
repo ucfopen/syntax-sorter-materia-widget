@@ -97,8 +97,60 @@ const PlayerApp = (props) => {
 		</div>
 	})
 
+	const getLegendName = (type) => {
+		for (const term of manager.state.legend) {
+			if (type == term.id) return term.name
+		}
+	}
+
+	const handleOnKeyDown = (event) => {
+		if (event.key == "R" || event.key == "r")
+		{
+			readCurrentPhrase();
+		}
+		else if (event.key == "H" || event.key == "h")
+		{
+			readHint();
+		}
+	}
+
+	const readHint = () => {
+		var msg = new SpeechSynthesisUtterance();
+
+		if (manager.state.items[manager.state.currentIndex]?.attemptsUsed > 0 && manager.state.items[manager.state.currentIndex]?.attemptsUsed < manager.state.items[manager.state.currentIndex]?.attempts &&manager.state.items[manager.state.currentIndex]?.responseState != 'correct' && manager.state.items[manager.state.currentIndex]?.responseState != 'incorrect-no-attempts' && manager.state.items[manager.state.currentIndex]?.hint.length > 0)
+		{
+			msg.text = manager.state.items[manager.state.currentIndex].hint;
+		}
+		else
+		{
+			msg.text = "No hint available."
+		}
+		window.speechSynthesis.speak(msg);
+	}
+
+	const readCurrentPhrase = () => {
+		var msg = new SpeechSynthesisUtterance();
+
+		var currentQuestion = manager.state.items[manager.state.currentIndex];
+
+		if (currentQuestion.sorted.length < 1)
+		{
+			msg.text = "Empty."
+		}
+		else
+		{
+			let sortedPhrase = currentQuestion.sorted.map((token) => {
+				return (currentQuestion.displayPref == 'word' ? token.value : getLegendName(token.legend))
+			}).join(" ");
+
+			msg.text = sortedPhrase;
+		}
+		window.speechSynthesis.speak(msg);
+	}
+
 	return (
-		<div className="player-container">
+		<div className="player-container"
+		onKeyDown={handleOnKeyDown}>
 			<AriaLive></AriaLive>
 			<WarningModal
 				submitForScoring={submitForScoring}
@@ -133,7 +185,8 @@ const PlayerApp = (props) => {
 					attemptsUsed={manager.state.items[manager.state.currentIndex]?.attemptsUsed}
 					attemptLimit={manager.state.items[manager.state.currentIndex]?.attempts}
 					hasFakes={manager.state.items[manager.state.currentIndex]?.fakeout.length}
-					responseState={manager.state.items[manager.state.currentIndex]?.responseState}></PhrasePlayer>
+					responseState={manager.state.items[manager.state.currentIndex]?.responseState}
+					readCurrentPhrase={readCurrentPhrase}></PhrasePlayer>
 				<section className="card legend">
 					<header id="color-legend-header">Color Legend</header>
 					<dl aria-labelledby="color-legend-header">
