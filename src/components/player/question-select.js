@@ -71,7 +71,9 @@ const QuestionSelect = (props) => {
 	}
 
 	return (
-		<nav className="question-select">
+		<nav className="question-select"
+		inert={manager.state.showTutorial || manager.state.showWarning ? '' : undefined}
+		aria-hidden={manager.state.showTutorial || manager.state.showWarning ? "true" : "false"}>
 			<button className={`select-btn paginate-up ${manager.state.items.length > 10 ? 'show' : ''} ${currentIndex > 0 ? '' : 'disabled'}`} onClick={() => { selectQuestion(currentIndex - 1) }} disabled={currentIndex <= 0}><span className="icon-arrow-up2"></span></button>
 			{state.visibleQuestions}
 			<button className={`select-btn paginate-down ${manager.state.items.length > 10 ? 'show' : ''} ${currentIndex < manager.state.items.length - 1 ? '' : 'disabled'}`} onClick={() => { selectQuestion(currentIndex + 1) }} disabled={currentIndex >= manager.state.items.length - 1}><span className="icon-arrow-down2"></span></button>

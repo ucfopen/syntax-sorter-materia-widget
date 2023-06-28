@@ -156,7 +156,7 @@ const PlayerApp = (props) => {
 				submitForScoring={submitForScoring}
 				requireAllQuestions={manager.state.requireAllQuestions}></WarningModal>
 			<PlayerTutorial></PlayerTutorial>
-			<header className="player-header">
+			<header className="player-header" inert={manager.state.showTutorial || manager.state.showWarning ? '': undefined} aria-hidden={manager.state.showTutorial || manager.state.showWarning ? "true" : "false"}>
 				<h1 className="title">{manager.state.title}</h1>
 				<div className="player-header-btns">
 					<button className="headerBtn" onClick={toggleTutorial}>Tutorial</button>
@@ -164,7 +164,7 @@ const PlayerApp = (props) => {
 				</div>
 			</header>
 			<QuestionSelect></QuestionSelect>
-			<main className="content-container">
+			<main className="content-container" inert={manager.state.showTutorial || manager.state.showWarning ? '' : undefined} aria-hidden={manager.state.showTutorial || manager.state.showWarning ? "true": "false"}>
 				<section className="card question-container">
 					<h2 id="question-text" aria-label={"Question: " + questionText}>{questionText}</h2>
 					<div aria-live="polite" className={'hint-text ' +
