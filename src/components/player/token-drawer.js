@@ -185,7 +185,7 @@ const TokenDrawer = (props) => {
 			onDragOver={handleTokenDragOver}
 			onDrop={handleTokenDrop}>
 				<div role="group" aria-describedby="token-drawer-desc">
-					<p id="token-drawer-desc">Token Drawer</p>
+					<h3 id="token-drawer-desc">Token Drawer</h3>
 					{tokenList}
 				</div>
 			<section className='response-controls'>

@@ -146,7 +146,8 @@
 			background: #cacaca;
 
 			#token-drawer-desc {
-				display: none;
+				position: absolute;
+				opacity: 0;
 			}
 
 			&.show {

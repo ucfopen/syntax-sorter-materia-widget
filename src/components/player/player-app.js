@@ -167,7 +167,7 @@ const PlayerApp = (props) => {
 			<main className="content-container" inert={manager.state.showTutorial || manager.state.showWarning ? '' : undefined} aria-hidden={manager.state.showTutorial || manager.state.showWarning ? "true": "false"}>
 				<section className="card question-container">
 					<h2 id="question-text" aria-label={"Question: " + questionText}>{questionText}</h2>
-					<div aria-live="polite" className={'hint-text ' +
+					<div aria-live="assertive" className={'hint-text ' +
 						`${(
 							manager.state.items[manager.state.currentIndex]?.attemptsUsed > 0 &&
 							manager.state.items[manager.state.currentIndex]?.attemptsUsed < manager.state.items[manager.state.currentIndex]?.attempts &&
