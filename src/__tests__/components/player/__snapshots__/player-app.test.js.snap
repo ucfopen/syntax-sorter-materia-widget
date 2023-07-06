@@ -70,11 +70,7 @@ exports[`Player Application Player App component 1`] = `
     />
   </div>
   <div
-    aria-describedby="dialog-desc"
-    aria-labelledby="dialog-title"
-    aria-modal="true"
     className="modal-wrapper"
-    role="dialog"
     style={
       Object {
         "display": "flex",
@@ -82,8 +78,11 @@ exports[`Player Application Player App component 1`] = `
     }
   >
     <div
+      aria-describedby="dialog-desc"
+      aria-labelledby="dialog-title"
+      aria-modal="true"
       className="modal tutorial player"
-      id="dialog-desc"
+      role="alertdialog"
     >
       <h3
         id="dialog-title"
@@ -91,123 +90,128 @@ exports[`Player Application Player App component 1`] = `
         Arrange Tokens in the Proper Order
       </h3>
       <div
-        className="tutorial-content"
+        id="dialog-desc"
       >
-        <p>
-          Read each question prompt and arrange the tokens based on the instructions provided. Tokens may be a word, part of a word, or a part of speech. 
-          <span
-            className="strong"
-          >
-            Right-click
-          </span>
-           or 
-          <span
-            className="strong"
-          >
-            drag
-          </span>
-           a token back to the drawer to unsort it. 
-        </p>
-        <img
-          alt="Player tutorial image demonstrating dragging and dropping tokens"
-          className="right"
-          src="assets/img/player-tutorial-1.png"
-        />
-      </div>
-      <div
-        className="tutorial-content"
-      >
-        <p>
-          If using a keyboard, select a token in the drawer and press 
-          <span
-            className="strong"
-          >
-            Space
-          </span>
-           or 
-          <span
-            className="strong"
-          >
-            Enter
-          </span>
-           to sort it. To rearrange a token in the sorting area, press 
-          <span
-            className="strong"
-          >
-            Q
-          </span>
-           to move it left and 
-          <span
-            className="strong"
-          >
-            E
-          </span>
-           to move it right.
-        </p>
-      </div>
-      <div
-        className="tutorial-content"
-      >
-        <p>
-          To read out the tokens you have sorted, press 
-          <span
-            className="strong"
-          >
-            R
-          </span>
-           or click the 
-          <span
-            className="strong"
-          >
-            Speaker
-          </span>
-           on the bottom right of the sorting area.
-        </p>
-      </div>
-      <div
-        className="tutorial-content"
-      >
-        <img
-          alt="Player tutorial image demonstrating using the color legend."
-          className="left"
-          src="assets/img/player-tutorial-2.png"
-        />
-        <p>
-          Tokens are color-coded based on their syntax. Use the Legend at the bottom to associate each color with its corresponding syntax.
-        </p>
-      </div>
-      <div
-        className="tutorial-content"
-      >
-        <p>
-          Some questions may allow you to check your answer multiple times before submitting for a score. Use the 
-          <span
-            className="strong"
-          >
-            Check Answer
-          </span>
-           button to see how you did!
-        </p>
-        <img
-          alt="Player tutorial image demonstrating using the Check Answer feature."
-          className="right"
-          src="assets/img/player-tutorial-3.png"
-        />
-      </div>
-      <div
-        className="tutorial-content"
-      >
-        <p>
-          Some questions may have hints. Press 
-          <span
-            className="strong"
-          >
-            H
-          </span>
-           to play the hint if it's available.
-        </p>
+        <div
+          className="tutorial-content"
+        >
+          <p>
+            Read each question prompt and arrange the tokens based on the instructions provided. Tokens may be a word, part of a word, or a part of speech. 
+            <span
+              className="strong"
+            >
+              Right-click
+            </span>
+             or 
+            <span
+              className="strong"
+            >
+              drag
+            </span>
+             a token back to the drawer to unsort it. 
+          </p>
+          <img
+            alt="Player tutorial image demonstrating dragging and dropping tokens"
+            className="right"
+            src="assets/img/player-tutorial-1.png"
+          />
+        </div>
+        <div
+          className="tutorial-content"
+        >
+          <p>
+            If using a keyboard, select a token in the drawer and press 
+            <span
+              className="strong"
+            >
+              Space
+            </span>
+             or 
+            <span
+              className="strong"
+            >
+              Enter
+            </span>
+             to sort it. To rearrange a token in the sorting area, press 
+            <span
+              className="strong"
+            >
+              Q
+            </span>
+             to move it left and 
+            <span
+              className="strong"
+            >
+              E
+            </span>
+             to move it right.
+          </p>
+        </div>
+        <div
+          className="tutorial-content"
+        >
+          <p>
+            To read out the tokens you have sorted, press 
+            <span
+              className="strong"
+            >
+              R
+            </span>
+             or click the 
+            <span
+              className="strong"
+            >
+              Speaker
+            </span>
+             on the bottom right of the sorting area.
+          </p>
+        </div>
+        <div
+          className="tutorial-content"
+        >
+          <img
+            alt="Player tutorial image demonstrating using the color legend."
+            className="left"
+            src="assets/img/player-tutorial-2.png"
+          />
+          <p>
+            Tokens are color-coded based on their syntax. Use the Legend at the bottom to associate each color with its corresponding syntax.
+          </p>
+        </div>
+        <div
+          className="tutorial-content"
+        >
+          <p>
+            Some questions may allow you to check your answer multiple times before submitting for a score. Use the 
+            <span
+              className="strong"
+            >
+              Check Answer
+            </span>
+             button to see how you did!
+          </p>
+          <img
+            alt="Player tutorial image demonstrating using the Check Answer feature."
+            className="right"
+            src="assets/img/player-tutorial-3.png"
+          />
+        </div>
+        <div
+          className="tutorial-content"
+        >
+          <p>
+            Some questions may have hints. Press 
+            <span
+              className="strong"
+            >
+              H
+            </span>
+             to play the hint if it's available.
+          </p>
+        </div>
       </div>
       <button
+        id="tutorial-ready-btn"
         onClick={[Function]}
       >
         I'm Ready
@@ -218,7 +222,9 @@ exports[`Player Application Player App component 1`] = `
     />
   </div>
   <header
+    aria-hidden="true"
     className="player-header"
+    inert=""
   >
     <h1
       className="title"
@@ -243,7 +249,9 @@ exports[`Player Application Player App component 1`] = `
     </div>
   </header>
   <nav
+    aria-hidden="true"
     className="question-select"
+    inert=""
   >
     <button
       className="select-btn paginate-up  disabled"
@@ -265,7 +273,9 @@ exports[`Player Application Player App component 1`] = `
     </button>
   </nav>
   <main
+    aria-hidden="true"
     className="content-container"
+    inert=""
   >
     <section
       className="card question-container"
@@ -277,7 +287,7 @@ exports[`Player Application Player App component 1`] = `
         Drag and drop to arrange the items below in the correct order.
       </h2>
       <div
-        aria-live="polite"
+        aria-live="assertive"
         className="hint-text "
       >
         <p>
@@ -334,11 +344,11 @@ exports[`Player Application Player App component 1`] = `
           aria-describedby="token-drawer-desc"
           role="group"
         >
-          <p
+          <h3
             id="token-drawer-desc"
           >
             Token Drawer
-          </p>
+          </h3>
         </div>
         <section
           className="response-controls"

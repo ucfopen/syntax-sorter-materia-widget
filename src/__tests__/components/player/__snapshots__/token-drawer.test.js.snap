@@ -13,11 +13,11 @@ exports[`Token Drawer Token Drawer component 1`] = `
       aria-describedby="token-drawer-desc"
       role="group"
     >
-      <p
+      <h3
         id="token-drawer-desc"
       >
         Token Drawer
-      </p>
+      </h3>
       <button
         aria-label="This, type: undefined, unsorted"
         className="token   "
