@@ -184,10 +184,10 @@ const TokenDrawer = (props) => {
 			`${props.hasFakes ? 'has-fakes ' : ''}`}
 			onDragOver={handleTokenDragOver}
 			onDrop={handleTokenDrop}>
-				<div role="group" aria-describedby="token-drawer-desc">
-					<h3 id="token-drawer-desc">Token Drawer</h3>
-					{tokenList}
-				</div>
+			{tokenList && tokenList.length > 0 ? <div role="group" aria-describedby="token-drawer-desc">
+				<h3 id="token-drawer-desc">Token Drawer</h3>
+				{tokenList}
+				</div> : <></>}
 			<section className='response-controls'>
 				<div className='response-message-container'>
 					<div id="response-dialog-desc">{currentResponseText}</div>
