@@ -340,16 +340,6 @@ exports[`Player Application Player App component 1`] = `
         onDragOver={[Function]}
         onDrop={[Function]}
       >
-        <div
-          aria-describedby="token-drawer-desc"
-          role="group"
-        >
-          <h3
-            id="token-drawer-desc"
-          >
-            Token Drawer
-          </h3>
-        </div>
         <section
           className="response-controls"
         >
