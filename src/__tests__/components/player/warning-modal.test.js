@@ -36,7 +36,7 @@ describe('Warning Modal', () => {
 				</TestComponent>
 			</StateProvider>
 		)
-		
+
 		const providerEl = component.root
 		expect(providerEl.findByProps({ className: 'warning-wrapper'}).props.style).toEqual({ display: 'flex'})
 	})
@@ -54,9 +54,9 @@ describe('Warning Modal', () => {
 				</TestComponent>
 			</StateProvider>
 		)
-		
+
 		const providerEl = component.root
-		expect(providerEl.findByType('h3').children[0]).toBe('Are you sure you want to submit?')
+		expect(providerEl.findAllByType('h3')[1].children[0]).toBe('Are you sure you want to submit?')
 	})
 
 	test('Warning modal should prevent submission when requireAll is true', () => {
@@ -72,9 +72,9 @@ describe('Warning Modal', () => {
 				</TestComponent>
 			</StateProvider>
 		)
-		
+
 		const providerEl = component.root
-		expect(providerEl.findByType('h3').children[0]).toBe('Please answer all questions before submitting.')
+		expect(providerEl.findAllByType('h3')[1].children[0]).toBe('Please answer all questions before submitting.')
 	})
 
 })

@@ -15,8 +15,20 @@ exports[`Phrase Player Phrase Player component 1`] = `
         onDragOver={[Function]}
         onDrop={[Function]}
       >
-        Drag and drop the words below to arrange them.
+        Drag and drop the words below to arrange them. If using a keyboard, select a token in the drawer and press Space or Enter to sort it. To rearrange a token in the sorting area, press Q to move it left and E to move it right.
       </div>
+      <button
+        aria-label="Read Sorted Phrase"
+        id="play-audio-btn"
+        onMouseOut={[Function]}
+        onMouseOver={[Function]}
+        title="Read Sorted Phrase"
+      >
+        <img
+          aria-hidden="true"
+          src="./assets/img/volume-medium.svg"
+        />
+      </button>
       <span
         className="fakeout-tip "
       >
@@ -32,72 +44,98 @@ exports[`Phrase Player Phrase Player component 1`] = `
       onDrop={[Function]}
     >
       <div
-        className="token   "
-        draggable={true}
-        onContextMenu={[Function]}
-        onDrag={[Function]}
-        onDragEnd={[Function]}
-        onDragStart={[Function]}
-        style={
-          Object {
-            "background": "#ffffff",
-            "color": "#000000",
-            "display": "inline-block",
-          }
-        }
+        aria-describedby="token-drawer-desc"
+        role="group"
       >
-        This
-      </div>
-      <div
-        className="token   "
-        draggable={true}
-        onContextMenu={[Function]}
-        onDrag={[Function]}
-        onDragEnd={[Function]}
-        onDragStart={[Function]}
-        style={
-          Object {
-            "background": "#ffffff",
-            "color": "#000000",
-            "display": "inline-block",
+        <h3
+          id="token-drawer-desc"
+        >
+          Token Drawer
+        </h3>
+        <button
+          aria-label="This, type: undefined, unsorted"
+          className="token   "
+          draggable={true}
+          onClick={[Function]}
+          onContextMenu={[Function]}
+          onDrag={[Function]}
+          onDragEnd={[Function]}
+          onDragStart={[Function]}
+          onFocus={[Function]}
+          onKeyDown={[Function]}
+          style={
+            Object {
+              "background": "#ffffff",
+              "color": "#000000",
+              "display": "inline-block",
+            }
           }
-        }
-      >
-        is
-      </div>
-      <div
-        className="token   "
-        draggable={true}
-        onContextMenu={[Function]}
-        onDrag={[Function]}
-        onDragEnd={[Function]}
-        onDragStart={[Function]}
-        style={
-          Object {
-            "background": "#ffffff",
-            "color": "#000000",
-            "display": "inline-block",
+        >
+          This
+        </button>
+        <button
+          aria-label="is, type: undefined, unsorted"
+          className="token   "
+          draggable={true}
+          onClick={[Function]}
+          onContextMenu={[Function]}
+          onDrag={[Function]}
+          onDragEnd={[Function]}
+          onDragStart={[Function]}
+          onFocus={[Function]}
+          onKeyDown={[Function]}
+          style={
+            Object {
+              "background": "#ffffff",
+              "color": "#000000",
+              "display": "inline-block",
+            }
           }
-        }
-      >
-        a
-      </div>
-      <div
-        className="token   "
-        draggable={true}
-        onContextMenu={[Function]}
-        onDrag={[Function]}
-        onDragEnd={[Function]}
-        onDragStart={[Function]}
-        style={
-          Object {
-            "background": "#ffffff",
-            "color": "#000000",
-            "display": "inline-block",
+        >
+          is
+        </button>
+        <button
+          aria-label="a, type: undefined, unsorted"
+          className="token   "
+          draggable={true}
+          onClick={[Function]}
+          onContextMenu={[Function]}
+          onDrag={[Function]}
+          onDragEnd={[Function]}
+          onDragStart={[Function]}
+          onFocus={[Function]}
+          onKeyDown={[Function]}
+          style={
+            Object {
+              "background": "#ffffff",
+              "color": "#000000",
+              "display": "inline-block",
+            }
           }
-        }
-      >
-        test
+        >
+          a
+        </button>
+        <button
+          aria-label="test, type: undefined, unsorted"
+          className="token   "
+          draggable={true}
+          onClick={[Function]}
+          onContextMenu={[Function]}
+          onDrag={[Function]}
+          onDragEnd={[Function]}
+          onDragStart={[Function]}
+          onFocus={[Function]}
+          onKeyDown={[Function]}
+          style={
+            Object {
+              "background": "#ffffff",
+              "color": "#000000",
+              "display": "inline-block",
+            }
+          }
+        >
+          test
+        </button>
       </div>
       <section
         className="response-controls"
@@ -105,21 +143,29 @@ exports[`Phrase Player Phrase Player component 1`] = `
         <div
           className="response-message-container"
         >
-          <span>
-            NONE
-          </span>
+          <div
+            id="response-dialog-desc"
+          >
+            <span>
+              NONE
+            </span>
+          </div>
         </div>
         <div
           className="button-container"
         >
           <button
+            aria-describedby="response-dialog-desc"
             className="verify show"
+            id="check-question-btn"
             onClick={[Function]}
           >
             Check Answer
           </button>
           <button
+            aria-describedby="response-dialog-desc"
             className="paginate show"
+            id="next-question-btn"
             onClick={[Function]}
           >
             Next Question

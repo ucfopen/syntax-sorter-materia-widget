@@ -13,13 +13,27 @@ exports[`Warning Modal Warning Modal Component 1`] = `
     }
   >
     <div
+      aria-describedby="warning-desc"
+      aria-labelledby="alert-label"
+      aria-modal="true"
       className="warning"
+      role="alertdialog"
     >
-      <span
-        className="dev-warning"
+      <div
+        id="alert-label"
       >
-        You still have unfinished questions.
-      </span>
+        <p
+          id="dev-warning"
+        >
+           You still have unfinished questions.
+        </p>
+        <h3>
+          Remaining Questions: 
+        </h3>
+        <div
+          id="remaining-questions"
+        />
+      </div>
       <div>
         <h3>
           Are you sure you want to submit?
@@ -28,6 +42,7 @@ exports[`Warning Modal Warning Modal Component 1`] = `
           className="warning-submit-holder"
         >
           <button
+            id="warning-submit-btn"
             onClick={[Function]}
           >
             No

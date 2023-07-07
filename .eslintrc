@@ -1,0 +1,6 @@
+{
+    "plugins": ["jsx-a11y"],
+    "extends": ["plugin:jsx-a11y/recommended"],
+    "ignorePatterns": ["src/__tests__/*"],
+    "parser": "babel-eslint"
+}

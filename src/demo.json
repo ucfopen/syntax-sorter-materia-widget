@@ -46,7 +46,7 @@
 					"options": {
 						"displayPref": "word",
 						"attempts": 1,
-						"hint": "",
+						"hint": "This is a hint!",
 						"fakes": []
 					},
 					"assets": []
@@ -93,7 +93,7 @@
 					"options": {
 						"displayPref": "word",
 						"attempts": 1,
-						"hint": "",
+						"hint": "This is a hint!",
 						"fakes": []
 					},
 					"assets": []
@@ -136,7 +136,7 @@
 					"options": {
 						"displayPref": "word",
 						"attempts": 1,
-						"hint": "",
+						"hint": "This is a hint!",
 						"fakes": []
 					},
 					"assets": []
@@ -179,7 +179,7 @@
 					"options": {
 						"displayPref": "legend",
 						"attempts": 2,
-						"hint": "",
+						"hint": "This is a hint!",
 						"fakes": []
 					},
 					"assets": []
@@ -226,7 +226,7 @@
 					"options": {
 						"displayPref": "legend",
 						"attempts": 3,
-						"hint": "",
+						"hint": "This is a hint!",
 						"fakes": [
 							{
 								"value": "conjunction",
