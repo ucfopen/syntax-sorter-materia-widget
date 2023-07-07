@@ -22,11 +22,8 @@ const PlayerTutorial = (props) => {
 				<h3 id="dialog-title">Arrange Tokens in the Proper Order</h3>
 				<div id="dialog-desc">
 					<div className='tutorial-content'>
-						<p>Read each question prompt and arrange the tokens based on the instructions provided. Tokens may be a word, part of a word, or a part of speech. <span className='strong'>Right-click</span> or <span className='strong'>drag</span> a token back to the drawer to unsort it. </p>
+						<p>Read each question prompt and arrange the tokens based on the instructions provided. Tokens may be a word, part of a word, or a part of speech. <span className='strong'>Right-click</span> or <span className='strong'>drag</span> a token back to the drawer to unsort it. Keyboard users can use <span className='strong'>Space</span> or <span className='strong'>Enter</span> to sort and unsort a focused token, and <span className='strong'>Q</span> and <span className='strong'>E</span> to rearrange it.</p>
 						<img className='right' src="assets/img/player-tutorial-1.png" alt="Player tutorial image demonstrating dragging and dropping tokens" />
-					</div>
-					<div className='tutorial-content'>
-						<p>If using a keyboard, select a token in the drawer and press <span className='strong'>Space</span> or <span className='strong'>Enter</span> to sort it. To rearrange a token in the sorting area, press <span className='strong'>Q</span> to move it left and <span className='strong'>E</span> to move it right.</p>
 					</div>
 					<div className='tutorial-content'>
 						<p>To read out the tokens you have sorted, press <span className='strong'>R</span> or click the <span className='strong'>Speaker</span> on the bottom right of the sorting area.</p>

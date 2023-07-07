@@ -153,12 +153,7 @@ const PhrasePlayer = (props) => {
 					{props.sorted?.length ? '' : 'Drag and drop the words below to arrange them. If using a keyboard, select a token in the drawer and press Space or Enter to sort it. To rearrange a token in the sorting area, press Q to move it left and E to move it right.'}
 					{sortedTokens}
 				</div>
-				<button id="play-audio-btn" title="Read Sorted Phrase" aria-label="Read Sorted Phrase"
-				onMouseOver={() => setAudioImg("./assets/img/volume-high.svg")}
-				onMouseOut={() => setAudioImg("./assets/img/volume-medium.svg")}
-				onClick={props.readCurrentPhrase}>
-					<img src={audioImg} aria-hidden="true"/>
-				</button>
+				<button id="play-audio-btn" title="Read Sorted Phrase" aria-label="Read Sorted Phrase" onClick={props.readCurrentPhrase}></button>
 				<span className={`fakeout-tip ${props.hasFakes ? "show" : ''}`}>
 					<span className='icon-notification'></span>Not all of the items below may be part of the correct phrase.
 				</span>

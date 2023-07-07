@@ -97,24 +97,23 @@
 			position: relative;
 
 			#play-audio-btn {
-				width: 2.2em;
-				height: 2.2em;
-				padding: 0;
-
-				img {
-					display: inline-block;
-					width: 2em;
-					height: 2em;
-					stroke-width: 0;
-					stroke: rgb(0,0,0);
-					fill: rgb(0,0,0);
-				}
 				position: absolute;
 				bottom: 10px;
 				right: -5px;
-				background-color: transparent;
+
+				width: 2.2em;
+				height: 2.2em;
+
 				border: none;
 
+				background: url('assets/img/volume-medium.svg') no-repeat right center;
+				background-color: transparent;
+				background-size: 2em;
+
+				&:hover {
+					background-color: $colorAccentHover;
+				}
+				
 				&:hover, &:focus {
 					img {
 						fill: rgb(65, 65, 65);
@@ -130,6 +129,7 @@
 			padding: 40px 0;
 
 			color: #cacaca;
+			font-size: 14px;
 			text-align: center;
 			vertical-align: middle;
 			border: dotted 1px #cacaca;
@@ -147,6 +147,9 @@
 
 			#token-drawer-desc {
 				position: absolute;
+				width: 1px;
+				height: 1px;
+				overflow: hidden;
 				opacity: 0;
 			}
 
