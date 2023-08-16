@@ -136,6 +136,8 @@ const TokenDrawer = (props) => {
 
 	let remaining = props.attemptLimit - props.attemptsUsed
 
+	let hasHint = manager.state.items[manager.state.currentIndex]?.hint.length > 0
+
 	switch (props.responseState) {
 		case 'ready':
 
@@ -153,7 +155,7 @@ const TokenDrawer = (props) => {
 			currentResponseText = <span>PENDING</span>
 			break
 		case 'incorrect-attempts-remaining':
-			currentResponseText = <span className='controls-message'>Your answer was not quite right. You have <span className='strong'>{remaining}</span> attempt{remaining > 1 ? 's' : ''} remaining.</span>
+			currentResponseText = <span className='controls-message'>Your answer was not quite right. You have <span className='strong'>{remaining}</span> attempt{remaining > 1 ? 's' : ''} remaining. {hasHint ? 'Press the H key to hear a hint.' : ''}</span>
 			break
 		case 'incorrect-no-attempts':
 			if (isLastQuestion) {
@@ -190,7 +192,7 @@ const TokenDrawer = (props) => {
 				</div> : <></>}
 			<section className='response-controls'>
 				<div className='response-message-container'>
-					<div id="response-dialog-desc">{currentResponseText}</div>
+					<div id="response-dialog-desc" aria-live="assertive" aria-atomic="true">{currentResponseText}</div>
 				</div>
 				<div className='button-container'>
 					<button id='check-question-btn' className={`verify ${props.attemptLimit > props.attemptsUsed && props.responseState != 'correct' ? 'show' : ''}`} onClick={handleCheckAnswer} aria-describedby="response-dialog-desc">Check Answer</button>

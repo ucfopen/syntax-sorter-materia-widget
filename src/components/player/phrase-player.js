@@ -154,7 +154,7 @@ const PhrasePlayer = (props) => {
 					{sortedTokens}
 				</div>
 				<button id="play-audio-btn" title="Read Sorted Phrase" aria-label="Read Sorted Phrase" onClick={props.readCurrentPhrase}></button>
-				<span className={`fakeout-tip ${props.hasFakes ? "show" : ''}`}>
+				<span className={`fakeout-tip ${props.hasFakes && props.phrase.length > 0 ? "show" : ''}`}>
 					<span className='icon-notification'></span>Not all of the items below may be part of the correct phrase.
 				</span>
 			</div>
