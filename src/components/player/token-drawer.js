@@ -9,6 +9,14 @@ const TokenDrawer = (props) => {
 
 	const paginate = () => {
 		dispatch({ type: 'paginate_question_forward' })
+		try
+		{
+			document.getElementById(`question-${manager.state.currentIndex + 2}-btn`).focus();
+		}
+		catch (error)
+		{
+			throw error;
+		}
 	}
 
 	const handleTokenDragOver = (event) => {
@@ -27,6 +35,7 @@ const TokenDrawer = (props) => {
 		let dropTokenPhraseIndex = event.dataTransfer.getData("tokenPhraseIndex")
 		let dropTokenStatus = event.dataTransfer.getData("tokenStatus")
 		let dropTokenFakeout = (event.dataTransfer.getData("tokenFakeout") == "true") ? true : false
+		let dropTokenFocus = event.dataTransfer.getData("tokenFocus")
 
 		if (dropTokenStatus == "sorted")
 		{
@@ -37,7 +46,8 @@ const TokenDrawer = (props) => {
 				fakeout: dropTokenFakeout,
 				legend: dropTokenType,
 				value: dropTokenName,
-				id: dropTokenId
+				id: dropTokenId,
+				focus: dropTokenFocus
 			}})
 		}
 	}
@@ -54,9 +64,15 @@ const TokenDrawer = (props) => {
 		if (!response) {
 			if ((props.attemptLimit - 1) > props.attemptsUsed) {
 				state = 'incorrect-attempts-remaining'
+				// dispatch({
+				// 	type: 'set_live_region', payload: `Your answer was not quite right. You have ${remaining} attempt${remaining > 1 ? 's' : ''} remaining.`
+				// })
 			}
 			else {
 				state = 'incorrect-no-attempts'
+				// dispatch({
+				// 	type: 'set_live_region', payload: "Your answer was not quite right. You've exhausted your attempts for this question."
+				// })
 			}
 		}
 		else {
@@ -69,6 +85,16 @@ const TokenDrawer = (props) => {
 				response: state
 			}
 		})
+
+		// Redirect focus
+		if (props.attemptLimit - 1 > props.attemptsUsed && props.responseState != 'correct')
+		{
+			document.getElementById("check-question-btn").focus();
+		}
+		else
+		{
+			document.getElementById("next-question-btn").focus();
+		}
 	}
 
 	const verify = (item) => {
@@ -99,7 +125,8 @@ const TokenDrawer = (props) => {
 			pref={props.displayPref}
 			status={token.status}
 			fakeout={token.fakeout}
-			dragEligible={!(props.attemptsUsed >= props.attemptLimit)}>
+			dragEligible={!(props.attemptsUsed >= props.attemptLimit)}
+			focus={token.focus}>
 		</Token>
 	})
 
@@ -108,6 +135,8 @@ const TokenDrawer = (props) => {
 	let currentResponseText = ''
 
 	let remaining = props.attemptLimit - props.attemptsUsed
+
+	let hasHint = manager.state.items[manager.state.currentIndex]?.hint.length > 0
 
 	switch (props.responseState) {
 		case 'ready':
@@ -126,14 +155,14 @@ const TokenDrawer = (props) => {
 			currentResponseText = <span>PENDING</span>
 			break
 		case 'incorrect-attempts-remaining':
-			currentResponseText = <span className='controls-message'>That's not quite right. You have <span className='strong'>{remaining}</span> attempt{remaining > 1 ? 's' : ''} remaining.</span>
+			currentResponseText = <span className='controls-message'>Your answer was not quite right. You have <span className='strong'>{remaining}</span> attempt{remaining > 1 ? 's' : ''} remaining. {hasHint ? 'Press the H key to hear a hint.' : ''}</span>
 			break
 		case 'incorrect-no-attempts':
 			if (isLastQuestion) {
-				currentResponseText = <span className='controls-message'>That's not quite right. You've exhausted your attempts for this question. When you're ready, select <span className='strong'>Submit</span> at the top-right for scoring or go back and review your answers.</span>
+				currentResponseText = <span className='controls-message'>Your answer was not quite right. You've exhausted your attempts for this question. When you're ready, select <span className='strong'>Submit</span> at the top-right for scoring or go back and review your answers.</span>
 			}
 			else {
-				currentResponseText = <span className='controls-message'>That's not quite right. You've exhausted your attempts for this question. Select <span className='strong'>Next Question</span> to continue.</span>
+				currentResponseText = <span className='controls-message'>Your answer was not quite right. You've exhausted your attempts for this question. Select <span className='strong'>Next Question</span> to continue.</span>
 			}
 			break
 		case 'correct':
@@ -157,14 +186,17 @@ const TokenDrawer = (props) => {
 			`${props.hasFakes ? 'has-fakes ' : ''}`}
 			onDragOver={handleTokenDragOver}
 			onDrop={handleTokenDrop}>
-			{tokenList}
+			{tokenList && tokenList.length > 0 ? <div role="group" aria-describedby="token-drawer-desc">
+				<h3 id="token-drawer-desc">Token Drawer</h3>
+				{tokenList}
+				</div> : <></>}
 			<section className='response-controls'>
 				<div className='response-message-container'>
-					{currentResponseText}
+					<div id="response-dialog-desc" aria-live="assertive" aria-atomic="true">{currentResponseText}</div>
 				</div>
 				<div className='button-container'>
-					<button className={`verify ${props.attemptLimit > props.attemptsUsed && props.responseState != 'correct' ? 'show' : ''}`} onClick={handleCheckAnswer}>Check Answer</button>
-					<button className={`paginate ${!isLastQuestion ? 'show' : ''}`} onClick={paginate}>Next Question</button>
+					<button id='check-question-btn' className={`verify ${props.attemptLimit > props.attemptsUsed && props.responseState != 'correct' ? 'show' : ''}`} onClick={handleCheckAnswer} aria-describedby="response-dialog-desc">Check Answer</button>
+					<button id="next-question-btn" className={`paginate ${!isLastQuestion ? 'show' : ''}`} onClick={paginate} aria-describedby="response-dialog-desc">Next Question</button>
 				</div>
 			</section>
 		</section>

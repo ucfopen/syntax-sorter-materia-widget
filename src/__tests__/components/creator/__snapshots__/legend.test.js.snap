@@ -581,6 +581,7 @@ exports[`Legend Legend component 1`] = `
                 }
               >
                 <input
+                  id="rc-editable-input-1"
                   onBlur={[Function]}
                   onChange={[Function]}
                   onKeyDown={[Function]}
@@ -607,7 +608,8 @@ exports[`Legend Legend component 1`] = `
                   }
                   value="#FF0000"
                 />
-                <span
+                <label
+                  htmlFor="rc-editable-input-1"
                   onMouseDown={[Function]}
                   style={
                     Object {
@@ -622,7 +624,7 @@ exports[`Legend Legend component 1`] = `
                   }
                 >
                   hex
-                </span>
+                </label>
               </div>
             </div>
           </div>

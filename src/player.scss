@@ -1,6 +1,9 @@
 @import "common";
 
 .player-container {
+	*:focus {
+		outline: solid 2px #0093e7;
+	}
 	header {
 		span.title {
 			display: inline-block;
@@ -10,8 +13,8 @@
 		}
 
 		button.headerBtn {
-			float: right;
 			padding: 5px 25px;
+			margin: 0 10px;
 
 			border: none;
 			background: #fff;
@@ -20,10 +23,6 @@
 
 			&:hover {
 				background: $colorAccentHover;
-			}
-
-			+ .headerBtn {
-				margin-right: 15px;
 			}
 		}
 	}
@@ -35,13 +34,16 @@
 		.card.question-container {
 			padding: 15px 15px 5px 15px;
 
+			h2 {
+				font-size: 1em;
+			}
+
 			p {
 				margin: 0;
 			}
 
 			.hint-text {
-				display: block;
-				opacity: 0;
+				display: none;
 				height: 0px;
 				overflow: hidden;
 				margin: 0;
@@ -51,7 +53,7 @@
 				transition: background-color 2s;
 
 				&.show {
-					opacity: 1;
+					display: block;
 					height: auto;
 					margin: 10px 0 0 0;
 					padding: 10px 0;
@@ -91,6 +93,35 @@
 			background: $colorISecondary;
 		}
 
+		.token-container {
+			position: relative;
+
+			#play-audio-btn {
+				position: absolute;
+				bottom: 10px;
+				right: -5px;
+
+				width: 2.2em;
+				height: 2.2em;
+
+				border: none;
+
+				background: url('assets/img/volume-medium.svg') no-repeat right center;
+				background-color: transparent;
+				background-size: 2em;
+
+				&:hover {
+					background-color: $colorAccentHover;
+				}
+				
+				&:hover, &:focus {
+					img {
+						fill: rgb(65, 65, 65);
+					}
+				}
+			}
+		}
+
 		.token-target {
 			width: calc(100% - 20px);
 			min-height: 20px;
@@ -98,6 +129,7 @@
 			padding: 40px 0;
 
 			color: #cacaca;
+			font-size: 14px;
 			text-align: center;
 			vertical-align: middle;
 			border: dotted 1px #cacaca;
@@ -112,6 +144,14 @@
 			padding: 15px;
 
 			background: #cacaca;
+
+			#token-drawer-desc {
+				position: absolute;
+				width: 1px;
+				height: 1px;
+				overflow: hidden;
+				opacity: 0;
+			}
 
 			&.show {
 				display: block;
@@ -193,7 +233,6 @@
 						background: #fff;
 						border: solid 1px $colorBGTertiary;
 						padding: 10px 20px;
-						outline: none;
 
 						font-weight: 700;
 
@@ -235,10 +274,16 @@
 
 		font-size: 0.8em;
 
-		.legend-item {
-			display: inline-block;
-			padding: 5px 10px;
+		dl {
+			display: flex;
+			flex-flow: row wrap;
+			align-items: center;
+			gap: 10px;
 
+			dd, dt {
+				display: inline-block;
+				margin: 0;
+			}
 			.legend-color {
 				position: relative;
 				display: inline-block;
@@ -246,16 +291,31 @@
 				width: 18px;
 				height: 18px;
 				margin-right: 6px;
+				padding: 2px 4px;
 				border: solid 2px $lightBG;
 			}
 		}
+
 	}
 }
 
 .player-header {
 	position: fixed;
 	top: 0;
-	//padding-bottom: 15px;
+	display: flex;
+	justify-content: space-between;
+
+	h1 {
+		display: inline-block;
+		margin: 0;
+		padding: 0;
+		font-size: 1em;
+	}
+
+	.player-header-btns {
+		display: flex;
+		justify-content: space-between;
+	}
 }
 
 .warning-wrapper {
@@ -307,8 +367,12 @@
 				margin-right: auto;
 			}
 		}
+		#remaining-questions {
+			max-height: 200px;
+			overflow-y: auto;
+		}
 
-		.dev-warning {
+		#dev-warning {
 			color: #990000;
 			font-weight: 700;
 		}
@@ -325,4 +389,10 @@
 
 		background: rgba(0, 0, 0, 0.5);
 	}
+}
+
+#aria-live-region {
+	position:absolute;
+	opacity: 0;
+	z-index: -100;
 }

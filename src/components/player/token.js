@@ -26,6 +26,27 @@ const Token = (props) => {
 		}
 	}, [coords?.x])
 
+	useEffect(() => {
+		if (props.focus && tokenRef.current) {
+			tokenRef.current.focus()
+		}
+		else if (tokenRef.current)
+		{
+			tokenRef.current.blur()
+		}
+	}, [props.focus])
+
+	const handleFocus = () => {
+		dispatch({
+			type: 'toggle_token_select', payload: {
+				questionIndex: manager.state.currentIndex,
+				tokenIndex: props.index,
+				origin: props.status,
+				id: props.id
+			}
+		})
+	}
+
 	// the above hook works MOST of the time, but certain events (token rearrange) clear this token's position information in the store, and the hook doesn't fire
 	// manually update the position in cases where the position value does not get updated after being cleared
 	// useEffect( () => {
@@ -142,6 +163,154 @@ const Token = (props) => {
 		})
 	}
 
+	const handleKeyDown = (event) => {
+		// Listen for space or enter key
+		// to move token in and out of token drawer
+		if (event.type == "keydown" && (event.key == " " || event.key == "Enter") || event.type == "click") {
+			event.preventDefault();
+
+			let sorted = manager.state.items[manager.state.currentIndex]?.sorted;
+			let sortedLengthPrior = sorted.length;
+
+			let phrase = manager.state.items[manager.state.currentIndex]?.phrase;
+			let phraseLengthPrior = phrase.length;
+
+			if (!props.dragEligible) return
+
+			let index = sorted ? sorted.length : 0;
+
+			if (props.status == 'unsorted')
+			{
+				// Move token to end of box
+				dispatch({
+					type: 'response_token_sort',
+					payload: {
+						questionIndex: manager.state.currentIndex,
+						targetIndex: index,
+						id: props.id,
+						legend: props.type,
+						value: props.value,
+						phraseIndex: props.index,
+						fakeout: props.fakeout
+					}
+				})
+				if (phraseLengthPrior < 2)
+				{
+					// Switch focus to box
+					dispatch({
+						type: 'toggle_token_select', payload: {
+							questionIndex: manager.state.currentIndex,
+							tokenIndex: index,
+							origin: 'sorted',
+							id: props.id
+						}
+					})
+					dispatch({
+						type: 'set_live_region', payload: `All tokens have been sorted`
+					})
+				}
+				else
+				{
+					// Get next focus in phrase
+					let focusIndex = props.index > phraseLengthPrior - 2 ? props.index - 1 : props.index;
+					dispatch({
+						type: 'toggle_token_select', payload: {
+							questionIndex: manager.state.currentIndex,
+							tokenIndex: focusIndex,
+							origin: props.status,
+							id: props.id
+						}
+					})
+
+					// dispatch({
+					// 	type: 'set_live_region', payload: `${manager.state.items[manager.state.currentIndex].sorted.length + 1} of ${manager.state.items[manager.state.currentIndex].correctPhrase.length} tokens sorted.`
+					// })
+				}
+			}
+			else if (props.status == 'sorted')
+			{
+				// Move token out of box, to end of token list
+				dispatch({type: 'sorted_token_unsort', payload: {
+					origin: state.origin,
+					tokenIndex: props.index,
+					questionIndex: manager.state.currentIndex,
+					fakeout: props.fakeout,
+					legend: props.type,
+					value: props.value,
+					id: props.id
+				}})
+				if (sortedLengthPrior < 2)
+				{
+					// Switch focus to phrase
+					dispatch({
+						type: 'toggle_token_select', payload: {
+							questionIndex: manager.state.currentIndex,
+							tokenIndex: 0,
+							origin: 'unsorted',
+							id: props.id
+						}
+					})
+					dispatch({
+						type: 'set_live_region', payload: `All tokens have been unsorted`
+					})
+				}
+				else
+				{
+					// Get next focus in box
+					let focusIndex = props.index > sortedLengthPrior - 2 ? props.index - 1 : props.index;
+					dispatch({
+						type: 'toggle_token_select', payload: {
+							questionIndex: manager.state.currentIndex,
+							tokenIndex: focusIndex,
+							origin: props.status,
+							id: props.id
+						}
+					})
+				}
+			}
+		}
+		// Listen to "Q" and "E"
+		else if (event.key == "q" || event.key == "e" || event.key == "Q" || event.key == "E")
+		{
+			event.preventDefault();
+			// First check to make sure it's in box
+			if (props.status != 'sorted')
+				return;
+
+			// Determine the direction to move
+			let targetIndex = event.key == "q" || event.key == "Q" ? props.index - 1 : props.index + 2;
+
+			let sorted = manager.state.items[manager.state.currentIndex]?.sorted;
+
+			// If index is out of range, do nothing
+			if (targetIndex < 0 || targetIndex > sorted.length)
+				return;
+
+			dispatch({
+				type: 'response_token_rearrange',
+				payload: {
+					questionIndex: manager.state.currentIndex,
+					targetIndex: targetIndex,
+					id: props.id,
+					legend: props.type,
+					value: props.value,
+					originIndex: props.index,
+					fakeout: props.fakeout
+				}
+			})
+
+			let focusIndex = event.key == "q" || event.key == "Q" ? props.index - 1 : props.index + 1;
+			dispatch({
+				type: 'toggle_token_select', payload: {
+					questionIndex: manager.state.currentIndex,
+					tokenIndex: focusIndex,
+					origin: props.status,
+					id: props.id
+				}
+			})
+		}
+	}
+
 	// function that returns a value 0-255 based on the "lightness" of a given hex value
 	const contrastCalc = (color) => {
 		var r, g, b
@@ -156,8 +325,11 @@ const Token = (props) => {
 
 	let tokenColor = getLegendColor(props.type)
 
+	// Word value (optional), legend name, position, sorted or unsorted
+	let ariaLabel = (props.pref == 'word' ? `${props.value}, type: ${getLegendName(props.type)}, ` : getLegendName(props.type) + ', ') + (props.status == "sorted" ? `sorted in position ${props.index + 1} ` : props.status);
+
 	return (
-		<div className={`token ${state.dragging ? 'dragging' : ''} ${props.arrangement == 'left' ? 'is-left' : ''} ${props.arrangement == 'right' ? 'is-right' : ''}`}
+		<button className={`token ${state.dragging ? 'dragging' : ''} ${props.arrangement == 'left' ? 'is-left' : ''} ${props.arrangement == 'right' ? 'is-right' : ''}`}
 			style={{
 				background: tokenColor,
 				color: contrastCalc(tokenColor) > 160 ? '#000000' : '#ffffff',
@@ -168,9 +340,14 @@ const Token = (props) => {
 			onDragStart={handleDragStart}
 			onDrag={handleDrag}
 			onDragEnd={handleDragEnd}
-			onContextMenu={handleClick}>
+			onContextMenu={handleClick}
+			onKeyDown={handleKeyDown}
+			onFocus={handleFocus}
+			onClick={handleKeyDown}
+			aria-label={ariaLabel}
+			>
 			{props.pref == 'word' ? props.value : getLegendName(props.type)}
-		</div>
+		</button>
 	)
 }
 

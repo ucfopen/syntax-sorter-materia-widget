@@ -11,7 +11,8 @@ const init = {
 	numAsk: 1,
 	enableQuestionBank: false,
 	requireAllQuestions: false,
-	questionsAsked: []
+	questionsAsked: [],
+	liveRegion: ''
 }
 
 const store = React.createContext(init)
@@ -43,8 +44,8 @@ const importFromQset = (qset) => {
 	return {
 		items: qset.items.map((item) => {
 
-			let fakes = item.options.fakes.map((token) => { return {...token, status: 'unsorted', fakeout: true, id: createTokenKey()}})
-			let reals = item.answers[0].options.phrase.map((token) => { return {...token, status: 'unsorted', fakeout: false, id: createTokenKey()} })
+			let fakes = item.options.fakes.map((token) => { return {...token, status: 'unsorted', fakeout: true, id: createTokenKey(), focus: false}})
+			let reals = item.answers[0].options.phrase.map((token) => { return {...token, status: 'unsorted', fakeout: false, id: createTokenKey(), focus: false} })
 
 			return {
 				question: item.questions[0].text,
@@ -237,6 +238,22 @@ const tokenSortedPhraseReducer = (list, action) => {
 					arrangement: null
 				}
 			})
+		case 'toggle_token_select':
+			return list.map((token, index) => {
+				if (action.payload.tokenIndex == index) {
+					return {
+						...token,
+						focus: true
+					}
+				}
+				else
+				{
+					return {
+						...token,
+						focus: false
+					}
+				}
+			})
 		default:
 			throw new Error(`Sorted Token phrase reducer: action type: ${action.type} not found.`)
 	}
@@ -280,6 +297,22 @@ const tokenUnsortedPhraseReducer = (list, action) => {
 						fakeout: action.payload.fakeout
 					}
 				]
+		case 'toggle_token_select':
+			return list.map((token, index) => {
+				if (action.payload.tokenIndex == index) {
+					return {
+						...token,
+						focus: true
+					}
+				}
+				else
+				{
+					return {
+						...token,
+						focus: false
+					}
+				}
+			})
 		default:
 			throw new Error(`Token phrase reducer: action type: ${action.type} not found.`)
 	}
@@ -340,6 +373,17 @@ const questionItemReducer = (items, action) => {
 				}
 				else return item
 			})
+		case 'toggle_token_select':
+			return items.map((item, index) => {
+				if (action.payload.origin == 'sorted' && index == action.payload.questionIndex) {
+					return {...item, sorted: tokenSortedPhraseReducer(item.sorted, action)}
+				}
+				else if (action.payload.origin == 'unsorted' && index == action.payload.questionIndex)
+				{
+					return { ...item, phrase: tokenUnsortedPhraseReducer(item.phrase, action) }
+				}
+				else return item
+			})
 		default:
 			throw new Error(`Question item reducer: action type: ${action.type} not found.`)
 	}
@@ -369,6 +413,7 @@ const StateProvider = ( { children } ) => {
 			case 'paginate_question_forward':
 				let forward = state.currentIndex < state.items.length -1 ? state.currentIndex + 1: state.currentIndex
 				return {...state, currentIndex: forward}
+			case 'toggle_token_select':
 			case 'token_dragging':
 			case 'token_drag_complete':
 			case 'sorted_token_unsort':
@@ -378,6 +423,8 @@ const StateProvider = ( { children } ) => {
 			case 'adjacent_token_update':
 			case 'attempt_submit':
 				return {...state, items: questionItemReducer(state.items, action)}
+			case 'set_live_region':
+				return {...state, liveRegion: action.payload}
 			default:
 				throw new Error(`Base reducer: action type: ${action.type} not found.`)
 		}

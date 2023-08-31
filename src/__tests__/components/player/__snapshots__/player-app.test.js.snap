@@ -3,7 +3,17 @@
 exports[`Player Application Player App component 1`] = `
 <div
   className="player-container"
+  onKeyDown={[Function]}
 >
+  <div
+    aria-live="assertive"
+    id="aria-live-region"
+    role="region"
+  >
+    <p>
+      
+    </p>
+  </div>
   <div
     className="warning-wrapper"
     style={
@@ -13,13 +23,27 @@ exports[`Player Application Player App component 1`] = `
     }
   >
     <div
+      aria-describedby="warning-desc"
+      aria-labelledby="alert-label"
+      aria-modal="true"
       className="warning"
+      role="alertdialog"
     >
-      <span
-        className="dev-warning"
+      <div
+        id="alert-label"
       >
-        You still have unfinished questions.
-      </span>
+        <p
+          id="dev-warning"
+        >
+           You still have unfinished questions.
+        </p>
+        <h3>
+          Remaining Questions: 
+        </h3>
+        <div
+          id="remaining-questions"
+        />
+      </div>
       <div>
         <h3>
           Are you sure you want to submit?
@@ -28,6 +52,7 @@ exports[`Player Application Player App component 1`] = `
           className="warning-submit-holder"
         >
           <button
+            id="warning-submit-btn"
             onClick={[Function]}
           >
             No
@@ -53,66 +78,140 @@ exports[`Player Application Player App component 1`] = `
     }
   >
     <div
+      aria-describedby="dialog-desc"
+      aria-labelledby="dialog-title"
+      aria-modal="true"
       className="modal tutorial player"
+      role="alertdialog"
     >
-      <h3>
+      <h3
+        id="dialog-title"
+      >
         Arrange Tokens in the Proper Order
       </h3>
       <div
-        className="tutorial-content"
+        id="dialog-desc"
       >
-        <p>
-          Read each question prompt and arrange the tokens based on the instructions provided. Tokens may be a word, part of a word, or a part of speech. 
-          <span
-            className="strong"
-          >
-            Right-click
-          </span>
-           or 
-          <span
-            className="strong"
-          >
-            drag
-          </span>
-           a token back to the drawer to unsort it.
-        </p>
-        <img
-          alt="Player tutorial image demonstrating dragging and dropping tokens"
-          className="right"
-          src="assets/img/player-tutorial-1.png"
-        />
-      </div>
-      <div
-        className="tutorial-content"
-      >
-        <img
-          alt="Player tutorial image demonstrating using the color legend."
-          className="left"
-          src="assets/img/player-tutorial-2.png"
-        />
-        <p>
-          Tokens are color-coded based on their syntax. Use the Legend at the bottom to associate each color with its corresponding syntax.
-        </p>
-      </div>
-      <div
-        className="tutorial-content"
-      >
-        <p>
-          Some questions may allow you to check your answer multiple times before submitting for a score. Use the 
-          <span
-            className="strong"
-          >
-            Check Answer
-          </span>
-           button to see how you did!
-        </p>
-        <img
-          alt="Player tutorial image demonstrating using the Check Answer feature."
-          className="right"
-          src="assets/img/player-tutorial-3.png"
-        />
+        <div
+          className="tutorial-content"
+        >
+          <p>
+            Read each question prompt and arrange the tokens based on the instructions provided. Tokens may be a word, part of a word, or a part of speech. 
+            <span
+              className="strong"
+            >
+              Right-click
+            </span>
+             or 
+            <span
+              className="strong"
+            >
+              drag
+            </span>
+             a token back to the drawer to unsort it. 
+          </p>
+          <img
+            alt="Player tutorial image demonstrating dragging and dropping tokens"
+            className="right"
+            src="assets/img/player-tutorial-1.png"
+          />
+        </div>
+        <div
+          className="tutorial-content"
+        >
+          <p>
+            If using a keyboard, select a token in the drawer and press 
+            <span
+              className="strong"
+            >
+              Space
+            </span>
+             or 
+            <span
+              className="strong"
+            >
+              Enter
+            </span>
+             to sort it. To rearrange a token in the sorting area, press 
+            <span
+              className="strong"
+            >
+              Q
+            </span>
+             to move it left and 
+            <span
+              className="strong"
+            >
+              E
+            </span>
+             to move it right.
+          </p>
+        </div>
+        <div
+          className="tutorial-content"
+        >
+          <p>
+            To read out the tokens you have sorted, press 
+            <span
+              className="strong"
+            >
+              R
+            </span>
+             or click the 
+            <span
+              className="strong"
+            >
+              Speaker
+            </span>
+             on the bottom right of the sorting area.
+          </p>
+        </div>
+        <div
+          className="tutorial-content"
+        >
+          <img
+            alt="Player tutorial image demonstrating using the color legend."
+            className="left"
+            src="assets/img/player-tutorial-2.png"
+          />
+          <p>
+            Tokens are color-coded based on their syntax. Use the Legend at the bottom to associate each color with its corresponding syntax.
+          </p>
+        </div>
+        <div
+          className="tutorial-content"
+        >
+          <p>
+            Some questions may allow you to check your answer multiple times before submitting for a score. Use the 
+            <span
+              className="strong"
+            >
+              Check Answer
+            </span>
+             button to see how you did!
+          </p>
+          <img
+            alt="Player tutorial image demonstrating using the Check Answer feature."
+            className="right"
+            src="assets/img/player-tutorial-3.png"
+          />
+        </div>
+        <div
+          className="tutorial-content"
+        >
+          <p>
+            Some questions may have hints. Press 
+            <span
+              className="strong"
+            >
+              H
+            </span>
+             to play the hint if it's available.
+          </p>
+        </div>
       </div>
       <button
+        id="tutorial-ready-btn"
         onClick={[Function]}
       >
         I'm Ready
@@ -123,28 +222,36 @@ exports[`Player Application Player App component 1`] = `
     />
   </div>
   <header
+    aria-hidden="true"
     className="player-header"
+    inert=""
   >
-    <span
+    <h1
       className="title"
     >
       New Syntax Sorter Widget
-    </span>
-    <button
-      className="headerBtn"
-      onClick={[Function]}
+    </h1>
+    <div
+      className="player-header-btns"
     >
-      Submit
-    </button>
-    <button
-      className="headerBtn"
-      onClick={[Function]}
-    >
-      Tutorial
-    </button>
+      <button
+        className="headerBtn"
+        onClick={[Function]}
+      >
+        Tutorial
+      </button>
+      <button
+        className="headerBtn"
+        onClick={[Function]}
+      >
+        Submit
+      </button>
+    </div>
   </header>
-  <div
+  <nav
+    aria-hidden="true"
     className="question-select"
+    inert=""
   >
     <button
       className="select-btn paginate-up  disabled"
@@ -164,25 +271,33 @@ exports[`Player Application Player App component 1`] = `
         className="icon-arrow-down2"
       />
     </button>
-  </div>
-  <section
+  </nav>
+  <main
+    aria-hidden="true"
     className="content-container"
+    inert=""
   >
     <section
       className="card question-container"
     >
-      <p>
+      <h2
+        aria-label="Question: Drag and drop to arrange the items below in the correct order."
+        id="question-text"
+      >
         Drag and drop to arrange the items below in the correct order.
-      </p>
+      </h2>
       <div
+        aria-live="assertive"
         className="hint-text "
       >
-        <span
-          className="strong"
-        >
-          Hint: 
-        </span>
-        <span />
+        <p>
+          <span
+            className="strong"
+          >
+            Hint: 
+          </span>
+          <span />
+        </p>
       </div>
     </section>
     <section
@@ -196,8 +311,21 @@ exports[`Player Application Player App component 1`] = `
           onDragOver={[Function]}
           onDrop={[Function]}
         >
-          Drag and drop the words below to arrange them.
+          Drag and drop the words below to arrange them. If using a keyboard, select a token in the drawer and press Space or Enter to sort it. To rearrange a token in the sorting area, press Q to move it left and E to move it right.
         </div>
+        <button
+          aria-label="Read Sorted Phrase"
+          id="play-audio-btn"
+          onClick={[Function]}
+          onMouseOut={[Function]}
+          onMouseOver={[Function]}
+          title="Read Sorted Phrase"
+        >
+          <img
+            aria-hidden="true"
+            src="./assets/img/volume-medium.svg"
+          />
+        </button>
         <span
           className="fakeout-tip "
         >
@@ -218,21 +346,29 @@ exports[`Player Application Player App component 1`] = `
           <div
             className="response-message-container"
           >
-            <span>
-              NONE
-            </span>
+            <div
+              id="response-dialog-desc"
+            >
+              <span>
+                NONE
+              </span>
+            </div>
           </div>
           <div
             className="button-container"
           >
             <button
+              aria-describedby="response-dialog-desc"
               className="verify "
+              id="check-question-btn"
               onClick={[Function]}
             >
               Check Answer
             </button>
             <button
+              aria-describedby="response-dialog-desc"
               className="paginate show"
+              id="next-question-btn"
               onClick={[Function]}
             >
               Next Question
@@ -244,10 +380,15 @@ exports[`Player Application Player App component 1`] = `
     <section
       className="card legend"
     >
-      <header>
+      <header
+        id="color-legend-header"
+      >
         Color Legend
       </header>
+      <dl
+        aria-labelledby="color-legend-header"
+      />
     </section>
-  </section>
+  </main>
 </div>
 `;

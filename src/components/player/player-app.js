@@ -3,6 +3,7 @@ import QuestionSelect from './question-select'
 import PhrasePlayer from './phrase-player'
 import PlayerTutorial from './player-tutorial'
 import WarningModal from './warning-modal'
+import AriaLive from './aria-live'
 import { store } from '../../player-store'
 
 const PlayerApp = (props) => {
@@ -90,24 +91,82 @@ const PlayerApp = (props) => {
 	const questionText = manager.state.items[manager.state.currentIndex]?.question.length > 0 ? manager.state.items[manager.state.currentIndex].question : "Drag and drop to arrange the items below in the correct order."
 
 	const legendList = manager.state.legend.map((term, index) => {
-		return <span key={index} className='legend-item'><span className='legend-color' style={{ background: term.color }}></span>{term.name}</span>
+		return <div key={index} aria-label={term.name}>
+			<dt className='legend-color' style={{ background: term.color }} aria-label="Color" aria-hidden="true"></dt>
+			<dd aria-hidden="true">{term.name}</dd>
+		</div>
 	})
 
+	const getLegendName = (type) => {
+		for (const term of manager.state.legend) {
+			if (type == term.id) return term.name
+		}
+	}
+
+	const handleOnKeyDown = (event) => {
+		if (event.key == "R" || event.key == "r")
+		{
+			readCurrentPhrase();
+		}
+		else if (event.key == "H" || event.key == "h")
+		{
+			readHint();
+		}
+	}
+
+	const readHint = () => {
+		var msg = new SpeechSynthesisUtterance();
+
+		if (manager.state.items[manager.state.currentIndex]?.attemptsUsed > 0 && manager.state.items[manager.state.currentIndex]?.attemptsUsed < manager.state.items[manager.state.currentIndex]?.attempts &&manager.state.items[manager.state.currentIndex]?.responseState != 'correct' && manager.state.items[manager.state.currentIndex]?.responseState != 'incorrect-no-attempts' && manager.state.items[manager.state.currentIndex]?.hint.length > 0)
+		{
+			msg.text = manager.state.items[manager.state.currentIndex].hint;
+		}
+		else
+		{
+			msg.text = "No hint available."
+		}
+		window.speechSynthesis.speak(msg);
+	}
+
+	const readCurrentPhrase = () => {
+		var msg = new SpeechSynthesisUtterance();
+
+		var currentQuestion = manager.state.items[manager.state.currentIndex];
+
+		if (currentQuestion.sorted.length < 1)
+		{
+			msg.text = "Empty."
+		}
+		else
+		{
+			let sortedPhrase = currentQuestion.sorted.map((token) => {
+				return (currentQuestion.displayPref == 'word' ? token.value : getLegendName(token.legend))
+			}).join(" ");
+
+			msg.text = sortedPhrase;
+		}
+		window.speechSynthesis.speak(msg);
+	}
+
 	return (
-		<div className="player-container">
+		<div className="player-container"
+		onKeyDown={handleOnKeyDown}>
+			<AriaLive></AriaLive>
 			<WarningModal
 				submitForScoring={submitForScoring}
 				requireAllQuestions={manager.state.requireAllQuestions}></WarningModal>
 			<PlayerTutorial></PlayerTutorial>
-			<header className="player-header">
-				<span className="title">{manager.state.title}</span>
-				<button className="headerBtn" onClick={handleSubmit}>Submit</button>
-				<button className="headerBtn" onClick={toggleTutorial}>Tutorial</button>
+			<header className="player-header" inert={manager.state.showTutorial || manager.state.showWarning ? '': undefined} aria-hidden={manager.state.showTutorial || manager.state.showWarning ? "true" : "false"}>
+				<h1 className="title">{manager.state.title}</h1>
+				<div className="player-header-btns">
+					<button className="headerBtn" onClick={toggleTutorial}>Tutorial</button>
+					<button className="headerBtn" onClick={handleSubmit}>Submit</button>
+				</div>
 			</header>
 			<QuestionSelect></QuestionSelect>
-			<section className="content-container">
+			<main className="content-container" inert={manager.state.showTutorial || manager.state.showWarning ? '' : undefined} aria-hidden={manager.state.showTutorial || manager.state.showWarning ? "true": "false"}>
 				<section className="card question-container">
-					<p>{questionText}</p>
+					<h2 id="question-text" aria-label={"Question: " + questionText}>{questionText}</h2>
 					<div className={'hint-text ' +
 						`${(
 							manager.state.items[manager.state.currentIndex]?.attemptsUsed > 0 &&
@@ -115,7 +174,8 @@ const PlayerApp = (props) => {
 							manager.state.items[manager.state.currentIndex]?.responseState != 'correct' &&
 							manager.state.items[manager.state.currentIndex]?.responseState != 'incorrect-no-attempts' &&
 							manager.state.items[manager.state.currentIndex]?.hint.length > 0) ? 'show' : ''}`}>
-						<span className="strong">Hint: </span><span>{manager.state.items[manager.state.currentIndex]?.hint}</span>
+						<p><span className="strong">Hint: </span>
+						<span>{manager.state.items[manager.state.currentIndex]?.hint}</span></p>
 					</div>
 				</section>
 				<PhrasePlayer
@@ -125,12 +185,15 @@ const PlayerApp = (props) => {
 					attemptsUsed={manager.state.items[manager.state.currentIndex]?.attemptsUsed}
 					attemptLimit={manager.state.items[manager.state.currentIndex]?.attempts}
 					hasFakes={manager.state.items[manager.state.currentIndex]?.fakeout.length}
-					responseState={manager.state.items[manager.state.currentIndex]?.responseState}></PhrasePlayer>
+					responseState={manager.state.items[manager.state.currentIndex]?.responseState}
+					readCurrentPhrase={readCurrentPhrase}></PhrasePlayer>
 				<section className="card legend">
-					<header>Color Legend</header>
-					{legendList}
+					<header id="color-legend-header">Color Legend</header>
+					<dl aria-labelledby="color-legend-header">
+						{legendList}
+					</dl>
 				</section>
-			</section>
+			</main>
 		</div>
 	)
 }

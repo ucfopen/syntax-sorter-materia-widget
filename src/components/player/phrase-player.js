@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useState } from 'react'
 import ReactDOM from 'react-dom'
 import TokenDrawer from './token-drawer'
 import Token from './token'
@@ -8,6 +8,8 @@ const PhrasePlayer = (props) => {
 
 	const manager = useContext(store)
 	const dispatch = manager.dispatch
+
+	const [audioImg, setAudioImg] = useState("./assets/img/volume-medium.svg");
 
 	const handleTokenDragOver = (event) => {
 
@@ -55,6 +57,7 @@ const PhrasePlayer = (props) => {
 		let dropTokenPhraseIndex = event.dataTransfer.getData("tokenPhraseIndex")
 		let dropTokenStatus = event.dataTransfer.getData("tokenStatus")
 		let dropTokenFakeout = (event.dataTransfer.getData("tokenFakeout") == "true") ? true : false
+		let dropTokenFocus = event.dataTransfer.getData("tokenFocus")
 
 		let index = 0
 
@@ -81,7 +84,8 @@ const PhrasePlayer = (props) => {
 						legend: dropTokenType,
 						value: dropTokenName,
 						originIndex: parseInt(dropTokenPhraseIndex),
-						fakeout: dropTokenFakeout
+						fakeout: dropTokenFakeout,
+						focus: dropTokenFocus
 					}
 				})
 				break
@@ -96,7 +100,8 @@ const PhrasePlayer = (props) => {
 						legend: dropTokenType,
 						value: dropTokenName,
 						phraseIndex: parseInt(dropTokenPhraseIndex),
-						fakeout: dropTokenFakeout
+						fakeout: dropTokenFakeout,
+						focus: dropTokenFocus
 					}
 				})
 
@@ -133,20 +138,23 @@ const PhrasePlayer = (props) => {
 			reqPositionUpdate={token.reqPositionUpdate}
 			fakeout={token.fakeout}
 			dragEligible={!(props.attemptsUsed >= props.attemptLimit || props.responseState == 'correct')}
-			forceClearAdjacentTokens={forceClearAdjacentTokens}>
+			forceClearAdjacentTokens={forceClearAdjacentTokens}
+			focus={token.focus}>
 		</Token>
 	})
 
 	return (
 		<section className={'card phrase-player ' +
 			`${props.responseState + ' '}` +
-			`${props.hasFakes ? 'fakeout ' : ''}`}>
+			`${props.hasFakes ? 'fakeout ' : ''}`}
+			>
 			<div className={`token-container ${props.hasFakes ? "fakeout" : ''}`}>
 				<div className="token-target" onDragOver={handleTokenDragOver} onDrop={handleTokenDrop}>
-					{props.sorted?.length ? '' : 'Drag and drop the words below to arrange them.'}
+					{props.sorted?.length ? '' : 'Drag and drop the words below to arrange them. If using a keyboard, select a token in the drawer and press Space or Enter to sort it. To rearrange a token in the sorting area, press Q to move it left and E to move it right.'}
 					{sortedTokens}
 				</div>
-				<span className={`fakeout-tip ${props.hasFakes ? "show" : ''}`}>
+				<button id="play-audio-btn" title="Read Sorted Phrase" aria-label="Read Sorted Phrase" onClick={props.readCurrentPhrase}></button>
+				<span className={`fakeout-tip ${props.hasFakes && props.phrase.length > 0 ? "show" : ''}`}>
 					<span className='icon-notification'></span>Not all of the items below may be part of the correct phrase.
 				</span>
 			</div>
