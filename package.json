@@ -4,7 +4,7 @@
 		"cleanName": "syntax-sorter"
 	},
 	"dependencies": {
-		"materia-widget-development-kit": "2.5.2",
+		"materia-widget-development-kit": "~3.0.0",
 		"sass-loader": "^13.3.2"
 	},
 	"devDependencies": {
