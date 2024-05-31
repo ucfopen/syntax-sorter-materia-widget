@@ -1,6 +1,10 @@
 @import "common";
 
 .player-container {
+
+	min-width: 900px;
+	min-height: 680px;
+
 	*:focus {
 		outline: solid 2px #0093e7;
 	}
@@ -13,7 +17,7 @@
 		}
 
 		button.headerBtn {
-			padding: 5px 25px;
+			padding: 10px 25px;
 			margin: 0 10px;
 
 			border: none;
@@ -30,6 +34,10 @@
 	.content-container {
 		min-height: calc(100% - 100px);
 		padding: 75px 25px 25px 25px;
+
+		.card {
+			box-shadow: 2px 2px 5px rgba(200,200,200,0.9);
+		}
 
 		.card.question-container {
 			padding: 15px 15px 5px 15px;
@@ -123,16 +131,16 @@
 		}
 
 		.token-target {
-			width: calc(100% - 20px);
+			width: calc(100% - 44px);
 			min-height: 20px;
 			margin: 10px;
-			padding: 40px 0;
+			padding: 40px 12px;
 
-			color: #cacaca;
+			color: #a0a0a0;
 			font-size: 14px;
 			text-align: center;
 			vertical-align: middle;
-			border: dotted 1px #cacaca;
+			border: dotted 3px #cacaca;
 		}
 
 		.token-drawer {
@@ -141,9 +149,12 @@
 			left: -15px;
 			width: 100%;
 
+			margin-top: 15px;
 			padding: 15px;
 
-			background: #cacaca;
+			background: #efefef;
+
+			border-top: solid 10px $colorAccent;
 
 			#token-drawer-desc {
 				position: absolute;
@@ -280,6 +291,11 @@
 			align-items: center;
 			gap: 10px;
 
+			div {
+				display: flex;
+				align-items: center;
+			}
+
 			dd, dt {
 				display: inline-block;
 				margin: 0;
@@ -287,7 +303,6 @@
 			.legend-color {
 				position: relative;
 				display: inline-block;
-				top: 4px;
 				width: 18px;
 				height: 18px;
 				margin-right: 6px;
@@ -304,6 +319,10 @@
 	top: 0;
 	display: flex;
 	justify-content: space-between;
+	align-items: center;
+
+	width: 96%;
+	padding: 15px 2%;
 
 	h1 {
 		display: inline-block;

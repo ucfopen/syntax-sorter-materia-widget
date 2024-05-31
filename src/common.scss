@@ -352,7 +352,7 @@ span.strong {
 		margin: 5px 10px;
 
 		background: #ffffff;
-		border-radius: 50%;
+		border: none;
 		font-size: 1.25em;
 
 		outline: none;
@@ -448,15 +448,15 @@ span.strong {
 
 		.token {
 			display: inline-block;
-			padding: 5px 8px;
+			padding: 10px 14px;
 
 			margin: 0 10px 10px 0;
 
-			font-size: 1.5em;
+			font-size: 1.6em;
 			color: #fff;
 
 			border: solid 2px #fff;
-			border-radius: 3px;
+			border-radius: 8px;
 
 			cursor: pointer;
 
