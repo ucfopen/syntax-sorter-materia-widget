@@ -13,6 +13,7 @@ const QuestionSelect = (props) => {
 	useEffect(() => {
 		let questionList = state.items.map((item, index) => {
 			let questionStatus = ''
+			let symbolRender = ''
 			switch (item.responseState)
 			{
 				case 'none':
@@ -26,12 +27,14 @@ const QuestionSelect = (props) => {
 					break;
 				case 'incorrect-no-attempts':
 					questionStatus = "Incorrect: no attempts remaining"
+					symbolRender = <span className='icon icon-cross'></span>
 					break;
 				case 'incorrect-attempts-remaining':
 					questionStatus = `Incorrect: ${item.attempts - item.attemptsUsed} attempt${item.attempts - item.attemptsUsed > 1 ? 's' : ''} remaining`
 					break;
 				case 'correct':
 					questionStatus = "Correct"
+					symbolRender = <span className='icon icon-checkmark'></span>
 					break;
 				default:
 					questionStatus = "Incomplete"
@@ -39,10 +42,12 @@ const QuestionSelect = (props) => {
 			}
 			return <button
 				id={`question-${index + 1}-btn`}
-				className={`select-btn ${currentIndex == index ? 'selected' : ''}`}
+				className={`select-btn ${item.responseState} ${currentIndex == index ? 'selected' : ''}`}
 				key={index}
 				onClick={() => { selectQuestion(index) }}
-				aria-label={`Question ${index + 1}: ${questionStatus}`}>{index + 1}
+				aria-label={`Question ${index + 1}: ${questionStatus}`}>
+					{index + 1}
+					{symbolRender}
 			</button>
 		})
 

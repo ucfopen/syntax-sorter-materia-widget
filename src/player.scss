@@ -95,10 +95,20 @@
 
 		&.correct {
 			background: $colorCSecondary;
+
+			.token {
+				border-color: $lightBG;
+				cursor: not-allowed;
+			}
 		}
 
 		&.incorrect-no-attempts {
 			background: $colorISecondary;
+
+			.token {
+				border-color: $lightBG;
+				cursor: not-allowed;
+			}
 		}
 
 		.token-container {
