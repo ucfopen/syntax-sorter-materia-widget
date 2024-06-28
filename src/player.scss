@@ -86,11 +86,11 @@
 		}
 
 		.token.is-left {
-			border-right: solid 2px $colorAccent;
+			border-left: solid 5px $colorAccent;
 		}
 
 		.token.is-right {
-			border-left: solid 2px $colorAccent;
+			border-right: solid 5px $colorAccent;
 		}
 
 		&.correct {

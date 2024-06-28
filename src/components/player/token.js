@@ -1,22 +1,22 @@
-import React, { useState, useContext, useRef, useEffect } from 'react'
-import { store } from '../../player-store'
+import React, { useState, useContext, useRef, useEffect, useMemo } from 'react'
+import { store, DispatchContext } from '../../player-store'
 
 const Token = (props) => {
 
-	const manager = useContext(store)
-	const dispatch = manager.dispatch
+	const state = useContext(store)
+	const dispatch = useContext(DispatchContext)
 
 	const tokenRef = useRef(null)
 	const coords = tokenRef.current?.getBoundingClientRect()
 
-	const [state, setState] = useState({ dragging: false, origin: null })
+	const [localState, setlocalState] = useState({ dragging: false, origin: null })
 
 	// update token position when element's x value changes
 	useEffect(() => {
 		if (props.status == 'sorted' && coords && coords.x > 0) {
 			dispatch({
 				type: 'token_update_position', payload: {
-					questionIndex: manager.state.currentIndex,
+					questionIndex: state.currentIndex,
 					tokenIndex: props.index,
 					x: coords.x,
 					y: coords.y + coords.height / 2,
@@ -39,7 +39,7 @@ const Token = (props) => {
 	const handleFocus = () => {
 		dispatch({
 			type: 'toggle_token_select', payload: {
-				questionIndex: manager.state.currentIndex,
+				questionIndex: state.currentIndex,
 				tokenIndex: props.index,
 				origin: props.status,
 				id: props.id
@@ -52,7 +52,7 @@ const Token = (props) => {
 	// useEffect( () => {
 	// 	if (props.status == 'sorted' && !props.position.x && coords) {
 	// 		dispatch({type:'token_update_position',payload: {
-	// 			questionIndex: manager.state.currentIndex,
+	// 			questionIndex: state.currentIndex,
 	// 			tokenIndex: props.index,
 	// 			x: coords.x,
 	// 			y: coords.y + coords.height/2,
@@ -69,7 +69,7 @@ const Token = (props) => {
 		if (props.status == 'sorted' && props.reqPositionUpdate == true && coords) {
 			dispatch({
 				type: 'token_update_position', payload: {
-					questionIndex: manager.state.currentIndex,
+					questionIndex: state.currentIndex,
 					tokenIndex: props.index,
 					x: coords.x,
 					y: coords.y + coords.height / 2,
@@ -81,22 +81,25 @@ const Token = (props) => {
 		}
 	}, [props?.reqPositionUpdate])
 
-	const getLegendColor = (type) => {
-		for (const term of manager.state.legend) {
-			if (type == term.id) return term.color
+
+	// function that returns a value 0-255 based on the "lightness" of a given hex value
+	const contrastCalc = (color) => {
+		if (!color) return 255
+		var r, g, b
+		var m = color.substr(1).match(color.length == 7 ? /(\S{2})/g : /(\S{1})/g)
+		if (m) {
+			r = parseInt(m[0], 16)
+			g = parseInt(m[1], 16)
+			b = parseInt(m[2], 16)
 		}
-		return '#ffffff'
+		if (typeof r != "undefined") return ((r * 299) + (g * 587) + (b * 114)) / 1000;
 	}
 
-	const getLegendName = (type) => {
-		for (const term of manager.state.legend) {
-			if (type == term.id) return term.name
-		}
-	}
+	const tokenTextColorContrast = useMemo(() => contrastCalc(props.color),[props.color])
 
 	const handleDragStart = (event) => {
 
-		setState(state => ({ ...state, origin: props.status }))
+		setlocalState(localState => ({ ...localState, origin: props.status }))
 
 		event.dataTransfer.dropEffect = "move"
 		event.dataTransfer.setData("tokenName", props.value)
@@ -106,12 +109,12 @@ const Token = (props) => {
 		event.dataTransfer.setData("tokenId", props.id)
 
 		setTimeout(() => {
-			setState(state => ({ ...state, dragging: true }))
+			setlocalState(localState => ({ ...localState, dragging: true }))
 		})
 
 		dispatch({
 			type: 'token_dragging', payload: {
-				questionIndex: manager.state.currentIndex,
+				questionIndex: state.currentIndex,
 				tokenIndex: props.index,
 				status: props.status
 			}
@@ -133,9 +136,9 @@ const Token = (props) => {
 	  	if (props.status == "sorted")
 	  	{
 	  		dispatch({type: 'sorted_token_unsort', payload: {
-					origin: state.origin,
+					origin: localState.origin,
 					tokenIndex: props.index,
-					questionIndex: manager.state.currentIndex,
+					questionIndex: state.currentIndex,
 					fakeout: props.fakeout,
 					legend: props.type,
 					value: props.value,
@@ -149,17 +152,17 @@ const Token = (props) => {
 
 		dispatch({
 			type: 'token_drag_complete', payload: {
-				origin: state.origin,
+				origin: localState.origin,
 				status: props.status,
 				tokenIndex: props.index,
-				questionIndex: manager.state.currentIndex,
+				questionIndex: state.currentIndex,
 				fakeout: props.fakeout,
 				id: props.id
 			}
 		})
 
 		setTimeout(() => {
-			setState(state => ({ ...state, dragging: false }))
+			setlocalState(localState => ({ ...localState, dragging: false }))
 		})
 	}
 
@@ -169,10 +172,10 @@ const Token = (props) => {
 		if (event.type == "keydown" && (event.key == " " || event.key == "Enter") || event.type == "click") {
 			event.preventDefault();
 
-			let sorted = manager.state.items[manager.state.currentIndex]?.sorted;
+			let sorted = state.items[state.currentIndex]?.sorted;
 			let sortedLengthPrior = sorted.length;
 
-			let phrase = manager.state.items[manager.state.currentIndex]?.phrase;
+			let phrase = state.items[state.currentIndex]?.phrase;
 			let phraseLengthPrior = phrase.length;
 
 			if (!props.dragEligible) return
@@ -185,7 +188,7 @@ const Token = (props) => {
 				dispatch({
 					type: 'response_token_sort',
 					payload: {
-						questionIndex: manager.state.currentIndex,
+						questionIndex: state.currentIndex,
 						targetIndex: index,
 						id: props.id,
 						legend: props.type,
@@ -199,7 +202,7 @@ const Token = (props) => {
 					// Switch focus to box
 					dispatch({
 						type: 'toggle_token_select', payload: {
-							questionIndex: manager.state.currentIndex,
+							questionIndex: state.currentIndex,
 							tokenIndex: index,
 							origin: 'sorted',
 							id: props.id
@@ -215,7 +218,7 @@ const Token = (props) => {
 					let focusIndex = props.index > phraseLengthPrior - 2 ? props.index - 1 : props.index;
 					dispatch({
 						type: 'toggle_token_select', payload: {
-							questionIndex: manager.state.currentIndex,
+							questionIndex: state.currentIndex,
 							tokenIndex: focusIndex,
 							origin: props.status,
 							id: props.id
@@ -223,7 +226,7 @@ const Token = (props) => {
 					})
 
 					// dispatch({
-					// 	type: 'set_live_region', payload: `${manager.state.items[manager.state.currentIndex].sorted.length + 1} of ${manager.state.items[manager.state.currentIndex].correctPhrase.length} tokens sorted.`
+					// 	type: 'set_live_region', payload: `${state.items[state.currentIndex].sorted.length + 1} of ${state.items[state.currentIndex].correctPhrase.length} tokens sorted.`
 					// })
 				}
 			}
@@ -231,9 +234,9 @@ const Token = (props) => {
 			{
 				// Move token out of box, to end of token list
 				dispatch({type: 'sorted_token_unsort', payload: {
-					origin: state.origin,
+					origin: localState.origin,
 					tokenIndex: props.index,
-					questionIndex: manager.state.currentIndex,
+					questionIndex: state.currentIndex,
 					fakeout: props.fakeout,
 					legend: props.type,
 					value: props.value,
@@ -244,7 +247,7 @@ const Token = (props) => {
 					// Switch focus to phrase
 					dispatch({
 						type: 'toggle_token_select', payload: {
-							questionIndex: manager.state.currentIndex,
+							questionIndex: state.currentIndex,
 							tokenIndex: 0,
 							origin: 'unsorted',
 							id: props.id
@@ -260,7 +263,7 @@ const Token = (props) => {
 					let focusIndex = props.index > sortedLengthPrior - 2 ? props.index - 1 : props.index;
 					dispatch({
 						type: 'toggle_token_select', payload: {
-							questionIndex: manager.state.currentIndex,
+							questionIndex: state.currentIndex,
 							tokenIndex: focusIndex,
 							origin: props.status,
 							id: props.id
@@ -280,7 +283,7 @@ const Token = (props) => {
 			// Determine the direction to move
 			let targetIndex = event.key == "q" || event.key == "Q" ? props.index - 1 : props.index + 2;
 
-			let sorted = manager.state.items[manager.state.currentIndex]?.sorted;
+			let sorted = state.items[state.currentIndex]?.sorted;
 
 			// If index is out of range, do nothing
 			if (targetIndex < 0 || targetIndex > sorted.length)
@@ -289,7 +292,7 @@ const Token = (props) => {
 			dispatch({
 				type: 'response_token_rearrange',
 				payload: {
-					questionIndex: manager.state.currentIndex,
+					questionIndex: state.currentIndex,
 					targetIndex: targetIndex,
 					id: props.id,
 					legend: props.type,
@@ -302,7 +305,7 @@ const Token = (props) => {
 			let focusIndex = event.key == "q" || event.key == "Q" ? props.index - 1 : props.index + 1;
 			dispatch({
 				type: 'toggle_token_select', payload: {
-					questionIndex: manager.state.currentIndex,
+					questionIndex: state.currentIndex,
 					tokenIndex: focusIndex,
 					origin: props.status,
 					id: props.id
@@ -311,28 +314,16 @@ const Token = (props) => {
 		}
 	}
 
-	// function that returns a value 0-255 based on the "lightness" of a given hex value
-	const contrastCalc = (color) => {
-		var r, g, b
-		var m = color.substr(1).match(color.length == 7 ? /(\S{2})/g : /(\S{1})/g)
-		if (m) {
-			r = parseInt(m[0], 16)
-			g = parseInt(m[1], 16)
-			b = parseInt(m[2], 16)
-		}
-		if (typeof r != "undefined") return ((r * 299) + (g * 587) + (b * 114)) / 1000;
-	}
-
-	let tokenColor = getLegendColor(props.type)
+	// let tokenColor = getLegendColor(props.type)
 
 	// Word value (optional), legend name, position, sorted or unsorted
-	let ariaLabel = (props.pref == 'word' ? `${props.value}, type: ${getLegendName(props.type)}, ` : getLegendName(props.type) + ', ') + (props.status == "sorted" ? `sorted in position ${props.index + 1} ` : props.status);
+	let ariaLabel = (props.pref == 'word' ? `${props.value}, type: ${props.legend}, ` : props.legend + ', ') + (props.status == "sorted" ? `sorted in position ${props.index + 1} ` : props.status);
 
 	return (
-		<button className={`token ${state.dragging ? 'dragging' : ''} ${props.arrangement == 'left' ? 'is-left' : ''} ${props.arrangement == 'right' ? 'is-right' : ''}`}
+		<button className={`token ${localState.dragging ? 'dragging' : ''} ${props.arrangement == 'left' ? 'is-left' : ''} ${props.arrangement == 'right' ? 'is-right' : ''}`}
 			style={{
-				background: tokenColor,
-				color: contrastCalc(tokenColor) > 160 ? '#000000' : '#ffffff',
+				background: props.color,
+				color: tokenTextColorContrast > 160 ? '#000000' : '#ffffff',
 				display: props.status == "relocated" ? "none" : "inline-block"
 			}}
 			ref={tokenRef}
@@ -346,7 +337,7 @@ const Token = (props) => {
 			onClick={handleKeyDown}
 			aria-label={ariaLabel}
 			>
-			{props.pref == 'word' ? props.value : getLegendName(props.type)}
+			{props.pref == 'word' ? props.value : props.legend}
 		</button>
 	)
 }

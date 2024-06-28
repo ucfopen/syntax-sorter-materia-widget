@@ -4,15 +4,15 @@ import PhrasePlayer from './phrase-player'
 import PlayerTutorial from './player-tutorial'
 import WarningModal from './warning-modal'
 import AriaLive from './aria-live'
-import { store } from '../../player-store'
+import { store, DispatchContext } from '../../player-store'
 
 const PlayerApp = (props) => {
 
-	const manager = useContext(store)
-	const dispatch = manager.dispatch
+	const state = useContext(store)
+	const dispatch = useContext(DispatchContext)
 
 	useEffect(() => {
-		if (manager.state.requireInit) {
+		if (state.requireInit) {
 			dispatch({
 				type: 'init', payload: {
 					qset: props.qset,
@@ -22,7 +22,7 @@ const PlayerApp = (props) => {
 
 			document.addEventListener("mouseup", mouseUpHandler)
 		}
-	}, [manager.state.requireInit])
+	}, [state.requireInit])
 
 	// Used to prevent reads from being highlighted then dragged
 	const mouseUpHandler = () => {
@@ -36,7 +36,7 @@ const PlayerApp = (props) => {
 		let response = []
 		for (let i = 0; i < sorted.length; i++) {
 
-			for (const term of manager.state.legend) {
+			for (const term of state.legend) {
 				if (parseInt(sorted[i].legend) == term.id) var legend = term.name
 			}
 
@@ -54,7 +54,7 @@ const PlayerApp = (props) => {
 		let isEmpty = false
 		let i = 0;
 
-		for (let item of manager.state.items) {
+		for (let item of state.items) {
 			if (item.sorted.length <= 0) {
 				dispatch({type: 'select_question', payload: i})
 				isEmpty = true
@@ -77,7 +77,7 @@ const PlayerApp = (props) => {
 	}
 
 	const submitForScoring = () => {
-		for (let item of manager.state.items) {
+		for (let item of state.items) {
 			Materia.Score.submitQuestionForScoring(item.qsetId, convertSortedForLogging(item.sorted))
 		}
 
@@ -88,9 +88,9 @@ const PlayerApp = (props) => {
 		dispatch({ type: 'toggle_tutorial' })
 	}
 
-	const questionText = manager.state.items[manager.state.currentIndex]?.question.length > 0 ? manager.state.items[manager.state.currentIndex].question : "Drag and drop to arrange the items below in the correct order."
+	const questionText = state.items[state.currentIndex]?.question.length > 0 ? state.items[state.currentIndex].question : "Drag and drop to arrange the items below in the correct order."
 
-	const legendList = manager.state.legend.map((term, index) => {
+	const legendList = state.legend.map((term, index) => {
 		return <div key={index} aria-label={term.name}>
 			<dt className='legend-color' style={{ background: term.color }} aria-label="Color" aria-hidden="true"></dt>
 			<dd aria-hidden="true">{term.name}</dd>
@@ -98,7 +98,7 @@ const PlayerApp = (props) => {
 	})
 
 	const getLegendName = (type) => {
-		for (const term of manager.state.legend) {
+		for (const term of state.legend) {
 			if (type == term.id) return term.name
 		}
 	}
@@ -117,9 +117,9 @@ const PlayerApp = (props) => {
 	const readHint = () => {
 		var msg = new SpeechSynthesisUtterance();
 
-		if (manager.state.items[manager.state.currentIndex]?.attemptsUsed > 0 && manager.state.items[manager.state.currentIndex]?.attemptsUsed < manager.state.items[manager.state.currentIndex]?.attempts &&manager.state.items[manager.state.currentIndex]?.responseState != 'correct' && manager.state.items[manager.state.currentIndex]?.responseState != 'incorrect-no-attempts' && manager.state.items[manager.state.currentIndex]?.hint.length > 0)
+		if (state.items[state.currentIndex]?.attemptsUsed > 0 && state.items[state.currentIndex]?.attemptsUsed < state.items[state.currentIndex]?.attempts &&state.items[state.currentIndex]?.responseState != 'correct' && state.items[state.currentIndex]?.responseState != 'incorrect-no-attempts' && state.items[state.currentIndex]?.hint.length > 0)
 		{
-			msg.text = manager.state.items[manager.state.currentIndex].hint;
+			msg.text = state.items[state.currentIndex].hint;
 		}
 		else
 		{
@@ -131,7 +131,7 @@ const PlayerApp = (props) => {
 	const readCurrentPhrase = () => {
 		var msg = new SpeechSynthesisUtterance();
 
-		var currentQuestion = manager.state.items[manager.state.currentIndex];
+		var currentQuestion = state.items[state.currentIndex];
 
 		if (currentQuestion.sorted.length < 1)
 		{
@@ -154,38 +154,38 @@ const PlayerApp = (props) => {
 			<AriaLive></AriaLive>
 			<WarningModal
 				submitForScoring={submitForScoring}
-				requireAllQuestions={manager.state.requireAllQuestions}></WarningModal>
+				requireAllQuestions={state.requireAllQuestions}></WarningModal>
 			<PlayerTutorial></PlayerTutorial>
-			<header className="player-header" inert={manager.state.showTutorial || manager.state.showWarning ? '': undefined} aria-hidden={manager.state.showTutorial || manager.state.showWarning ? "true" : "false"}>
-				<h1 className="title">{manager.state.title}</h1>
+			<header className="player-header" inert={state.showTutorial || state.showWarning ? '': undefined} aria-hidden={state.showTutorial || state.showWarning ? "true" : "false"}>
+				<h1 className="title">{state.title}</h1>
 				<div className="player-header-btns">
 					<button className="headerBtn" onClick={toggleTutorial}>Tutorial</button>
 					<button className="headerBtn" onClick={handleSubmit}>Submit</button>
 				</div>
 			</header>
 			<QuestionSelect></QuestionSelect>
-			<main className="content-container" inert={manager.state.showTutorial || manager.state.showWarning ? '' : undefined} aria-hidden={manager.state.showTutorial || manager.state.showWarning ? "true": "false"}>
+			<main className="content-container" inert={state.showTutorial || state.showWarning ? '' : undefined} aria-hidden={state.showTutorial || state.showWarning ? "true": "false"}>
 				<section className="card question-container">
 					<h2 id="question-text" aria-label={"Question: " + questionText}>{questionText}</h2>
 					<div className={'hint-text ' +
 						`${(
-							manager.state.items[manager.state.currentIndex]?.attemptsUsed > 0 &&
-							manager.state.items[manager.state.currentIndex]?.attemptsUsed < manager.state.items[manager.state.currentIndex]?.attempts &&
-							manager.state.items[manager.state.currentIndex]?.responseState != 'correct' &&
-							manager.state.items[manager.state.currentIndex]?.responseState != 'incorrect-no-attempts' &&
-							manager.state.items[manager.state.currentIndex]?.hint.length > 0) ? 'show' : ''}`}>
+							state.items[state.currentIndex]?.attemptsUsed > 0 &&
+							state.items[state.currentIndex]?.attemptsUsed < state.items[state.currentIndex]?.attempts &&
+							state.items[state.currentIndex]?.responseState != 'correct' &&
+							state.items[state.currentIndex]?.responseState != 'incorrect-no-attempts' &&
+							state.items[state.currentIndex]?.hint.length > 0) ? 'show' : ''}`}>
 						<p><span className="strong">Hint: </span>
-						<span>{manager.state.items[manager.state.currentIndex]?.hint}</span></p>
+						<span>{state.items[state.currentIndex]?.hint}</span></p>
 					</div>
 				</section>
 				<PhrasePlayer
-					phrase={manager.state.items[manager.state.currentIndex]?.phrase}
-					sorted={manager.state.items[manager.state.currentIndex]?.sorted}
-					displayPref={manager.state.items[manager.state.currentIndex]?.displayPref}
-					attemptsUsed={manager.state.items[manager.state.currentIndex]?.attemptsUsed}
-					attemptLimit={manager.state.items[manager.state.currentIndex]?.attempts}
-					hasFakes={manager.state.items[manager.state.currentIndex]?.fakeout.length}
-					responseState={manager.state.items[manager.state.currentIndex]?.responseState}
+					phrase={state.items[state.currentIndex]?.phrase}
+					sorted={state.items[state.currentIndex]?.sorted}
+					displayPref={state.items[state.currentIndex]?.displayPref}
+					attemptsUsed={state.items[state.currentIndex]?.attemptsUsed}
+					attemptLimit={state.items[state.currentIndex]?.attempts}
+					hasFakes={state.items[state.currentIndex]?.fakeout.length}
+					responseState={state.items[state.currentIndex]?.responseState}
 					readCurrentPhrase={readCurrentPhrase}></PhrasePlayer>
 				<section className="card legend">
 					<header id="color-legend-header">Color Legend</header>

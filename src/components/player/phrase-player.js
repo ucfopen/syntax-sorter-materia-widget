@@ -1,15 +1,18 @@
-import React, { useContext, useState } from 'react'
+import React, { useEffect, useContext, useRef, useState } from 'react'
 import ReactDOM from 'react-dom'
 import TokenDrawer from './token-drawer'
 import Token from './token'
-import { store } from '../../player-store'
+import { store, DispatchContext } from '../../player-store'
 
 const PhrasePlayer = (props) => {
 
-	const manager = useContext(store)
-	const dispatch = manager.dispatch
+	const state = useContext(store)
+	const dispatch = useContext(DispatchContext)
 
-	const [audioImg, setAudioImg] = useState("./assets/img/volume-medium.svg");
+	const leftToken = useRef(null)
+	const rightToken = useRef(null)
+
+	const [audioImg, setAudioImg] = useState("./assets/img/volume-medium.svg")
 
 	const handleTokenDragOver = (event) => {
 
@@ -21,32 +24,80 @@ const PhrasePlayer = (props) => {
 		const cursor = event.clientX
 		const cursorY = event.clientY
 
-		let leftToken = null
-		let rightToken = null
+		let updateTokenDisplay = false
+		let leftOfToken = false
+		let rightOfToken = false
 
+		// loop through each sorted token to calculate the two adjacent tokens on either side (if a token is present on that side)
 		for (let i = 0; i < props.sorted.length; i++) {
+
+			// ignore the currently dragging token
+			if (props.sorted[i].status == 'dragging') continue
+
 			let pos = props.sorted[i].position
 			let left = pos.x
 			let right = pos.x + pos.width
 			let height = pos.y
 
-			if (cursorY > height - 40 && cursorY < height + 40) {
-				if (cursor > left) {
-					if (!leftToken || (leftToken && left > leftToken.position.x)) {
-						leftToken = props.sorted[i]
-						leftToken.index = i
+			// cursor is within 80 px +/- of token in vertical distance
+			if (cursorY > height - 80 && cursorY < height + 80) {
+
+				// Cursor is further left than the token's midpoint
+				if (cursor < (left + pos.width/2)) {
+
+					leftOfToken = true
+
+					// compute left-most token for adjacency, based on three conditions:
+					// 1. no left-most token is currently selected
+					// 2. token's left side is further left (a smaller value) than the previously selected left-most token
+					// 3. previously selected left-most token's midpoint is to the LEFT of the cursor so it's too far
+					if (
+						!leftToken.current ||
+						(leftToken.current && (left < leftToken.current.position.x)) ||
+						(leftToken.current && leftToken.current.position.x + leftToken.current.position.width/2 < cursor)
+					) {
+						// one of the above conditions is true, only dispatch an update if the token's arrangement isn't left already
+						if (props.sorted[i].arrangement != 'left') {
+							
+							leftToken.current = props.sorted[i]
+							leftToken.current.index = i
+
+							updateTokenDisplay = true
+						}
 					}
 				}
-				else if (cursor < right) {
-					if (!rightToken || (rightToken && right < rightToken.position.x + rightToken.position.width)) {
-						rightToken = props.sorted[i]
-						rightToken.index = i
+				// cursor is further right than the token's midpoint
+				else if (cursor > right - pos.width/2) {
+					
+					rightOfToken = true
+
+					// compute right-most token for adjacency, based on three conditions:
+					// 1. no right-most token is currently selected
+					// 2. token's right side is further right (a larger value) than the previously selected right-most token
+					// 3. previously selected right-most token's midpoint is to the RIGHT of the cursor so it's too far
+					if (
+						!rightToken.current ||
+						(rightToken.current && (right > rightToken.current.position.x + rightToken.current.position.width)) ||
+						(rightToken.current && rightToken.current.position.x + rightToken.current.position.width/2 > cursor)
+					) {
+						// one of the above conditions is true, only dispatch an update if the token's arrangement isn't right already
+						if (props.sorted[i].arrangement != 'right') {
+							
+							rightToken.current = props.sorted[i]
+							rightToken.current.index = i
+
+							updateTokenDisplay = true
+						}
 					}
 				}
 			}
 		}
 
-		manageAdjacentTokenDisplay(leftToken, rightToken)
+		if (!leftOfToken) leftToken.current = null // if cursor is not left of ANY tokens, there is no token that needs an arrangement: left display; so clear it
+		if (!rightOfToken) rightToken.current = null // same for right side
+
+		// only dispatch an update to the reducer if a change has actually occurred - prevent excess updates to the store, reducing number of re-renders
+		if (updateTokenDisplay) manageAdjacentTokenDisplay(leftToken.current, rightToken.current)
 	}
 
 	const handleTokenDrop = (event) => {
@@ -65,10 +116,10 @@ const PhrasePlayer = (props) => {
 
 			if (props.sorted[i].id == dropTokenId) continue
 
-			if (props.sorted[i].arrangement == "left") {
+			if (props.sorted[i].arrangement == "right") {
 				index = i + 1
 			}
-			else if (props.sorted[i].arrangement == "right") {
+			else if (props.sorted[i].arrangement == "left") {
 				index = i > 0 ? i : 0
 			}
 		}
@@ -78,7 +129,7 @@ const PhrasePlayer = (props) => {
 				dispatch({
 					type: 'response_token_rearrange',
 					payload: {
-						questionIndex: manager.state.currentIndex,
+						questionIndex: state.currentIndex,
 						targetIndex: index,
 						id: dropTokenId,
 						legend: dropTokenType,
@@ -94,7 +145,7 @@ const PhrasePlayer = (props) => {
 				dispatch({
 					type: 'response_token_sort',
 					payload: {
-						questionIndex: manager.state.currentIndex,
+						questionIndex: state.currentIndex,
 						targetIndex: index,
 						id: dropTokenId,
 						legend: dropTokenType,
@@ -107,13 +158,15 @@ const PhrasePlayer = (props) => {
 
 				break
 		}
+		leftToken.current = null
+		rightToken.current = null
 		manageAdjacentTokenDisplay(null, null)
 	}
 
 	const manageAdjacentTokenDisplay = (left, right) => {
 		dispatch({
 			type: 'adjacent_token_update', payload: {
-				questionIndex: manager.state.currentIndex,
+				questionIndex: state.currentIndex,
 				left: left?.id,
 				right: right?.id
 			}
@@ -124,12 +177,28 @@ const PhrasePlayer = (props) => {
 		manageAdjacentTokenDisplay(null, null)
 	}
 
+	const getTokenLegendColor = (type) => {
+		for (const term of state.legend) {
+			if (type == term.id) return term.color
+		}
+		return '#ffffff'
+	}
+
+	const getTokenLegendName = (type) => {
+		for (const term of state.legend) {
+			if (type == term.id) return term.name
+		}
+		return '???'
+	}
+
 	let sortedTokens = props.sorted?.map((token, index) => {
 		return <Token
 			id={token.id}
 			key={index}
 			index={index}
 			type={token.legend}
+			color={getTokenLegendColor(token.legend)}
+			legend={getTokenLegendName(token.legend)}
 			value={token.value}
 			pref={props.displayPref}
 			status={token.status}
@@ -139,6 +208,23 @@ const PhrasePlayer = (props) => {
 			fakeout={token.fakeout}
 			dragEligible={!(props.attemptsUsed >= props.attemptLimit || props.responseState == 'correct')}
 			forceClearAdjacentTokens={forceClearAdjacentTokens}
+			focus={token.focus}>
+		</Token>
+	})
+
+	let unsortedTokens = props.phrase?.map((token, index) => {
+		return <Token
+			id={token.id}
+			key={index}
+			index={index}
+			type={token.legend}
+			color={getTokenLegendColor(token.legend)}
+			legend={getTokenLegendName(token.legend)}
+			value={token.value}
+			pref={props.displayPref}
+			status={token.status}
+			fakeout={token.fakeout}
+			dragEligible={!(props.attemptsUsed >= props.attemptLimit)}
 			focus={token.focus}>
 		</Token>
 	})
@@ -159,7 +245,7 @@ const PhrasePlayer = (props) => {
 				</span>
 			</div>
 			<TokenDrawer
-				phrase={props.phrase}
+				tokens={unsortedTokens}
 				empty={props.sorted?.length == 0}
 				displayPref={props.displayPref}
 				attemptsUsed={props.attemptsUsed}

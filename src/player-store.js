@@ -16,6 +16,8 @@ const init = {
 }
 
 const store = React.createContext(init)
+const DispatchContext = React.createContext()
+
 const { Provider } = store
 let numQuestions = 0
 
@@ -430,7 +432,11 @@ const StateProvider = ( { children } ) => {
 		}
 	}, init)
 
-	return <Provider value={{state, dispatch}}>{children}</Provider>
+	return (
+		<DispatchContext.Provider value={dispatch}>
+			<Provider value={state}>{children}</Provider>
+		</DispatchContext.Provider>
+	)
 }
 
-export {store, StateProvider }
+export {store, DispatchContext, StateProvider }
