@@ -167,16 +167,16 @@ const PlayerApp = (props) => {
 			<main className="content-container" inert={state.showTutorial || state.showWarning ? '' : undefined} aria-hidden={state.showTutorial || state.showWarning ? "true": "false"}>
 				<section className="card question-container">
 					<h2 id="question-text" aria-label={"Question: " + questionText}>{questionText}</h2>
-					<div className={'hint-text ' +
-						`${(
-							state.items[state.currentIndex]?.attemptsUsed > 0 &&
-							state.items[state.currentIndex]?.attemptsUsed < state.items[state.currentIndex]?.attempts &&
-							state.items[state.currentIndex]?.responseState != 'correct' &&
-							state.items[state.currentIndex]?.responseState != 'incorrect-no-attempts' &&
-							state.items[state.currentIndex]?.hint.length > 0) ? 'show' : ''}`}>
+				</section>
+				<section className={`card hint-text 
+					${(
+						state.items[state.currentIndex]?.attemptsUsed > 0 &&
+						state.items[state.currentIndex]?.attemptsUsed < state.items[state.currentIndex]?.attempts &&
+						state.items[state.currentIndex]?.responseState != 'correct' &&
+						state.items[state.currentIndex]?.responseState != 'incorrect-no-attempts' &&
+						state.items[state.currentIndex]?.hint.length > 0) ? 'show' : ''}`}>
 						<p><span className="strong">Hint: </span>
 						<span>{state.items[state.currentIndex]?.hint}</span></p>
-					</div>
 				</section>
 				<PhrasePlayer
 					phrase={state.items[state.currentIndex]?.phrase}

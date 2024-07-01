@@ -422,11 +422,18 @@ span.strong {
 		}
 
 		&.hint-text {
-			margin-top: -15px;
 			display: none;
-			padding-top: 15px;
-			padding-bottom: 15px;
+			padding: 1em;
 			background: white;
+
+			border: solid 2px $colorAccent;
+			border-radius: 2px;
+
+			box-sizing: border-box;
+
+			p {
+				margin: 0;
+			}
 
 			&.show {
 				display: block;
@@ -455,6 +462,7 @@ span.strong {
 			.fakeout-tip {
 				display: none;
 				font-size: 0.8em;
+				font-weight: bold;
 
 				&.show {
 					display: inline;

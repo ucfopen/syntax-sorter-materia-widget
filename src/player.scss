@@ -116,7 +116,7 @@
 
 			#play-audio-btn {
 				position: absolute;
-				bottom: 10px;
+				bottom: 0;
 				right: -5px;
 
 				width: 2.2em;
@@ -204,12 +204,22 @@
 			// RESPONSE STATE: CORRECT
 			&.correct {
 				background: $colorBGCorrect;
+
+				.response-controls {
+					border-top: none;
+				}
 			}
 
 			// RESPONSE STATE: INCORRECT
 			&.incorrect-attempts-remaining,
 			&.incorrect-no-attempts {
 				background: $colorBGIncorrect;
+			}
+			
+			&.incorrect-no-attempts {
+				.response-controls {
+					border-top: none;
+				}
 			}
 
 			section.response-controls {
