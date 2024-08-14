@@ -1,10 +1,10 @@
 import React, { useContext } from 'react'
-import { store } from '../../player-store'
+import { store, DispatchContext } from '../../player-store'
 
 const PlayerTutorial = (props) => {
 
-	const manager = useContext(store)
-	const dispatch = manager.dispatch
+	const state = useContext(store)
+	const dispatch = useContext(DispatchContext)
 
 	const toggle = () => {
 		dispatch({ type: 'toggle_tutorial' })
@@ -13,7 +13,7 @@ const PlayerTutorial = (props) => {
 	return (
 		<div
 		className='modal-wrapper'
-		style={{ display: manager.state.showTutorial ? 'flex' : 'none' }}>
+		style={{ display: state.showTutorial ? 'flex' : 'none' }}>
 			<div className='modal tutorial player'
 			aria-modal="true"
 			role="alertdialog"

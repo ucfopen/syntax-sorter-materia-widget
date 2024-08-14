@@ -1,11 +1,11 @@
 import React, { useContext, useState, useEffect } from 'react'
-import  { store } from '../../player-store'
+import  { store, DispatchContext } from '../../player-store'
 
 const TestComponent = (props) => {
-	const manager = useContext(store)
-	const dispatch = manager.dispatch
+	const state = useContext(store)
+	const dispatch = useContext(DispatchContext)
 
-	const [state, setState] = useState({ didDispatch: false})
+	const [localState, setState] = useState({ didDispatch: false})
 
 	const _title = 'Player App Test Title'
 	const _qset = {
@@ -97,7 +97,7 @@ const TestComponent = (props) => {
 	}
 
 	useEffect(() => {
-		if (manager.state.requireInit) {
+		if (state.requireInit) {
 			dispatch({
 				type: 'init', payload: {
 					qset: _qset,
@@ -105,16 +105,16 @@ const TestComponent = (props) => {
 				}
 			})
 		}
-	}, [manager.state.requireInit])
+	}, [state.requireInit])
 
 	useEffect(() => {
-		if ( state.didDispatch == false && props.dispatchType && props.dispatchPayload ) {
+		if ( localState.didDispatch == false && props.dispatchType && props.dispatchPayload ) {
 			dispatch({
 				type: props.dispatchType,
 				payload: props.dispatchPayload
 			})
 
-			setState(state => ({ ...state, didDispatch: true }))
+			setState(localState => ({ ...localState, didDispatch: true }))
 		}
 	})
 

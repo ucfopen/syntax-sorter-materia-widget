@@ -1,6 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import ScoreScreenApp from './components/score-screen/score-screen-app'
+import './scoreScreen.scss'
 
 let name = ''
 

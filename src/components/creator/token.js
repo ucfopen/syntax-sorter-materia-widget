@@ -64,7 +64,7 @@ const Token = (props) => {
 			</span>
 			<div className={`close-btn ${hovering ? 'active' : ''}`}
 				onClick={deleteToken}>
-				<div>x</div>
+				<div className='icon-cross'></div>
 			</div>
 		</div>
 	)

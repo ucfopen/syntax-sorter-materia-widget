@@ -2,6 +2,7 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import CreatorApp from './components/creator/creator-app'
 import {StateProvider} from './creator-store'
+import './creator.scss'
 
 const materiaCallbacks = {}
 
