@@ -1,10 +1,10 @@
 import React, { useContext, useEffect, useRef } from 'react'
-import { store } from '../../player-store'
+import { store, DispatchContext } from '../../player-store'
 
 const WarningModal = (props) => {
 
-	const manager = useContext(store)
-	const dispatch = manager.dispatch
+	const state = useContext(store)
+	const dispatch = useContext(DispatchContext)
 
 	const submitButtonRef = useRef(null);
 
@@ -13,13 +13,13 @@ const WarningModal = (props) => {
 	}
 
 	useEffect(() => {
-		if (manager.state.showWarning)
+		if (state.showWarning)
 		{
 			if (submitButtonRef.current != null) submitButtonRef.current.focus();
 		}
-	}, [manager.state.showWarning])
+	}, [state.showWarning])
 
-	let remainingQuestions = manager.state.items.map((question, index) => {
+	let remainingQuestions = state.items.map((question, index) => {
 		switch (question.responseState)
 		{
 			case 'none':
@@ -37,7 +37,7 @@ const WarningModal = (props) => {
 	return (
 		<div
 		className='warning-wrapper'
-		style={{ display: manager.state.showWarning ? 'flex' : 'none' }}
+		style={{ display: state.showWarning ? 'flex' : 'none' }}
 		>
 			<div className='warning'
 			role="alertdialog"

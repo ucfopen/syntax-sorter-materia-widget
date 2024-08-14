@@ -1,17 +1,17 @@
 import React, { useContext } from 'react'
 import Token from './token'
-import { store } from '../../player-store'
+import { store, DispatchContext } from '../../player-store'
 
 const TokenDrawer = (props) => {
 
-	const manager = useContext(store)
-	const dispatch = manager.dispatch
+	const state = useContext(store)
+	const dispatch = useContext(DispatchContext)
 
 	const paginate = () => {
 		dispatch({ type: 'paginate_question_forward' })
 		try
 		{
-			document.getElementById(`question-${manager.state.currentIndex + 2}-btn`).focus();
+			document.getElementById(`question-${state.currentIndex + 2}-btn`).focus();
 		}
 		catch (error)
 		{
@@ -42,7 +42,7 @@ const TokenDrawer = (props) => {
 			dispatch({type: 'sorted_token_unsort', payload: {
 				origin: dropTokenStatus,
 				tokenIndex: parseInt(dropTokenPhraseIndex),
-				questionIndex: manager.state.currentIndex,
+				questionIndex: state.currentIndex,
 				fakeout: dropTokenFakeout,
 				legend: dropTokenType,
 				value: dropTokenName,
@@ -53,36 +53,36 @@ const TokenDrawer = (props) => {
 	}
 
 	const handleCheckAnswer = () => {
-		let item = manager.state.items[manager.state.currentIndex]
+		let item = state.items[state.currentIndex]
 
 		// attempt limit already reached, assume call is invalid
 		if (props.responseState == 'incorrect-no-attempts') return
 
 		let response = verify(item)
-		let state = 'none'
+		let responseState = 'none'
 
 		if (!response) {
 			if ((props.attemptLimit - 1) > props.attemptsUsed) {
-				state = 'incorrect-attempts-remaining'
+				responseState = 'incorrect-attempts-remaining'
 				// dispatch({
 				// 	type: 'set_live_region', payload: `Your answer was not quite right. You have ${remaining} attempt${remaining > 1 ? 's' : ''} remaining.`
 				// })
 			}
 			else {
-				state = 'incorrect-no-attempts'
+				responseState = 'incorrect-no-attempts'
 				// dispatch({
 				// 	type: 'set_live_region', payload: "Your answer was not quite right. You've exhausted your attempts for this question."
 				// })
 			}
 		}
 		else {
-			state = 'correct'
+			responseState = 'correct'
 		}
 
 		dispatch({
 			type: 'attempt_submit', payload: {
-				questionIndex: manager.state.currentIndex,
-				response: state
+				questionIndex: state.currentIndex,
+				response: responseState
 			}
 		})
 
@@ -115,28 +115,14 @@ const TokenDrawer = (props) => {
 		return true
 	}
 
-	let tokenList = props.phrase?.map((token, index) => {
-		return <Token
-			id={token.id}
-			key={index}
-			index={index}
-			type={token.legend}
-			value={token.value}
-			pref={props.displayPref}
-			status={token.status}
-			fakeout={token.fakeout}
-			dragEligible={!(props.attemptsUsed >= props.attemptLimit)}
-			focus={token.focus}>
-		</Token>
-	})
 
-	let isLastQuestion = manager.state.currentIndex == manager.state.items.length - 1
+	let isLastQuestion = state.currentIndex == state.items.length - 1
 
 	let currentResponseText = ''
 
 	let remaining = props.attemptLimit - props.attemptsUsed
 
-	let hasHint = manager.state.items[manager.state.currentIndex]?.hint.length > 0
+	let hasHint = state.items[state.currentIndex]?.hint.length > 0
 
 	switch (props.responseState) {
 		case 'ready':
@@ -181,14 +167,14 @@ const TokenDrawer = (props) => {
 
 	return (
 		<section className={'token-drawer ' +
-			`${(props.phrase?.length == 0) ? 'empty ' : ''}` +
+			`${(props.tokens?.length == 0) ? 'empty ' : ''}` +
 			`${props.responseState} ` +
 			`${props.hasFakes ? 'has-fakes ' : ''}`}
 			onDragOver={handleTokenDragOver}
 			onDrop={handleTokenDrop}>
-			{tokenList && tokenList.length > 0 ? <div role="group" aria-describedby="token-drawer-desc">
+			{props.tokens && props.tokens.length > 0 ? <div role="group" aria-describedby="token-drawer-desc">
 				<h3 id="token-drawer-desc">Token Drawer</h3>
-				{tokenList}
+				{props.tokens}
 				</div> : <></>}
 			<section className='response-controls'>
 				<div className='response-message-container'>

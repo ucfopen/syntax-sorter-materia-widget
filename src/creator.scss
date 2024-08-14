@@ -675,7 +675,7 @@ section.fakeout-builder {
 			display: flex;
 			flex-direction: row;
 			width: 100%;
-			padding: 8px;
+			padding: 8px 0;
 			margin-bottom: 7px;
 
 			&.selected {
@@ -723,10 +723,11 @@ section.fakeout-builder {
 
 			.remove-item {
 				display: inline-block;
+				width: 25px;
+				height: 25px;
 				outline: none;
 				border: none;
-				vertical-align: middle;
-
+				
 				margin-left: 10px;
 				font-size: 1.1em;
 
@@ -789,7 +790,7 @@ section.fakeout-builder {
 
 		div {
 			position: absolute;
-			top: -25%;
+			font-size: 0.6em;
 		}
 
 		&:hover {

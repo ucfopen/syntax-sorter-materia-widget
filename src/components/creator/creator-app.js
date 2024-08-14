@@ -192,7 +192,7 @@ const CreatorApp = (props) => {
 			<CreatorFakeoutModal></CreatorFakeoutModal>
 			<CreatorErrorModal></CreatorErrorModal>
 			<header className="creator-header">
-				<input value={manager.state.title} onChange={handleTitleUpdate} placeholder="Give Your Widget a Title" />
+				<input value={manager.state.title || undefined} onChange={handleTitleUpdate} placeholder="Give Your Widget a Title" />
 				<button className="toggleLegend" onClick={toggleLegend}>Legend</button>
 				<button className="toggleBank" onClick={toggleBank}>Question Bank</button>
 				<button className="toggleSubmissionSettings" onClick={toggleSubmissionSettings}>Submission Settings</button>

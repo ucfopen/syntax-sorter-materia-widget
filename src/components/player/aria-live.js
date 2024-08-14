@@ -1,16 +1,16 @@
 import React, { useContext, useEffect, useRef, useState } from 'react'
-import { store } from '../../player-store'
+import { store, DispatchContext } from '../../player-store'
 
 const AriaLive = (props) => {
 
-	const manager = useContext(store)
-    const dispatch = manager.dispatch
-    const [text, setText] = useState(manager.state.liveRegion)
+	const state = useContext(store)
+	// TODO update this pls
+    const [text, setText] = useState(state.liveRegion)
 
 
     useEffect(() => {
-        setText(manager.state.liveRegion)
-    }, [manager.state.liveRegion])
+        setText(state.liveRegion)
+    }, [state.liveRegion])
 
 	return (
 		<div

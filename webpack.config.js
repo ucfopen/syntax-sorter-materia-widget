@@ -39,7 +39,10 @@ const customReactLoader = {
 	test: /\.js$/,
 	exclude: /node_modules/,
 	use: {
-		loader: 'babel-loader'
+		loader: 'babel-loader',
+		options: {
+			presets: ['@babel/preset-env', '@babel/preset-react'],
+		},
 	}
 }
 
@@ -59,10 +62,5 @@ const options = {
 }
 
 const buildConfig = widgetWebpack.getLegacyWidgetBuildConfig(options)
-
-buildConfig.externals = {
-	"react": "React",
-	"react-dom": "ReactDOM"
-}
 
 module.exports = buildConfig

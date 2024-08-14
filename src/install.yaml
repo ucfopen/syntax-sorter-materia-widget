@@ -1,8 +1,8 @@
 general:
   name: Syntax Sorter
   group: Materia
-  height: 680
-  width: 900
+  height: 0
+  width: 0
   in_catalog: Yes
   is_editable: Yes
   is_playable: Yes
