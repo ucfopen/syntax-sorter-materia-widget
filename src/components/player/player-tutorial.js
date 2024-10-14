@@ -43,7 +43,7 @@ const PlayerTutorial = (props) => {
 				<button onClick={toggle} id="tutorial-ready-btn">I'm Ready</button>
 			</div>
 
-			<div className='modal-bg'>
+			<div className='modal-bg' onClick={toggle}>
 			</div>
 		</div>
 	)
