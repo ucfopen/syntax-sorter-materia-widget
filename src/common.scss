@@ -248,6 +248,28 @@ span.strong {
 				position: absolute;
 				bottom: 15px;
 			}
+
+			button.modal-close-x {
+				top: 15px;
+				right: 15px;
+				left: auto;
+				bottom: auto;
+				width: 1em;
+				height: 1em;
+
+				margin: 0;
+				padding: 0;
+
+				background: none;
+				border: none;
+				outline: none;
+
+				color: #000;
+
+				&:hover span:before, &:focus span:before {
+					color: #850000;
+				}
+			}
 		}
 
 		.select-wrapper {
