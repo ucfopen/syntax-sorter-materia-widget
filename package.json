@@ -45,5 +45,5 @@
 	},
 	"author": "University of Central Florida, Center for Distributed Learning",
 	"description": "Syntax Sorter Materia Widget. A tool for arranging sentences or phrases based on the syntactic structure of individual tokens.",
-	"version": "1.2.2"
+	"version": "1.2.3"
 }
