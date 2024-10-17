@@ -41,7 +41,7 @@ const PlayerTutorial = (props) => {
 					</div>
 				</div>
 				<button className='modal-dismiss' onClick={toggle} id="tutorial-ready-btn">I'm Ready</button>
-				<button className='modal-close-x' onClick={toggle}><span className='icon icon-cross'></span></button>
+				<button className='modal-close-x' onClick={toggle} aria-label='Close dialog'><span className='icon icon-cross'></span></button>
 			</div>
 
 			<div className='modal-bg' onClick={toggle}>
