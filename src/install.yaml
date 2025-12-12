@@ -35,3 +35,5 @@ meta_data:
     Create sentences or phrases out of individual tokens and categorize them based on their syntax. Students must arrange the tokens correctly.
   excerpt: >
     Tokenize sentences or phrases and identify each element based on its syntax. Students are tasked with correctly arranging the tokens.
+  update_method: github
+  repo: ucfopen/syntax-sorter-materia-widget

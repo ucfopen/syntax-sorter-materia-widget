@@ -5,7 +5,7 @@
 	},
 	"dependencies": {
 		"axe-core": "^4.9.1",
-		"materia-widget-development-kit": "~3.0.2",
+		"materia-widget-development-kit": "3.0.4",
 		"sass-loader": "^13.3.2"
 	},
 	"devDependencies": {
